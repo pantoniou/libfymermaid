@@ -1,0 +1,18 @@
+type: packet
+title: TCP header
+accTitle: null
+accDescr: null
+config: {}
+fields:
+- start: 0
+  end: 15
+  label: Source Port
+- start: 16
+  end: 31
+  label: Destination Port
+- start: 32
+  end: 63
+  label: Sequence Number
+- start: 64
+  end: 95
+  label: Acknowledgment Number
