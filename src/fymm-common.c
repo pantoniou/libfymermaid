@@ -176,6 +176,18 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "classDiagram",
+		.config_key = "class",
+		.type = FYMM_DT_CLASS,
+		.parse = fymm_parse_class,
+		.render = fymm_render_class,
+	}, {
+		.keyword = "classDiagram-v2",
+		.config_key = "class",
+		.type = FYMM_DT_CLASS,
+		.parse = fymm_parse_class,
+		.render = fymm_render_class,
+	}, {
 		.keyword = "flowchart",
 		.config_key = "flowchart",
 		.semicolons = true,

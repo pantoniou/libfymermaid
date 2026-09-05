@@ -90,6 +90,7 @@ set(_fymm_sources
     fymm-mindmap.c fymm-render-mindmap.c
     fymm-sequence.c fymm-render-sequence.c
     fymm-flowchart.c fymm-render-flowchart.c
+    fymm-class.c fymm-render-class.c
     fymm-internal.h
 )
 
