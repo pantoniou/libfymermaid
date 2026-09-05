@@ -176,6 +176,18 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "stateDiagram",
+		.config_key = "state",
+		.type = FYMM_DT_STATE,
+		.parse = fymm_parse_state,
+		.render = fymm_render_state,
+	}, {
+		.keyword = "stateDiagram-v2",
+		.config_key = "state",
+		.type = FYMM_DT_STATE,
+		.parse = fymm_parse_state,
+		.render = fymm_render_state,
+	}, {
 		.keyword = "gantt",
 		.config_key = "gantt",
 		.type = FYMM_DT_GANTT,

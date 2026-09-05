@@ -81,6 +81,7 @@ set(_fymm_sources
     fymm-gitgraph.c
     fymm-common.c
     fymm-canvas.c fymm-canvas.h
+    fymm-layout.c fymm-layout.h
     fymm-color.c fymm-color.h
     fymm-theme.c
     fymm-render.c
@@ -95,6 +96,7 @@ set(_fymm_sources
     fymm-xychart.c fymm-render-xychart.c
     fymm-radar.c fymm-render-radar.c
     fymm-gantt.c fymm-render-gantt.c
+    fymm-state.c fymm-render-state.c
     fymm-internal.h
 )
 

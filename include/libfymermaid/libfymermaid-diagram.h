@@ -58,6 +58,7 @@ extern "C" {
  * @FYMM_DT_XYCHART: an xy chart of bars and lines
  * @FYMM_DT_RADAR: a radar chart
  * @FYMM_DT_GANTT: a gantt chart
+ * @FYMM_DT_STATE: a state diagram
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
@@ -73,6 +74,7 @@ enum fymm_diagram_type {
 	FYMM_DT_XYCHART,
 	FYMM_DT_RADAR,
 	FYMM_DT_GANTT,
+	FYMM_DT_STATE,
 };
 
 /* the opaque parsed diagram */
