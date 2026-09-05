@@ -1,0 +1,41 @@
+type: stateDiagram
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+states:
+- id: __start0
+  label: null
+  kind: start
+  parent: null
+- id: NotShooting
+  label: Not Shooting State
+  kind: normal
+  parent: null
+- id: Idle
+  label: Idle mode
+  kind: normal
+  parent: NotShooting
+- id: Configuring
+  label: Configuring mode
+  kind: normal
+  parent: NotShooting
+- id: __start1
+  label: null
+  kind: start
+  parent: NotShooting
+transitions:
+- from: __start0
+  to: NotShooting
+  label: null
+- from: __start1
+  to: Idle
+  label: null
+- from: Idle
+  to: Configuring
+  label: EvConfig
+- from: Configuring
+  to: Idle
+  label: EvConfig
+notes: []

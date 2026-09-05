@@ -1,0 +1,55 @@
+type: stateDiagram
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+states:
+- id: __start0
+  label: null
+  kind: start
+  parent: null
+- id: Idle
+  label: null
+  kind: normal
+  parent: null
+- id: Running
+  label: null
+  kind: normal
+  parent: null
+- id: Paused
+  label: null
+  kind: normal
+  parent: null
+- id: Done
+  label: null
+  kind: normal
+  parent: null
+- id: __end1
+  label: null
+  kind: end
+  parent: null
+- id: fk
+  label: Fork it
+  kind: fork
+  parent: null
+transitions:
+- from: __start0
+  to: Idle
+  label: null
+- from: Idle
+  to: Running
+  label: start
+- from: Running
+  to: Paused
+  label: pause
+- from: Paused
+  to: Running
+  label: resume
+- from: Running
+  to: Done
+  label: finish
+- from: Done
+  to: __end1
+  label: null
+notes: []
