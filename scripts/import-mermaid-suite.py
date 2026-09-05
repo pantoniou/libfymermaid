@@ -155,6 +155,17 @@ def expects_failure(body):
                                 % re.escape(m.group(1)), text))
 
 
+def outcome_is_ambiguous(body):
+    """Does the case assert both a success and a failure?
+
+    Some `it()` bodies parse several sources and expect different things of
+    each. Only the first source is extracted, so the outcome of the case is
+    not the outcome of that source, and guessing would pin the wrong
+    expectation.
+    """
+    return bool(NOT_THROW.search(body)) and expects_failure(body)
+
+
 def extract(text):
     """Return (cases, skipped) for one spec file."""
     cases, skipped = [], []
@@ -200,6 +211,11 @@ def extract(text):
             why = ('no parse call' if not PARSE_CALL.search(body)
                    else 'source is not a literal')
             skipped.append({'name': name, 'reason': why})
+            continue
+
+        if outcome_is_ambiguous(body):
+            skipped.append({'name': name,
+                            'reason': 'the case asserts both outcomes'})
             continue
 
         cases.append({

@@ -55,91 +55,85 @@
    "name": "should be able to parse title"
   },
   {
-   "file": "009-should-be-able-to-parse-points.mmd",
-   "outcome": "fails",
-   "suite": "Testing quadrantChart jison file",
-   "name": "should be able to parse points"
-  },
-  {
-   "file": "010-should-be-able-to-parse-the-whole-chart.mmd",
+   "file": "009-should-be-able-to-parse-the-whole-chart.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file",
    "name": "should be able to parse the whole chart"
   },
   {
-   "file": "011-should-be-able-to-parse-the-whole-chart-with-point-styling-w.mmd",
+   "file": "010-should-be-able-to-parse-the-whole-chart-with-point-styling-w.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file",
    "name": "should be able to parse the whole chart with point styling with all params or some params"
   },
   {
-   "file": "012-should-be-able-to-parse-the-whole-chart-with-point-styling-w-2.mmd",
+   "file": "011-should-be-able-to-parse-the-whole-chart-with-point-styling-w-2.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file",
    "name": "should be able to parse the whole chart with point styling with params in a random order + class names"
   },
   {
-   "file": "013-should-be-able-to-handle-constructor-as-a-classname.mmd",
+   "file": "012-should-be-able-to-handle-constructor-as-a-classname.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file",
    "name": "should be able to handle constructor as a className"
   },
   {
-   "file": "014-should-be-able-to-parse-chinese-text-in-quadrant-labels.mmd",
+   "file": "013-should-be-able-to-parse-chinese-text-in-quadrant-labels.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file/Unicode support (CJK + Emoji)",
    "name": "should be able to parse Chinese text in quadrant labels"
   },
   {
-   "file": "015-should-be-able-to-parse-chinese-text-in-x-axis.mmd",
+   "file": "014-should-be-able-to-parse-chinese-text-in-x-axis.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file/Unicode support (CJK + Emoji)",
    "name": "should be able to parse Chinese text in x-axis"
   },
   {
-   "file": "016-should-be-able-to-parse-chinese-text-in-y-axis.mmd",
+   "file": "015-should-be-able-to-parse-chinese-text-in-y-axis.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file/Unicode support (CJK + Emoji)",
    "name": "should be able to parse Chinese text in y-axis"
   },
   {
-   "file": "017-should-be-able-to-parse-chinese-point-names.mmd",
+   "file": "016-should-be-able-to-parse-chinese-point-names.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file/Unicode support (CJK + Emoji)",
    "name": "should be able to parse Chinese point names"
   },
   {
-   "file": "018-should-be-able-to-parse-a-full-chart-with-chinese.mmd",
+   "file": "017-should-be-able-to-parse-a-full-chart-with-chinese.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file/Unicode support (CJK + Emoji)",
    "name": "should be able to parse a full chart with Chinese"
   },
   {
-   "file": "019-should-be-able-to-parse-japanese-text.mmd",
+   "file": "018-should-be-able-to-parse-japanese-text.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file/Unicode support (CJK + Emoji)",
    "name": "should be able to parse Japanese text"
   },
   {
-   "file": "020-should-be-able-to-parse-korean-text.mmd",
+   "file": "019-should-be-able-to-parse-korean-text.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file/Unicode support (CJK + Emoji)",
    "name": "should be able to parse Korean text"
   },
   {
-   "file": "021-should-be-able-to-parse-emoji-in-text.mmd",
+   "file": "020-should-be-able-to-parse-emoji-in-text.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file/Unicode support (CJK + Emoji)",
    "name": "should be able to parse emoji in text"
   },
   {
-   "file": "022-should-parse-latin-1-accented-text-french-spanish-german.mmd",
+   "file": "021-should-parse-latin-1-accented-text-french-spanish-german.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file/Unicode support (CJK + Emoji)",
    "name": "should parse Latin-1 accented text (French/Spanish/German)"
   },
   {
-   "file": "023-should-parse-accented-characters-in-quadrant-labels.mmd",
+   "file": "022-should-parse-accented-characters-in-quadrant-labels.mmd",
    "outcome": "parses",
    "suite": "Testing quadrantChart jison file/Unicode support (CJK + Emoji)",
    "name": "should parse accented characters in quadrant labels"
@@ -165,6 +159,10 @@
   {
    "name": "should call getConfig at sanitization time, not at module load time",
    "reason": "no parse call"
+  },
+  {
+   "name": "should be able to parse points",
+   "reason": "the case asserts both outcomes"
   }
  ]
 }

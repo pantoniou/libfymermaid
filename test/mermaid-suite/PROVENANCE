@@ -11,7 +11,7 @@ parse to succeed or to fail. A case whose source is not a
 literal, and one that never parses, is skipped and counted
 in the manifest of its suite.
 
-total: 1148 cases, 66 of which must fail; 754 skipped
+total: 1146 cases, 64 of which must fail; 756 skipped
 
   agentflow        68 cases (  0 must fail), 167 skipped
   architecture     17 cases (  3 must fail),  12 skipped
@@ -30,7 +30,7 @@ total: 1148 cases, 66 of which must fail; 754 skipped
   mindmap          26 cases (  2 must fail),   0 skipped
   packet           15 cases (  7 must fail),   0 skipped
   pie              13 cases (  2 must fail),   1 skipped
-  quadrant         24 cases (  2 must fail),   5 skipped
+  quadrant         23 cases (  1 must fail),   6 skipped
   radar            10 cases (  0 must fail),  10 skipped
   railroad         67 cases (  5 must fail),  43 skipped
   sequence        130 cases (  6 must fail),  13 skipped
@@ -39,4 +39,4 @@ total: 1148 cases, 66 of which must fail; 754 skipped
   treeView          5 cases (  0 must fail), 111 skipped
   usecase          52 cases (  1 must fail),  55 skipped
   wardley          19 cases (  0 must fail),   5 skipped
-  xychart          58 cases ( 16 must fail),   9 skipped
+  xychart          57 cases ( 15 must fail),  10 skipped
