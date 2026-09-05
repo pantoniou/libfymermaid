@@ -52,6 +52,10 @@ test suite pins.
 | `pie` | 13/13 | drawn as a proportional bar chart |
 | `timeline` | 11/11 | drawn down the page, not across |
 | `journey` | 7/7 | scores drawn as pips |
+| `xychart` | 56/56 | bars and stepped lines on a scaled axis |
+| `quadrantChart` | 23/23 | plotted points on a divided square |
+| `radar` | 10/10 | bars grouped by axis, not a polygon |
+| `gantt` | 7/7 | day-resolved bars, `after`/`until` honoured |
 | everything else | — | the header is reported as unsupported |
 
 "corpus" is upstream mermaid's own parser suite; see Conformance.
@@ -107,13 +111,13 @@ uses that to carry the structure with bold and dim alone.
 
 ## Conformance
 
-`test/mermaid-suite/` carries upstream mermaid's own parser corpus: 1148 cases
+`test/mermaid-suite/` carries upstream mermaid's own parser corpus: 1146 cases
 across 27 diagram types, each one an `it()` from an upstream spec, reduced to
 the diagram source and whether upstream expects it to parse or to fail.
 `scripts/import-mermaid-suite.py` regenerates it from a mermaid checkout, and
 `test/mermaid-suite/PROVENANCE` records the upstream commit.
 
-The implemented types pass 578 of 578. The remaining suites are registered and disabled
+The implemented types pass 675 of 675. The remaining suites are registered and disabled
 until their diagram type exists, so the corpus is countable and `ctest` stays
 green; `ctest -L unimplemented -N` lists what is still missing. Set
 `-DFYMM_IMPLEMENTED_SUITES=<list>` to run a suite that is not implemented yet
