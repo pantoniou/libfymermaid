@@ -102,6 +102,7 @@ set(_fymm_sources
     fymm-usecase.c fymm-render-usecase.c
     fymm-c4.c fymm-render-c4.c
     fymm-block.c fymm-render-block.c
+    fymm-packet.c fymm-render-packet.c
     fymm-internal.h
 )
 

@@ -176,6 +176,18 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "packet-beta",
+		.config_key = "packet",
+		.type = FYMM_DT_PACKET,
+		.parse = fymm_parse_packet,
+		.render = fymm_render_packet,
+	}, {
+		.keyword = "packet",
+		.config_key = "packet",
+		.type = FYMM_DT_PACKET,
+		.parse = fymm_parse_packet,
+		.render = fymm_render_packet,
+	}, {
 		.keyword = "block-beta",
 		.config_key = "block",
 		.type = FYMM_DT_BLOCK,

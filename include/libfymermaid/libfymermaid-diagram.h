@@ -64,6 +64,7 @@ extern "C" {
  * @FYMM_DT_USECASE: a use case diagram
  * @FYMM_DT_C4: a C4 model diagram
  * @FYMM_DT_BLOCK: a block diagram
+ * @FYMM_DT_PACKET: a packet diagram
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
@@ -85,6 +86,7 @@ enum fymm_diagram_type {
 	FYMM_DT_USECASE,
 	FYMM_DT_C4,
 	FYMM_DT_BLOCK,
+	FYMM_DT_PACKET,
 };
 
 /* the opaque parsed diagram */
