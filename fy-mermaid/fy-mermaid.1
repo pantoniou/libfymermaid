@@ -1,0 +1,66 @@
+.\" SPDX-License-Identifier: MIT
+.TH FY\-MERMAID 1 "2026" "libfymermaid" "User Commands"
+.SH NAME
+fy\-mermaid \- render mermaid diagrams on the terminal
+.SH SYNOPSIS
+.B fy\-mermaid
+[\fIoptions\fR] [\fIfile\fR ...]
+.SH DESCRIPTION
+.B fy\-mermaid
+parses mermaid diagram sources and draws them with box drawing characters
+and ANSI colour, sized for a terminal rather than for a browser.
+With no \fIfile\fR, or with \fB\-\fR, the diagram is read from standard input.
+.PP
+Only the \fBgitGraph\fR diagram type is implemented so far, in its
+left\-to\-right orientation.  A \fBTB\fR or \fBBT\fR header parses and renders,
+with a warning that the orientation was not honoured.
+.PP
+YAML frontmatter and \fB%%{init: ...}%%\fR directives are both read, and are
+applied in that order, so a directive overrides the frontmatter.
+.SH OPTIONS
+.TP
+.BR \-o ", " \-\-output " \fIFILE\fR"
+Write to \fIFILE\fR instead of standard output.
+.TP
+.BR \-w ", " \-\-width " \fIN\fR"
+Render for a terminal \fIN\fR columns wide.  The default is taken from
+\fB$COLUMNS\fR, then from the terminal itself, then 80.
+.TP
+.BR \-c ", " \-\-color " \fIMODE\fR"
+One of \fBauto\fR (the default), \fBnone\fR, \fB16\fR, \fB256\fR or \fBtrue\fR.
+\fBauto\fR honours \fB$NO_COLOR\fR, \fB$CLICOLOR_FORCE\fR, \fB$COLORTERM\fR and
+\fB$TERM\fR, and emits nothing when the output is not a terminal.
+.TP
+.BR \-C ", " \-\-charset " \fISET\fR"
+One of \fBauto\fR (the default), \fBascii\fR or \fBunicode\fR.  \fBauto\fR reads
+the locale.
+.TP
+.BR \-a ", " \-\-ascii
+Shorthand for \fB\-\-charset ascii\fR.
+.TP
+.BR \-m ", " \-\-dump\-model
+Emit the parsed diagram model as YAML instead of rendering it.  The model is
+the same
+.BR fy_generic
+value the library hands to a caller, and is the stable thing to test against.
+.TP
+.BR \-f ", " \-\-flow
+With \fB\-\-dump\-model\fR, emit flow style rather than block style.
+.TP
+.BR \-s ", " \-\-strict
+Treat warnings as errors.
+.TP
+.BR \-q ", " \-\-quiet
+Do not report diagnostics.
+.TP
+.BR \-V ", " \-\-version
+Print the library version and exit.
+.TP
+.BR \-h ", " \-\-help
+Print a usage message and exit.
+.SH EXIT STATUS
+Zero when every input parsed and rendered, one otherwise.
+.SH SEE ALSO
+.BR fy-tool (1)
+.SH AUTHOR
+Pantelis Antoniou <pantelis.antoniou@konsulko.com>

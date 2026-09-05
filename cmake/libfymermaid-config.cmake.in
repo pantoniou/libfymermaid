@@ -1,0 +1,23 @@
+@PACKAGE_INIT@
+
+# libfymermaid CMake package configuration file.
+
+set(libfymermaid_VERSION "@PROJECT_VERSION@")
+
+include(CMakeFindDependencyMacro)
+
+# The public header includes <libfyaml/libfyaml-generic.h>: the diagram model
+# is a fy_generic, so libfyaml is a public dependency of both flavours.
+find_dependency(libfyaml)
+
+include(${CMAKE_CURRENT_LIST_DIR}/libfymermaid-targets.cmake)
+
+# Consistent naming: libfymermaid::libfymermaid (shared) and ::libfymermaid_static.
+if(NOT TARGET libfymermaid::libfymermaid AND TARGET libfymermaid::fymermaid)
+    add_library(libfymermaid::libfymermaid ALIAS libfymermaid::fymermaid)
+endif()
+if(NOT TARGET libfymermaid::libfymermaid_static AND TARGET libfymermaid::fymermaid_static)
+    add_library(libfymermaid::libfymermaid_static ALIAS libfymermaid::fymermaid_static)
+endif()
+
+check_required_components(libfymermaid)
