@@ -51,6 +51,7 @@ extern "C" {
  * @FYMM_DT_TIMELINE: a timeline
  * @FYMM_DT_JOURNEY: a user journey
  * @FYMM_DT_MINDMAP: a mindmap
+ * @FYMM_DT_SEQUENCE: a sequence diagram
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
@@ -59,6 +60,7 @@ enum fymm_diagram_type {
 	FYMM_DT_TIMELINE,
 	FYMM_DT_JOURNEY,
 	FYMM_DT_MINDMAP,
+	FYMM_DT_SEQUENCE,
 };
 
 /* the opaque parsed diagram */
