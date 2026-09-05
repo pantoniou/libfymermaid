@@ -176,6 +176,48 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "block-beta",
+		.config_key = "block",
+		.type = FYMM_DT_BLOCK,
+		.parse = fymm_parse_block,
+		.render = fymm_render_block,
+	}, {
+		.keyword = "block",
+		.config_key = "block",
+		.type = FYMM_DT_BLOCK,
+		.parse = fymm_parse_block,
+		.render = fymm_render_block,
+	}, {
+		.keyword = "C4Context",
+		.config_key = "c4",
+		.type = FYMM_DT_C4,
+		.parse = fymm_parse_c4,
+		.render = fymm_render_c4,
+	}, {
+		.keyword = "C4Container",
+		.config_key = "c4",
+		.type = FYMM_DT_C4,
+		.parse = fymm_parse_c4,
+		.render = fymm_render_c4,
+	}, {
+		.keyword = "C4Component",
+		.config_key = "c4",
+		.type = FYMM_DT_C4,
+		.parse = fymm_parse_c4,
+		.render = fymm_render_c4,
+	}, {
+		.keyword = "C4Dynamic",
+		.config_key = "c4",
+		.type = FYMM_DT_C4,
+		.parse = fymm_parse_c4,
+		.render = fymm_render_c4,
+	}, {
+		.keyword = "C4Deployment",
+		.config_key = "c4",
+		.type = FYMM_DT_C4,
+		.parse = fymm_parse_c4,
+		.render = fymm_render_c4,
+	}, {
 		.keyword = "usecase-beta",
 		.config_key = "usecase",
 		.type = FYMM_DT_USECASE,

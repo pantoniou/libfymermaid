@@ -100,6 +100,8 @@ set(_fymm_sources
     fymm-er.c fymm-render-er.c
     fymm-kanban.c fymm-render-kanban.c
     fymm-usecase.c fymm-render-usecase.c
+    fymm-c4.c fymm-render-c4.c
+    fymm-block.c fymm-render-block.c
     fymm-internal.h
 )
 

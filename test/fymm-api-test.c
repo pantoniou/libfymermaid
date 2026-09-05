@@ -88,8 +88,12 @@ static void test_bad_input(void)
 	CHECK(!fymm_render(d, NULL), "a diagram with errors must not render");
 	fymm_diagram_destroy(d);
 
-	/* a real mermaid diagram whose type this library does not implement */
-	d = parse("block-beta\n  columns 1\n  a b c\n");
+	/*
+	 * A header this library does not know. Naming a real mermaid type
+	 * here would rot as soon as that type is implemented, so the case
+	 * uses a keyword that cannot become one.
+	 */
+	d = parse("notADiagramType\n  a --> b\n");
 	CHECK(d && fymm_diagram_has_errors(d),
 	      "an unsupported diagram type should be an error");
 	CHECK(d && fymm_diagram_type(d) == FYMM_DT_UNKNOWN,

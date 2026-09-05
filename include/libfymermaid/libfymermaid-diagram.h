@@ -62,6 +62,8 @@ extern "C" {
  * @FYMM_DT_ER: an entity relationship diagram
  * @FYMM_DT_KANBAN: a kanban board
  * @FYMM_DT_USECASE: a use case diagram
+ * @FYMM_DT_C4: a C4 model diagram
+ * @FYMM_DT_BLOCK: a block diagram
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
@@ -81,6 +83,8 @@ enum fymm_diagram_type {
 	FYMM_DT_ER,
 	FYMM_DT_KANBAN,
 	FYMM_DT_USECASE,
+	FYMM_DT_C4,
+	FYMM_DT_BLOCK,
 };
 
 /* the opaque parsed diagram */
