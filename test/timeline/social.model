@@ -1,0 +1,24 @@
+type: timeline
+orientation: LR
+title: History of social media
+accTitle: null
+accDescr: null
+config: {}
+sections:
+- name: Early days
+  tasks:
+  - name: 2002
+    events:
+    - LinkedIn
+  - name: 2004
+    events:
+    - Facebook
+    - Google
+- name: Growth
+  tasks:
+  - name: 2005
+    events:
+    - YouTube
+  - name: 2006
+    events:
+    - Twitter

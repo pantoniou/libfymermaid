@@ -1,0 +1,15 @@
+type: timeline
+orientation: LR
+title: null
+accTitle: null
+accDescr: null
+config: {}
+sections:
+- name: links
+  tasks:
+  - name: task1
+    events:
+    - '[event1](http://example.com)'
+  - name: task2
+    events:
+    - event2
