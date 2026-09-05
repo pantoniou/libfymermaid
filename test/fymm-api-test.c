@@ -89,7 +89,7 @@ static void test_bad_input(void)
 	fymm_diagram_destroy(d);
 
 	/* a real mermaid diagram whose type this library does not implement */
-	d = parse("erDiagram\n  CUSTOMER ||--o{ ORDER : places\n");
+	d = parse("block-beta\n  columns 1\n  a b c\n");
 	CHECK(d && fymm_diagram_has_errors(d),
 	      "an unsupported diagram type should be an error");
 	CHECK(d && fymm_diagram_type(d) == FYMM_DT_UNKNOWN,

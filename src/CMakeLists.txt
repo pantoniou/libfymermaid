@@ -97,6 +97,7 @@ set(_fymm_sources
     fymm-radar.c fymm-render-radar.c
     fymm-gantt.c fymm-render-gantt.c
     fymm-state.c fymm-render-state.c
+    fymm-er.c fymm-render-er.c
     fymm-internal.h
 )
 
