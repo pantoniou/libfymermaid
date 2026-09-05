@@ -1,0 +1,15 @@
+type: pie
+title: Animal adoptions this quarter
+accTitle: null
+accDescr: A pie chart of animal adoptions.
+config:
+  showData: true
+slices:
+- label: Dogs
+  value: 386
+- label: Cats
+  value: 285
+- label: Rats
+  value: 15
+- label: Ferrets
+  value: 3

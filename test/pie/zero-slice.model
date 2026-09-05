@@ -1,0 +1,11 @@
+type: pie
+title: 'Default text position: Animal adoption'
+accTitle: null
+accDescr: null
+config:
+  showData: false
+slices:
+- label: dogs
+  value: 0
+- label: rats
+  value: 40.119999999999997

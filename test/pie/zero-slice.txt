@@ -1,0 +1,4 @@
+Default text position: Animal adoption
+
+dogs                                     0.0%
+rats  ████████████████████████████████ 100.0%

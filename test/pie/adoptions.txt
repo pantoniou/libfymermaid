@@ -1,0 +1,6 @@
+Animal adoptions this quarter
+
+   Dogs  █████████████████▉                56.0%  386
+   Cats  █████████████▏                    41.4%  285
+   Rats  ▋                                  2.2%   15
+Ferrets  ▏                                  0.4%    3

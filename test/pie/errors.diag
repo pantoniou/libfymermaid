@@ -1,0 +1,4 @@
+input.mmd:2:12: error: slice value '-60.67' is negative
+input.mmd:3:12: error: slice value 'notanumber' is not a number
+input.mmd:4:4: error: expected ':' after the slice label
+input.mmd:5:4: error: expected a quoted slice label, got 'plain'

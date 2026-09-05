@@ -1,0 +1,11 @@
+type: pie
+title: null
+accTitle: null
+accDescr: null
+config:
+  showData: false
+slices:
+- label: ash
+  value: 60
+- label: bat
+  value: 40

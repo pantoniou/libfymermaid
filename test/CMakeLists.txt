@@ -8,36 +8,41 @@ target_link_libraries(fymm-api-test PRIVATE libfymermaid::libfymermaid_static)
 target_include_directories(fymm-api-test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../src")
 add_test(NAME api COMMAND fymm-api-test)
 
-# Golden files.  Every test/gitgraph/<name>.mmd is rendered three ways and
-# compared against <name>.model, <name>.txt and <name>.ascii; a <name>.diag
-# file, where one exists, pins the diagnostics instead.  Each pairing is its
-# own ctest so a failure names the mode that broke.
+# Golden files. Every test/<type>/<name>.mmd is rendered and compared against
+# the golden files beside it: <name>.model, <name>.txt, <name>.ascii and, for a
+# source that must fail, <name>.diag. A missing golden removes that case, so a
+# source that only needs its diagnostics pinned carries only a .diag.
 add_executable(fymm-golden-test fymm-golden-test.c)
 target_link_libraries(fymm-golden-test PRIVATE libfymermaid::libfymermaid_static)
 
-set(_gg_dir "${CMAKE_CURRENT_SOURCE_DIR}/gitgraph")
-file(GLOB _gg_inputs CONFIGURE_DEPENDS "${_gg_dir}/*.mmd")
-list(SORT _gg_inputs)
+set(_golden_modes model unicode ascii diag)
+set(_golden_ext_model ".model")
+set(_golden_ext_unicode ".txt")
+set(_golden_ext_ascii ".ascii")
+set(_golden_ext_diag ".diag")
 
-foreach(_in ${_gg_inputs})
-    get_filename_component(_name "${_in}" NAME_WE)
-    foreach(_mode model unicode ascii diag)
-        if(_mode STREQUAL "model")
-            set(_ext ".model")
-        elseif(_mode STREQUAL "unicode")
-            set(_ext ".txt")
-        elseif(_mode STREQUAL "ascii")
-            set(_ext ".ascii")
-        else()
-            set(_ext ".diag")
-        endif()
-        set(_expected "${_gg_dir}/${_name}${_ext}")
-        if(EXISTS "${_expected}")
-            add_test(NAME "gitgraph/${_name}/${_mode}"
-                COMMAND fymm-golden-test ${_mode} "${_in}" "${_expected}")
-            set_tests_properties("gitgraph/${_name}/${_mode}"
-                PROPERTIES LABELS gitgraph)
-        endif()
+file(GLOB _golden_dirs RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+     CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/*")
+list(SORT _golden_dirs)
+foreach(_type ${_golden_dirs})
+    set(_dir "${CMAKE_CURRENT_SOURCE_DIR}/${_type}")
+    if(NOT IS_DIRECTORY "${_dir}" OR _type STREQUAL "mermaid-suite")
+        continue()
+    endif()
+
+    file(GLOB _inputs CONFIGURE_DEPENDS "${_dir}/*.mmd")
+    list(SORT _inputs)
+    foreach(_in ${_inputs})
+        get_filename_component(_name "${_in}" NAME_WE)
+        foreach(_mode ${_golden_modes})
+            set(_expected "${_dir}/${_name}${_golden_ext_${_mode}}")
+            if(EXISTS "${_expected}")
+                add_test(NAME "${_type}/${_name}/${_mode}"
+                    COMMAND fymm-golden-test ${_mode} "${_in}" "${_expected}")
+                set_tests_properties("${_type}/${_name}/${_mode}"
+                    PROPERTIES LABELS golden)
+            endif()
+        endforeach()
     endforeach()
 endforeach()
 
@@ -53,7 +58,7 @@ endforeach()
 #
 # Each case is an independent process that reads only its own input, so the
 # corpus runs under `ctest -j`.
-set(FYMM_IMPLEMENTED_SUITES gitgraph CACHE STRING
+set(FYMM_IMPLEMENTED_SUITES "gitgraph;pie" CACHE STRING
     "mermaid corpus suites expected to pass; set to a wider list to measure the gap")
 
 set(_ms_dir "${CMAKE_CURRENT_SOURCE_DIR}/mermaid-suite")
