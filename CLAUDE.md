@@ -240,6 +240,20 @@ at the top and the bottom are removed at emission.
 The canvas measures UTF-8 with its own tables. It does not use `wcwidth()` and
 it does not depend on the locale.
 
+### Labels
+
+Draw a label through `src/fymm-markdown.c`, never with `fymm_canvas_text()`
+directly. `fymm_rich_text()` and `fymm_rich_measure()` are the one-row pair;
+`fymm_rich_parse()` with `fymm_rich_draw_line()` is for a label that has a box
+and may become several lines. Drawing a label with the plain canvas call
+leaves `<br>` on the screen as markup, which is what they replaced.
+
+Only a markdown string is formatted, and the parser records that: a label
+written in backticks inside its quotes sets `markdown` in the model. A plain
+label is never formatted, because a label may contain an asterisk.
+
+The inline parsing is md4c's. Do not hand-roll a second one.
+
 ### Colour
 
 A cell holds a palette index, never a colour and never an escape sequence.

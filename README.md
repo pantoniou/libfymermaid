@@ -121,6 +121,30 @@ has, so a theme survives on a 256- or 16-colour terminal. A theme is applied
 over the built-in palette, so one that sets a single key keeps the rest; `mono`
 uses that to carry the structure with bold and dim alone.
 
+## Labels
+
+A `<br>` breaks a label, in each of the spellings mermaid accepts (`<br>`,
+`<br/>`, `<br />`, `</br>`). Where the diagram gives the label a box of its
+own it becomes a second line; where the label is one row of a list — a
+timeline event, a gantt task, an axis name — the lines are joined with a
+space, because the row is the unit.
+
+Mermaid's markdown strings are formatted. A label written in backticks inside
+its quotes is read as CommonMark inline content and drawn with the terminal's
+own attributes:
+
+```
+flowchart TB
+    A["`The **cat** in _the_ hat`"] --> B["The dog<br/>in the hog"]
+```
+
+`**bold**` is bold, `_italic_` italic, `~~struck~~` struck through, `` `code` ``
+reversed and a link underlined. A plain label is never formatted, because a
+label is allowed to contain an asterisk.
+
+The inline parsing is md4c's, so the edge cases are CommonMark's rather than
+mine.
+
 ## Conformance
 
 `test/mermaid-suite/` carries upstream mermaid's own parser corpus: 1144 cases
@@ -150,7 +174,7 @@ cmake --build build -j
 ctest --test-dir build --output-on-failure
 ```
 
-Needs libfyaml with the generic API. `-DENABLE_ASAN=ON` for a sanitized build,
+Needs libfyaml with the generic API and md4c (labels may carry markdown). `-DENABLE_ASAN=ON` for a sanitized build,
 `-DBUILD_FYMERMAID_EXECUTABLE=OFF` for the library alone.
 
 The suite is process-per-case and shares no state, so `ctest -j$(nproc)` is
