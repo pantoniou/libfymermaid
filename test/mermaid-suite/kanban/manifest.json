@@ -20,13 +20,13 @@
   },
   {
    "file": "003-knbn-4-should-not-distinguish-between-deeper-hierarchical-le.mmd",
-   "outcome": "fails",
+   "outcome": "parses",
    "suite": "when parsing a kanban /hierarchy",
    "name": "KNBN-4 should not distinguish between deeper hierarchical levels in the kanban definition"
   },
   {
    "file": "004-5-multiple-sections-are-ok.mmd",
-   "outcome": "fails",
+   "outcome": "parses",
    "suite": "when parsing a kanban /hierarchy",
    "name": "5 Multiple sections are ok"
   },

@@ -116,6 +116,49 @@ def read_str_arg(s, i):
     return (''.join(out) if out else None), i
 
 
+def strip_js_comments(text):
+    """Remove JS comments, leaving string literals untouched.
+
+    A spec may leave an assertion commented out beside the live one, and a
+    `//` or `/* */` that still mentions toThrow would otherwise decide the
+    outcome of a case that upstream expects to parse. A `//` inside a string
+    is not a comment: a URL carries one.
+    """
+    out = []
+    i, n = 0, len(text)
+    quote = None
+    while i < n:
+        c = text[i]
+        if quote:
+            out.append(c)
+            if c == '\\' and i + 1 < n:
+                out.append(text[i + 1])
+                i += 2
+                continue
+            if c == quote:
+                quote = None
+            i += 1
+            continue
+        if c in '\'"`':
+            quote = c
+            out.append(c)
+            i += 1
+            continue
+        if c == '/' and i + 1 < n and text[i + 1] == '/':
+            while i < n and text[i] != '\n':
+                i += 1
+            continue
+        if c == '/' and i + 1 < n and text[i + 1] == '*':
+            i += 2
+            while i + 1 < n and not (text[i] == '*' and text[i + 1] == '/'):
+                i += 1
+            i += 2
+            continue
+        out.append(c)
+        i += 1
+    return ''.join(out)
+
+
 def brace_block(s, i):
     """Return the text of the {...} block at or after i."""
     depth, start = 0, None
@@ -178,6 +221,7 @@ def extract(text):
     for m in re.finditer(r'\bit\s*\(\s*([\'"`])(.*?)\1', text, re.S):
         name = m.group(2)
         body, _ = brace_block(text, m.end())
+        body = strip_js_comments(body)
         context = [n for (n, a, b) in describes if a <= m.start() <= b]
 
         # Local bindings, so that `const str = ...; parser.parse(str)` resolves.
