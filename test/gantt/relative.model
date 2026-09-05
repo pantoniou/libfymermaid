@@ -1,0 +1,49 @@
+type: gantt
+title: Adding gantt diagram functionality to mermaid
+accTitle: null
+accDescr: null
+config:
+  dateFormat: YYYY-MM-DD
+sections:
+- name: Documentation
+  tasks:
+  - name: task A
+    tags: []
+    id: a
+    start:
+      kind: date
+      day: 19749
+    end:
+      kind: date
+      day: 19750
+    section: Documentation
+  - name: task B
+    tags: []
+    id: b
+    start:
+      kind: after
+      ref: a
+    end:
+      kind: date
+      day: 19752
+    section: Documentation
+  - name: task C
+    tags: []
+    id: c
+    start:
+      kind: date
+      day: 19742
+    end:
+      kind: until
+      ref: a
+    section: Documentation
+  - name: task D
+    tags: []
+    id: d
+    start:
+      kind: after
+      ref: c
+    end:
+      kind: until
+      ref: b
+    section: Documentation

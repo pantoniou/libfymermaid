@@ -1,0 +1,77 @@
+type: gantt
+title: A development schedule
+accTitle: null
+accDescr: null
+config:
+  dateFormat: YYYY-MM-DD
+sections:
+- name: Design
+  tasks:
+  - name: Requirements
+    tags:
+    - done
+    id: req
+    start:
+      kind: date
+      day: 19723
+    end:
+      kind: duration
+      days: 10
+    section: Design
+  - name: Mockups
+    tags:
+    - active
+    id: mock
+    start:
+      kind: after
+      ref: req
+    end:
+      kind: duration
+      days: 7
+    section: Design
+- name: Build
+  tasks:
+  - name: Backend
+    tags:
+    - crit
+    id: be
+    start:
+      kind: after
+      ref: mock
+    end:
+      kind: duration
+      days: 21
+    section: Build
+  - name: Frontend
+    tags: []
+    id: fe
+    start:
+      kind: after
+      ref: mock
+    end:
+      kind: duration
+      days: 14
+    section: Build
+  - name: Integration
+    tags: []
+    id: int
+    start:
+      kind: after
+      ref: be
+    end:
+      kind: duration
+      days: 5
+    section: Build
+- name: Ship
+  tasks:
+  - name: Release
+    tags:
+    - milestone
+    id: rel
+    start:
+      kind: after
+      ref: int
+    end:
+      kind: duration
+      days: 0
+    section: Ship

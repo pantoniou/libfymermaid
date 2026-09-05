@@ -1,0 +1,12 @@
+gantt
+    title A development schedule
+    dateFormat YYYY-MM-DD
+    section Design
+        Requirements   :done, req, 2024-01-01, 10d
+        Mockups        :active, mock, after req, 7d
+    section Build
+        Backend        :crit, be, after mock, 21d
+        Frontend       :fe, after mock, 14d
+        Integration    :int, after be, 5d
+    section Ship
+        Release        :milestone, rel, after int, 0d

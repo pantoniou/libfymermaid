@@ -58,7 +58,7 @@ endforeach()
 #
 # Each case is an independent process that reads only its own input, so the
 # corpus runs under `ctest -j`.
-set(FYMM_IMPLEMENTED_SUITES "gitgraph;pie;timeline;journey;mindmap;sequence;flowchart;class;quadrant;xychart;radar" CACHE STRING
+set(FYMM_IMPLEMENTED_SUITES "gitgraph;pie;timeline;journey;mindmap;sequence;flowchart;class;quadrant;xychart;radar;gantt" CACHE STRING
     "mermaid corpus suites expected to pass; set to a wider list to measure the gap")
 
 set(_ms_dir "${CMAKE_CURRENT_SOURCE_DIR}/mermaid-suite")

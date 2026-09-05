@@ -1,0 +1,7 @@
+Adding gantt diagram functionality to mermaid
+
+Documentation ------------------------------------
+task A                              ====
+task B                                  ========
+task C  ============================
+task D                              ====
