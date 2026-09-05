@@ -216,6 +216,10 @@ call knowing about the other. Add a line shape by extending the mask table.
 A literal glyph, such as a commit or a label, is never overwritten by a line.
 Column widths come from the label widths, which keeps a collision rare.
 
+A solid line wins over a dashed one in a shared cell. A merge edge and a
+cherry-pick edge run along the same lane, and a merge drawn dashed reports a
+relationship that is not there.
+
 A lane band is three rows: a tag row, the lane row, and a label row. Blank rows
 at the top and the bottom are removed at emission.
 

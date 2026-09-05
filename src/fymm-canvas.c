@@ -136,9 +136,13 @@ void fymm_canvas_put(struct fymm_canvas *cv, int x, int y, uint32_t cp,
 }
 
 /*
- * Add @mask to the line cell at (@x, @y).  A cell already holding a literal
- * glyph, a commit or a label, keeps it: the graph reads better when a line
- * stops at a node than when it paints over one.
+ * Add @mask to the line cell at (@x, @y). A cell that already holds a literal
+ * glyph, a commit or a label, keeps it; a line stops at a node rather than
+ * paints over it.
+ *
+ * A solid line wins over a dashed one in a shared cell. A merge edge and a
+ * cherry-pick edge run along the same lane, and drawing the merge dashed
+ * would report a relationship that is not there.
  */
 void fymm_canvas_line(struct fymm_canvas *cv, int x, int y, uint8_t mask,
 		      int color, bool dashed)
@@ -147,8 +151,11 @@ void fymm_canvas_line(struct fymm_canvas *cv, int x, int y, uint8_t mask,
 
 	if (!c || c->cp)
 		return;
+	if (!dashed)
+		c->dashed = false;
+	else if (!c->lines)
+		c->dashed = true;
 	c->lines |= mask;
-	c->dashed = c->dashed || dashed;
 	if (c->color == FYMM_COLOR_DEFAULT)
 		c->color = (int8_t)color;
 }
