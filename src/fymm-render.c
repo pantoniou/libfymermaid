@@ -482,6 +482,7 @@ err_out:
 char *fymm_render(const struct fymm_diagram *d,
 		  const struct fymm_render_cfg *cfg)
 {
+	const struct fymm_diagram_ops *ops;
 	struct fymm_render_cfg lcfg;
 
 	if (!d || fymm_diagram_has_errors(d))
@@ -499,13 +500,10 @@ char *fymm_render(const struct fymm_diagram *d,
 	if (lcfg.width == FYMM_WIDTH_AUTO)
 		lcfg.width = fymm_detect_width(STDOUT_FILENO);
 
-	switch (d->type) {
-	case FYMM_DT_GITGRAPH:
-		return fymm_render_gitgraph(d, d->model, &lcfg);
-	case FYMM_DT_UNKNOWN:
-		break;
-	}
-	return NULL;
+	ops = fymm_diagram_ops_by_type(d->type);
+	if (!ops || !ops->render)
+		return NULL;
+	return ops->render(d, d->model, &lcfg);
 }
 
 int fymm_render_fp(const struct fymm_diagram *d,

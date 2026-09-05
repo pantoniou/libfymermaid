@@ -44,13 +44,9 @@ void fymm_free(void *ptr)
 
 const char *fymm_diagram_type_name(enum fymm_diagram_type type)
 {
-	switch (type) {
-	case FYMM_DT_GITGRAPH:
-		return "gitGraph";
-	case FYMM_DT_UNKNOWN:
-		break;
-	}
-	return "unknown";
+	const struct fymm_diagram_ops *ops = fymm_diagram_ops_by_type(type);
+
+	return ops ? ops->keyword : "unknown";
 }
 
 enum fymm_diagram_type fymm_diagram_type(const struct fymm_diagram *d)
@@ -293,28 +289,17 @@ static fy_generic fymm_take_directives(struct fy_generic_builder *gb,
 	return seq;
 }
 
-/* Match an orientation keyword. TD is an accepted alias of TB. */
-static const char *fymm_orientation_name(const struct fymm_token *t)
-{
-	if (fymm_token_ieq(t, "LR"))
-		return "LR";
-	if (fymm_token_ieq(t, "TB") || fymm_token_ieq(t, "TD"))
-		return "TB";
-	if (fymm_token_ieq(t, "BT"))
-		return "BT";
-	return NULL;
-}
-
 struct fymm_diagram *fymm_parse(const char *text, size_t len,
 				const struct fymm_parse_cfg *cfg)
 {
 	struct fy_generic_builder_cfg gb_cfg;
+	const struct fymm_diagram_ops *ops;
+	struct fymm_token toks[FYMM_MAX_TOKENS];
 	struct fymm_diagram *d;
 	struct fymm_parser p;
-	struct fymm_token tok;
 	fy_generic frontmatter, directives, config, title, dir, init;
-	const char *orientation, *o;
 	char *work = NULL;
+	int n = 0;
 
 	if (!text)
 		return NULL;
@@ -357,67 +342,51 @@ struct fymm_diagram *fymm_parse(const char *text, size_t len,
 
 	frontmatter = fymm_take_frontmatter(d->gb, work, len);
 	directives = fymm_take_directives(d->gb, work, len);
-
 	title = fy_get(frontmatter, "title");
+
+	fymm_lex_init(&p.lex, work, len);
+
+	/* The first statement line names the diagram. */
+	while (fymm_lex_next_line(&p.lex)) {
+		n = fymm_line_tokens(&p.lex, toks, FYMM_MAX_TOKENS);
+		if (n)
+			break;
+	}
+
+	if (!n || toks[0].type != FYMM_TOK_WORD) {
+		fymm_diagf(&p, true, p.lex.line, 1,
+			   "empty input: no diagram declaration found");
+		goto out;
+	}
+
+	ops = fymm_diagram_ops_by_keyword(toks[0].text, toks[0].len);
+	if (!ops) {
+		fymm_diagf(&p, true, toks[0].line, toks[0].col,
+			   "unsupported diagram type '%.*s'",
+			   (int)toks[0].len, toks[0].text);
+		goto out;
+	}
+	d->type = ops->type;
+
+	/* The config layers in source order: frontmatter, then each directive.
+	 * The settings of this diagram type are nested under its own key and
+	 * are hoisted so the renderer reads one flat mapping. */
 	config = fy_map_empty;
-	config = fymm_config_apply(d->gb, config,
-				   fy_get(frontmatter, "config"), "gitGraph");
+	config = fymm_config_apply(d->gb, config, fy_get(frontmatter, "config"),
+				   ops->config_key);
 	fy_foreach(dir, directives) {
 		init = fy_get(dir, "init");
 		if (fy_is_invalid(init))
 			init = fy_get(dir, "initialize");
 		if (fy_is_invalid(init))
 			init = dir;
-		config = fymm_config_apply(d->gb, config, init, "gitGraph");
+		config = fymm_config_apply(d->gb, config, init, ops->config_key);
 	}
 
-	fymm_lex_init(&p.lex, work, len);
-	memset(&tok, 0, sizeof(tok));
-
-	/* The first statement line names the diagram. */
-	while (fymm_lex_next_line(&p.lex)) {
-		if (fymm_lex_token(&p.lex, &tok))
-			break;
-	}
-
-	if (tok.type != FYMM_TOK_WORD) {
-		fymm_diagf(&p, true, p.lex.line, 1,
-			   "empty input: no diagram declaration found");
-		goto out;
-	}
-
-	if (!fymm_token_ieq(&tok, "gitGraph")) {
-		fymm_diagf(&p, true, tok.line, tok.col,
-			   "unsupported diagram type '%.*s'",
-			   (int)tok.len, tok.text);
-		goto out;
-	}
-
-	d->type = FYMM_DT_GITGRAPH;
-	orientation = "LR";
-	if (fymm_lex_token(&p.lex, &tok) && tok.type == FYMM_TOK_WORD) {
-		o = fymm_orientation_name(&tok);
-		if (!o) {
-			fymm_diagf(&p, true, tok.line, tok.col,
-				   "expected an orientation (LR, TB or BT), got '%.*s'",
-				   (int)tok.len, tok.text);
-			goto out;
-		}
-		orientation = o;
-		if (strcmp(orientation, "LR"))
-			fymm_diagf(&p, false, tok.line, tok.col,
-				   "the %s orientation is not implemented yet; rendering left to right",
-				   orientation);
-		fymm_lex_token(&p.lex, &tok);
-	}
-	if (tok.type != FYMM_TOK_EOL && tok.type != FYMM_TOK_COLON)
-		fymm_diagf(&p, false, tok.line, tok.col,
-			   "ignoring trailing text after the gitGraph header");
-
-	fymm_parse_gitgraph(&p, config, orientation, title);
+	ops->parse(&p, config, title, toks, n);
 
 out:
-	fymm_token_reset(&tok);
+	fymm_tokens_reset(toks, n);
 	free(work);
 	if (fy_is_invalid(d->model))
 		d->model = fy_mapping(d->gb,

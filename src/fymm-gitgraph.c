@@ -30,9 +30,6 @@
 
 #include "fymm-internal.h"
 
-/* the most tokens one statement line can carry before we stop caring */
-#define GG_MAX_TOKENS 32
-
 /* struct gg_branch - the state of one branch during a parse
  *
  * @name: the branch name, interned in the diagram builder
@@ -73,8 +70,7 @@ struct gg {
 	size_t ncommits, acommits;
 
 	fy_generic commit_seq;
-	fy_generic acc_title;
-	fy_generic acc_descr;
+	struct fymm_acc acc;
 	int cur;		/* the checked out branch */
 };
 
@@ -205,28 +201,6 @@ static int gg_commit_add(struct gg *g, const char *id, const char *label,
 	g->ncommits++;
 	g->branches[g->cur].tip = idx;
 	return idx;
-}
-
-/* Read one statement line into @toks. Returns the token count. */
-static int gg_line_tokens(struct fymm_lex *l, struct fymm_token *toks, int max)
-{
-	int n = 0;
-
-	while (n < max) {
-		memset(&toks[n], 0, sizeof(toks[n]));
-		if (!fymm_lex_token(l, &toks[n]))
-			break;
-		n++;
-	}
-	return n;
-}
-
-static void gg_tokens_reset(struct fymm_token *toks, int n)
-{
-	int i;
-
-	for (i = 0; i < n; i++)
-		fymm_token_reset(&toks[i]);
 }
 
 /* struct gg_attrs - the `name: value` attributes of one statement */
@@ -541,58 +515,6 @@ static void gg_stmt_cherry_pick(struct gg *g, struct fymm_token *toks, int n)
 }
 
 /*
- * Read an accessibility statement. `accTitle: text` and `accDescr: text` take
- * the rest of the line. `accDescr { ... }` takes each line up to a closing
- * brace. The text is free form, so it is read from the line and not through
- * the tokenizer.
- */
-static void gg_stmt_acc(struct gg *g, struct fymm_token *toks, int n,
-			bool title)
-{
-	fy_generic *slot = title ? &g->acc_title : &g->acc_descr;
-	const char *s;
-	char *text, *nt;
-	size_t len, pos;
-
-	if (n >= 2 && toks[1].type == FYMM_TOK_COLON) {
-		s = fymm_lex_rest(&g->p->lex, toks[1].col + 1, &len);
-		*slot = fy_value(g->gb, fy_gb_intern_string_size(g->gb, s, len));
-		return;
-	}
-
-	if (title || n < 2 || !fymm_token_is(&toks[1], "{")) {
-		fymm_diagf(g->p, true, toks[0].line, toks[0].col,
-			   "expected ':' or '{' after '%.*s'",
-			   (int)toks[0].len, toks[0].text);
-		return;
-	}
-
-	/* the braced form:each line up to a line that holds only a closing brace */
-	text = NULL;
-	pos = 0;
-	while (fymm_lex_next_line(&g->p->lex)) {
-		s = fymm_lex_line(&g->p->lex, &len);
-		if (len == 1 && *s == '}')
-			break;
-		nt = realloc(text, pos + len + 2);
-		if (!nt) {
-			free(text);
-			return;
-		}
-		text = nt;
-		if (pos)
-			text[pos++] = '\n';
-		memcpy(text + pos, s, len);
-		pos += len;
-		text[pos] = '\0';
-	}
-	if (text) {
-		*slot = fy_value(g->gb, fy_gb_intern_string(g->gb, text));
-		free(text);
-	}
-}
-
-/*
  * Branch display order, as mermaid defines it. The main branch is first. The
  * branches without an `order:` attribute follow, in order of appearance. The
  * branches with an `order:` attribute follow those, in numeric order. An
@@ -677,23 +599,56 @@ static fy_generic gg_config_defaults(struct fy_generic_builder *gb,
 	return config;
 }
 
-int fymm_parse_gitgraph(struct fymm_parser *p, fy_generic config,
-			const char *orientation, fy_generic title)
+/* The gitGraph header is `gitGraph`, optionally an orientation, optionally a
+ * colon: `gitGraph`, `gitGraph:`, `gitGraph LR:`, `gitGraph TB:`. */
+static const char *gg_orientation(const struct fymm_token *t)
 {
-	struct fymm_token toks[GG_MAX_TOKENS];
+	if (fymm_token_ieq(t, "LR"))
+		return "LR";
+	if (fymm_token_ieq(t, "TB") || fymm_token_ieq(t, "TD"))
+		return "TB";
+	if (fymm_token_ieq(t, "BT"))
+		return "BT";
+	return NULL;
+}
+
+int fymm_parse_gitgraph(struct fymm_parser *p, fy_generic config,
+			fy_generic title, struct fymm_token *htoks, int hn)
+{
+	struct fymm_token toks[FYMM_MAX_TOKENS];
+	const char *orientation, *o;
 	struct gg g;
 	fy_generic branch_seq;
 	const char *main_name;
 	size_t i;
-	int n;
+	int n, hi;
 
 	memset(&g, 0, sizeof(g));
 	g.p = p;
 	g.gb = p->d->gb;
 	g.commit_seq = fy_seq_empty;
-	g.acc_title = fy_null;
-	g.acc_descr = fy_null;
+	g.acc.title = fy_null;
+	g.acc.descr = fy_null;
 	g.cur = 0;
+
+	/* the header carries the orientation, and then an optional colon */
+	orientation = "LR";
+	for (hi = 1; hi < hn; hi++) {
+		if (htoks[hi].type == FYMM_TOK_COLON)
+			continue;
+		o = gg_orientation(&htoks[hi]);
+		if (!o) {
+			fymm_diagf(p, true, htoks[hi].line, htoks[hi].col,
+				   "expected an orientation (LR, TB or BT), got '%.*s'",
+				   (int)htoks[hi].len, htoks[hi].text);
+			return -1;
+		}
+		orientation = o;
+		if (strcmp(orientation, "LR"))
+			fymm_diagf(p, false, htoks[hi].line, htoks[hi].col,
+				   "the %s orientation is not implemented yet; rendering left to right",
+				   orientation);
+	}
 
 	config = gg_config_defaults(g.gb, config);
 	main_name = fy_get(config, "mainBranchName", "main");
@@ -703,7 +658,7 @@ int fymm_parse_gitgraph(struct fymm_parser *p, fy_generic config,
 		return -1;
 
 	while (fymm_lex_next_line(&p->lex)) {
-		n = gg_line_tokens(&p->lex, toks, GG_MAX_TOKENS);
+		n = fymm_line_tokens(&p->lex, toks, FYMM_MAX_TOKENS);
 		if (!n)
 			continue;
 
@@ -722,16 +677,14 @@ int fymm_parse_gitgraph(struct fymm_parser *p, fy_generic config,
 		} else if (fymm_token_ieq(&toks[0], "cherry-pick") ||
 			   fymm_token_ieq(&toks[0], "cherrypick")) {
 			gg_stmt_cherry_pick(&g, toks, n);
-		} else if (fymm_token_ieq(&toks[0], "accTitle")) {
-			gg_stmt_acc(&g, toks, n, true);
-		} else if (fymm_token_ieq(&toks[0], "accDescr")) {
-			gg_stmt_acc(&g, toks, n, false);
+		} else if (fymm_stmt_acc(p, toks, n, &g.acc)) {
+			/* handled */
 		} else {
 			fymm_diagf(p, true, toks[0].line, toks[0].col,
 				   "unknown gitGraph statement '%.*s'",
 				   (int)toks[0].len, toks[0].text);
 		}
-		gg_tokens_reset(toks, n);
+		fymm_tokens_reset(toks, n);
 	}
 
 	gg_assign_lanes(&g, (long long)fy_get(config, "mainBranchOrder", 0LL));
@@ -751,9 +704,9 @@ int fymm_parse_gitgraph(struct fymm_parser *p, fy_generic config,
 	p->d->model = fy_mapping(g.gb,
 		"type", "gitGraph",
 		"orientation", orientation,
-		"title", fy_is_valid(title) ? title : g.acc_title,
-		"accTitle", g.acc_title,
-		"accDescr", g.acc_descr,
+		"title", fy_is_valid(title) ? title : g.acc.title,
+		"accTitle", g.acc.title,
+		"accDescr", g.acc.descr,
 		"config", config,
 		"branches", branch_seq,
 		"commits", g.commit_seq);

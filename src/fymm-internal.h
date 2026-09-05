@@ -118,18 +118,65 @@ void fymm_diagf(struct fymm_parser *p, bool error, int line, int col,
 		const char *fmt, ...)
 	__attribute__((format(printf, 5, 6)));
 
-int fymm_parse_gitgraph(struct fymm_parser *p, fy_generic config,
-			const char *orientation, fy_generic title);
+/* the most tokens one statement line can carry before we stop reading */
+#define FYMM_MAX_TOKENS 32
 
-/* Resolve the theme a render configuration asks for. Reports through @p when
- * a name or a file does not resolve; @p may be NULL. */
+int fymm_line_tokens(struct fymm_lex *l, struct fymm_token *toks, int max);
+void fymm_tokens_reset(struct fymm_token *toks, int n);
+
+/* struct fymm_acc - the accessibility statements every diagram type takes */
+struct fymm_acc {
+	fy_generic title;
+	fy_generic descr;
+};
+
+/* Handle `accTitle:` and `accDescr:`, in both the inline and the braced form.
+ * Returns true when the statement was one of them. */
+bool fymm_stmt_acc(struct fymm_parser *p, struct fymm_token *toks, int n,
+		   struct fymm_acc *acc);
+
+/* Read the rest of a statement line as free text, interned in the builder. */
+const char *fymm_rest_text(struct fymm_parser *p, int from_col);
+
+/*
+ * struct fymm_diagram_ops - one diagram type
+ *
+ * @keyword: the word that opens the diagram, matched without case
+ * @config_key: the key mermaid nests this type's settings under
+ * @type: the enum this type reports
+ * @parse: reads the statements and builds the model; @toks holds the header
+ *         line, which carries the type's own options
+ * @render: draws a model of this type
+ */
+struct fymm_diagram_ops {
+	const char *keyword;
+	const char *config_key;
+	enum fymm_diagram_type type;
+	int (*parse)(struct fymm_parser *p, fy_generic config,
+		     fy_generic title, struct fymm_token *toks, int n);
+	char *(*render)(const struct fymm_diagram *d, fy_generic model,
+			const struct fymm_render_cfg *cfg);
+};
+
+const struct fymm_diagram_ops *fymm_diagram_ops_by_keyword(const char *word,
+							   size_t len);
+const struct fymm_diagram_ops *fymm_diagram_ops_by_type(enum fymm_diagram_type t);
+
+/* Resolve the theme a render configuration asks for. */
 struct fymm_theme;
 int fymm_theme_resolve(struct fymm_theme *theme,
 		       const struct fymm_render_cfg *cfg,
 		       struct fy_generic_builder *gb);
 
-/* the renderer, one entry point per diagram kind */
+/* one parser and one renderer per diagram type */
+int fymm_parse_gitgraph(struct fymm_parser *p, fy_generic config,
+			fy_generic title, struct fymm_token *toks, int n);
 char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 			   const struct fymm_render_cfg *cfg);
+
+int fymm_parse_pie(struct fymm_parser *p, fy_generic config,
+		   fy_generic title, struct fymm_token *toks, int n);
+char *fymm_render_pie(const struct fymm_diagram *d, fy_generic model,
+		      const struct fymm_render_cfg *cfg);
 
 #endif /* FYMM_INTERNAL_H */
