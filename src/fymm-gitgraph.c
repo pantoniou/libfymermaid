@@ -339,14 +339,25 @@ static const char *gg_take_id(struct gg *g, const struct fymm_token *t,
 static void gg_stmt_commit(struct gg *g, struct fymm_token *toks, int n)
 {
 	struct gg_attrs a;
-	const char *id, *label;
-	int type;
+	const char *id, *label, *msg;
+	int first, type;
 
-	gg_parse_attrs(g, toks, n, 1, &a, "commit");
+	/* `commit "text"` is shorthand for `commit msg: "text"` */
+	msg = NULL;
+	first = 1;
+	if (n >= 2 && toks[1].type == FYMM_TOK_STRING &&
+	    (n < 3 || toks[2].type != FYMM_TOK_COLON)) {
+		msg = fy_gb_intern_string_size(g->gb, toks[1].text,
+					       toks[1].len);
+		first = 2;
+	}
+
+	gg_parse_attrs(g, toks, n, first, &a, "commit");
 	id = gg_take_id(g, a.id, false);
 	type = gg_commit_type(g, a.type);
-	label = a.msg && a.msg->len ?
-		fy_gb_intern_string_size(g->gb, a.msg->text, a.msg->len) : id;
+	if (a.msg && a.msg->len)
+		msg = fy_gb_intern_string_size(g->gb, a.msg->text, a.msg->len);
+	label = msg ? msg : id;
 
 	gg_commit_add(g, id, label, type, gg_tag_seq(g, a.tag),
 		      g->branches[g->cur].tip, -1, -1);
