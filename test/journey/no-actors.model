@@ -1,0 +1,20 @@
+type: journey
+title: Adding journey diagram functionality to mermaid
+accTitle: null
+accDescr: null
+config: {}
+sections:
+- name: Documentation
+  tasks:
+  - name: A task
+    score: 5
+    actors:
+    - Alice
+    - Bob
+    - Charlie
+  - name: C task
+    score: 5
+    actors: []
+  - name: E task
+    score: 5
+    actors: []

@@ -1,0 +1,31 @@
+type: journey
+title: My working day
+accTitle: null
+accDescr: null
+config: {}
+sections:
+- name: Go to work
+  tasks:
+  - name: Make tea
+    score: 5
+    actors:
+    - Me
+  - name: Go upstairs
+    score: 3
+    actors:
+    - Me
+  - name: Do work
+    score: 1
+    actors:
+    - Me
+    - Cat
+- name: Go home
+  tasks:
+  - name: Go downstairs
+    score: 5
+    actors:
+    - Me
+  - name: Sit down
+    score: 5
+    actors:
+    - Me
