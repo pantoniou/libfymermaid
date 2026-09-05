@@ -1,0 +1,40 @@
+type: architecture
+title: null
+accTitle: null
+accDescr: null
+config: {}
+nodes:
+- id: api
+  kind: group
+  icon: cloud
+  label: API
+  parent: null
+- id: db
+  kind: service
+  icon: database
+  label: Database
+  parent: api
+- id: disk
+  kind: service
+  icon: disk
+  label: Storage
+  parent: api
+- id: server
+  kind: service
+  icon: server
+  label: Server
+  parent: api
+edges:
+- from: db
+  fromSide: L
+  to: server
+  toSide: R
+  arrowFrom: false
+  arrowTo: false
+- from: disk
+  fromSide: T
+  to: server
+  toSide: B
+  arrowFrom: false
+  arrowTo: false
+aligns: []

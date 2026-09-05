@@ -103,6 +103,7 @@ set(_fymm_sources
     fymm-c4.c fymm-render-c4.c
     fymm-block.c fymm-render-block.c
     fymm-packet.c fymm-render-packet.c
+    fymm-architecture.c fymm-render-architecture.c
     fymm-internal.h
 )
 

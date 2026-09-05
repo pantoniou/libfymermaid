@@ -176,6 +176,12 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "architecture-beta",
+		.config_key = "architecture",
+		.type = FYMM_DT_ARCHITECTURE,
+		.parse = fymm_parse_architecture,
+		.render = fymm_render_architecture,
+	}, {
 		.keyword = "packet-beta",
 		.config_key = "packet",
 		.type = FYMM_DT_PACKET,
