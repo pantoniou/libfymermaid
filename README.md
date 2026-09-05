@@ -42,10 +42,17 @@ test suite pins.
 
 ## Status
 
-| diagram | state |
-| --- | --- |
-| `gitGraph` | implemented, `LR` orientation |
-| everything else | not yet; the header is reported as unsupported |
+| diagram | corpus | notes |
+| --- | --- | --- |
+| `gitGraph` | 63/63 | `LR` orientation |
+| `sequenceDiagram` | 129/129 | participant columns, arrows, notes, blocks |
+| `mindmap` | 26/26 | drawn as an indented tree |
+| `pie` | 13/13 | drawn as a proportional bar chart |
+| `timeline` | 11/11 | drawn down the page, not across |
+| `journey` | 7/7 | scores drawn as pips |
+| everything else | — | the header is reported as unsupported |
+
+"corpus" is upstream mermaid's own parser suite; see Conformance.
 
 Within `gitGraph`: `commit` (with `id`, `msg`, `tag`, `type`), `branch` (with
 `order`), `checkout` / `switch`, `merge` (with `id`, `tag`), `cherry-pick`
@@ -103,15 +110,18 @@ the diagram source and whether upstream expects it to parse or to fail.
 `scripts/import-mermaid-suite.py` regenerates it from a mermaid checkout, and
 `test/mermaid-suite/PROVENANCE` records the upstream commit.
 
-gitGraph passes 63 of 63. The remaining suites are registered and disabled
+The implemented types pass 250 of 250. The remaining suites are registered and disabled
 until their diagram type exists, so the corpus is countable and `ctest` stays
 green; `ctest -L unimplemented -N` lists what is still missing. Set
 `-DFYMM_IMPLEMENTED_SUITES=<list>` to run a suite that is not implemented yet
 and measure the gap.
 
-The corpus found real bugs on the first run, which is the point of carrying it:
-the `commit "message"` shorthand was unimplemented, and four error-versus-
-warning decisions disagreed with upstream.
+The corpus earns its keep. On gitGraph it found the unimplemented
+`commit "message"` shorthand and four error-versus-warning decisions that
+disagreed with upstream. On sequence it found twelve more: `;` as a statement
+separator, `#` as a comment, `title:` with a colon, `autonumber` arguments,
+`par_over`, the branching arrow forms, participant `@{}` metadata, and an
+activation that closes nothing.
 
 ## Building
 

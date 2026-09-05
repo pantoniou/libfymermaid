@@ -69,10 +69,13 @@ consumer reads. Add keys; do not rename or remove them.
 - `src/libfymermaid.c`: the diagram object, frontmatter, `%%{init}%%`
   directives, header dispatch, and diagnostics.
 - `src/fymm-lex.c`: the line and token scanner.
-- `src/fymm-gitgraph.c`: gitGraph statements and model construction.
+- `src/fymm-common.c`: the diagram type table, the accessibility statements,
+  and the token and free text helpers every type shares.
+- `src/fymm-<type>.c`: the statements and model of one diagram type.
+- `src/fymm-render-<type>.c`: the renderer of one diagram type.
 - `src/fymm-canvas.c`: the cell grid, box-drawing junctions, UTF-8 width, and
   ANSI emission.
-- `src/fymm-render.c`: terminal capability probes and the gitGraph renderer.
+- `src/fymm-render.c`: terminal capability probes and the render entry point.
 - `src/fymm-internal.h`: shared internal declarations.
 - `include/libfymermaid.h`: the umbrella header.
 - `include/libfymermaid/libfymermaid-{util,diagram,render}.h`: the public API.
@@ -123,6 +126,10 @@ with `test/fymm-api-test.c`.
 A `fails` case in a suite that is not implemented passes for the wrong reason:
 the diagram type is rejected before its syntax is read. Do not read a pass rate
 for a disabled suite as coverage.
+
+A diagram type declares its own separators in the ops table. Sequence ends a
+statement at a `;` and opens a comment at a `#`; timeline carries both in its
+text. Do not make either a global rule.
 
 Follow upstream where the behavior is observable. These cases are settled:
 
