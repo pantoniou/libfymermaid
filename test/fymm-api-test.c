@@ -31,6 +31,7 @@
 #include <libfymermaid.h>
 
 #include "fymm-color.h"
+#include "fymm-markdown.h"
 
 static int failures;
 
@@ -585,6 +586,101 @@ static void test_theme_mono(void)
 	fymm_diagram_destroy(d);
 }
 
+/* A label breaks at `<br>` in each of its spellings, and only a markdown
+ * string is formatted. */
+static void test_rich_text(void)
+{
+	static const struct {
+		const char *text;
+		size_t lines;
+		int width;
+	} breaks[] = {
+		{ "one",			1, 3 },
+		{ "one<br>two",			2, 3 },
+		{ "one<br/>two",		2, 3 },
+		{ "one<br />two",		2, 3 },
+		{ "one</br>two",		2, 3 },
+		{ "a<br>bb<br>ccc",		3, 3 },
+		{ "Line1<br>Line2<br/>Line3</br>Line4", 4, 5 },
+		{ "one\ntwo",			2, 3 },
+	};
+	struct fymm_rich *r;
+	size_t i;
+
+	for (i = 0; i < sizeof(breaks) / sizeof(breaks[0]); i++) {
+		r = fymm_rich_parse(breaks[i].text, false);
+		CHECK(r != NULL, "'%s' did not parse", breaks[i].text);
+		if (!r)
+			continue;
+		CHECK(fymm_rich_lines(r) == breaks[i].lines,
+		      "'%s' gave %zu lines, expected %zu", breaks[i].text,
+		      fymm_rich_lines(r), breaks[i].lines);
+		CHECK(fymm_rich_width(r) == breaks[i].width,
+		      "'%s' measured %d, expected %d", breaks[i].text,
+		      fymm_rich_width(r), breaks[i].width);
+		fymm_rich_destroy(r);
+	}
+
+	/* a plain label keeps its asterisks; a markdown one does not */
+	r = fymm_rich_parse("The **cat** in the hat", false);
+	CHECK(r && fymm_rich_width(r) == 22,
+	      "a plain label should keep its asterisks, measured %d",
+	      r ? fymm_rich_width(r) : -1);
+	fymm_rich_destroy(r);
+
+	r = fymm_rich_parse("The **cat** in the hat", true);
+	CHECK(r && fymm_rich_width(r) == 18,
+	      "a markdown label should drop its asterisks, measured %d",
+	      r ? fymm_rich_width(r) : -1);
+	fymm_rich_destroy(r);
+
+	/* markdown and a break together */
+	r = fymm_rich_parse("The **cat**<br>in the *hat*", true);
+	CHECK(r && fymm_rich_lines(r) == 2, "expected two lines");
+	CHECK(r && fymm_rich_line_width(r, 0) == 7, "line 0 measured %d",
+	      r ? fymm_rich_line_width(r, 0) : -1);
+	fymm_rich_destroy(r);
+
+	r = fymm_rich_parse("", false);
+	CHECK(r != NULL, "an empty label should parse");
+	fymm_rich_destroy(r);
+
+	r = fymm_rich_parse(NULL, false);
+	CHECK(r != NULL, "NULL should parse as empty");
+	fymm_rich_destroy(r);
+}
+
+/* The attributes a markdown span carries must reach the emitted escapes. */
+static void test_rich_attributes(void)
+{
+	struct fymm_canvas *cv;
+	struct fymm_rich *r;
+	char *out;
+
+	cv = fymm_canvas_create(40, 1, FYMM_CHARSET_UNICODE, FYMM_COLOR_256,
+				NULL);
+	CHECK(cv != NULL, "the canvas was not created");
+	if (!cv)
+		return;
+
+	r = fymm_rich_parse("a **b** _c_ ~~d~~", true);
+	CHECK(r != NULL, "the markdown label did not parse");
+	if (r) {
+		fymm_rich_draw_line(cv, 0, 0, r, 0, FYMM_COLOR_DEFAULT, 0);
+		fymm_rich_destroy(r);
+	}
+
+	out = fymm_canvas_emit(cv);
+	CHECK(out != NULL, "the canvas emitted nothing");
+	if (out) {
+		CHECK(strstr(out, ";1m") != NULL, "bold was not emitted");
+		CHECK(strstr(out, ";3m") != NULL, "italic was not emitted");
+		CHECK(strstr(out, ";9m") != NULL, "strikethrough was not emitted");
+		free(out);
+	}
+	fymm_canvas_destroy(cv);
+}
+
 int main(void)
 {
 	test_version();
@@ -600,6 +696,8 @@ int main(void)
 	test_color_reduction();
 	test_theme_catalogue();
 	test_theme_mono();
+	test_rich_text();
+	test_rich_attributes();
 
 	if (failures)
 		fprintf(stderr, "%d check(s) failed\n", failures);

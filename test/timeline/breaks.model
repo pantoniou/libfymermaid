@@ -1,0 +1,12 @@
+type: timeline
+orientation: LR
+title: Line<br>breaks
+accTitle: null
+accDescr: null
+config: {}
+sections:
+- name: Line1<br>Line2<br/>Line3</br>Line4
+  tasks:
+  - name: task
+    events:
+    - an event<br/>with a break

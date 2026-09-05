@@ -1,0 +1,36 @@
+type: flowchart
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+nodes:
+- id: A
+  text: The **cat** in _the_ hat
+  shape: rect
+  markdown: true
+  subgraph: null
+- id: B
+  text: The dog<br/>in the hog
+  shape: rect
+  markdown: false
+  subgraph: null
+- id: C
+  text: A ~~struck~~ label
+  shape: rect
+  markdown: true
+  subgraph: null
+edges:
+- from: A
+  to: B
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+- from: B
+  to: C
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+subgraphs: []

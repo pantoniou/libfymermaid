@@ -8,30 +8,37 @@ nodes:
 - id: A
   text: Start
   shape: rect
+  markdown: false
   subgraph: null
 - id: B
   text: Is it working?
   shape: rhombus
+  markdown: false
   subgraph: null
 - id: C
   text: Ship it
   shape: rect
+  markdown: false
   subgraph: null
 - id: D
   text: Debug
   shape: rect
+  markdown: false
   subgraph: null
 - id: E
   text: Database
   shape: cylinder
+  markdown: false
   subgraph: null
 - id: F
   text: Check logs
   shape: stadium
+  markdown: false
   subgraph: null
 - id: G
   text: Done
   shape: circle
+  markdown: false
   subgraph: null
 edges:
 - from: A

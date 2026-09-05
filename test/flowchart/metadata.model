@@ -8,12 +8,14 @@ nodes:
 - id: A
   text: One line
   shape: rounded
+  markdown: false
   subgraph: null
 - id: B
   text: |-
     A literal
     block
   shape: circle
+  markdown: false
   subgraph: null
 edges:
 - from: A

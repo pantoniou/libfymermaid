@@ -8,26 +8,32 @@ nodes:
 - id: A
   text: A
   shape: rect
+  markdown: false
   subgraph: null
 - id: B
   text: B
   shape: rect
+  markdown: false
   subgraph: null
 - id: C
   text: C
   shape: rect
+  markdown: false
   subgraph: null
 - id: D
   text: D
   shape: rect
+  markdown: false
   subgraph: null
 - id: E
   text: E
   shape: rect
+  markdown: false
   subgraph: null
 - id: F
   text: F
   shape: rect
+  markdown: false
   subgraph: null
 edges:
 - from: A

@@ -8,34 +8,42 @@ nodes:
 - id: a
   text: rect
   shape: rect
+  markdown: false
   subgraph: null
 - id: b
   text: round
   shape: round
+  markdown: false
   subgraph: null
 - id: c
   text: stadium
   shape: stadium
+  markdown: false
   subgraph: null
 - id: d
   text: subroutine
   shape: subroutine
+  markdown: false
   subgraph: null
 - id: e
   text: cylinder
   shape: cylinder
+  markdown: false
   subgraph: null
 - id: f
   text: circle
   shape: circle
+  markdown: false
   subgraph: null
 - id: g
   text: rhombus
   shape: rhombus
+  markdown: false
   subgraph: null
 - id: h
   text: hexagon
   shape: hexagon
+  markdown: false
   subgraph: null
 edges:
 - from: a
