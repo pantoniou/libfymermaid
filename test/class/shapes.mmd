@@ -1,0 +1,21 @@
+classDiagram
+    class Shape {
+        <<interface>>
+        +int sides
+        +draw() void
+    }
+    class Circle {
+        +float radius
+        +draw() void
+    }
+    class Square {
+        +float side
+        +draw() void
+    }
+    Shape <|-- Circle
+    Shape <|-- Square
+    Circle *-- Point : centre
+    class Point {
+        +float x
+        +float y
+    }

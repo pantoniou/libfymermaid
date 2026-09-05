@@ -1,0 +1,59 @@
+type: classDiagram
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+classes:
+- name: Shape
+  label: null
+  generic: null
+  namespace: null
+  annotation: interface
+  members:
+  - +int sides
+  - +draw() void
+- name: Circle
+  label: null
+  generic: null
+  namespace: null
+  annotation: null
+  members:
+  - +float radius
+  - +draw() void
+- name: Square
+  label: null
+  generic: null
+  namespace: null
+  annotation: null
+  members:
+  - +float side
+  - +draw() void
+- name: Point
+  label: null
+  generic: null
+  namespace: null
+  annotation: null
+  members:
+  - +float x
+  - +float y
+relations:
+- from: Shape
+  to: Circle
+  fromEnd: extension
+  toEnd: none
+  line: solid
+  label: null
+- from: Shape
+  to: Square
+  fromEnd: extension
+  toEnd: none
+  line: solid
+  label: null
+- from: Circle
+  to: Point
+  fromEnd: composition
+  toEnd: none
+  line: solid
+  label: centre
+notes: []

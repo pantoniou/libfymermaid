@@ -1,0 +1,75 @@
+type: classDiagram
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+classes:
+- name: ClassA
+  label: null
+  generic: null
+  namespace: null
+  annotation: null
+  members: []
+- name: ClassB
+  label: null
+  generic: null
+  namespace: null
+  annotation: null
+  members: []
+- name: ClassC
+  label: null
+  generic: null
+  namespace: null
+  annotation: null
+  members: []
+- name: ClassD
+  label: null
+  generic: null
+  namespace: null
+  annotation: null
+  members: []
+- name: ClassE
+  label: null
+  generic: null
+  namespace: null
+  annotation: null
+  members: []
+- name: ClassF
+  label: null
+  generic: null
+  namespace: null
+  annotation: null
+  members: []
+relations:
+- from: ClassA
+  to: ClassB
+  fromEnd: extension
+  toEnd: none
+  line: solid
+  label: extends
+- from: ClassA
+  to: ClassC
+  fromEnd: composition
+  toEnd: none
+  line: solid
+  label: null
+- from: ClassA
+  to: ClassD
+  fromEnd: aggregation
+  toEnd: none
+  line: solid
+  label: null
+- from: ClassA
+  to: ClassE
+  fromEnd: none
+  toEnd: arrow
+  line: dotted
+  label: uses
+- from: ClassA
+  to: ClassF
+  fromEnd: none
+  toEnd: extension
+  line: dotted
+  label: null
+notes: []

@@ -1,0 +1,29 @@
+type: classDiagram
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+classes:
+- name: User
+  label: null
+  generic: null
+  namespace: Company.Project
+  annotation: null
+  members:
+  - '+login(username: String, password: String)'
+  - +logout()
+- name: Admin
+  label: null
+  generic: null
+  namespace: Company.Project
+  annotation: null
+  members: []
+relations:
+- from: Admin
+  to: User
+  fromEnd: none
+  toEnd: arrow
+  line: solid
+  label: manages
+notes: []

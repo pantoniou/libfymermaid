@@ -1,0 +1,28 @@
+type: classDiagram
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+classes:
+- name: C1
+  label: Class 1 with text label
+  generic: null
+  namespace: null
+  annotation: interface
+  members:
+  - int member1
+- name: C2
+  label: With {Brackets}
+  generic: null
+  namespace: null
+  annotation: null
+  members: []
+relations:
+- from: C1
+  to: C2
+  fromEnd: none
+  toEnd: arrow
+  line: solid
+  label: refers to
+notes: []

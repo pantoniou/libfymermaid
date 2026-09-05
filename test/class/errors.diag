@@ -1,0 +1,2 @@
+input.mmd:2:1: error: unknown classDiagram statement 'frobnicate this'
+input.mmd:4:1: error: a class body was left open at the end of the diagram
