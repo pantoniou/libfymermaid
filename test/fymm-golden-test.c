@@ -47,6 +47,9 @@
 
 #include <libfymermaid.h>
 
+/* the width every golden is rendered at; see the render modes below */
+#define FYMM_GOLDEN_WIDTH 80
+
 static char *read_file(const char *path, size_t *lenp)
 {
 	size_t size = 0, alloc = 65536, rd;
@@ -194,6 +197,9 @@ int main(int argc, char *argv[])
 	} else {
 		fymm_render_cfg_default(&rcfg);
 		rcfg.color = FYMM_COLOR_NONE;
+		/* a golden must not depend on the terminal it runs in, and
+		 * FYMM_WIDTH_AUTO would read one */
+		rcfg.width = FYMM_GOLDEN_WIDTH;
 		rcfg.charset = !strcmp(mode, "ascii") ? FYMM_CHARSET_ASCII :
 							FYMM_CHARSET_UNICODE;
 		got = fymm_render(d, &rcfg);
