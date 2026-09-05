@@ -92,6 +92,7 @@ set(_fymm_sources
     fymm-flowchart.c fymm-render-flowchart.c
     fymm-class.c fymm-render-class.c
     fymm-quadrant.c fymm-render-quadrant.c
+    fymm-xychart.c fymm-render-xychart.c
     fymm-internal.h
 )
 
@@ -142,6 +143,11 @@ else()
     target_link_libraries(fymermaid PUBLIC ${_fymm_fyaml_static})
 endif()
 target_link_libraries(fymermaid_static PUBLIC ${_fymm_fyaml_static})
+
+# the xy chart scales its plot with the C maths library
+foreach(_t fymermaid fymermaid_static)
+    target_link_libraries(${_t} PRIVATE m)
+endforeach()
 
 set_target_properties(fymermaid PROPERTIES
     OUTPUT_NAME fymermaid

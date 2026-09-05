@@ -176,6 +176,18 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "xychart",
+		.config_key = "xyChart",
+		.type = FYMM_DT_XYCHART,
+		.parse = fymm_parse_xychart,
+		.render = fymm_render_xychart,
+	}, {
+		.keyword = "xychart-beta",
+		.config_key = "xyChart",
+		.type = FYMM_DT_XYCHART,
+		.parse = fymm_parse_xychart,
+		.render = fymm_render_xychart,
+	}, {
 		.keyword = "quadrantChart",
 		.config_key = "quadrantChart",
 		.type = FYMM_DT_QUADRANT,
