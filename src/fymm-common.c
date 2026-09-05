@@ -176,6 +176,12 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "gantt",
+		.config_key = "gantt",
+		.type = FYMM_DT_GANTT,
+		.parse = fymm_parse_gantt,
+		.render = fymm_render_gantt,
+	}, {
 		.keyword = "radar-beta",
 		.config_key = "radar",
 		.type = FYMM_DT_RADAR,

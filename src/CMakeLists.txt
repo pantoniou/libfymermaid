@@ -94,6 +94,7 @@ set(_fymm_sources
     fymm-quadrant.c fymm-render-quadrant.c
     fymm-xychart.c fymm-render-xychart.c
     fymm-radar.c fymm-render-radar.c
+    fymm-gantt.c fymm-render-gantt.c
     fymm-internal.h
 )
 
