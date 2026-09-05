@@ -1021,169 +1021,151 @@
    "name": "should allow default in the node name/id"
   },
   {
-   "file": "170-should-be-possible-to-use-direction-in-node-ids.mmd",
-   "outcome": "parses",
-   "suite": "parsing a flow chart",
-   "name": "should be possible to use direction in node ids"
-  },
-  {
-   "file": "171-should-be-possible-to-use-direction-in-node-ids-2.mmd",
-   "outcome": "parses",
-   "suite": "parsing a flow chart",
-   "name": "should be possible to use direction in node ids"
-  },
-  {
-   "file": "172-should-be-possible-to-use-numbers-as-labels.mmd",
-   "outcome": "parses",
-   "suite": "parsing a flow chart",
-   "name": "should be possible to use numbers as labels"
-  },
-  {
-   "file": "173-should-add-acctitle-and-accdescr-to-flow-chart.mmd",
+   "file": "170-should-add-acctitle-and-accdescr-to-flow-chart.mmd",
    "outcome": "parses",
    "suite": "parsing a flow chart",
    "name": "should add accTitle and accDescr to flow chart"
   },
   {
-   "file": "174-should-add-acctitle-and-a-multi-line-accdescr-to-flow-chart.mmd",
+   "file": "171-should-add-acctitle-and-a-multi-line-accdescr-to-flow-chart.mmd",
    "outcome": "parses",
    "suite": "parsing a flow chart",
    "name": "should add accTitle and a multi line accDescr to flow chart"
   },
   {
-   "file": "175-should-handle-subgraph-with-tab-indentation.mmd",
+   "file": "172-should-handle-subgraph-with-tab-indentation.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraph with tab indentation"
   },
   {
-   "file": "176-should-handle-subgraph-with-chaining-nodes-indentation.mmd",
+   "file": "173-should-handle-subgraph-with-chaining-nodes-indentation.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraph with chaining nodes indentation"
   },
   {
-   "file": "177-should-handle-subgraph-with-multiple-words-in-title.mmd",
+   "file": "174-should-handle-subgraph-with-multiple-words-in-title.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraph with multiple words in title"
   },
   {
-   "file": "178-should-handle-subgraph-with-id-and-title-notation.mmd",
+   "file": "175-should-handle-subgraph-with-id-and-title-notation.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraph with id and title notation"
   },
   {
-   "file": "179-should-handle-subgraph-id-starting-with-a-number.mmd",
+   "file": "176-should-handle-subgraph-id-starting-with-a-number.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraph id starting with a number"
   },
   {
-   "file": "180-should-handle-subgraphs1.mmd",
+   "file": "177-should-handle-subgraphs1.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraphs1"
   },
   {
-   "file": "181-should-handle-subgraphs-with-title-in-quotes.mmd",
+   "file": "178-should-handle-subgraphs-with-title-in-quotes.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraphs with title in quotes"
   },
   {
-   "file": "182-should-handle-subgraphs-in-old-style-that-was-broken.mmd",
+   "file": "179-should-handle-subgraphs-in-old-style-that-was-broken.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraphs in old style that was broken"
   },
   {
-   "file": "183-should-handle-subgraphs-with-dashes-in-the-title.mmd",
+   "file": "180-should-handle-subgraphs-with-dashes-in-the-title.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraphs with dashes in the title"
   },
   {
-   "file": "184-should-handle-subgraphs-with-id-and-title-in-brackets.mmd",
+   "file": "181-should-handle-subgraphs-with-id-and-title-in-brackets.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraphs with id and title in brackets"
   },
   {
-   "file": "185-should-handle-subgraphs-with-id-and-title-in-brackets-and-qu.mmd",
+   "file": "182-should-handle-subgraphs-with-id-and-title-in-brackets-and-qu.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraphs with id and title in brackets and quotes"
   },
   {
-   "file": "186-should-handle-subgraphs-with-id-and-title-in-brackets-withou.mmd",
+   "file": "183-should-handle-subgraphs-with-id-and-title-in-brackets-withou.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraphs with id and title in brackets without spaces"
   },
   {
-   "file": "187-should-handle-subgraphs2.mmd",
+   "file": "184-should-handle-subgraphs2.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraphs2"
   },
   {
-   "file": "188-should-handle-subgraphs3.mmd",
+   "file": "185-should-handle-subgraphs3.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraphs3"
   },
   {
-   "file": "189-should-handle-nested-subgraphs.mmd",
+   "file": "186-should-handle-nested-subgraphs.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle nested subgraphs"
   },
   {
-   "file": "190-should-handle-subgraphs4.mmd",
+   "file": "187-should-handle-subgraphs4.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraphs4"
   },
   {
-   "file": "191-should-handle-subgraphs5.mmd",
+   "file": "188-should-handle-subgraphs5.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraphs5"
   },
   {
-   "file": "192-should-handle-subgraphs-with-multi-node-statements-in-it.mmd",
+   "file": "189-should-handle-subgraphs-with-multi-node-statements-in-it.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle subgraphs with multi node statements in it"
   },
   {
-   "file": "193-should-handle-nested-subgraphs-1-2.mmd",
+   "file": "190-should-handle-nested-subgraphs-1-2.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle nested subgraphs 1"
   },
   {
-   "file": "194-should-handle-nested-subgraphs-2.mmd",
+   "file": "191-should-handle-nested-subgraphs-2.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle nested subgraphs 2"
   },
   {
-   "file": "195-should-handle-nested-subgraphs-3.mmd",
+   "file": "192-should-handle-nested-subgraphs-3.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should handle nested subgraphs 3"
   },
   {
-   "file": "196-should-correctly-parse-direction-td-inside-a-subgraph.mmd",
+   "file": "193-should-correctly-parse-direction-td-inside-a-subgraph.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should correctly parse direction TD inside a subgraph"
   },
   {
-   "file": "197-should-attach-view-collapsed-metadata-to-a-subgraph-and-coll.mmd",
+   "file": "194-should-attach-view-collapsed-metadata-to-a-subgraph-and-coll.mmd",
    "outcome": "parses",
    "suite": "when parsing subgraphs",
    "name": "should attach `@{ view: collapsed }` metadata to a subgraph and collapse it"
@@ -1469,6 +1451,18 @@
   {
    "name": "should be able to parse a '&'",
    "reason": "no parse call"
+  },
+  {
+   "name": "should be possible to use direction in node ids",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should be possible to use direction in node ids",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should be possible to use numbers as labels",
+   "reason": "source is not a literal"
   },
   {
    "name": "should work with node id ${unsafeProp}",

@@ -163,6 +163,8 @@ def extract(text):
             if re.search(r'\(\s*%s\s*[,)]' % re.escape(ident), body):
                 src = value
 
+        if src is not None and not src.strip():
+            src = None                          # nothing was really extracted
         if src is None:
             why = ('no parse call' if not PARSE_CALL.search(body)
                    else 'source is not a literal')
