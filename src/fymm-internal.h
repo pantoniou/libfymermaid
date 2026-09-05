@@ -74,6 +74,9 @@ struct fymm_lex {
 	const char *le;		/* end of the current line, sans newline */
 	int line;		/* 1 based */
 	int col;		/* 1 based, of the last token */
+	bool semi;		/* a `;` also ends a statement */
+	bool hash;		/* a `#` also opens a comment */
+	bool mid_line;		/* the last statement ended at a `;` */
 };
 
 /* enum fymm_tok - the token kinds within a statement line */
@@ -150,6 +153,11 @@ bool fymm_line_keyword(const char *s, size_t len, const char *word,
  *
  * @keyword: the word that opens the diagram, matched without case
  * @config_key: the key mermaid nests this type's settings under
+ * @semicolons: whether a `;` separates statements as a newline does. It does
+ *              for sequence and flowchart, and not for timeline, whose text
+ *              carries semicolons of its own.
+ * @hash_comment: whether a `#` opens a comment. It does for sequence; a class
+ *                diagram uses `#` for visibility and a quadrant for a colour.
  * @type: the enum this type reports
  * @parse: reads the statements and builds the model; @toks holds the header
  *         line, which carries the type's own options
@@ -158,6 +166,8 @@ bool fymm_line_keyword(const char *s, size_t len, const char *word,
 struct fymm_diagram_ops {
 	const char *keyword;
 	const char *config_key;
+	bool semicolons;
+	bool hash_comment;
 	enum fymm_diagram_type type;
 	int (*parse)(struct fymm_parser *p, fy_generic config,
 		     fy_generic title, struct fymm_token *toks, int n);
@@ -183,6 +193,11 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 
 /* how deep a mindmap may nest before the rails stop being tracked */
 #define FYMM_MINDMAP_MAX_DEPTH 64
+
+int fymm_parse_sequence(struct fymm_parser *p, fy_generic config,
+			fy_generic title, struct fymm_token *toks, int n);
+char *fymm_render_sequence(const struct fymm_diagram *d, fy_generic model,
+			   const struct fymm_render_cfg *cfg);
 
 int fymm_parse_mindmap(struct fymm_parser *p, fy_generic config,
 		       fy_generic title, struct fymm_token *toks, int n);

@@ -41,6 +41,21 @@ void fymm_lex_init(struct fymm_lex *l, const char *text, size_t len)
 	l->line = 0;
 }
 
+/* Truncate the current line at a `#` comment, outside a quoted string. */
+static const char *fymm_strip_hash(const char *s, const char *e)
+{
+	bool in_quote = false;
+	const char *p;
+
+	for (p = s; p < e; p++) {
+		if (*p == '"' && (p == s || p[-1] != '\\'))
+			in_quote = !in_quote;
+		else if (*p == '#' && !in_quote)
+			return p;
+	}
+	return e;
+}
+
 /* Truncate the current line at a `%%` comment.  `%%{` opens a directive and
  * is not a comment, and a `%%` inside a quoted string is literal text. */
 static const char *fymm_strip_comment(const char *s, const char *e)
@@ -62,9 +77,24 @@ static const char *fymm_strip_comment(const char *s, const char *e)
 	return e;
 }
 
+/* The first `;` outside a quoted string, or NULL. */
+static const char *fymm_find_semi(const char *s, const char *e)
+{
+	bool in_quote = false;
+	const char *p;
+
+	for (p = s; p < e; p++) {
+		if (*p == '"' && (p == s || p[-1] != '\\'))
+			in_quote = !in_quote;
+		else if (*p == ';' && !in_quote)
+			return p;
+	}
+	return NULL;
+}
+
 bool fymm_lex_next_line(struct fymm_lex *l)
 {
-	const char *nl;
+	const char *nl, *semi;
 
 	if (l->p >= l->end)
 		return false;
@@ -73,12 +103,27 @@ bool fymm_lex_next_line(struct fymm_lex *l)
 	l->ls = l->p;
 	l->le = nl ? nl : l->end;
 	l->p = nl ? nl + 1 : l->end;
-	l->line++;
+	/* a statement that continues a physical line keeps its line number */
+	if (!l->mid_line)
+		l->line++;
+	l->mid_line = false;
 
 	/* drop a trailing carriage return, then any comment */
 	if (l->le > l->ls && l->le[-1] == '\r')
 		l->le--;
 	l->le = fymm_strip_comment(l->ls, l->le);
+	if (l->hash)
+		l->le = fymm_strip_hash(l->ls, l->le);
+
+	/* where the type says so, a `;` ends the statement too */
+	if (l->semi) {
+		semi = fymm_find_semi(l->ls, l->le);
+		if (semi) {
+			l->p = semi + 1;
+			l->le = semi;
+			l->mid_line = true;
+		}
+	}
 
 	/* the token cursor restarts at the head of the line */
 	l->col = 1;

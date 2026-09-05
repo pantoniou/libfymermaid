@@ -345,6 +345,10 @@ struct fymm_diagram *fymm_parse(const char *text, size_t len,
 	title = fy_get(frontmatter, "title");
 
 	fymm_lex_init(&p.lex, work, len);
+	/* The header may itself be followed by a `;` and the first statement,
+	 * so the header is read with the separator active; the diagram type
+	 * then says whether the rest of the source uses it. */
+	p.lex.semi = true;
 
 	/* The first statement line names the diagram. */
 	while (fymm_lex_next_line(&p.lex)) {
@@ -367,6 +371,8 @@ struct fymm_diagram *fymm_parse(const char *text, size_t len,
 		goto out;
 	}
 	d->type = ops->type;
+	p.lex.semi = ops->semicolons;
+	p.lex.hash = ops->hash_comment;
 
 	/* The config layers in source order: frontmatter, then each directive.
 	 * The settings of this diagram type are nested under its own key and
