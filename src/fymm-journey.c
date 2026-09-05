@@ -1,5 +1,5 @@
 /*
- * fymm-timeline.c - the timeline statement parser and model builder
+ * fymm-journey.c - the user journey statement parser and model builder
  *
  * Copyright (c) 2026 Pantelis Antoniou <pantelis.antoniou@konsulko.com>
  *
@@ -29,54 +29,55 @@
 
 #include "fymm-internal.h"
 
-int fymm_parse_timeline(struct fymm_parser *p, fy_generic config,
-			fy_generic title, struct fymm_token *htoks, int hn)
+/*
+ * A task is `name: score: actor, actor`. The score is how the actors felt,
+ * from one to five. Both the score and the actors may be absent.
+ */
+static fy_generic journey_actors(struct fy_generic_builder *gb, const char *s,
+				 const char *e)
+{
+	fy_generic actors = fy_seq_empty;
+	const char *comma;
+
+	for (;;) {
+		comma = memchr(s, ',', (size_t)(e - s));
+		if (comma > s || (!comma && e > s))
+			actors = fy_append(gb, actors,
+				fymm_trim_text(gb, s, comma ? comma : e));
+		if (!comma)
+			break;
+		s = comma + 1;
+	}
+	return actors;
+}
+
+int fymm_parse_journey(struct fymm_parser *p, fy_generic config,
+		       fy_generic title, struct fymm_token *htoks, int hn)
 {
 	struct fy_generic_builder *gb = p->d->gb;
 	struct fymm_token toks[FYMM_MAX_TOKENS];
 	struct fymm_acc acc = { fy_null, fy_null };
 	fy_generic sections = fy_seq_empty;
 	fy_generic tasks = fy_seq_empty;
-	fy_generic events = fy_seq_empty;
 	fy_generic section_name = fy_null;
-	fy_generic task_name = fy_invalid;
-	const char *orientation = "LR";
+	fy_generic score, actors;
 	const char *s, *e, *rest, *colon;
+	char buf[32], *end;
 	size_t len;
 	bool open_section = false;
+	double v;
 	int i, n;
 
-	/* the header carries the direction */
 	for (i = 1; i < hn; i++) {
 		if (htoks[i].type == FYMM_TOK_COLON)
 			continue;
-		if (fymm_token_ieq(&htoks[i], "LR")) {
-			orientation = "LR";
-		} else if (fymm_token_ieq(&htoks[i], "TD") ||
-			   fymm_token_ieq(&htoks[i], "TB")) {
-			orientation = "TD";
-		} else {
-			fymm_diagf(p, false, htoks[i].line, htoks[i].col,
-				   "ignoring unknown timeline option '%.*s'",
-				   (int)htoks[i].len, htoks[i].text);
-		}
+		fymm_diagf(p, false, htoks[i].line, htoks[i].col,
+			   "ignoring unknown journey option '%.*s'",
+			   (int)htoks[i].len, htoks[i].text);
 	}
 
-/* Close the task being read, then the section, appending each to its parent. */
-#define TL_CLOSE_TASK() \
+#define J_CLOSE_SECTION() \
 	do { \
-		if (fy_is_valid(task_name)) { \
-			tasks = fy_append(gb, tasks, \
-				fy_mapping(gb, "name", task_name, \
-					   "events", events)); \
-			task_name = fy_invalid; \
-			events = fy_seq_empty; \
-		} \
-	} while (0)
-
-#define TL_CLOSE_SECTION() \
-	do { \
-		TL_CLOSE_TASK(); \
 		if (open_section || fy_len(tasks)) { \
 			sections = fy_append(gb, sections, \
 				fy_mapping(gb, "name", section_name, \
@@ -91,7 +92,6 @@ int fymm_parse_timeline(struct fymm_parser *p, fy_generic config,
 			continue;
 		e = s + len;
 
-		/* the statements that are read as tokens */
 		n = fymm_line_tokens(&p->lex, toks, FYMM_MAX_TOKENS);
 		if (fymm_stmt_acc(p, toks, n, &acc)) {
 			fymm_tokens_reset(toks, n);
@@ -100,55 +100,56 @@ int fymm_parse_timeline(struct fymm_parser *p, fy_generic config,
 		fymm_tokens_reset(toks, n);
 
 		if (fymm_line_keyword(s, len, "title", &rest)) {
-			TL_CLOSE_TASK();
-			title = fy_is_valid(title) ? title : fymm_trim_text(gb, rest, e);
+			if (fy_is_invalid(title))
+				title = fymm_trim_text(gb, rest, e);
 			continue;
 		}
 		if (fymm_line_keyword(s, len, "section", &rest)) {
-			TL_CLOSE_SECTION();
+			J_CLOSE_SECTION();
 			section_name = fymm_trim_text(gb, rest, e);
 			open_section = true;
 			continue;
 		}
 
-		/* a line that opens with a colon continues the last task */
-		if (*s == ':') {
-			if (fy_is_invalid(task_name)) {
-				fymm_diagf(p, true, p->lex.line, 1,
-					   "an event line has no task to belong to");
-				continue;
-			}
-			s++;
-		} else {
-			TL_CLOSE_TASK();
-			colon = fymm_split_colon(s, e);
-			task_name = fymm_trim_text(gb, s, colon ? colon : e);
-			if (!colon)
-				continue;
-			s = colon + 1;
-		}
+		/* everything else is a task */
+		score = fy_null;
+		actors = fy_seq_empty;
+		colon = fymm_split_colon(s, e);
+		if (colon) {
+			const char *after = colon + 1;
+			const char *colon2 = fymm_split_colon(after, e);
+			const char *score_end = colon2 ? colon2 : e;
 
-		/* the rest of the line is one or more colon separated events */
-		for (;;) {
-			colon = fymm_split_colon(s, e);
-			events = fy_append(gb, events,
-					   fymm_trim_text(gb, s, colon ? colon : e));
-			if (!colon)
-				break;
-			s = colon + 1;
+			snprintf(buf, sizeof(buf), "%.*s",
+				 (int)(score_end - after), after);
+			end = NULL;
+			v = strtod(buf, &end);
+			while (end && (*end == ' ' || *end == '\t'))
+				end++;
+			if (end && end != buf && !*end)
+				score = fy_value(gb, v);
+			else if (score_end > after)
+				fymm_diagf(p, false, p->lex.line, 1,
+					   "task score '%s' is not a number",
+					   buf);
+			if (colon2)
+				actors = journey_actors(gb, colon2 + 1, e);
 		}
+		tasks = fy_append(gb, tasks,
+			fy_mapping(gb,
+				"name", fymm_trim_text(gb, s, colon ? colon : e),
+				"score", score,
+				"actors", actors));
 	}
 
-	TL_CLOSE_SECTION();
-#undef TL_CLOSE_TASK
-#undef TL_CLOSE_SECTION
+	J_CLOSE_SECTION();
+#undef J_CLOSE_SECTION
 
 	if (fy_is_invalid(title))
 		title = acc.title;
 
 	p->d->model = fy_mapping(gb,
-		"type", "timeline",
-		"orientation", orientation,
+		"type", "journey",
 		"title", title,
 		"accTitle", acc.title,
 		"accDescr", acc.descr,

@@ -138,6 +138,13 @@ bool fymm_stmt_acc(struct fymm_parser *p, struct fymm_token *toks, int n,
 /* Read the rest of a statement line as free text, interned in the builder. */
 const char *fymm_rest_text(struct fymm_parser *p, int from_col);
 
+/* Free text helpers, for the types whose statements are not word tokens. */
+const char *fymm_split_colon(const char *s, const char *e);
+fy_generic fymm_trim_text(struct fy_generic_builder *gb, const char *s,
+			  const char *e);
+bool fymm_line_keyword(const char *s, size_t len, const char *word,
+		       const char **restp);
+
 /*
  * struct fymm_diagram_ops - one diagram type
  *
@@ -173,6 +180,11 @@ int fymm_parse_gitgraph(struct fymm_parser *p, fy_generic config,
 			fy_generic title, struct fymm_token *toks, int n);
 char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 			   const struct fymm_render_cfg *cfg);
+
+int fymm_parse_journey(struct fymm_parser *p, fy_generic config,
+		       fy_generic title, struct fymm_token *toks, int n);
+char *fymm_render_journey(const struct fymm_diagram *d, fy_generic model,
+			  const struct fymm_render_cfg *cfg);
 
 int fymm_parse_timeline(struct fymm_parser *p, fy_generic config,
 			fy_generic title, struct fymm_token *toks, int n);

@@ -122,6 +122,51 @@ bool fymm_stmt_acc(struct fymm_parser *p, struct fymm_token *toks, int n,
 	return true;
 }
 
+/*
+ * Find the colon that splits a free text line, or NULL. A colon inside
+ * brackets or parentheses belongs to the text: a markdown link carries one in
+ * its URL, and a timeline event may hold a link.
+ */
+const char *fymm_split_colon(const char *s, const char *e)
+{
+	int depth = 0;
+
+	for (; s < e; s++) {
+		if (*s == '[' || *s == '(')
+			depth++;
+		else if (*s == ']' || *s == ')')
+			depth -= depth > 0;
+		else if (*s == ':' && !depth)
+			return s;
+	}
+	return NULL;
+}
+
+/* Intern [s, e) with the surrounding whitespace removed. */
+fy_generic fymm_trim_text(struct fy_generic_builder *gb, const char *s,
+			  const char *e)
+{
+	while (s < e && (*s == ' ' || *s == '\t'))
+		s++;
+	while (e > s && (e[-1] == ' ' || e[-1] == '\t'))
+		e--;
+	return fy_value(gb, fy_gb_intern_string_size(gb, s, (size_t)(e - s)));
+}
+
+/* Does the line open with @word and a space? Sets @restp past it. */
+bool fymm_line_keyword(const char *s, size_t len, const char *word,
+		       const char **restp)
+{
+	size_t wl = strlen(word);
+
+	if (len <= wl || strncasecmp(s, word, wl))
+		return false;
+	if (s[wl] != ' ' && s[wl] != '\t')
+		return false;
+	*restp = s + wl + 1;
+	return true;
+}
+
 /* The diagram types this library knows how to read. */
 static const struct fymm_diagram_ops fymm_ops[] = {
 	{
@@ -130,6 +175,12 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.type = FYMM_DT_GITGRAPH,
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
+	}, {
+		.keyword = "journey",
+		.config_key = "journey",
+		.type = FYMM_DT_JOURNEY,
+		.parse = fymm_parse_journey,
+		.render = fymm_render_journey,
 	}, {
 		.keyword = "timeline",
 		.config_key = "timeline",

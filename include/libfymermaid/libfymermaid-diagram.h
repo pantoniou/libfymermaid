@@ -49,12 +49,14 @@ extern "C" {
  * @FYMM_DT_GITGRAPH: a gitGraph diagram
  * @FYMM_DT_PIE: a pie chart
  * @FYMM_DT_TIMELINE: a timeline
+ * @FYMM_DT_JOURNEY: a user journey
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
 	FYMM_DT_GITGRAPH,
 	FYMM_DT_PIE,
 	FYMM_DT_TIMELINE,
+	FYMM_DT_JOURNEY,
 };
 
 /* the opaque parsed diagram */
