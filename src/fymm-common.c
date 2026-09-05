@@ -176,6 +176,27 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "flowchart",
+		.config_key = "flowchart",
+		.semicolons = true,
+		.type = FYMM_DT_FLOWCHART,
+		.parse = fymm_parse_flowchart,
+		.render = fymm_render_flowchart,
+	}, {
+		.keyword = "swimlane-beta",
+		.config_key = "flowchart",
+		.semicolons = true,
+		.type = FYMM_DT_FLOWCHART,
+		.parse = fymm_parse_flowchart,
+		.render = fymm_render_flowchart,
+	}, {
+		.keyword = "graph",
+		.config_key = "flowchart",
+		.semicolons = true,
+		.type = FYMM_DT_FLOWCHART,
+		.parse = fymm_parse_flowchart,
+		.render = fymm_render_flowchart,
+	}, {
 		.keyword = "sequenceDiagram",
 		.config_key = "sequence",
 		.semicolons = true,

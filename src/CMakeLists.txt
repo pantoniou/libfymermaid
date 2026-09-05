@@ -89,6 +89,7 @@ set(_fymm_sources
     fymm-journey.c fymm-render-journey.c
     fymm-mindmap.c fymm-render-mindmap.c
     fymm-sequence.c fymm-render-sequence.c
+    fymm-flowchart.c fymm-render-flowchart.c
     fymm-internal.h
 )
 
