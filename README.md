@@ -47,16 +47,24 @@ test suite pins.
 | `flowchart` / `graph` | 195/195 | layered top to bottom |
 | `classDiagram` | 133/133 | boxed compartments, UML relation ends |
 | `sequenceDiagram` | 130/130 | participant columns, arrows, notes, blocks |
+| `stateDiagram` | 74/74 | composite states, pseudo-states, forks |
 | `gitGraph` | 63/63 | `LR` orientation |
-| `mindmap` | 26/26 | drawn as an indented tree |
-| `pie` | 13/13 | drawn as a proportional bar chart |
-| `timeline` | 11/11 | drawn down the page, not across |
-| `journey` | 7/7 | scores drawn as pips |
-| `xychart` | 56/56 | bars and stepped lines on a scaled axis |
+| `erDiagram` | 59/59 | attribute compartments, crow's foot ends |
+| `xychart` | 57/57 | bars and stepped lines on a scaled axis |
+| `usecase` | 52/52 | actors, use cases, system boundaries |
+| `kanban` | 28/28 | columns of cards |
+| `mindmap` | 26/26 | indented tree |
+| `C4Context` and friends | 25/25 | ranked boxes, `$named` arguments kept |
+| `block` | 24/24 | a grid, with spans |
 | `quadrantChart` | 23/23 | plotted points on a divided square |
+| `architecture` | 17/17 | services ranked, groups as headings |
+| `packet` | 15/15 | bit fields in rows of thirty-two |
+| `pie` | 13/13 | proportional bars |
+| `timeline` | 11/11 | down the page, not across |
 | `radar` | 10/10 | bars grouped by axis, not a polygon |
+| `journey` | 7/7 | scores drawn as pips |
 | `gantt` | 7/7 | day-resolved bars, `after`/`until` honoured |
-| everything else | — | the header is reported as unsupported |
+| `agentflow`, `railroad`, `wardley`, `treeView`, `eventmodeling`, `info`, `ishikawa` | — | not yet; the header is reported as unsupported |
 
 "corpus" is upstream mermaid's own parser suite; see Conformance.
 
@@ -78,6 +86,10 @@ Two deliberate differences:
 
 - A gitGraph in `TB` or `BT`, and a flowchart in any direction but `TB`, parse
   and render with a warning in the direction that is implemented.
+- A radar is drawn as bars grouped by axis rather than as a polygon, and a
+  composite shape that mermaid nests -- a subgraph, a C4 boundary, an
+  architecture group -- becomes a heading over its members. Character cells
+  cannot nest a box inside a box and keep either legible.
 - A commit written without an `id:` is labelled with its sequence number rather
   than with a random hash, so a diagram renders identically every time and the
   label stays usable as a `cherry-pick` target.
@@ -111,13 +123,13 @@ uses that to carry the structure with bold and dim alone.
 
 ## Conformance
 
-`test/mermaid-suite/` carries upstream mermaid's own parser corpus: 1146 cases
+`test/mermaid-suite/` carries upstream mermaid's own parser corpus: 1144 cases
 across 27 diagram types, each one an `it()` from an upstream spec, reduced to
 the diagram source and whether upstream expects it to parse or to fail.
 `scripts/import-mermaid-suite.py` regenerates it from a mermaid checkout, and
 `test/mermaid-suite/PROVENANCE` records the upstream commit.
 
-The implemented types pass 675 of 675. The remaining suites are registered and disabled
+The implemented types pass 971 of 971. The remaining suites are registered and disabled
 until their diagram type exists, so the corpus is countable and `ctest` stays
 green; `ctest -L unimplemented -N` lists what is still missing. Set
 `-DFYMM_IMPLEMENTED_SUITES=<list>` to run a suite that is not implemented yet

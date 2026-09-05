@@ -76,6 +76,9 @@ consumer reads. Add keys; do not rename or remove them.
 - `src/fymm-canvas.c`: the cell grid, box-drawing junctions, UTF-8 width, and
   ANSI emission.
 - `src/fymm-render.c`: terminal capability probes and the render entry point.
+- `src/fymm-layout.c`: the layered graph layout every graph type shares --
+  ranking, back-edge marking and rank placement. Use it rather than writing a
+  seventh copy.
 - `src/fymm-internal.h`: shared internal declarations.
 - `include/libfymermaid.h`: the umbrella header.
 - `include/libfymermaid/libfymermaid-{util,diagram,render}.h`: the public API.
