@@ -1,0 +1,26 @@
+type: xychart
+orientation: vertical
+title: null
+accTitle: null
+accDescr: null
+config: {}
+xAxis:
+  name: xAxisName
+  categories: null
+  min: null
+  max: null
+yAxis:
+  name: yAxisName
+  categories: null
+  min: null
+  max: null
+series:
+- kind: line
+  name: null
+  data:
+  - value: 10
+    label: First
+  - value: 20
+    label: Second
+  - value: 30
+    label: Third

@@ -1,0 +1,26 @@
+type: xychart
+orientation: vertical
+title: Model sizes
+accTitle: null
+accDescr: null
+config: {}
+xAxis:
+  name: model
+  categories: null
+  min: null
+  max: null
+yAxis:
+  name: billions of parameters
+  categories: null
+  min: 0
+  max: 600
+series:
+- kind: bar
+  name: null
+  data:
+  - value: 3.7999999999999998
+    label: null
+  - value: 7
+    label: null
+  - value: 540
+    label: null

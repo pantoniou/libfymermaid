@@ -1,0 +1,53 @@
+type: xychart
+orientation: vertical
+title: Sales revenue
+accTitle: null
+accDescr: null
+config: {}
+xAxis:
+  name: null
+  categories:
+  - jan
+  - feb
+  - mar
+  - apr
+  - may
+  - jun
+  min: null
+  max: null
+yAxis:
+  name: Revenue (k)
+  categories: null
+  min: 0
+  max: 110
+series:
+- kind: bar
+  name: null
+  data:
+  - value: 50
+    label: null
+  - value: 60
+    label: null
+  - value: 75
+    label: null
+  - value: 82
+    label: null
+  - value: 95
+    label: null
+  - value: 105
+    label: null
+- kind: line
+  name: null
+  data:
+  - value: 40
+    label: null
+  - value: 55
+    label: null
+  - value: 70
+    label: null
+  - value: 78
+    label: null
+  - value: 88
+    label: null
+  - value: 100
+    label: null

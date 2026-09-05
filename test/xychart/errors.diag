@@ -1,0 +1,7 @@
+input.mmd:2:1: error: the axis range is not a pair of numbers
+input.mmd:3:1: error: the y axis takes a range, not a list
+input.mmd:4:1: error: the line data has an unbalanced bracket
+input.mmd:5:1: error: the bar has no data
+input.mmd:6:1: error: the data is empty
+input.mmd:7:1: error: the data has an empty entry
+input.mmd:8:1: error: the data entry '-4aa5' is not a number
