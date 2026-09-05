@@ -79,10 +79,12 @@ set(_fymm_sources
     libfymermaid.c
     fymm-lex.c
     fymm-gitgraph.c
+    fymm-common.c
     fymm-canvas.c fymm-canvas.h
     fymm-color.c fymm-color.h
     fymm-theme.c
     fymm-render.c
+    fymm-pie.c fymm-render-pie.c
     fymm-internal.h
 )
 
