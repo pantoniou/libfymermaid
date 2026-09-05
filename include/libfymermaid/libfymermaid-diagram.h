@@ -50,6 +50,7 @@ extern "C" {
  * @FYMM_DT_PIE: a pie chart
  * @FYMM_DT_TIMELINE: a timeline
  * @FYMM_DT_JOURNEY: a user journey
+ * @FYMM_DT_MINDMAP: a mindmap
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
@@ -57,6 +58,7 @@ enum fymm_diagram_type {
 	FYMM_DT_PIE,
 	FYMM_DT_TIMELINE,
 	FYMM_DT_JOURNEY,
+	FYMM_DT_MINDMAP,
 };
 
 /* the opaque parsed diagram */

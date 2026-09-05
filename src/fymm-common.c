@@ -176,6 +176,12 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "mindmap",
+		.config_key = "mindmap",
+		.type = FYMM_DT_MINDMAP,
+		.parse = fymm_parse_mindmap,
+		.render = fymm_render_mindmap,
+	}, {
 		.keyword = "journey",
 		.config_key = "journey",
 		.type = FYMM_DT_JOURNEY,

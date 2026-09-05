@@ -87,6 +87,7 @@ set(_fymm_sources
     fymm-pie.c fymm-render-pie.c
     fymm-timeline.c fymm-render-timeline.c
     fymm-journey.c fymm-render-journey.c
+    fymm-mindmap.c fymm-render-mindmap.c
     fymm-internal.h
 )
 
