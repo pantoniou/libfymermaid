@@ -30,6 +30,8 @@
 
 #include <libfymermaid.h>
 
+#include "fymm-color.h"
+
 static int failures;
 
 #define CHECK(_cond, _fmt, ...) \
@@ -446,6 +448,136 @@ static void test_render_modes(void)
 	fymm_diagram_destroy(d);
 }
 
+/*
+ * A themed render must reach a 256 and a 16 colour terminal, so a colour is
+ * reduced to the nearest entry of the palette the terminal has. These pin the
+ * reduction at the ends and at a few interior points.
+ */
+static void test_color_reduction(void)
+{
+	static const struct {
+		const char *text;
+		unsigned int rgb;
+		int xterm256;
+		int ansi16;
+	} cases[] = {
+		{ "#000000", 0x000000, 16, 30 },	/* black */
+		{ "#ffffff", 0xffffff, 231, 97 },	/* white */
+		{ "#ff0000", 0xff0000, 196, 91 },	/* red */
+		{ "#00ff00", 0x00ff00, 46, 92 },
+		{ "#0000ff", 0x0000ff, 21, 34 },	/* nearer plain blue */
+		{ "#f00", 0xff0000, 196, 91 },		/* the short form */
+		{ "ff0000", 0xff0000, 196, 91 },	/* without the hash */
+		{ "red", 0xcd0000, 160, 31 },		/* by ANSI name */
+		{ "brightblue", 0x5c5cff, 63, 94 },
+		{ "196", 0xff0000, 196, 91 },		/* an xterm index */
+		{ "#808080", 0x808080, 244, 90 },	/* a grey ramp entry */
+	};
+	size_t i;
+	unsigned int rgb;
+
+	for (i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
+		rgb = fymm_color_parse(cases[i].text);
+		CHECK(rgb == cases[i].rgb,
+		      "'%s' parsed as %06x, expected %06x",
+		      cases[i].text, rgb, cases[i].rgb);
+		if (rgb == FYMM_RGB_INVALID)
+			continue;
+		CHECK(fymm_rgb_to_xterm256(rgb) == cases[i].xterm256,
+		      "'%s' reduced to xterm %d, expected %d", cases[i].text,
+		      fymm_rgb_to_xterm256(rgb), cases[i].xterm256);
+		CHECK(fymm_rgb_to_ansi16(rgb) == cases[i].ansi16,
+		      "'%s' reduced to SGR %d, expected %d", cases[i].text,
+		      fymm_rgb_to_ansi16(rgb), cases[i].ansi16);
+	}
+
+	CHECK(fymm_color_parse("nonsense") == FYMM_RGB_INVALID,
+	      "a word that is not a colour should not parse");
+	CHECK(fymm_color_parse("#12345") == FYMM_RGB_INVALID,
+	      "a five digit hex should not parse");
+	CHECK(fymm_color_parse("300") == FYMM_RGB_INVALID,
+	      "an index past 255 should not parse");
+	CHECK(fymm_color_parse(NULL) == FYMM_RGB_INVALID,
+	      "NULL should not parse");
+}
+
+/* Every shipped theme must load and change what a render emits. */
+static void test_theme_catalogue(void)
+{
+	static const char src[] =
+		"gitGraph\n commit id: \"a\"\n branch dev\n commit id: \"b\"\n";
+	const struct fymm_theme_info *ti;
+	struct fymm_render_cfg rcfg;
+	struct fymm_diagram *d;
+	char *plain, *themed;
+	void *iter = NULL;
+	size_t n = 0;
+
+	d = parse(src);
+	if (!d)
+		return;
+
+	fymm_render_cfg_default(&rcfg);
+	rcfg.color = FYMM_COLOR_256;
+	rcfg.charset = FYMM_CHARSET_ASCII;
+	plain = fymm_render(d, &rcfg);
+	CHECK(plain != NULL, "the unthemed render produced nothing");
+
+	while ((ti = fymm_theme_iterate(&iter)) != NULL) {
+		n++;
+		CHECK(ti->name && *ti->name, "a theme has no name");
+		CHECK(ti->description && *ti->description,
+		      "theme '%s' has no description", ti->name);
+
+		rcfg.theme = ti->name;
+		themed = fymm_render(d, &rcfg);
+		CHECK(themed != NULL, "theme '%s' produced no render",
+		      ti->name);
+		if (themed && plain && strcmp(ti->name, "default"))
+			CHECK(strcmp(themed, plain) != 0,
+			      "theme '%s' rendered identically to the default",
+			      ti->name);
+		fymm_free(themed);
+	}
+	CHECK(n >= 3, "expected at least three built-in themes, got %zu", n);
+
+	/* an unknown theme fails rather than falling back silently */
+	rcfg.theme = "no-such-theme";
+	CHECK(fymm_render(d, &rcfg) == NULL,
+	      "an unknown theme should not render");
+
+	fymm_free(plain);
+	fymm_diagram_destroy(d);
+}
+
+/* The mono theme carries structure with attributes and emits no colour. */
+static void test_theme_mono(void)
+{
+	static const char src[] = "gitGraph\n commit id: \"a\"\n";
+	struct fymm_render_cfg rcfg;
+	struct fymm_diagram *d;
+	char *text;
+
+	d = parse(src);
+	if (!d)
+		return;
+
+	fymm_render_cfg_default(&rcfg);
+	rcfg.color = FYMM_COLOR_TRUECOLOR;
+	rcfg.charset = FYMM_CHARSET_ASCII;
+	rcfg.theme = "mono";
+	text = fymm_render(d, &rcfg);
+	CHECK(text != NULL, "the mono render produced nothing");
+	if (text) {
+		CHECK(strstr(text, "\033[") != NULL,
+		      "mono should still emit attributes");
+		CHECK(strstr(text, ";38;") == NULL,
+		      "mono should emit no foreground colour");
+	}
+	fymm_free(text);
+	fymm_diagram_destroy(d);
+}
+
 int main(void)
 {
 	test_version();
@@ -458,6 +590,9 @@ int main(void)
 	test_strict();
 	test_config_sources();
 	test_render_modes();
+	test_color_reduction();
+	test_theme_catalogue();
+	test_theme_mono();
 
 	if (failures)
 		fprintf(stderr, "%d check(s) failed\n", failures);

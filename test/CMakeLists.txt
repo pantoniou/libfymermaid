@@ -4,6 +4,8 @@
 # that it is testing exactly the objects this tree built.
 add_executable(fymm-api-test fymm-api-test.c)
 target_link_libraries(fymm-api-test PRIVATE libfymermaid::libfymermaid_static)
+# the colour reduction is internal, so the test reaches into src/ for it
+target_include_directories(fymm-api-test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../src")
 add_test(NAME api COMMAND fymm-api-test)
 
 # Golden files.  Every test/gitgraph/<name>.mmd is rendered three ways and
