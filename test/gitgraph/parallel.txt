@@ -1,0 +1,5 @@
+     main ●──┬●
+          A  │C
+             │
+ feat/one    ╰●───●
+              B   D

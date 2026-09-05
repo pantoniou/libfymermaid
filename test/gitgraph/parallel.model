@@ -1,0 +1,59 @@
+type: gitGraph
+orientation: LR
+title: null
+accTitle: null
+accDescr: null
+config:
+  parallelCommits: true
+  showBranches: true
+  showCommitLabel: true
+  rotateCommitLabel: true
+  mainBranchName: main
+  mainBranchOrder: 0
+branches:
+- name: main
+  index: 0
+  lane: 0
+  order: null
+  tip: 2
+- name: feat/one
+  index: 1
+  lane: 1
+  order: null
+  tip: 3
+commits:
+- id: A
+  seq: 0
+  branch: 0
+  type: NORMAL
+  label: A
+  tags: []
+  parents: []
+  cherryFrom: -1
+- id: B
+  seq: 1
+  branch: 1
+  type: NORMAL
+  label: B
+  tags: []
+  parents:
+  - 0
+  cherryFrom: -1
+- id: C
+  seq: 2
+  branch: 0
+  type: NORMAL
+  label: C
+  tags: []
+  parents:
+  - 0
+  cherryFrom: -1
+- id: D
+  seq: 3
+  branch: 1
+  type: NORMAL
+  label: D
+  tags: []
+  parents:
+  - 1
+  cherryFrom: -1

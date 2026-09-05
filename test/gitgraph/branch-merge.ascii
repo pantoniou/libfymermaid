@@ -1,0 +1,6 @@
+                                   [v1.0]
+    main *-----*------+-----------+o-------*
+         init  second |           |m1      after
+                      |           |
+ develop              +*-----*----+
+                       dev1  dev2

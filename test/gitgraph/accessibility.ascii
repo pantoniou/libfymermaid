@@ -1,0 +1,8 @@
+Git graph of a release
+
+                   [v1.0]
+    main *----+---+o
+         ZERO |   |
+              |   |
+ feature      +*--+
+               A

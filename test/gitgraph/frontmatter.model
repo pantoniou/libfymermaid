@@ -1,0 +1,52 @@
+type: gitGraph
+orientation: LR
+title: Release flow
+accTitle: null
+accDescr: null
+config:
+  mainBranchName: trunk
+  showBranches: true
+  showCommitLabel: true
+  rotateCommitLabel: true
+  parallelCommits: false
+  mainBranchOrder: 0
+branches:
+- name: trunk
+  index: 0
+  lane: 0
+  order: null
+  tip: 2
+- name: hotfix
+  index: 1
+  lane: 1
+  order: null
+  tip: 1
+commits:
+- id: A
+  seq: 0
+  branch: 0
+  type: NORMAL
+  label: A
+  tags: []
+  parents: []
+  cherryFrom: -1
+- id: H
+  seq: 1
+  branch: 1
+  type: HIGHLIGHT
+  label: H
+  tags: []
+  parents:
+  - 0
+  cherryFrom: -1
+- id: 2
+  seq: 2
+  branch: 0
+  type: MERGE
+  label: ""
+  tags:
+  - v1.1
+  parents:
+  - 0
+  - 1
+  cherryFrom: -1

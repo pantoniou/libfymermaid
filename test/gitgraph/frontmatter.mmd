@@ -1,0 +1,12 @@
+---
+title: Release flow
+config:
+  gitGraph:
+    mainBranchName: trunk
+---
+gitGraph
+   commit id: "A"
+   branch hotfix
+   commit id: "H" type: HIGHLIGHT
+   checkout trunk
+   merge hotfix tag: "v1.1"

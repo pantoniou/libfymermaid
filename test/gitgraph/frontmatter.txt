@@ -1,0 +1,8 @@
+Release flow
+
+                [v1.1]
+  trunk ●──┬───┬◎
+        A  │   │
+           │   │
+ hotfix    ╰▣──╯
+            H

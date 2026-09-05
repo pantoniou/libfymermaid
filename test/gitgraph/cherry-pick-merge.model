@@ -1,0 +1,83 @@
+type: gitGraph
+orientation: LR
+title: null
+accTitle: null
+accDescr: null
+config:
+  showBranches: true
+  showCommitLabel: true
+  rotateCommitLabel: true
+  parallelCommits: false
+  mainBranchName: main
+  mainBranchOrder: 0
+branches:
+- name: main
+  index: 0
+  lane: 0
+  order: null
+  tip: 3
+- name: feature
+  index: 1
+  lane: 1
+  order: null
+  tip: 2
+- name: release
+  index: 2
+  lane: 2
+  order: null
+  tip: 5
+commits:
+- id: ZERO
+  seq: 0
+  branch: 0
+  type: NORMAL
+  label: ZERO
+  tags: []
+  parents: []
+  cherryFrom: -1
+- id: A
+  seq: 1
+  branch: 1
+  type: NORMAL
+  label: A
+  tags: []
+  parents:
+  - 0
+  cherryFrom: -1
+- id: B
+  seq: 2
+  branch: 1
+  type: NORMAL
+  label: B
+  tags: []
+  parents:
+  - 1
+  cherryFrom: -1
+- id: M
+  seq: 3
+  branch: 0
+  type: MERGE
+  label: M
+  tags: []
+  parents:
+  - 0
+  - 2
+  cherryFrom: -1
+- id: C
+  seq: 4
+  branch: 2
+  type: NORMAL
+  label: C
+  tags: []
+  parents:
+  - 0
+  cherryFrom: -1
+- id: 5
+  seq: 5
+  branch: 2
+  type: CHERRY_PICK
+  label: M
+  tags: []
+  parents:
+  - 4
+  cherryFrom: 3

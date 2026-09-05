@@ -1,0 +1,60 @@
+type: gitGraph
+orientation: LR
+title: null
+accTitle: null
+accDescr: null
+config:
+  showBranches: true
+  showCommitLabel: true
+  rotateCommitLabel: true
+  parallelCommits: false
+  mainBranchName: main
+  mainBranchOrder: 0
+branches:
+- name: main
+  index: 0
+  lane: 0
+  order: null
+  tip: 3
+- name: feature
+  index: 1
+  lane: 1
+  order: null
+  tip: 1
+commits:
+- id: A
+  seq: 0
+  branch: 0
+  type: NORMAL
+  label: A
+  tags: []
+  parents: []
+  cherryFrom: -1
+- id: F1
+  seq: 1
+  branch: 1
+  type: NORMAL
+  label: F1
+  tags: []
+  parents:
+  - 0
+  cherryFrom: -1
+- id: B
+  seq: 2
+  branch: 0
+  type: NORMAL
+  label: B
+  tags: []
+  parents:
+  - 0
+  cherryFrom: -1
+- id: 3
+  seq: 3
+  branch: 0
+  type: CHERRY_PICK
+  label: F1
+  tags:
+  - picked
+  parents:
+  - 2
+  cherryFrom: 1

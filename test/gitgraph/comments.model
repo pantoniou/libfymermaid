@@ -1,0 +1,36 @@
+type: gitGraph
+orientation: LR
+title: null
+accTitle: null
+accDescr: null
+config:
+  showBranches: true
+  showCommitLabel: true
+  rotateCommitLabel: true
+  parallelCommits: false
+  mainBranchName: main
+  mainBranchOrder: 0
+branches:
+- name: main
+  index: 0
+  lane: 0
+  order: null
+  tip: 1
+commits:
+- id: A
+  seq: 0
+  branch: 0
+  type: NORMAL
+  label: A
+  tags: []
+  parents: []
+  cherryFrom: -1
+- id: 'B: with a colon'
+  seq: 1
+  branch: 0
+  type: NORMAL
+  label: 'B: with a colon'
+  tags: []
+  parents:
+  - 0
+  cherryFrom: -1

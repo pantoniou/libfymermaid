@@ -1,0 +1,6 @@
+input.mmd:3:13: error: unknown branch 'nope'
+input.mmd:5:10: error: cannot merge branch 'dev' with itself
+input.mmd:6:15: warning: duplicate commit id 'A'
+input.mmd:7:20: error: unknown commit id 'missing'
+input.mmd:8:4: error: unknown gitGraph statement 'rebase'
+input.mmd:9:11: warning: ignoring unknown attribute 'wibble' on 'commit'

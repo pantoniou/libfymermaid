@@ -1,0 +1,54 @@
+type: gitGraph
+orientation: LR
+title: Git graph of a release
+accTitle: Git graph of a release
+accDescr: |-
+  A main branch with one feature
+  branch merged back in.
+config:
+  showBranches: true
+  showCommitLabel: true
+  rotateCommitLabel: true
+  parallelCommits: false
+  mainBranchName: main
+  mainBranchOrder: 0
+branches:
+- name: main
+  index: 0
+  lane: 0
+  order: null
+  tip: 2
+- name: feature
+  index: 1
+  lane: 1
+  order: null
+  tip: 1
+commits:
+- id: ZERO
+  seq: 0
+  branch: 0
+  type: NORMAL
+  label: ZERO
+  tags: []
+  parents: []
+  cherryFrom: -1
+- id: A
+  seq: 1
+  branch: 1
+  type: NORMAL
+  label: A
+  tags: []
+  parents:
+  - 0
+  cherryFrom: -1
+- id: 2
+  seq: 2
+  branch: 0
+  type: MERGE
+  label: ""
+  tags:
+  - v1.0
+  parents:
+  - 0
+  - 1
+  cherryFrom: -1
