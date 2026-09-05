@@ -38,6 +38,22 @@ the locale.
 .BR \-a ", " \-\-ascii
 Shorthand for \fB\-\-charset ascii\fR.
 .TP
+.BR \-t ", " \-\-theme " \fINAME\fR"
+Colour the diagram with a built-in theme.  \fB\-\-list\-themes\fR names them.
+The theme is applied over the built-in palette, so a theme that sets one
+colour keeps the rest.
+.TP
+.BR \-S ", " \-\-style " \fIFILE\fR"
+Read a theme file, applied over \fB\-\-theme\fR.  The file is YAML with a
+\fBcolors\fR mapping keyed by \fBgit0\fR to \fBgit7\fR, \fBcommitLabel\fR,
+\fBtag\fR and \fBtitle\fR.  A value is \fB#rgb\fR, \fB#rrggbb\fR, an xterm
+palette index, or an ANSI colour name; it may instead be a mapping carrying
+\fBcolor\fR, \fBbold\fR and \fBdim\fR.  A colour is reduced to the nearest
+entry of the palette the terminal can take.
+.TP
+.BR \-L ", " \-\-list\-themes
+List the built-in themes and exit.
+.TP
 .BR \-m ", " \-\-dump\-model
 Emit the parsed diagram model as YAML instead of rendering it.  The model is
 the same

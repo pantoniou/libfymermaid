@@ -68,6 +68,33 @@ Two deliberate differences:
   than with a random hash, so a diagram renders identically every time and the
   label stays usable as a `cherry-pick` target.
 
+## Colour
+
+Three depths, chosen automatically or with `--color`: 24-bit, the xterm-256
+cube, and the sixteen ANSI colours. `auto` honours `NO_COLOR`,
+`CLICOLOR_FORCE`, `isatty`, `COLORTERM` and `TERM`, in that order.
+
+Themes are YAML, embedded into the library at build time:
+
+```sh
+fy-mermaid --list-themes
+fy-mermaid --theme light graph.mmd
+fy-mermaid --style my-colours.yaml graph.mmd    # applied over --theme
+```
+
+```yaml
+colors:
+  git0: "#3b8eea"          # git0..git7 cycle over the branches
+  commitLabel: "#bdc3c7"
+  tag: { color: "#ffd479", bold: true }
+```
+
+A value is `#rgb`, `#rrggbb`, an xterm palette index, or an ANSI colour name,
+and is reduced to the nearest entry of whatever palette the terminal actually
+has, so a theme survives on a 256- or 16-colour terminal. A theme is applied
+over the built-in palette, so one that sets a single key keeps the rest; `mono`
+uses that to carry the structure with bold and dim alone.
+
 ## Conformance
 
 `test/mermaid-suite/` carries upstream mermaid's own parser corpus: 1271 cases

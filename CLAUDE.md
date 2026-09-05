@@ -226,6 +226,27 @@ at the top and the bottom are removed at emission.
 The canvas measures UTF-8 with its own tables. It does not use `wcwidth()` and
 it does not depend on the locale.
 
+### Colour
+
+A cell holds a palette index, never a colour and never an escape sequence.
+`fymm_emit_sgr()` is the one place an escape is written. Add a colour by adding
+a `enum fymm_palette` entry and its key in `fymm_palette_keys`, not by writing
+an escape at a draw site.
+
+A theme is a YAML file in `themes/`, embedded by `src/CMakeLists.txt` at
+configure time and reachable through `fymm_theme_iterate()`. A theme is applied
+over the built-in palette, so a file that sets one key keeps the rest. Adding a
+theme is adding a file; the build finds it.
+
+Colours are stored as 24-bit and reduced at emission to the palette the
+terminal has, by redmean distance in `src/fymm-color.c`. Do not hand-pick a
+per-depth value for a new colour; the reduction is the single path, so a theme
+from a mermaid source degrades the same way a built-in one does.
+
+`fymm_color_parse()` takes `#rgb`, `#rrggbb`, an xterm index and an ANSI name.
+A bare number of up to three digits is an index, not a hex colour: `196` is
+ambiguous otherwise.
+
 ## C style
 
 Use Linux kernel C style:
