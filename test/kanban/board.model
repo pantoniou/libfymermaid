@@ -1,0 +1,27 @@
+type: kanban
+title: null
+accTitle: null
+accDescr: null
+config: {}
+sections:
+- id: Todo
+  text: Todo
+  items:
+  - id: Write the parser
+    text: Write the parser
+    metadata: null
+  - id: Write the renderer
+    text: Write the renderer
+    metadata: null
+- id: In progress
+  text: In progress
+  items:
+  - id: Review the corpus
+    text: Review the corpus
+    metadata: null
+- id: Done
+  text: Done
+  items:
+  - id: Ship it
+    text: Ship it
+    metadata: null

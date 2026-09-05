@@ -1,0 +1,18 @@
+type: kanban
+title: null
+accTitle: null
+accDescr: null
+config: {}
+sections:
+- id: root
+  text: Root
+  items:
+  - id: Child
+    text: Child
+    metadata: null
+  - id: a
+    text: a
+    metadata: null
+  - id: b
+    text: New Stuff
+    metadata: null

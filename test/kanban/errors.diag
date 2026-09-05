@@ -1,0 +1,2 @@
+input.mmd:3:1: error: 'fakeRoot' sits above the first column, so the cards under it have none
+input.mmd:4:1: error: 'realRootWrongPlace' sits above the first column, so the cards under it have none
