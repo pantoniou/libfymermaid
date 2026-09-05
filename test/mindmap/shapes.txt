@@ -1,0 +1,8 @@
+ ◉ the root
+ ├─ ▪ a square
+ ├─ ● a rounded
+ ├─ ◉ a circle
+ ├─ ✹ a bang
+ ├─ ◌ a cloud
+ ├─ ⬡ a hexagon
+ ╰─ · plain

@@ -1,0 +1,18 @@
+type: mindmap
+title: null
+accTitle: null
+accDescr: null
+config: {}
+root:
+  id: root
+  text: String containing []
+  shape: square
+  icon: null
+  class: null
+  children:
+  - id: child1
+    text: String containing ()
+    shape: square
+    icon: null
+    class: null
+    children: []

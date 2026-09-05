@@ -1,0 +1,2 @@
+input.mmd:3:9: error: a mindmap has one root, and 'fakeRoot' is a second
+input.mmd:4:5: error: a mindmap has one root, and 'realRootWrongPlace' is a second

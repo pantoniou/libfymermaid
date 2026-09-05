@@ -1,0 +1,90 @@
+type: mindmap
+title: null
+accTitle: null
+accDescr: null
+config: {}
+root:
+  id: root
+  text: mermaid
+  shape: circle
+  icon: null
+  class: null
+  children:
+  - id: Origins
+    text: Origins
+    shape: default
+    icon: null
+    class: null
+    children:
+    - id: Long history
+      text: Long history
+      shape: default
+      icon: book
+      class: null
+      children: []
+    - id: Popularisation
+      text: Popularisation
+      shape: default
+      icon: null
+      class: null
+      children:
+      - id: British popular psychology author Tony Buzan
+        text: British popular psychology author Tony Buzan
+        shape: default
+        icon: null
+        class: null
+        children: []
+  - id: Research
+    text: Research
+    shape: default
+    icon: null
+    class: null
+    children:
+    - id: On effectiveness<br/>and features
+      text: On effectiveness<br/>and features
+      shape: default
+      icon: null
+      class: null
+      children: []
+    - id: On Automatic creation
+      text: On Automatic creation
+      shape: default
+      icon: null
+      class: null
+      children:
+      - id: Uses
+        text: Uses
+        shape: default
+        icon: null
+        class: null
+        children:
+        - id: Creative techniques
+          text: Creative techniques
+          shape: default
+          icon: null
+          class: null
+          children: []
+        - id: Strategic planning
+          text: Strategic planning
+          shape: default
+          icon: null
+          class: null
+          children: []
+  - id: Tools
+    text: Tools
+    shape: default
+    icon: null
+    class: null
+    children:
+    - id: Pen and paper
+      text: Pen and paper
+      shape: default
+      icon: null
+      class: null
+      children: []
+    - id: Mermaid
+      text: Mermaid
+      shape: square
+      icon: null
+      class: hot
+      children: []

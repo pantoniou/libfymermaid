@@ -1,0 +1,54 @@
+type: mindmap
+title: null
+accTitle: null
+accDescr: null
+config: {}
+root:
+  id: root
+  text: the root
+  shape: circle
+  icon: null
+  class: null
+  children:
+  - id: square
+    text: a square
+    shape: square
+    icon: null
+    class: null
+    children: []
+  - id: rounded
+    text: a rounded
+    shape: rounded
+    icon: null
+    class: null
+    children: []
+  - id: circle
+    text: a circle
+    shape: circle
+    icon: null
+    class: null
+    children: []
+  - id: bang
+    text: a bang
+    shape: bang
+    icon: null
+    class: null
+    children: []
+  - id: cloud
+    text: a cloud
+    shape: cloud
+    icon: null
+    class: null
+    children: []
+  - id: hexagon
+    text: a hexagon
+    shape: hexagon
+    icon: null
+    class: null
+    children: []
+  - id: plain
+    text: plain
+    shape: default
+    icon: null
+    class: null
+    children: []
