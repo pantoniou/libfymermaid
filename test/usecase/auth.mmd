@@ -1,0 +1,10 @@
+usecase-beta
+    actor Customer("Customer")
+    actor Clerk("Payment clerk")
+    systemBoundary "Payment service"
+      Checkout("Checkout")
+      Refund("Refund")
+    end
+    Customer --> Checkout
+    Clerk --> Refund
+    Checkout --> Refund : may lead to

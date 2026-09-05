@@ -1,0 +1,52 @@
+type: usecase
+title: null
+accTitle: null
+accDescr: null
+config: {}
+nodes:
+- id: Customer
+  label: Customer
+  kind: actor
+  stereotype: null
+  metadata: null
+  boundary: null
+- id: Clerk
+  label: Payment clerk
+  kind: actor
+  stereotype: null
+  metadata: null
+  boundary: null
+- id: Payment service
+  label: null
+  kind: boundary
+  stereotype: null
+  metadata: null
+  boundary: null
+- id: Checkout
+  label: Checkout
+  kind: usecase
+  stereotype: null
+  metadata: null
+  boundary: Payment service
+- id: Refund
+  label: Refund
+  kind: usecase
+  stereotype: null
+  metadata: null
+  boundary: Payment service
+edges:
+- id: null
+  from: Customer
+  to: Checkout
+  label: null
+- id: null
+  from: Clerk
+  to: Refund
+  label: null
+- id: null
+  from: Checkout
+  to: Refund
+  label: may lead to
+boundaries:
+- Payment service
+notes: []

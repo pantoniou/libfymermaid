@@ -1,0 +1,2 @@
+input.mmd:2:1: error: a quoted name is missing its closing quote
+input.mmd:3:1: error: 'end' with no systemBoundary open
