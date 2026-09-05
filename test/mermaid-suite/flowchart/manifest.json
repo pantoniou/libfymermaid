@@ -1,0 +1,1490 @@
+{
+ "cases": [
+  {
+   "file": "000-should-handle-a-nodes-and-edges.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing",
+   "name": "should handle a nodes and edges"
+  },
+  {
+   "file": "001-should-handle-angle-bracket-as-direction-lr.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing",
+   "name": "should handle angle bracket ' > ' as direction LR"
+  },
+  {
+   "file": "002-should-handle-angle-bracket-as-direction-rl.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing",
+   "name": "should handle angle bracket ' < ' as direction RL"
+  },
+  {
+   "file": "003-should-handle-caret-as-direction-bt.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing",
+   "name": "should handle caret ' ^ ' as direction BT"
+  },
+  {
+   "file": "004-should-handle-lower-case-v-as-direction-tb.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing",
+   "name": "should handle lower-case 'v' as direction TB"
+  },
+  {
+   "file": "005-should-handle-a-nodes-and-edges-and-a-space-between-link-and.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing",
+   "name": "should handle a nodes and edges and a space between link and node"
+  },
+  {
+   "file": "006-should-handle-a-nodes-and-edges-a-space-between-link-and-nod.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing",
+   "name": "should handle a nodes and edges, a space between link and node and each line ending without semicolon"
+  },
+  {
+   "file": "007-should-handle-statements-ending-without-semicolon.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing",
+   "name": "should handle statements ending without semicolon"
+  },
+  {
+   "file": "008-should-handle-double-edged-nodes-and-edges.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing/it should handle multi directional arrows/point",
+   "name": "should handle double edged nodes and edges"
+  },
+  {
+   "file": "009-should-handle-double-edged-nodes-with-text.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing/it should handle multi directional arrows/point",
+   "name": "should handle double edged nodes with text"
+  },
+  {
+   "file": "010-should-handle-double-edged-nodes-and-edges-on-thick-arrows.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing/it should handle multi directional arrows/point",
+   "name": "should handle double edged nodes and edges on thick arrows"
+  },
+  {
+   "file": "011-should-handle-double-edged-nodes-with-text-on-thick-arrows.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing/it should handle multi directional arrows/point",
+   "name": "should handle double edged nodes with text on thick arrows"
+  },
+  {
+   "file": "012-should-handle-double-edged-nodes-and-edges-on-dotted-arrows.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing/it should handle multi directional arrows/point",
+   "name": "should handle double edged nodes and edges on dotted arrows"
+  },
+  {
+   "file": "013-should-handle-double-edged-nodes-with-text-on-dotted-arrows.mmd",
+   "outcome": "parses",
+   "suite": "[Arrows] when parsing/it should handle multi directional arrows/point",
+   "name": "should handle double edged nodes with text on dotted arrows"
+  },
+  {
+   "file": "014-should-use-default-direction-from-top-level.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should use default direction from top level"
+  },
+  {
+   "file": "015-should-handle-a-subgraph-with-a-direction.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should handle a subgraph with a direction"
+  },
+  {
+   "file": "016-should-use-the-last-defined-direction.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should use the last defined direction"
+  },
+  {
+   "file": "017-should-handle-nested-subgraphs-1.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should handle nested subgraphs 1"
+  },
+  {
+   "file": "018-should-handle-open-ended-edges.mmd",
+   "outcome": "parses",
+   "suite": "[Edges] when parsing",
+   "name": "should handle open ended edges"
+  },
+  {
+   "file": "019-should-handle-cross-ended-edges.mmd",
+   "outcome": "parses",
+   "suite": "[Edges] when parsing",
+   "name": "should handle cross ended edges"
+  },
+  {
+   "file": "020-should-handle-open-ended-edges-2.mmd",
+   "outcome": "parses",
+   "suite": "[Edges] when parsing",
+   "name": "should handle open ended edges"
+  },
+  {
+   "file": "021-should-handle-normal-edges-where-you-also-have-a-node-with-m.mmd",
+   "outcome": "parses",
+   "suite": "[Edges] when parsing/edges with ids/open ended edges with ids and labels",
+   "name": "should handle normal edges where you also have a node with metadata"
+  },
+  {
+   "file": "022-should-handle-multiple-edges.mmd",
+   "outcome": "parses",
+   "suite": "[Edges] when parsing",
+   "name": "should handle multiple edges"
+  },
+  {
+   "file": "023-should-be-possible-to-use-click-to-a-callback.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should be possible to use click to a callback"
+  },
+  {
+   "file": "024-should-be-possible-to-use-click-to-a-click-and-call-callback.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should be possible to use click to a click and call callback"
+  },
+  {
+   "file": "025-should-be-possible-to-use-click-to-a-callback-with-tooltip.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should be possible to use click to a callback with tooltip"
+  },
+  {
+   "file": "026-should-be-possible-to-use-click-to-a-click-and-call-callback-2.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should be possible to use click to a click and call callback with tooltip"
+  },
+  {
+   "file": "027-should-be-possible-to-use-click-to-a-callback-with-an-arbitr.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should be possible to use click to a callback with an arbitrary number of args"
+  },
+  {
+   "file": "028-should-handle-interaction-click-to-a-link.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should handle interaction - click to a link"
+  },
+  {
+   "file": "029-should-handle-interaction-click-to-a-click-and-href-link.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should handle interaction - click to a click and href link"
+  },
+  {
+   "file": "030-should-handle-interaction-click-to-a-link-with-tooltip.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should handle interaction - click to a link with tooltip"
+  },
+  {
+   "file": "031-should-handle-interaction-click-to-a-click-and-href-link-wit.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should handle interaction - click to a click and href link with tooltip"
+  },
+  {
+   "file": "032-should-handle-interaction-click-to-a-link-with-target.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should handle interaction - click to a link with target"
+  },
+  {
+   "file": "033-should-handle-interaction-click-to-a-click-and-href-link-wit-2.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should handle interaction - click to a click and href link with target"
+  },
+  {
+   "file": "034-should-handle-interaction-click-to-a-link-with-tooltip-and-t.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should handle interaction - click to a link with tooltip and target"
+  },
+  {
+   "file": "035-should-handle-interaction-click-to-a-click-and-href-link-wit-3.mmd",
+   "outcome": "parses",
+   "suite": "[Interactions] when parsing",
+   "name": "should handle interaction - click to a click and href link with tooltip and target"
+  },
+  {
+   "file": "036-should-handle-line-interpolation-default-definitions.mmd",
+   "outcome": "parses",
+   "suite": "[Lines] when parsing",
+   "name": "should handle line interpolation default definitions"
+  },
+  {
+   "file": "037-should-handle-line-interpolation-numbered-definitions.mmd",
+   "outcome": "parses",
+   "suite": "[Lines] when parsing",
+   "name": "should handle line interpolation numbered definitions"
+  },
+  {
+   "file": "038-should-handle-edge-curve-properties-using-edge-id.mmd",
+   "outcome": "parses",
+   "suite": "[Lines] when parsing",
+   "name": "should handle edge curve properties using edge ID"
+  },
+  {
+   "file": "039-should-handle-edge-curve-properties-using-edge-id-but-withou.mmd",
+   "outcome": "parses",
+   "suite": "[Lines] when parsing",
+   "name": "should handle edge curve properties using edge ID but without overriding default"
+  },
+  {
+   "file": "040-should-handle-edge-curve-properties-using-edge-id-mixed-with.mmd",
+   "outcome": "parses",
+   "suite": "[Lines] when parsing",
+   "name": "should handle edge curve properties using edge ID mixed with line interpolation"
+  },
+  {
+   "file": "041-should-handle-line-interpolation-multi-numbered-definitions.mmd",
+   "outcome": "parses",
+   "suite": "[Lines] when parsing",
+   "name": "should handle line interpolation multi-numbered definitions"
+  },
+  {
+   "file": "042-should-handle-line-interpolation-default-with-style.mmd",
+   "outcome": "parses",
+   "suite": "[Lines] when parsing",
+   "name": "should handle line interpolation default with style"
+  },
+  {
+   "file": "043-should-handle-line-interpolation-numbered-with-style.mmd",
+   "outcome": "parses",
+   "suite": "[Lines] when parsing",
+   "name": "should handle line interpolation numbered with style"
+  },
+  {
+   "file": "044-should-handle-line-interpolation-multi-numbered-with-style.mmd",
+   "outcome": "parses",
+   "suite": "[Lines] when parsing",
+   "name": "should handle line interpolation multi-numbered with style"
+  },
+  {
+   "file": "045-should-handle-regular-lines.mmd",
+   "outcome": "parses",
+   "suite": "[Lines] when parsing/it should handle new line type notation",
+   "name": "should handle regular lines"
+  },
+  {
+   "file": "046-should-handle-dotted-lines.mmd",
+   "outcome": "parses",
+   "suite": "[Lines] when parsing/it should handle new line type notation",
+   "name": "should handle dotted lines"
+  },
+  {
+   "file": "047-should-handle-dotted-lines-2.mmd",
+   "outcome": "parses",
+   "suite": "[Lines] when parsing/it should handle new line type notation",
+   "name": "should handle dotted lines"
+  },
+  {
+   "file": "048-markdown-formatting-in-nodes-and-labels.mmd",
+   "outcome": "parses",
+   "suite": "parsing a flow chart with markdown strings",
+   "name": "markdown formatting in nodes and labels"
+  },
+  {
+   "file": "049-markdown-formatting-in-subgraphs.mmd",
+   "outcome": "parses",
+   "suite": "parsing a flow chart with markdown strings",
+   "name": "markdown formatting in subgraphs"
+  },
+  {
+   "file": "050-should-handle-basic-shape-data-statements.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should handle basic shape data statements"
+  },
+  {
+   "file": "051-should-handle-basic-shape-data-statements-2.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should handle basic shape data statements"
+  },
+  {
+   "file": "052-should-handle-basic-shape-data-statements-with.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should handle basic shape data statements with &"
+  },
+  {
+   "file": "053-should-handle-shape-data-statements-with-edges.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should handle shape data statements with edges"
+  },
+  {
+   "file": "054-should-handle-basic-shape-data-statements-with-amp-and-edges.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should handle basic shape data statements with amp and edges 1"
+  },
+  {
+   "file": "055-should-handle-basic-shape-data-statements-with-amp-and-edges-2.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should handle basic shape data statements with amp and edges 2"
+  },
+  {
+   "file": "056-should-handle-basic-shape-data-statements-with-amp-and-edges-3.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should handle basic shape data statements with amp and edges 3"
+  },
+  {
+   "file": "057-should-handle-basic-shape-data-statements-with-amp-and-edges-4.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should handle basic shape data statements with amp and edges 4"
+  },
+  {
+   "file": "058-should-handle-basic-shape-data-statements-with-amp-and-edges-5.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should handle basic shape data statements with amp and edges 5, trailing space"
+  },
+  {
+   "file": "059-should-no-matter-of-there-are-no-leading-spaces.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should no matter of there are no leading spaces"
+  },
+  {
+   "file": "060-should-no-matter-of-there-are-many-leading-spaces.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should no matter of there are many leading spaces"
+  },
+  {
+   "file": "061-should-be-forgiving-with-many-spaces-before-the-end.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should be forgiving with many spaces before the end"
+  },
+  {
+   "file": "062-should-be-possible-to-add-multiple-properties-on-the-same-li.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should be possible to add multiple properties on the same line"
+  },
+  {
+   "file": "063-should-be-possible-to-link-to-a-node-with-more-data.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should be possible to link to a node with more data"
+  },
+  {
+   "file": "064-should-not-disturb-adding-multiple-nodes-after-each-other.mmd",
+   "outcome": "parses",
+   "suite": "when parsing directions",
+   "name": "should not disturb adding multiple nodes after each other"
+  },
+  {
+   "file": "065-should-use-handle-bracket-end-character-inside-the-shape-dat.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should use handle bracket end (}) character inside the shape data"
+  },
+  {
+   "file": "066-should-error-on-nonexistent-shape.mmd",
+   "outcome": "fails",
+   "suite": "",
+   "name": "should error on nonexistent shape"
+  },
+  {
+   "file": "067-should-error-on-internal-only-shape.mmd",
+   "outcome": "fails",
+   "suite": "",
+   "name": "should error on internal-only shape"
+  },
+  {
+   "file": "068-diamond-shapes-should-work-as-usual.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "Diamond shapes should work as usual"
+  },
+  {
+   "file": "069-multi-line-strings-should-be-supported.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "Multi line strings should be supported"
+  },
+  {
+   "file": "070-multi-line-strings-should-be-supported-2.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "Multi line strings should be supported"
+  },
+  {
+   "file": "071-should-be-possible-to-use-in-strings.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should be possible to use } in strings"
+  },
+  {
+   "file": "072-should-be-possible-to-use-in-strings-2.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should be possible to use @ in strings"
+  },
+  {
+   "file": "073-should-be-possible-to-use-in-strings-3.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should be possible to use @ in strings"
+  },
+  {
+   "file": "074-should-be-possible-to-use-syntax-to-add-labels-on-multi-node.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should be possible to use @  syntax to add labels on multi nodes"
+  },
+  {
+   "file": "075-should-be-possible-to-use-syntax-to-add-labels-on-multi-node-2.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should be possible to use @  syntax to add labels on multi nodes with edge/link"
+  },
+  {
+   "file": "076-should-be-possible-to-use-syntax-in-labels.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should be possible to use @  syntax in labels"
+  },
+  {
+   "file": "077-should-handle-unique-edge-creation-with-using-and.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should handle unique edge creation with using @ and &"
+  },
+  {
+   "file": "078-should-handle-redefine-same-edge-ids-again.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should handle redefine same edge ids again"
+  },
+  {
+   "file": "079-should-handle-overriding-edge-animate-again.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should handle overriding edge animate again"
+  },
+  {
+   "file": "080-should-handle-a-single-node.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single node"
+  },
+  {
+   "file": "081-should-handle-a-single-node-with-white-space-after-it-sn1.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single node with white space after it (SN1)"
+  },
+  {
+   "file": "082-should-handle-a-single-square-node.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single square node"
+  },
+  {
+   "file": "083-should-handle-a-single-round-square-node.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single round square node"
+  },
+  {
+   "file": "084-should-handle-a-single-circle-node.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single circle node"
+  },
+  {
+   "file": "085-should-handle-a-single-round-node.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single round node"
+  },
+  {
+   "file": "086-should-handle-a-single-odd-node.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single odd node"
+  },
+  {
+   "file": "087-should-handle-a-single-diamond-node.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single diamond node"
+  },
+  {
+   "file": "088-should-handle-a-single-diamond-node-with-whitespace-after-it.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single diamond node with whitespace after it"
+  },
+  {
+   "file": "089-should-handle-a-single-diamond-node-with-html-in-it-sn3.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single diamond node with html in it (SN3)"
+  },
+  {
+   "file": "090-should-handle-a-single-hexagon-node.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single hexagon node"
+  },
+  {
+   "file": "091-should-handle-a-single-hexagon-node-with-html-in-it.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single hexagon node with html in it"
+  },
+  {
+   "file": "092-should-handle-a-single-round-node-with-html-in-it.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single round node with html in it"
+  },
+  {
+   "file": "093-should-handle-a-single-double-circle-node.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single double circle node"
+  },
+  {
+   "file": "094-should-handle-a-single-double-circle-node-with-whitespace-af.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single double circle node with whitespace after it"
+  },
+  {
+   "file": "095-should-handle-a-single-double-circle-node-with-html-in-it-sn.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single double circle node with html in it (SN3)"
+  },
+  {
+   "file": "096-should-handle-a-single-node-with-alphanumerics-starting-on-a.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single node with alphanumerics starting on a char"
+  },
+  {
+   "file": "097-should-handle-a-single-node-with-a-single-digit.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single node with a single digit"
+  },
+  {
+   "file": "098-should-handle-a-single-node-with-a-single-digit-in-a-subgrap.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single node with a single digit in a subgraph"
+  },
+  {
+   "file": "099-should-handle-a-single-node-with-alphanumerics-starting-on-a-2.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single node with alphanumerics starting on a num"
+  },
+  {
+   "file": "100-should-handle-a-single-node-with-alphanumerics-containing-a-.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single node with alphanumerics containing a minus sign"
+  },
+  {
+   "file": "101-should-handle-a-single-node-with-alphanumerics-containing-a--2.mmd",
+   "outcome": "parses",
+   "suite": "[Singlenodes] when parsing",
+   "name": "should handle a single node with alphanumerics containing a underscore sign"
+  },
+  {
+   "file": "102-should-handle-text-without-space.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle text without space"
+  },
+  {
+   "file": "103-should-handle-with-space.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle with space"
+  },
+  {
+   "file": "104-should-handle-text-with.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle text with /"
+  },
+  {
+   "file": "105-should-handle-space-and-space-between-vertices-and-link.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle space and space between vertices and link"
+  },
+  {
+   "file": "106-should-handle-space-and-caps.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle space and CAPS"
+  },
+  {
+   "file": "107-should-handle-space-and-dir.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle space and dir"
+  },
+  {
+   "file": "108-should-handle-space-and-send.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle space and send"
+  },
+  {
+   "file": "109-should-handle-space-and-send-2.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle space and send"
+  },
+  {
+   "file": "110-should-handle-space-and-dir-td.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle space and dir (TD)"
+  },
+  {
+   "file": "111-should-handle.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle `"
+  },
+  {
+   "file": "112-should-handle-v-in-node-ids-only-v.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle v in node ids only v"
+  },
+  {
+   "file": "113-should-handle-v-in-node-ids-v-at-end.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle v in node ids v at end"
+  },
+  {
+   "file": "114-should-handle-v-in-node-ids-v-in-middle.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle v in node ids v in middle"
+  },
+  {
+   "file": "115-should-handle-v-in-node-ids-v-at-start.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle v in node ids, v at start"
+  },
+  {
+   "file": "116-should-handle-keywords.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle keywords"
+  },
+  {
+   "file": "117-should-handle-keywords-2.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle keywords"
+  },
+  {
+   "file": "118-should-handle-quoted-text.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges",
+   "name": "should handle quoted text"
+  },
+  {
+   "file": "119-should-handle-normal-text-on-lines.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on lines",
+   "name": "should handle normal text on lines"
+  },
+  {
+   "file": "120-should-handle-dotted-text-on-lines-td3.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on lines",
+   "name": "should handle dotted text on lines (TD3)"
+  },
+  {
+   "file": "121-should-handle-thick-text-on-lines.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on lines",
+   "name": "should handle thick text on lines"
+  },
+  {
+   "file": "122-should-handle-text-without-space-2.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges using the new notation",
+   "name": "should handle text without space"
+  },
+  {
+   "file": "123-should-handle-text-with-multiple-leading-space.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges using the new notation",
+   "name": "should handle text with multiple leading space"
+  },
+  {
+   "file": "124-should-handle-with-space-2.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges using the new notation",
+   "name": "should handle with space"
+  },
+  {
+   "file": "125-should-handle-text-with-2.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges using the new notation",
+   "name": "should handle text with /"
+  },
+  {
+   "file": "126-should-handle-space-and-space-between-vertices-and-link-2.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges using the new notation",
+   "name": "should handle space and space between vertices and link"
+  },
+  {
+   "file": "127-should-handle-space-and-caps-2.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges using the new notation",
+   "name": "should handle space and CAPS"
+  },
+  {
+   "file": "128-should-handle-space-and-dir-2.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges using the new notation",
+   "name": "should handle space and dir"
+  },
+  {
+   "file": "129-should-handle-space-and-dir-td2.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges using the new notation",
+   "name": "should handle space and dir (TD2)"
+  },
+  {
+   "file": "130-should-handle-keywords-3.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges using the new notation",
+   "name": "should handle keywords"
+  },
+  {
+   "file": "131-should-handle-keywords-4.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text on edges using the new notation",
+   "name": "should handle keywords"
+  },
+  {
+   "file": "132-should-handle-space.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text in vertices, ",
+   "name": "should handle space"
+  },
+  {
+   "file": "133-should-handle-edge-case-for-odd-vertex-with-node-id-ending-w.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text in vertices, ",
+   "name": "should handle edge case for odd vertex with node id ending with minus"
+  },
+  {
+   "file": "134-should-allow-forward-slashes-in-lean-right-vertices.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text in vertices, ",
+   "name": "should allow forward slashes in lean_right vertices"
+  },
+  {
+   "file": "135-should-allow-back-slashes-in-lean-left-vertices.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text in vertices, ",
+   "name": "should allow back slashes in lean_left vertices"
+  },
+  {
+   "file": "136-should-handle-and-minus.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text in vertices, ",
+   "name": "should handle \u00e5\u00e4\u00f6 and minus"
+  },
+  {
+   "file": "137-should-handle-with-minus-and-space-and-br.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text in vertices, ",
+   "name": "should handle with \u00e5\u00e4\u00f6, minus and space and br"
+  },
+  {
+   "file": "138-should-handle-unicode-chars.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text in vertices, ",
+   "name": "should handle unicode chars"
+  },
+  {
+   "file": "139-should-handle-backslash.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text in vertices, ",
+   "name": "should handle backslash"
+  },
+  {
+   "file": "140-should-handle-caps.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text in vertices, ",
+   "name": "should handle CAPS"
+  },
+  {
+   "file": "141-should-handle-directions.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing/it should handle text in vertices, ",
+   "name": "should handle directions"
+  },
+  {
+   "file": "142-should-handle-multi-line-text.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should handle multi-line text"
+  },
+  {
+   "file": "143-should-handle-text-in-vertices-with-space.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should handle text in vertices with space"
+  },
+  {
+   "file": "144-should-handle-text-in-vertices-with-space-with-spaces-betwee.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should handle text in vertices with space with spaces between vertices and link"
+  },
+  {
+   "file": "145-should-handle-text-including-in-vertices.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should handle text including _ in vertices"
+  },
+  {
+   "file": "146-should-handle-quoted-text-in-vertices.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should handle quoted text in vertices "
+  },
+  {
+   "file": "147-should-handle-text-in-circle-vertices-with-space.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should handle text in circle vertices with space"
+  },
+  {
+   "file": "148-should-handle-text-in-ellipse-vertices.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should handle text in ellipse vertices"
+  },
+  {
+   "file": "149-should-not-freeze-when-ellipse-text-has-a.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should not freeze when ellipse text has a `(`"
+  },
+  {
+   "file": "150-should-handle-text-in-diamond-vertices-with-space.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should handle text in diamond vertices with space"
+  },
+  {
+   "file": "151-should-handle-text-in-with.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should handle text in with ?"
+  },
+  {
+   "file": "152-should-handle-text-in-with-2.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should handle text in with \u00e9\u00e8\u00ea\u00e0\u00e7\u00f4"
+  },
+  {
+   "file": "153-should-handle-text-in-with-3.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should handle text in with ,.?!+-*"
+  },
+  {
+   "file": "154-should-throw-error-at-nested-set-of-brackets.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should throw error at nested set of brackets"
+  },
+  {
+   "file": "155-should-throw-error-for-strings-and-text-at-the-same-time.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should throw error for strings and text at the same time"
+  },
+  {
+   "file": "156-should-throw-error-for-escaping-quotes-in-text-state.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should throw error for escaping quotes in text state"
+  },
+  {
+   "file": "157-should-throw-error-for-nested-quotation-marks.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should throw error for nested quotation marks"
+  },
+  {
+   "file": "158-should-throw-error.mmd",
+   "outcome": "parses",
+   "suite": "[Text] when parsing",
+   "name": "should throw error"
+  },
+  {
+   "file": "159-should-handle-chaining-of-vertices.mmd",
+   "outcome": "parses",
+   "suite": "when parsing flowcharts",
+   "name": "should handle chaining of vertices"
+  },
+  {
+   "file": "160-should-handle-chaining-of-vertices-2.mmd",
+   "outcome": "parses",
+   "suite": "when parsing flowcharts",
+   "name": "should handle chaining of vertices"
+  },
+  {
+   "file": "161-should-multiple-vertices-in-link-statement-in-the-beginning.mmd",
+   "outcome": "parses",
+   "suite": "when parsing flowcharts",
+   "name": "should multiple vertices in link statement in the beginning"
+  },
+  {
+   "file": "162-should-multiple-vertices-in-link-statement-at-the-end.mmd",
+   "outcome": "parses",
+   "suite": "when parsing flowcharts",
+   "name": "should multiple vertices in link statement at the end"
+  },
+  {
+   "file": "163-should-handle-chaining-of-vertices-at-both-ends-at-once.mmd",
+   "outcome": "parses",
+   "suite": "when parsing flowcharts",
+   "name": "should handle chaining of vertices at both ends at once"
+  },
+  {
+   "file": "164-should-handle-chaining-and-multiple-nodes-in-link-statement-.mmd",
+   "outcome": "parses",
+   "suite": "when parsing flowcharts",
+   "name": "should handle chaining and multiple nodes in link statement FVC "
+  },
+  {
+   "file": "165-should-handle-chaining-and-multiple-nodes-in-link-statement--2.mmd",
+   "outcome": "parses",
+   "suite": "when parsing flowcharts",
+   "name": "should handle chaining and multiple nodes in link statement with extra info in statements"
+  },
+  {
+   "file": "166-should-accept-swimlane-beta-as-a-graph-keyword.mmd",
+   "outcome": "parses",
+   "suite": "parsing a flow chart",
+   "name": "should accept swimlane-beta as a graph keyword"
+  },
+  {
+   "file": "167-should-handle-node-names-with-end-substring.mmd",
+   "outcome": "parses",
+   "suite": "parsing a flow chart",
+   "name": "should handle node names with \"end\" substring"
+  },
+  {
+   "file": "168-should-handle-node-names-ending-with-keywords.mmd",
+   "outcome": "parses",
+   "suite": "parsing a flow chart",
+   "name": "should handle node names ending with keywords"
+  },
+  {
+   "file": "169-should-allow-default-in-the-node-name-id.mmd",
+   "outcome": "parses",
+   "suite": "parsing a flow chart",
+   "name": "should allow default in the node name/id"
+  },
+  {
+   "file": "170-should-be-possible-to-use-direction-in-node-ids.mmd",
+   "outcome": "parses",
+   "suite": "parsing a flow chart",
+   "name": "should be possible to use direction in node ids"
+  },
+  {
+   "file": "171-should-be-possible-to-use-direction-in-node-ids-2.mmd",
+   "outcome": "parses",
+   "suite": "parsing a flow chart",
+   "name": "should be possible to use direction in node ids"
+  },
+  {
+   "file": "172-should-be-possible-to-use-numbers-as-labels.mmd",
+   "outcome": "parses",
+   "suite": "parsing a flow chart",
+   "name": "should be possible to use numbers as labels"
+  },
+  {
+   "file": "173-should-add-acctitle-and-accdescr-to-flow-chart.mmd",
+   "outcome": "parses",
+   "suite": "parsing a flow chart",
+   "name": "should add accTitle and accDescr to flow chart"
+  },
+  {
+   "file": "174-should-add-acctitle-and-a-multi-line-accdescr-to-flow-chart.mmd",
+   "outcome": "parses",
+   "suite": "parsing a flow chart",
+   "name": "should add accTitle and a multi line accDescr to flow chart"
+  },
+  {
+   "file": "175-should-handle-subgraph-with-tab-indentation.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraph with tab indentation"
+  },
+  {
+   "file": "176-should-handle-subgraph-with-chaining-nodes-indentation.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraph with chaining nodes indentation"
+  },
+  {
+   "file": "177-should-handle-subgraph-with-multiple-words-in-title.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraph with multiple words in title"
+  },
+  {
+   "file": "178-should-handle-subgraph-with-id-and-title-notation.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraph with id and title notation"
+  },
+  {
+   "file": "179-should-handle-subgraph-id-starting-with-a-number.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraph id starting with a number"
+  },
+  {
+   "file": "180-should-handle-subgraphs1.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraphs1"
+  },
+  {
+   "file": "181-should-handle-subgraphs-with-title-in-quotes.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraphs with title in quotes"
+  },
+  {
+   "file": "182-should-handle-subgraphs-in-old-style-that-was-broken.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraphs in old style that was broken"
+  },
+  {
+   "file": "183-should-handle-subgraphs-with-dashes-in-the-title.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraphs with dashes in the title"
+  },
+  {
+   "file": "184-should-handle-subgraphs-with-id-and-title-in-brackets.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraphs with id and title in brackets"
+  },
+  {
+   "file": "185-should-handle-subgraphs-with-id-and-title-in-brackets-and-qu.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraphs with id and title in brackets and quotes"
+  },
+  {
+   "file": "186-should-handle-subgraphs-with-id-and-title-in-brackets-withou.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraphs with id and title in brackets without spaces"
+  },
+  {
+   "file": "187-should-handle-subgraphs2.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraphs2"
+  },
+  {
+   "file": "188-should-handle-subgraphs3.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraphs3"
+  },
+  {
+   "file": "189-should-handle-nested-subgraphs.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle nested subgraphs"
+  },
+  {
+   "file": "190-should-handle-subgraphs4.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraphs4"
+  },
+  {
+   "file": "191-should-handle-subgraphs5.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraphs5"
+  },
+  {
+   "file": "192-should-handle-subgraphs-with-multi-node-statements-in-it.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle subgraphs with multi node statements in it"
+  },
+  {
+   "file": "193-should-handle-nested-subgraphs-1-2.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle nested subgraphs 1"
+  },
+  {
+   "file": "194-should-handle-nested-subgraphs-2.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle nested subgraphs 2"
+  },
+  {
+   "file": "195-should-handle-nested-subgraphs-3.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should handle nested subgraphs 3"
+  },
+  {
+   "file": "196-should-correctly-parse-direction-td-inside-a-subgraph.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should correctly parse direction TD inside a subgraph"
+  },
+  {
+   "file": "197-should-attach-view-collapsed-metadata-to-a-subgraph-and-coll.mmd",
+   "outcome": "parses",
+   "suite": "when parsing subgraphs",
+   "name": "should attach `@{ view: collapsed }` metadata to a subgraph and collapse it"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "should return true when the is exists in a subgraph",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return false when the is exists in a subgraph",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should remove ids from sungraph that already exists in another subgraph even if it gets empty",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should remove ids from sungraph that already exists in another subgraph",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should not remove ids from subgraph if they are unique",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should detect many classes",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should detect single class",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should have functions used in flow JISON as own property",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should use defaultInterpolate for edges without specific interpolate",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should prioritize edge-specific interpolate over defaultInterpolate",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should support modifying interpolate using edge id syntax",
+   "reason": "no parse call"
+  },
+  {
+   "name": "renders a subgraph normally (as a group) when no collapse metadata is set",
+   "reason": "no parse call"
+  },
+  {
+   "name": "forwards subgraph metadata to the group node so layouts can read it",
+   "reason": "no parse call"
+  },
+  {
+   "name": "renders a collapsed subgraph as a single collapsedGroup node and hides its members",
+   "reason": "no parse call"
+  },
+  {
+   "name": "redirects edges crossing into a collapsed subgraph to the collapsed node",
+   "reason": "no parse call"
+  },
+  {
+   "name": "drops edges fully internal to a collapsed subgraph (avoids a self-loop)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "redirects edges to the outermost collapsed ancestor for nested collapsed subgraphs",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should set direction to TB when TD is set",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should correctly set direction irrespective of leading spaces",
+   "reason": "no parse call"
+  },
+  {
+   "name": "numbers flat subgraphs in source order",
+   "reason": "no parse call"
+  },
+  {
+   "name": "numbers nested subgraphs in source order, parent before its children",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps a collapsed subgraph on its own slot so the cycle does not shift",
+   "reason": "no parse call"
+  },
+  {
+   "name": "leaves plain vertices without a slot",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not force a layout, whatever the config already says",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not force a layout when none is set anywhere",
+   "reason": "no parse call"
+  },
+  {
+   "name": "still propagates arrowMarkerAbsolute into the flowchart config",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle comments",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle comments at the start",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle comments at the end",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle comments at the end no trailing newline",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle comments at the end many trailing newlines",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle no trailing newlines",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle many trailing newlines",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle a comment with blank rows in-between",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle a comment with mermaid flowchart code in them",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle ${edgeType.stroke} ${edgeType.type} with no text",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle ${edgeType.stroke} ${edgeType.type} with text",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle ${edgeType.stroke} ${edgeType.type} with  text",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle ${edgeType.stroke} ${edgeType.type} with no text",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle ${edgeType.stroke} ${edgeType.type} with text",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle normal edges with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle normal labelled edges with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle normal edges with arrows with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle normal labelled edges with arrows with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle normal edges with double arrows with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle normal labelled edges with double arrows with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle thick edges with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle thick labelled edges with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle thick edges with arrows with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle thick labelled edges with arrows with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle thick edges with double arrows with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle thick labelled edges with double arrows with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle dotted edges with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle dotted labelled edges with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle dotted edges with arrows with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle dotted labelled edges with arrows with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle dotted edges with double arrows with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle dotted edges with double arrows with length ${length}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle a trailing whitespaces after statements",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should be able to parse a '.'",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should be able to parse text containing \\",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should be able to parse a ':'",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should be able to parse a ','",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should be able to parse text containing '-'",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should be able to parse a '+'",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should be able to parse a '*'",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should be able to parse a '<'",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should be able to parse a '>'",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should be able to parse a '='",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should be able to parse a '&'",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should work with node id ${unsafeProp}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should work with tooltip id ${unsafeProp}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should work with class id ${unsafeProp}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should work with subgraph id ${unsafeProp}",
+   "reason": "source is not a literal"
+  }
+ ]
+}

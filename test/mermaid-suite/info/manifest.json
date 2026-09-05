@@ -1,0 +1,29 @@
+{
+ "cases": [
+  {
+   "file": "000-should-handle-an-info-definition.mmd",
+   "outcome": "parses",
+   "suite": "info",
+   "name": "should handle an info definition"
+  },
+  {
+   "file": "001-should-handle-an-info-definition-with-showinfo.mmd",
+   "outcome": "parses",
+   "suite": "info",
+   "name": "should handle an info definition with showInfo"
+  },
+  {
+   "file": "002-should-throw-because-of-unsupported-info-grammar.mmd",
+   "outcome": "fails",
+   "suite": "info",
+   "name": "should throw because of unsupported info grammar"
+  },
+  {
+   "file": "003-should-throw-because-of-unsupported-info-grammar-2.mmd",
+   "outcome": "fails",
+   "suite": "info",
+   "name": "should throw because of unsupported info grammar"
+  }
+ ],
+ "skipped": []
+}

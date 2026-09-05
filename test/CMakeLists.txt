@@ -38,3 +38,60 @@ foreach(_in ${_gg_inputs})
         endif()
     endforeach()
 endforeach()
+
+# The mermaid conformance corpus. Each case is one `it()` imported from an
+# upstream parser spec by scripts/import-mermaid-suite.py: a diagram source,
+# and whether upstream expects it to parse or to fail. See
+# test/mermaid-suite/PROVENANCE.
+#
+# Every suite is registered, including the diagram types this library does not
+# implement yet. An unimplemented suite is registered DISABLED and labelled
+# `unimplemented`, so the corpus is present and countable, `ctest` stays green,
+# and implementing a type turns its whole suite on at once.
+#
+# Each case is an independent process that reads only its own input, so the
+# corpus runs under `ctest -j`.
+set(FYMM_IMPLEMENTED_SUITES gitgraph CACHE STRING
+    "mermaid corpus suites expected to pass; set to a wider list to measure the gap")
+
+set(_ms_dir "${CMAKE_CURRENT_SOURCE_DIR}/mermaid-suite")
+file(GLOB _ms_manifests CONFIGURE_DEPENDS "${_ms_dir}/*/manifest.list")
+list(SORT _ms_manifests)
+
+set(_ms_total 0)
+set(_ms_active 0)
+foreach(_manifest ${_ms_manifests})
+    get_filename_component(_suite_dir "${_manifest}" DIRECTORY)
+    get_filename_component(_suite "${_suite_dir}" NAME)
+
+    if(_suite IN_LIST FYMM_IMPLEMENTED_SUITES)
+        set(_disabled FALSE)
+        set(_label mermaid)
+    else()
+        set(_disabled TRUE)
+        set(_label unimplemented)
+    endif()
+
+    file(STRINGS "${_manifest}" _cases)
+    foreach(_case ${_cases})
+        # each line is `<outcome>:<file>`
+        string(FIND "${_case}" ":" _colon)
+        string(SUBSTRING "${_case}" 0 ${_colon} _outcome)
+        math(EXPR _rest "${_colon} + 1")
+        string(SUBSTRING "${_case}" ${_rest} -1 _file)
+        get_filename_component(_name "${_file}" NAME_WE)
+
+        add_test(NAME "mermaid/${_suite}/${_name}"
+            COMMAND fymm-golden-test ${_outcome} "${_suite_dir}/${_file}")
+        set_tests_properties("mermaid/${_suite}/${_name}" PROPERTIES
+            LABELS "${_label}" DISABLED ${_disabled})
+        math(EXPR _ms_total "${_ms_total} + 1")
+        if(NOT _disabled)
+            math(EXPR _ms_active "${_ms_active} + 1")
+        endif()
+    endforeach()
+endforeach()
+
+message(STATUS
+    "mermaid corpus: ${_ms_active} of ${_ms_total} cases active "
+    "(implemented: ${FYMM_IMPLEMENTED_SUITES})")

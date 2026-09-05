@@ -1,0 +1,1360 @@
+{
+ "cases": [
+  {
+   "file": "000-should-handle-classes-within-namespaces.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle classes within namespaces"
+  },
+  {
+   "file": "001-should-handle-generic-classes-within-namespaces.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle generic classes within namespaces"
+  },
+  {
+   "file": "002-should-handle-nested-namespaces-and-relationships.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle nested namespaces and relationships"
+  },
+  {
+   "file": "003-should-handle-syntactically-nested-namespace-blocks.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle syntactically nested namespace blocks"
+  },
+  {
+   "file": "004-emits-only-explicit-namespaces-from-getdata-in-compact-mode.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "emits only explicit namespaces from getData() in compact mode"
+  },
+  {
+   "file": "005-moves-classes-inside-implicit-namespaces-to-the-nearest-expl.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "moves classes inside implicit namespaces to the nearest explicit ancestor in compact mode"
+  },
+  {
+   "file": "006-defaults-to-hierarchical-rendering-when-hierarchicalnamespac.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "defaults to hierarchical rendering when hierarchicalNamespaces is unset"
+  },
+  {
+   "file": "007-should-support-custom-labels-on-namespaces.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should support custom labels on namespaces"
+  },
+  {
+   "file": "008-should-handle-acctitle-and-accdescr.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle accTitle and accDescr"
+  },
+  {
+   "file": "009-should-handle-acctitle-and-multiline-accdescr.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle accTitle and multiline accDescr"
+  },
+  {
+   "file": "010-should-handle-fully-qualified-class-names-in-relationships.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle fully qualified class names in relationships"
+  },
+  {
+   "file": "011-should-handle-backticked-class-names.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle backticked class names"
+  },
+  {
+   "file": "012-should-handle-class-names-with-dash.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle class names with dash"
+  },
+  {
+   "file": "013-should-handle-class-names-with-underscore.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle class names with underscore"
+  },
+  {
+   "file": "014-should-handle-parsing-of-separators.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle parsing of separators"
+  },
+  {
+   "file": "015-should-parse-a-class-with-a-text-label.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should parse a class with a text label"
+  },
+  {
+   "file": "016-should-parse-two-classes-with-text-labels.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should parse two classes with text labels"
+  },
+  {
+   "file": "017-should-parse-a-class-with-a-text-label-and-member.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should parse a class with a text label and member"
+  },
+  {
+   "file": "018-should-parse-a-class-with-a-text-label-member-and-annotation.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should parse a class with a text label, member and annotation"
+  },
+  {
+   "file": "019-should-parse-a-class-with-text-label-and-css-class-shorthand.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should parse a class with text label and css class shorthand"
+  },
+  {
+   "file": "020-should-parse-a-class-with-text-label-and-css-class.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should parse a class with text label and css class"
+  },
+  {
+   "file": "021-should-parse-two-classes-with-text-labels-and-css-classes.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should parse two classes with text labels and css classes"
+  },
+  {
+   "file": "022-should-parse-two-classes-with-text-labels-and-css-class-shor.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should parse two classes with text labels and css class shorthands"
+  },
+  {
+   "file": "023-should-apply-cssclasses-to-generic-classes.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should apply cssClasses to generic classes"
+  },
+  {
+   "file": "024-should-apply-cssclasses-to-generic-classes-via-shorthand.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should apply cssClasses to generic classes via shorthand"
+  },
+  {
+   "file": "025-should-bind-click-event-on-generic-class.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should bind click event on generic class"
+  },
+  {
+   "file": "026-should-bind-tooltip-on-generic-class.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should bind tooltip on generic class"
+  },
+  {
+   "file": "027-should-bind-link-on-generic-class.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should bind link on generic class"
+  },
+  {
+   "file": "028-should-parse-multiple-classes-with-same-text-labels.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should parse multiple classes with same text labels"
+  },
+  {
+   "file": "029-should-parse-classes-with-different-text-labels.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should parse classes with different text labels"
+  },
+  {
+   "file": "030-should-handle-note-for.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle \"note for\""
+  },
+  {
+   "file": "031-should-handle-note.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should handle \"note\""
+  },
+  {
+   "file": "032-should-parse-diagram-with-direction.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should parse diagram with direction"
+  },
+  {
+   "file": "033-should-revert-direction-to-default-once-direction-is-removed.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class definition",
+   "name": "should revert direction to default once direction is removed"
+  },
+  {
+   "file": "034-should-handle-member-definitions.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class defined in brackets",
+   "name": "should handle member definitions"
+  },
+  {
+   "file": "035-should-handle-method-definitions.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class defined in brackets",
+   "name": "should handle method definitions"
+  },
+  {
+   "file": "036-should-handle-a-mix-of-members-defined-in-and-outside-of-bra.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class defined in brackets",
+   "name": "should handle a mix of members defined in and outside of brackets"
+  },
+  {
+   "file": "037-should-handle-member-and-method-definitions.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class defined in brackets",
+   "name": "should handle member and method definitions"
+  },
+  {
+   "file": "038-should-handle-return-types-on-methods.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class defined in brackets",
+   "name": "should handle return types on methods"
+  },
+  {
+   "file": "039-should-add-bracket-members-in-right-order.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class defined in brackets",
+   "name": "should add bracket members in right order"
+  },
+  {
+   "file": "040-should-parse-a-class-with-a-text-label-and-members.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class defined in brackets",
+   "name": "should parse a class with a text label and members"
+  },
+  {
+   "file": "041-should-parse-a-class-with-a-text-label-members-and-annotatio.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing class defined in brackets",
+   "name": "should parse a class with a text label, members and annotation"
+  },
+  {
+   "file": "042-should-handle-comments-at-the-start.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing comments",
+   "name": "should handle comments at the start"
+  },
+  {
+   "file": "043-should-handle-comments-at-the-end.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing comments",
+   "name": "should handle comments at the end"
+  },
+  {
+   "file": "044-should-handle-comments-at-the-end-no-trailing-newline.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing comments",
+   "name": "should handle comments at the end no trailing newline"
+  },
+  {
+   "file": "045-should-handle-a-comment-with-multiple-line-feeds.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing comments",
+   "name": "should handle a comment with multiple line feeds"
+  },
+  {
+   "file": "046-should-handle-a-comment-with-mermaid-class-diagram-code-in-t.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing comments",
+   "name": "should handle a comment with mermaid class diagram code in them"
+  },
+  {
+   "file": "047-should-handle-a-comment-inside-brackets.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing comments",
+   "name": "should handle a comment inside brackets"
+  },
+  {
+   "file": "048-should-handle-href-link.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing click statements",
+   "name": "should handle href link"
+  },
+  {
+   "file": "049-should-handle-href-link-with-tooltip.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing click statements",
+   "name": "should handle href link with tooltip"
+  },
+  {
+   "file": "050-should-handle-href-link-with-tooltip-and-target.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing click statements",
+   "name": "should handle href link with tooltip and target"
+  },
+  {
+   "file": "051-should-handle-function-call.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing click statements",
+   "name": "should handle function call"
+  },
+  {
+   "file": "052-should-handle-function-call-with-tooltip.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing click statements",
+   "name": "should handle function call with tooltip"
+  },
+  {
+   "file": "053-should-handle-function-call-with-an-arbitrary-number-of-args.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing click statements",
+   "name": "should handle function call with an arbitrary number of args"
+  },
+  {
+   "file": "054-should-handle-function-call-with-an-arbitrary-number-of-args-2.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing click statements",
+   "name": "should handle function call with an arbitrary number of args and tooltip"
+  },
+  {
+   "file": "055-should-handle-class-annotations.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing annotations",
+   "name": "should handle class annotations"
+  },
+  {
+   "file": "056-should-handle-class-annotations-with-members-and-methods.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing annotations",
+   "name": "should handle class annotations with members and methods"
+  },
+  {
+   "file": "057-should-handle-class-annotations-in-brackets.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing annotations",
+   "name": "should handle class annotations in brackets"
+  },
+  {
+   "file": "058-should-handle-class-annotations-in-brackets-with-members-and.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing annotations",
+   "name": "should handle class annotations in brackets with members and methods"
+  },
+  {
+   "file": "059-should-handle-the-docs-example-separate-line-annotation-with.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing annotations",
+   "name": "should handle the docs example: separate line annotation with members"
+  },
+  {
+   "file": "060-should-handle-the-docs-example-nested-annotation-with-enumer.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing annotations",
+   "name": "should handle the docs example: nested annotation with enumeration"
+  },
+  {
+   "file": "061-should-handle-inline-annotation-syntax-class-shape-interface.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing annotations",
+   "name": "should handle inline annotation syntax: class Shape <<interface>>"
+  },
+  {
+   "file": "062-should-handle-inline-annotation-with-members-class-shape-int.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing annotations",
+   "name": "should handle inline annotation with members: class Shape <<interface>> { ... }"
+  },
+  {
+   "file": "063-should-handle-inline-annotation-with-empty-body-class-shape-.mmd",
+   "outcome": "parses",
+   "suite": "given a basic class diagram, /when parsing annotations",
+   "name": "should handle inline annotation with empty body: class Shape <<interface>> {}"
+  },
+  {
+   "file": "064-should-handle-simple-member-declaration.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing members",
+   "name": "should handle simple member declaration"
+  },
+  {
+   "file": "065-should-handle-direct-member-declaration.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing members",
+   "name": "should handle direct member declaration"
+  },
+  {
+   "file": "066-should-handle-direct-member-declaration-with-type.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing members",
+   "name": "should handle direct member declaration with type"
+  },
+  {
+   "file": "067-should-handle-simple-member-declaration-with-type.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing members",
+   "name": "should handle simple member declaration with type"
+  },
+  {
+   "file": "068-should-handle-visibility.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing members",
+   "name": "should handle visibility"
+  },
+  {
+   "file": "069-should-handle-generic-types.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing members",
+   "name": "should handle generic types"
+  },
+  {
+   "file": "070-should-handle-method-definition.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing method definition",
+   "name": "should handle method definition"
+  },
+  {
+   "file": "071-should-handle-simple-return-types.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing method definition",
+   "name": "should handle simple return types"
+  },
+  {
+   "file": "072-should-handle-return-types-as-array.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing method definition",
+   "name": "should handle return types as array"
+  },
+  {
+   "file": "073-should-handle-visibility-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing method definition",
+   "name": "should handle visibility"
+  },
+  {
+   "file": "074-should-handle-abstract-methods.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing method definition",
+   "name": "should handle abstract methods"
+  },
+  {
+   "file": "075-should-handle-static-methods.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing method definition",
+   "name": "should handle static methods"
+  },
+  {
+   "file": "076-should-handle-generic-types-in-arguments.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing method definition",
+   "name": "should handle generic types in arguments"
+  },
+  {
+   "file": "077-should-handle-generic-return-types.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing method definition",
+   "name": "should handle generic return types"
+  },
+  {
+   "file": "078-should-handle-generic-types-in-members-in-class-with-bracket.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing method definition",
+   "name": "should handle generic types in members in class with brackets"
+  },
+  {
+   "file": "079-should-handle-an-empty-class-body-with.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with members and methods /when parsing method definition",
+   "name": "should handle an empty class body with {}"
+  },
+  {
+   "file": "080-should-handle-generic-class.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with generics, /when parsing valid generic classes",
+   "name": "should handle generic class"
+  },
+  {
+   "file": "081-should-handle-generic-class-with-relationships.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with generics, /when parsing valid generic classes",
+   "name": "should handle generic class with relationships"
+  },
+  {
+   "file": "082-should-handle-generic-class-with-a-literal-name.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with generics, /when parsing valid generic classes",
+   "name": "should handle generic class with a literal name"
+  },
+  {
+   "file": "083-should-handle-generic-class-with-brackets.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with generics, /when parsing valid generic classes",
+   "name": "should handle generic class with brackets"
+  },
+  {
+   "file": "084-should-handle-generic-class-with-brackets-and-a-literal-name.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with generics, /when parsing valid generic classes",
+   "name": "should handle generic class with brackets and a literal name"
+  },
+  {
+   "file": "085-should-handle-namespace.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with generics, /when parsing valid generic classes",
+   "name": "should handle \"namespace\""
+  },
+  {
+   "file": "086-should-handle-namespace-with-generic-types.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with generics, /when parsing valid generic classes",
+   "name": "should handle namespace with generic types"
+  },
+  {
+   "file": "087-should-handle-all-basic-relationships.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle all basic relationships"
+  },
+  {
+   "file": "088-should-handle-backticked-class-name.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle backticked class name"
+  },
+  {
+   "file": "089-should-handle-generics.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle generics"
+  },
+  {
+   "file": "090-should-handle-relationships-with-labels.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle relationships with labels"
+  },
+  {
+   "file": "091-should-handle-relation-definitions-extension.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle relation definitions EXTENSION"
+  },
+  {
+   "file": "092-should-handle-relation-definition-of-different-types-and-dir.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle relation definition of different types and directions"
+  },
+  {
+   "file": "093-should-handle-cardinality-and-labels.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle cardinality and labels"
+  },
+  {
+   "file": "094-should-handle-dashed-relation-definition-of-different-types-.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle dashed relation definition of different types and directions"
+  },
+  {
+   "file": "095-should-handle-relation-definitions-aggregation-and-dotted-li.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle relation definitions AGGREGATION and dotted line"
+  },
+  {
+   "file": "096-should-handle-relation-definitions-composition-on-both-sides.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle relation definitions COMPOSITION on both sides"
+  },
+  {
+   "file": "097-should-handle-relation-definitions-with-no-types.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle relation definitions with no types"
+  },
+  {
+   "file": "098-should-handle-relation-definitions-with-type-only-on-right-s.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle relation definitions with type only on right side"
+  },
+  {
+   "file": "099-should-handle-multiple-classes-and-relation-definitions.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle multiple classes and relation definitions"
+  },
+  {
+   "file": "100-should-handle-generic-class-with-relation-definitions.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle generic class with relation definitions"
+  },
+  {
+   "file": "101-should-handle-class-annotations-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle class annotations"
+  },
+  {
+   "file": "102-should-handle-class-annotations-with-members-and-methods-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle class annotations with members and methods"
+  },
+  {
+   "file": "103-should-handle-class-annotations-in-brackets-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle class annotations in brackets"
+  },
+  {
+   "file": "104-should-handle-class-annotations-in-brackets-with-members-and-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle class annotations in brackets with members and methods"
+  },
+  {
+   "file": "105-should-add-bracket-members-in-right-order-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should add bracket members in right order"
+  },
+  {
+   "file": "106-should-handle-abstract-methods-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle abstract methods"
+  },
+  {
+   "file": "107-should-handle-static-methods-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should handle static methods"
+  },
+  {
+   "file": "108-should-associate-link-and-css-appropriately.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should associate link and css appropriately"
+  },
+  {
+   "file": "109-should-associate-click-and-href-link-and-css-appropriately.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should associate click and href link and css appropriately"
+  },
+  {
+   "file": "110-should-associate-link-with-tooltip.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should associate link with tooltip"
+  },
+  {
+   "file": "111-should-associate-click-and-href-link-with-tooltip.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should associate click and href link with tooltip"
+  },
+  {
+   "file": "112-should-associate-click-and-href-link-with-tooltip-and-target.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should associate click and href link with tooltip and target appropriately"
+  },
+  {
+   "file": "113-should-associate-click-and-href-link-appropriately.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should associate click and href link appropriately"
+  },
+  {
+   "file": "114-should-associate-click-and-href-link-with-target-appropriate.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should associate click and href link with target appropriately"
+  },
+  {
+   "file": "115-should-associate-link-appropriately.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should associate link appropriately"
+  },
+  {
+   "file": "116-should-associate-callback-appropriately.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should associate callback appropriately"
+  },
+  {
+   "file": "117-should-associate-click-and-call-callback-appropriately.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should associate click and call callback appropriately"
+  },
+  {
+   "file": "118-should-associate-callback-appropriately-with-an-arbitrary-nu.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should associate callback appropriately with an arbitrary number of args"
+  },
+  {
+   "file": "119-should-associate-callback-with-tooltip.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should associate callback with tooltip"
+  },
+  {
+   "file": "120-should-add-classes-namespaces.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should add classes namespaces"
+  },
+  {
+   "file": "121-should-add-relations-between-classes-of-different-namespaces.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing basic relationships",
+   "name": "should add relations between classes of different namespaces"
+  },
+  {
+   "file": "122-should-parse-a-class-with-a-text-label-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing classDiagram with text labels",
+   "name": "should parse a class with a text label"
+  },
+  {
+   "file": "123-should-parse-two-classes-with-text-labels-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing classDiagram with text labels",
+   "name": "should parse two classes with text labels"
+  },
+  {
+   "file": "124-should-parse-a-class-with-a-text-label-and-members-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing classDiagram with text labels",
+   "name": "should parse a class with a text label and members"
+  },
+  {
+   "file": "125-should-parse-a-class-with-a-text-label-members-and-annotatio-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing classDiagram with text labels",
+   "name": "should parse a class with a text label, members and annotation"
+  },
+  {
+   "file": "126-should-parse-a-class-with-text-label-and-css-class-shorthand-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing classDiagram with text labels",
+   "name": "should parse a class with text label and css class shorthand"
+  },
+  {
+   "file": "127-should-parse-a-class-with-text-label-and-css-class-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing classDiagram with text labels",
+   "name": "should parse a class with text label and css class"
+  },
+  {
+   "file": "128-should-parse-two-classes-with-text-labels-and-css-classes-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing classDiagram with text labels",
+   "name": "should parse two classes with text labels and css classes"
+  },
+  {
+   "file": "129-should-parse-two-classes-with-text-labels-and-css-class-shor-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing classDiagram with text labels",
+   "name": "should parse two classes with text labels and css class shorthands"
+  },
+  {
+   "file": "130-should-parse-multiple-classes-with-same-text-labels-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing classDiagram with text labels",
+   "name": "should parse multiple classes with same text labels"
+  },
+  {
+   "file": "131-should-parse-classes-with-different-text-labels-2.mmd",
+   "outcome": "parses",
+   "suite": "given a class diagram with relationships, /when parsing classDiagram with text labels",
+   "name": "should parse classes with different text labels"
+  },
+  {
+   "file": "132-should-parse-correctly.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has no parameters",
+   "name": "should parse correctly"
+  },
+  {
+   "file": "133-should-handle-public-visibility.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has no parameters",
+   "name": "should handle public visibility"
+  },
+  {
+   "file": "134-should-handle-private-visibility.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has no parameters",
+   "name": "should handle private visibility"
+  },
+  {
+   "file": "135-should-handle-protected-visibility.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has no parameters",
+   "name": "should handle protected visibility"
+  },
+  {
+   "file": "136-should-handle-internal-visibility.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has no parameters",
+   "name": "should handle internal visibility"
+  },
+  {
+   "file": "137-should-return-correct-css-for-static-classifier.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has no parameters",
+   "name": "should return correct css for static classifier"
+  },
+  {
+   "file": "138-should-return-correct-css-for-abstract-classifier.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has no parameters",
+   "name": "should return correct css for abstract classifier"
+  },
+  {
+   "file": "139-should-parse-correctly-2.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter value",
+   "name": "should parse correctly"
+  },
+  {
+   "file": "140-should-handle-public-visibility-2.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter value",
+   "name": "should handle public visibility"
+  },
+  {
+   "file": "141-should-handle-private-visibility-2.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter value",
+   "name": "should handle private visibility"
+  },
+  {
+   "file": "142-should-handle-protected-visibility-2.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter value",
+   "name": "should handle protected visibility"
+  },
+  {
+   "file": "143-should-handle-internal-visibility-2.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter value",
+   "name": "should handle internal visibility"
+  },
+  {
+   "file": "144-should-return-correct-css-for-static-classifier-2.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter value",
+   "name": "should return correct css for static classifier"
+  },
+  {
+   "file": "145-should-return-correct-css-for-abstract-classifier-2.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter value",
+   "name": "should return correct css for abstract classifier"
+  },
+  {
+   "file": "146-should-parse-correctly-3.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
+   "name": "should parse correctly"
+  },
+  {
+   "file": "147-should-handle-public-visibility-3.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
+   "name": "should handle public visibility"
+  },
+  {
+   "file": "148-should-handle-private-visibility-3.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
+   "name": "should handle private visibility"
+  },
+  {
+   "file": "149-should-handle-protected-visibility-3.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
+   "name": "should handle protected visibility"
+  },
+  {
+   "file": "150-should-handle-internal-visibility-3.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
+   "name": "should handle internal visibility"
+  },
+  {
+   "file": "151-should-return-correct-css-for-static-classifier-3.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
+   "name": "should return correct css for static classifier"
+  },
+  {
+   "file": "152-should-return-correct-css-for-abstract-classifier-3.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
+   "name": "should return correct css for abstract classifier"
+  },
+  {
+   "file": "153-should-parse-correctly-4.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
+   "name": "should parse correctly"
+  },
+  {
+   "file": "154-should-handle-public-visibility-4.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
+   "name": "should handle public visibility"
+  },
+  {
+   "file": "155-should-handle-private-visibility-4.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
+   "name": "should handle private visibility"
+  },
+  {
+   "file": "156-should-handle-protected-visibility-4.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
+   "name": "should handle protected visibility"
+  },
+  {
+   "file": "157-should-handle-internal-visibility-4.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
+   "name": "should handle internal visibility"
+  },
+  {
+   "file": "158-should-return-correct-css-for-static-classifier-4.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
+   "name": "should return correct css for static classifier"
+  },
+  {
+   "file": "159-should-return-correct-css-for-abstract-classifier-4.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
+   "name": "should return correct css for abstract classifier"
+  },
+  {
+   "file": "160-should-parse-correctly-5.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has multiple parameters",
+   "name": "should parse correctly"
+  },
+  {
+   "file": "161-should-handle-public-visibility-5.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has multiple parameters",
+   "name": "should handle public visibility"
+  },
+  {
+   "file": "162-should-handle-private-visibility-5.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has multiple parameters",
+   "name": "should handle private visibility"
+  },
+  {
+   "file": "163-should-handle-protected-visibility-5.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has multiple parameters",
+   "name": "should handle protected visibility"
+  },
+  {
+   "file": "164-should-handle-internal-visibility-5.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has multiple parameters",
+   "name": "should handle internal visibility"
+  },
+  {
+   "file": "165-should-return-correct-css-for-static-classifier-5.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has multiple parameters",
+   "name": "should return correct css for static classifier"
+  },
+  {
+   "file": "166-should-return-correct-css-for-abstract-classifier-5.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has multiple parameters",
+   "name": "should return correct css for abstract classifier"
+  },
+  {
+   "file": "167-should-parse-correctly-6.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has return type",
+   "name": "should parse correctly"
+  },
+  {
+   "file": "168-should-handle-public-visibility-6.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has return type",
+   "name": "should handle public visibility"
+  },
+  {
+   "file": "169-should-handle-private-visibility-6.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has return type",
+   "name": "should handle private visibility"
+  },
+  {
+   "file": "170-should-handle-protected-visibility-6.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has return type",
+   "name": "should handle protected visibility"
+  },
+  {
+   "file": "171-should-handle-internal-visibility-6.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has return type",
+   "name": "should handle internal visibility"
+  },
+  {
+   "file": "172-should-return-correct-css-for-static-classifier-6.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has return type",
+   "name": "should return correct css for static classifier"
+  },
+  {
+   "file": "173-should-return-correct-css-for-abstract-classifier-6.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method has return type",
+   "name": "should return correct css for abstract classifier"
+  },
+  {
+   "file": "174-should-parse-correctly-7.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is generic",
+   "name": "should parse correctly"
+  },
+  {
+   "file": "175-should-handle-public-visibility-7.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is generic",
+   "name": "should handle public visibility"
+  },
+  {
+   "file": "176-should-handle-private-visibility-7.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is generic",
+   "name": "should handle private visibility"
+  },
+  {
+   "file": "177-should-handle-protected-visibility-7.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is generic",
+   "name": "should handle protected visibility"
+  },
+  {
+   "file": "178-should-handle-internal-visibility-7.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is generic",
+   "name": "should handle internal visibility"
+  },
+  {
+   "file": "179-should-return-correct-css-for-static-classifier-7.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is generic",
+   "name": "should return correct css for static classifier"
+  },
+  {
+   "file": "180-should-return-correct-css-for-abstract-classifier-7.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is generic",
+   "name": "should return correct css for abstract classifier"
+  },
+  {
+   "file": "181-should-parse-correctly-8.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter contains two generic",
+   "name": "should parse correctly"
+  },
+  {
+   "file": "182-should-handle-public-visibility-8.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter contains two generic",
+   "name": "should handle public visibility"
+  },
+  {
+   "file": "183-should-handle-private-visibility-8.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter contains two generic",
+   "name": "should handle private visibility"
+  },
+  {
+   "file": "184-should-handle-protected-visibility-8.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter contains two generic",
+   "name": "should handle protected visibility"
+  },
+  {
+   "file": "185-should-handle-internal-visibility-8.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter contains two generic",
+   "name": "should handle internal visibility"
+  },
+  {
+   "file": "186-should-return-correct-css-for-static-classifier-8.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter contains two generic",
+   "name": "should return correct css for static classifier"
+  },
+  {
+   "file": "187-should-return-correct-css-for-abstract-classifier-8.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter contains two generic",
+   "name": "should return correct css for abstract classifier"
+  },
+  {
+   "file": "188-should-parse-correctly-9.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is a nested generic",
+   "name": "should parse correctly"
+  },
+  {
+   "file": "189-should-handle-public-visibility-9.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is a nested generic",
+   "name": "should handle public visibility"
+  },
+  {
+   "file": "190-should-handle-private-visibility-9.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is a nested generic",
+   "name": "should handle private visibility"
+  },
+  {
+   "file": "191-should-handle-protected-visibility-9.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is a nested generic",
+   "name": "should handle protected visibility"
+  },
+  {
+   "file": "192-should-handle-internal-visibility-9.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is a nested generic",
+   "name": "should handle internal visibility"
+  },
+  {
+   "file": "193-should-return-correct-css-for-static-classifier-9.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is a nested generic",
+   "name": "should return correct css for static classifier"
+  },
+  {
+   "file": "194-should-return-correct-css-for-abstract-classifier-9.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is a nested generic",
+   "name": "should return correct css for abstract classifier"
+  },
+  {
+   "file": "195-should-handle-public-visibility-10.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is a composite generic",
+   "name": "should handle public visibility"
+  },
+  {
+   "file": "196-should-handle-private-visibility-10.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is a composite generic",
+   "name": "should handle private visibility"
+  },
+  {
+   "file": "197-should-handle-protected-visibility-10.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is a composite generic",
+   "name": "should handle protected visibility"
+  },
+  {
+   "file": "198-should-handle-internal-visibility-10.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method parameter is a composite generic",
+   "name": "should handle internal visibility"
+  },
+  {
+   "file": "199-should-parse-correctly-10.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is generic",
+   "name": "should parse correctly"
+  },
+  {
+   "file": "200-should-handle-public-visibility-11.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is generic",
+   "name": "should handle public visibility"
+  },
+  {
+   "file": "201-should-handle-private-visibility-11.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is generic",
+   "name": "should handle private visibility"
+  },
+  {
+   "file": "202-should-handle-protected-visibility-11.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is generic",
+   "name": "should handle protected visibility"
+  },
+  {
+   "file": "203-should-handle-internal-visibility-11.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is generic",
+   "name": "should handle internal visibility"
+  },
+  {
+   "file": "204-should-return-correct-css-for-static-classifier-10.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is generic",
+   "name": "should return correct css for static classifier"
+  },
+  {
+   "file": "205-should-return-correct-css-for-abstract-classifier-10.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is generic",
+   "name": "should return correct css for abstract classifier"
+  },
+  {
+   "file": "206-should-parse-correctly-11.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is a nested generic",
+   "name": "should parse correctly"
+  },
+  {
+   "file": "207-should-handle-public-visibility-12.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is a nested generic",
+   "name": "should handle public visibility"
+  },
+  {
+   "file": "208-should-handle-private-visibility-12.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is a nested generic",
+   "name": "should handle private visibility"
+  },
+  {
+   "file": "209-should-handle-protected-visibility-12.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is a nested generic",
+   "name": "should handle protected visibility"
+  },
+  {
+   "file": "210-should-handle-internal-visibility-12.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is a nested generic",
+   "name": "should handle internal visibility"
+  },
+  {
+   "file": "211-should-return-correct-css-for-static-classifier-11.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is a nested generic",
+   "name": "should return correct css for static classifier"
+  },
+  {
+   "file": "212-should-return-correct-css-for-abstract-classifier-11.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /when method return type is a nested generic",
+   "name": "should return correct css for abstract classifier"
+  },
+  {
+   "file": "213-member-name-should-handle-double-colons.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /--uncategorized tests--",
+   "name": "member name should handle double colons"
+  },
+  {
+   "file": "214-member-name-should-handle-generic-type.mmd",
+   "outcome": "parses",
+   "suite": "given text representing a method, /--uncategorized tests--",
+   "name": "member name should handle generic type"
+  },
+  {
+   "file": "215-should-parse-the-display-text-correctly.mmd",
+   "outcome": "parses",
+   "suite": "given text representing an attribute/when the attribute has no modifiers",
+   "name": "should parse the display text correctly"
+  },
+  {
+   "file": "216-should-parse-the-display-text-correctly-2.mmd",
+   "outcome": "parses",
+   "suite": "given text representing an attribute/when the attribute has public \"+\" modifier",
+   "name": "should parse the display text correctly"
+  },
+  {
+   "file": "217-should-parse-the-display-text-correctly-3.mmd",
+   "outcome": "parses",
+   "suite": "given text representing an attribute/when the attribute has protected \"#\" modifier",
+   "name": "should parse the display text correctly"
+  },
+  {
+   "file": "218-should-parse-the-display-text-correctly-4.mmd",
+   "outcome": "parses",
+   "suite": "given text representing an attribute/when the attribute has private \"-\" modifier",
+   "name": "should parse the display text correctly"
+  },
+  {
+   "file": "219-should-parse-the-display-text-correctly-5.mmd",
+   "outcome": "parses",
+   "suite": "given text representing an attribute/when the attribute has internal \"~\" modifier",
+   "name": "should parse the display text correctly"
+  },
+  {
+   "file": "220-should-parse-the-display-text-correctly-and-apply-static-css.mmd",
+   "outcome": "parses",
+   "suite": "given text representing an attribute/when the attribute has static \"$\" modifier",
+   "name": "should parse the display text correctly and apply static css style"
+  },
+  {
+   "file": "221-should-parse-the-display-text-correctly-and-apply-abstract-c.mmd",
+   "outcome": "parses",
+   "suite": "given text representing an attribute/when the attribute has abstract \"*\" modifier",
+   "name": "should parse the display text correctly and apply abstract css style"
+  },
+  {
+   "file": "222-should-handle-backtick-quoted-namespace-names.mmd",
+   "outcome": "parses",
+   "suite": "class diagram/backtick escaping",
+   "name": "should handle backtick-quoted namespace names"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "should have functions used in class JISON as own property",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should parse correctly",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return correct css for static classifier",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return correct css for abstract classifier",
+   "reason": "no parse call"
+  }
+ ]
+}

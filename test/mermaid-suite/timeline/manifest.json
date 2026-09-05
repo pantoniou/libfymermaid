@@ -1,0 +1,71 @@
+{
+ "cases": [
+  {
+   "file": "000-should-default-to-lr-direction-when-none-is-provided.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a timeline /Timeline",
+   "name": "should default to LR direction when none is provided"
+  },
+  {
+   "file": "001-should-parse-td-direction.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a timeline /Timeline",
+   "name": "should parse TD direction"
+  },
+  {
+   "file": "002-should-parse-lr-direction.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a timeline /Timeline",
+   "name": "should parse LR direction"
+  },
+  {
+   "file": "003-should-handle-a-simple-section-definition-abc-123.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a timeline /Timeline",
+   "name": "should handle a simple section definition abc-123"
+  },
+  {
+   "file": "004-should-handle-a-simple-section-and-only-two-tasks.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a timeline /Timeline",
+   "name": "should handle a simple section and only two tasks"
+  },
+  {
+   "file": "005-should-handle-a-two-section-and-two-corresponding-tasks.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a timeline /Timeline",
+   "name": "should handle a two section and two corresponding tasks"
+  },
+  {
+   "file": "006-should-handle-a-section-and-task-and-its-events.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a timeline /Timeline",
+   "name": "should handle a section, and task and its events"
+  },
+  {
+   "file": "007-should-handle-a-section-and-task-and-its-events-including-ma.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a timeline /Timeline",
+   "name": "should handle a section, and task and its events including markdown link"
+  },
+  {
+   "file": "008-should-handle-a-section-and-task-and-its-multi-line-events.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a timeline /Timeline",
+   "name": "should handle a section, and task and its multi line events"
+  },
+  {
+   "file": "009-should-handle-a-title-section-task-and-events-with-semicolon.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a timeline /Timeline",
+   "name": "should handle a title, section, task, and events with semicolons"
+  },
+  {
+   "file": "010-should-handle-a-title-section-task-and-events-with-hashtags.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a timeline /Timeline",
+   "name": "should handle a title, section, task, and events with hashtags"
+  }
+ ],
+ "skipped": []
+}

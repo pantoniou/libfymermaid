@@ -1,0 +1,408 @@
+{
+ "cases": [
+  {
+   "file": "000-should-handle-a-gitgraph-definition.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing basic gitGraph",
+   "name": "should handle a gitGraph definition"
+  },
+  {
+   "file": "001-should-handle-set-direction-top-to-bottom.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing basic gitGraph",
+   "name": "should handle set direction top to bottom"
+  },
+  {
+   "file": "002-should-handle-set-direction-bottom-to-top.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing basic gitGraph",
+   "name": "should handle set direction bottom to top"
+  },
+  {
+   "file": "003-should-checkout-a-branch.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing basic gitGraph",
+   "name": "should checkout a branch"
+  },
+  {
+   "file": "004-should-switch-a-branch.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing basic gitGraph",
+   "name": "should switch a branch"
+  },
+  {
+   "file": "005-should-add-commits-to-checked-out-branch.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing basic gitGraph",
+   "name": "should add commits to checked out branch"
+  },
+  {
+   "file": "006-should-handle-commit-with-args.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing basic gitGraph",
+   "name": "should handle commit with args"
+  },
+  {
+   "file": "007-should-handle-cases-when-merge-is-a-noop.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing basic gitGraph",
+   "name": "should handle cases when merge is a noop"
+  },
+  {
+   "file": "008-should-handle-merge-with-2-parents.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing basic gitGraph",
+   "name": "should handle merge with 2 parents"
+  },
+  {
+   "file": "009-should-generate-an-array-of-known-branches.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing basic gitGraph",
+   "name": "should generate an array of known branches"
+  },
+  {
+   "file": "010-should-handle-a-gitgraph-commit-with-no-params-get-auto-gene.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with NO params, get auto-generated read-only ID"
+  },
+  {
+   "file": "011-should-handle-a-gitgraph-commit-with-custom-commit-id-only.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom commit id only"
+  },
+  {
+   "file": "012-should-handle-a-gitgraph-commit-with-custom-commit-tag-only.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom commit tag only"
+  },
+  {
+   "file": "013-should-handle-a-gitgraph-commit-with-custom-commit-type-high.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom commit type HIGHLIGHT only"
+  },
+  {
+   "file": "014-should-handle-a-gitgraph-commit-with-custom-commit-type-reve.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom commit type REVERSE only"
+  },
+  {
+   "file": "015-should-handle-a-gitgraph-commit-with-custom-commit-type-norm.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom commit type NORMAL only"
+  },
+  {
+   "file": "016-should-handle-a-gitgraph-commit-with-custom-commit-msg-only.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom commit msg only"
+  },
+  {
+   "file": "017-should-handle-a-gitgraph-commit-with-custom-commit-msg-key-o.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom commit \"msg:\" key only"
+  },
+  {
+   "file": "018-should-handle-a-gitgraph-commit-with-custom-commit-id-tag-on.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom commit id, tag  only"
+  },
+  {
+   "file": "019-should-handle-a-gitgraph-commit-with-custom-commit-type-tag-.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom commit type, tag  only"
+  },
+  {
+   "file": "020-should-handle-a-gitgraph-commit-with-custom-commit-tag-and-t.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom commit tag and type only"
+  },
+  {
+   "file": "021-should-handle-a-gitgraph-commit-with-custom-commit-id-type-a.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom commit id, type and tag only"
+  },
+  {
+   "file": "022-should-handle-a-gitgraph-commit-with-custom-commit-id-type-t.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom commit id, type,  tag and msg"
+  },
+  {
+   "file": "023-should-handle-a-gitgraph-commit-with-custom-type-tag-msg-com.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom  type,tag, msg, commit id,"
+  },
+  {
+   "file": "024-should-handle-a-gitgraph-commit-with-custom-tag-msg-commit-i.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom  tag, msg, commit id, type,"
+  },
+  {
+   "file": "025-should-handle-a-gitgraph-commit-with-custom-msg-commit-id-ty.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle a gitGraph commit with custom msg, commit id, type,tag"
+  },
+  {
+   "file": "026-should-handle-3-straight-commits.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle 3 straight commits"
+  },
+  {
+   "file": "027-should-handle-new-branch-creation.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle new branch creation"
+  },
+  {
+   "file": "028-should-allow-quoted-branch-names.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should allow quoted branch names"
+  },
+  {
+   "file": "029-should-allow-characters-in-branch-names.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should allow _-./ characters in branch names"
+  },
+  {
+   "file": "030-should-allow-branch-names-starting-with-numbers.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should allow branch names starting with numbers"
+  },
+  {
+   "file": "031-should-allow-branch-names-starting-with-unusual-prefixes.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should allow branch names starting with unusual prefixes"
+  },
+  {
+   "file": "032-should-handle-new-branch-checkout.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle new branch checkout"
+  },
+  {
+   "file": "033-should-handle-new-branch-checkout-with-order.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle new branch checkout with order"
+  },
+  {
+   "file": "034-should-handle-new-branch-checkout-with-and-without-order.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle new branch checkout with and without order"
+  },
+  {
+   "file": "035-should-handle-new-branch-checkout-commit.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle new branch checkout & commit"
+  },
+  {
+   "file": "036-should-handle-new-branch-checkout-commit-and-merge.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle new branch checkout & commit and merge"
+  },
+  {
+   "file": "037-should-handle-new-branch-switch.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle new branch switch"
+  },
+  {
+   "file": "038-should-handle-new-branch-switch-commit.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle new branch switch & commit"
+  },
+  {
+   "file": "039-should-handle-new-branch-switch-commit-and-merge.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle new branch switch & commit and merge"
+  },
+  {
+   "file": "040-should-handle-merge-tags.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle merge tags"
+  },
+  {
+   "file": "041-should-handle-merge-with-custom-ids-tags-and-type.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should handle merge with custom ids, tags and type"
+  },
+  {
+   "file": "042-should-support-cherry-picking-commits.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should support cherry-picking commits"
+  },
+  {
+   "file": "043-should-support-cherry-picking-commits-with-custom-tag.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should support cherry-picking commits with custom tag"
+  },
+  {
+   "file": "044-should-support-cherry-picking-commits-with-no-tag.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should support cherry-picking commits with no tag"
+  },
+  {
+   "file": "045-should-support-cherry-picking-of-merge-commits.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should support cherry-picking of merge commits"
+  },
+  {
+   "file": "046-should-support-cherry-picking-of-merge-commits-with-tag.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should support cherry-picking of merge commits with tag"
+  },
+  {
+   "file": "047-should-support-cherry-picking-of-merge-commits-with-addition.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should support cherry-picking of merge commits with additional commit"
+  },
+  {
+   "file": "048-should-support-cherry-picking-of-merge-commits-with-empty-ta.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should support cherry-picking of merge commits with empty tag"
+  },
+  {
+   "file": "049-should-fail-cherry-picking-of-merge-commits-if-the-parent-of.mmd",
+   "outcome": "fails",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should fail cherry-picking of merge commits if the parent of merge commits is not specified"
+  },
+  {
+   "file": "050-should-fail-cherry-picking-of-merge-commits-when-the-parent-.mmd",
+   "outcome": "fails",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should fail cherry-picking of merge commits when the parent provided is not an immediate parent of cherry picked commit"
+  },
+  {
+   "file": "051-should-throw-error-when-try-to-branch-existing-branch-main.mmd",
+   "outcome": "fails",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should throw error when try to branch existing branch: main"
+  },
+  {
+   "file": "052-should-throw-error-when-try-to-branch-existing-branch-testbr.mmd",
+   "outcome": "fails",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should throw error when try to branch existing branch: testBranch"
+  },
+  {
+   "file": "053-should-throw-error-when-try-to-checkout-unknown-branch-testb.mmd",
+   "outcome": "fails",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should throw error when try to checkout unknown branch: testBranch"
+  },
+  {
+   "file": "054-should-throw-error-when-trying-to-merge-when-current-branch-.mmd",
+   "outcome": "fails",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should throw error when trying to merge, when current branch has no commits"
+  },
+  {
+   "file": "055-should-throw-error-when-trying-to-merge-unknown-branch.mmd",
+   "outcome": "fails",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should throw error when trying to merge unknown branch"
+  },
+  {
+   "file": "056-should-throw-error-when-trying-to-merge-branch-to-itself.mmd",
+   "outcome": "fails",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should throw error when trying to merge branch to itself"
+  },
+  {
+   "file": "057-should-throw-error-when-using-existing-id-as-merge-id.mmd",
+   "outcome": "fails",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should throw error when using existing id as merge ID"
+  },
+  {
+   "file": "058-should-throw-error-when-trying-to-merge-branches-having-same.mmd",
+   "outcome": "fails",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should throw error when trying to merge branches having same heads"
+  },
+  {
+   "file": "059-should-throw-error-when-trying-to-merge-branch-which-has-no-.mmd",
+   "outcome": "fails",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs",
+   "name": "should throw error when trying to merge branch which has no commits"
+  },
+  {
+   "file": "060-should-handle-a-title-and-a-description-accdescr.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs/accessibility",
+   "name": "should handle a title and a description (accDescr)"
+  },
+  {
+   "file": "061-should-handle-a-title-and-a-multiline-description-accdescr.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph/when parsing more advanced gitGraphs/accessibility",
+   "name": "should handle a title and a multiline description (accDescr)"
+  },
+  {
+   "file": "062-should-log-a-warning-when-two-commits-have-the-same-id.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gitGraph",
+   "name": "should log a warning when two commits have the same ID"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "should work with custom commit id or branch name ${prop}",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should expose getConfig method",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return config with showBranches property",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return config with showCommitLabel property",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return config with rotateCommitLabel property",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return config with parallelCommits property",
+   "reason": "no parse call"
+  }
+ ]
+}

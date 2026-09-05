@@ -1,0 +1,838 @@
+{
+ "cases": [
+  {
+   "file": "000-should-not-have-duplicated-messages.mmd",
+   "outcome": "parses",
+   "suite": "more than one sequence diagram",
+   "name": "should not have duplicated messages"
+  },
+  {
+   "file": "001-should-parse-actor-actor-syntax-as-central-connection-dual.mmd",
+   "outcome": "parses",
+   "suite": "Central Connection Parsing/when parsing central connection syntax",
+   "name": "should parse actor ()->>() actor syntax as CENTRAL_CONNECTION_DUAL"
+  },
+  {
+   "file": "002-should-parse-actor-actor-syntax-as-central-connection-dual-2.mmd",
+   "outcome": "parses",
+   "suite": "Central Connection Parsing/when parsing central connection syntax",
+   "name": "should parse actor ()-->>() actor syntax as CENTRAL_CONNECTION_DUAL"
+  },
+  {
+   "file": "003-should-parse-actor-actor-syntax-as-central-connection.mmd",
+   "outcome": "parses",
+   "suite": "Central Connection Parsing/when parsing central connection syntax",
+   "name": "should parse actor ->>() actor syntax as CENTRAL_CONNECTION"
+  },
+  {
+   "file": "004-should-parse-actor-actor-syntax-as-central-connection-revers.mmd",
+   "outcome": "parses",
+   "suite": "Central Connection Parsing/when parsing central connection syntax",
+   "name": "should parse actor ()-->> actor syntax as CENTRAL_CONNECTION_REVERSE"
+  },
+  {
+   "file": "005-should-parse-actor-actor-syntax-as-central-connection-revers-2.mmd",
+   "outcome": "parses",
+   "suite": "Central Connection Parsing/when parsing central connection syntax",
+   "name": "should parse actor ()->> actor syntax as CENTRAL_CONNECTION_REVERSE"
+  },
+  {
+   "file": "006-should-parse-actor-actor-syntax-as-central-connection-dual-3.mmd",
+   "outcome": "parses",
+   "suite": "Central Connection Parsing/when parsing central connection syntax",
+   "name": "should parse actor ()<<-->>() actor syntax as CENTRAL_CONNECTION_DUAL"
+  },
+  {
+   "file": "007-should-parse-actor-actor-syntax-as-central-connection-dual-4.mmd",
+   "outcome": "parses",
+   "suite": "Central Connection Parsing/when parsing central connection syntax",
+   "name": "should parse actor ()<<->>() actor syntax as CENTRAL_CONNECTION_DUAL"
+  },
+  {
+   "file": "008-should-handle-multiple-central-connection-types-in-one-diagr.mmd",
+   "outcome": "parses",
+   "suite": "Central Connection Parsing/when parsing central connection syntax",
+   "name": "should handle multiple central connection types in one diagram"
+  },
+  {
+   "file": "009-should-handle-central-connections-with-different-arrow-types.mmd",
+   "outcome": "parses",
+   "suite": "Central Connection Parsing/when parsing central connection syntax",
+   "name": "should handle central connections with different arrow types"
+  },
+  {
+   "file": "010-should-not-break-existing-parsing-without-central-connection.mmd",
+   "outcome": "parses",
+   "suite": "Central Connection Parsing/when parsing central connection syntax",
+   "name": "should not break existing parsing without central connections"
+  },
+  {
+   "file": "011-should-not-show-sequence-numbers-per-default.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should not show sequence numbers per default"
+  },
+  {
+   "file": "012-should-show-sequence-numbers-when-autonumber-is-enabled.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should show sequence numbers when autonumber is enabled"
+  },
+  {
+   "file": "013-should-allow-sequence-numbers-to-have-decimals-up-to-the-hun.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should allow sequence numbers to have decimals up to the hundredths place"
+  },
+  {
+   "file": "014-should-not-allow-sequence-numbers-to-have-decimals-to-the-th.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should not allow sequence numbers to have decimals to the thousandths place or greater"
+  },
+  {
+   "file": "015-should-handle-a-sequencediagram-definition-with-a-title.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle a sequenceDiagram definition with a title:"
+  },
+  {
+   "file": "016-should-handle-a-sequencediagram-definition-with-a-title-with.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle a sequenceDiagram definition with a title without a :"
+  },
+  {
+   "file": "017-should-handle-a-sequencediagram-definition-with-a-accessibil.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle a sequenceDiagram definition with a accessibility title and description (accDescr)"
+  },
+  {
+   "file": "018-should-handle-a-sequencediagram-definition-with-a-accessibil-2.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle a sequenceDiagram definition with a accessibility title and multiline description (accDescr)"
+  },
+  {
+   "file": "019-should-space-in-actor-names.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should space in actor names"
+  },
+  {
+   "file": "020-should-handle-dashes-in-actor-names.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle dashes in actor names"
+  },
+  {
+   "file": "021-should-handle-dashes-in-participant-names.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle dashes in participant names"
+  },
+  {
+   "file": "022-should-handle-equals-in-participant-names.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle equals in participant names"
+  },
+  {
+   "file": "023-should-alias-participants.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should alias participants"
+  },
+  {
+   "file": "024-should-alias-a-mix-of-actors-and-participants-apa12.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should alias a mix of actors and participants apa12"
+  },
+  {
+   "file": "025-should-alias-actors-apa13.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should alias actors apa13"
+  },
+  {
+   "file": "026-should-handle-in-async-messages.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle in async messages"
+  },
+  {
+   "file": "027-should-handle-in-async-dotted-messages.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle in async dotted messages"
+  },
+  {
+   "file": "028-should-handle-in-sync-messages.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle in sync messages"
+  },
+  {
+   "file": "029-should-handle-in-sync-dotted-messages.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle in sync dotted messages"
+  },
+  {
+   "file": "030-should-handle-in-arrow-messages.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle in arrow messages"
+  },
+  {
+   "file": "031-should-handle-in-arrow-messages-2.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle in arrow messages"
+  },
+  {
+   "file": "032-should-handle-bidirectional-arrow-messages.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle bidirectional arrow messages"
+  },
+  {
+   "file": "033-should-handle-bidirectional-dotted-arrow-messages.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle bidirectional dotted arrow messages"
+  },
+  {
+   "file": "034-should-handle-actor-activation.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle actor activation"
+  },
+  {
+   "file": "035-should-handle-actor-one-line-notation-activation.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle actor one line notation activation"
+  },
+  {
+   "file": "036-should-handle-stacked-activations.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle stacked activations"
+  },
+  {
+   "file": "037-should-handle-fail-parsing-when-activating-an-inactive-parti.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle fail parsing when activating an inactive participant"
+  },
+  {
+   "file": "038-should-handle-comments-in-a-sequencediagram.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle comments in a sequenceDiagram"
+  },
+  {
+   "file": "039-should-handle-new-lines-in-a-sequencediagram.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle new lines in a sequenceDiagram"
+  },
+  {
+   "file": "040-should-handle-semicolons.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle semicolons"
+  },
+  {
+   "file": "041-should-handle-one-leading-space-in-lines-in-a-sequencediagra.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle one leading space in lines in a sequenceDiagram"
+  },
+  {
+   "file": "042-should-handle-several-leading-spaces-in-lines-in-a-sequenced.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle several leading spaces in lines in a sequenceDiagram"
+  },
+  {
+   "file": "043-should-handle-several-leading-spaces-in-lines-in-a-sequenced-2.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle several leading spaces in lines in a sequenceDiagram"
+  },
+  {
+   "file": "044-should-handle-different-line-breaks.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle different line breaks"
+  },
+  {
+   "file": "045-should-handle-notes-and-messages-without-wrap-specified.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle notes and messages without wrap specified"
+  },
+  {
+   "file": "046-should-handle-notes-and-messages-with-wrap-specified.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle notes and messages with wrap specified"
+  },
+  {
+   "file": "047-should-handle-notes-and-messages-with-nowrap-or-line-breaks.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle notes and messages with nowrap or line breaks"
+  },
+  {
+   "file": "048-should-handle-notes-over-a-single-actor.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle notes over a single actor"
+  },
+  {
+   "file": "049-should-handle-notes-over-multiple-actors.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle notes over multiple actors"
+  },
+  {
+   "file": "050-should-handle-loop-statements.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle loop statements"
+  },
+  {
+   "file": "051-should-add-a-rect-around-sequence.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should add a rect around sequence"
+  },
+  {
+   "file": "052-should-allow-for-nested-rects.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should allow for nested rects"
+  },
+  {
+   "file": "053-should-handle-opt-statements.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle opt statements"
+  },
+  {
+   "file": "054-should-handle-alt-statements.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle alt statements"
+  },
+  {
+   "file": "055-should-handle-alt-statements-with-multiple-elses.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle alt statements with multiple elses"
+  },
+  {
+   "file": "056-should-handle-critical-statements-without-options.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle critical statements without options"
+  },
+  {
+   "file": "057-should-handle-critical-statements-with-options.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle critical statements with options"
+  },
+  {
+   "file": "058-should-handle-break-statements.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle break statements"
+  },
+  {
+   "file": "059-should-handle-par-statements-a-sequencediagram.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle par statements a sequenceDiagram"
+  },
+  {
+   "file": "060-it-should-handle-par-over-statements.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "it should handle par_over statements"
+  },
+  {
+   "file": "061-should-handle-special-characters-in-signals.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle special characters in signals"
+  },
+  {
+   "file": "062-should-handle-special-characters-in-notes.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle special characters in notes"
+  },
+  {
+   "file": "063-should-handle-special-characters-in-loop.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle special characters in loop"
+  },
+  {
+   "file": "064-should-handle-special-characters-in-opt.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle special characters in opt"
+  },
+  {
+   "file": "065-should-handle-special-characters-in-alt.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle special characters in alt"
+  },
+  {
+   "file": "066-should-handle-special-characters-in-par.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle special characters in par"
+  },
+  {
+   "file": "067-should-handle-no-label-loop.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle no-label loop"
+  },
+  {
+   "file": "068-should-handle-no-label-opt.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle no-label opt"
+  },
+  {
+   "file": "069-should-handle-no-label-alt.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle no-label alt"
+  },
+  {
+   "file": "070-should-handle-no-label-par.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle no-label par"
+  },
+  {
+   "file": "071-should-handle-links.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle links"
+  },
+  {
+   "file": "072-should-handle-properties-experimental-use-with-caution.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle properties EXPERIMENTAL: USE WITH CAUTION"
+  },
+  {
+   "file": "073-should-handle-box.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle box"
+  },
+  {
+   "file": "074-should-handle-box-without-color.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle box without color"
+  },
+  {
+   "file": "075-should-handle-box-without-description.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle box without description"
+  },
+  {
+   "file": "076-should-handle-simple-actor-creation.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle simple actor creation"
+  },
+  {
+   "file": "077-should-handle-simple-actor-destruction.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle simple actor destruction"
+  },
+  {
+   "file": "078-should-handle-the-creation-and-destruction-of-the-same-actor.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a sequenceDiagram",
+   "name": "should handle the creation and destruction of the same actor"
+  },
+  {
+   "file": "079-it-should-handle-one-actor-when-textplacement-is-textplaceme.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "\nit should handle one actor, when textPlacement is ${textPlacement}"
+  },
+  {
+   "file": "080-should-handle-same-actor-with-different-whitespace-properly.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should handle same actor with different whitespace properly"
+  },
+  {
+   "file": "081-should-handle-one-actor-and-a-centered-note.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should handle one actor and a centered note"
+  },
+  {
+   "file": "082-should-handle-one-actor-and-a-note-to-the-left.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should handle one actor and a note to the left"
+  },
+  {
+   "file": "083-should-handle-one-actor-and-a-note-to-the-right.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should handle one actor and a note to the right"
+  },
+  {
+   "file": "084-should-handle-two-actors.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should handle two actors"
+  },
+  {
+   "file": "085-should-handle-two-actors-in-a-box.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should handle two actors in a box"
+  },
+  {
+   "file": "086-should-handle-two-actors-with-init-directive.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should handle two actors with init directive"
+  },
+  {
+   "file": "087-should-handle-two-actors-with-init-directive-with-multiline-.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should handle two actors with init directive with multiline directive"
+  },
+  {
+   "file": "088-should-handle-two-actors-and-two-centered-shared-notes.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should handle two actors and two centered shared notes"
+  },
+  {
+   "file": "089-should-draw-two-actors-and-two-messages.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should draw two actors and two messages"
+  },
+  {
+   "file": "090-should-draw-two-actors-notes-to-the-right.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should draw two actors notes to the right"
+  },
+  {
+   "file": "091-should-draw-two-actors-notes-to-the-left.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should draw two actors notes to the left"
+  },
+  {
+   "file": "092-should-draw-two-actors-notes-to-the-left-with-text-wrapped-i.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should draw two actors notes to the left with text wrapped (inline)"
+  },
+  {
+   "file": "093-should-draw-two-actors-notes-to-the-left-with-text-wrapped-d.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should draw two actors notes to the left with text wrapped (directive)"
+  },
+  {
+   "file": "094-should-draw-two-actors-notes-to-the-left-with-text-wrapped-a.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should draw two actors notes to the left with text wrapped and the init directive sets the theme to dark"
+  },
+  {
+   "file": "095-should-draw-two-actors-notes-to-the-left-with-text-wrapped-a-2.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should draw two actors, notes to the left with text wrapped and the init directive sets the theme to dark and fontFamily to Menlo, fontSize to 18, and fontWeight to 800"
+  },
+  {
+   "file": "096-should-draw-two-loops.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should draw two loops"
+  },
+  {
+   "file": "097-should-draw-background-rect.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should draw background rect"
+  },
+  {
+   "file": "098-should-increment-the-sequence-number-with-a-decimal-in-the-h.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should increment the sequence number with a decimal in the hundredths place"
+  },
+  {
+   "file": "099-should-increment-the-sequence-number-with-a-decimal-in-the-t.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should increment the sequence number with a decimal in the tenths place"
+  },
+  {
+   "file": "100-should-handle-one-actor-when-textplacement-is.mmd",
+   "outcome": "parses",
+   "suite": "when rendering a sequenceDiagram with actor mirror activated",
+   "name": "should handle one actor, when textPlacement is"
+  },
+  {
+   "file": "101-should-parse-a-message-with-a-trailing-colon-but-no-content.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "should parse a message with a trailing colon but no content"
+  },
+  {
+   "file": "102-1-should-parse.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "1 should parse "
+  },
+  {
+   "file": "103-2-should-parse.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "2 should parse "
+  },
+  {
+   "file": "104-should-parse-participants-with-different-quote-styles-and-wh.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax",
+   "name": "should parse participants with different quote styles and whitespace"
+  },
+  {
+   "file": "105-should-parse-mixed-participant-types-with-extended-syntax.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax",
+   "name": "should parse mixed participant types with extended syntax"
+  },
+  {
+   "file": "106-should-fail-for-malformed-json-in-participant-definition.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax",
+   "name": "should fail for malformed JSON in participant definition"
+  },
+  {
+   "file": "107-should-fail-for-missing-colon-separator.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax",
+   "name": "should fail for missing colon separator"
+  },
+  {
+   "file": "108-should-fail-for-missing-closing-brace.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax",
+   "name": "should fail for missing closing brace"
+  },
+  {
+   "file": "109-should-parse-boundary-participant.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse boundary participant"
+  },
+  {
+   "file": "110-should-parse-control-participant.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse control participant"
+  },
+  {
+   "file": "111-should-parse-entity-participant.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse entity participant"
+  },
+  {
+   "file": "112-should-parse-database-participant.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse database participant"
+  },
+  {
+   "file": "113-should-parse-collections-participant.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse collections participant"
+  },
+  {
+   "file": "114-should-parse-queue-participant.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse queue participant"
+  },
+  {
+   "file": "115-should-parse-actor-participant.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse actor participant"
+  },
+  {
+   "file": "116-should-parse-participant-participant.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse participant participant"
+  },
+  {
+   "file": "117-should-parse-boundary-using-actor-keyword.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse boundary using actor keyword"
+  },
+  {
+   "file": "118-should-parse-control-using-participant-keyword.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse control using participant keyword"
+  },
+  {
+   "file": "119-should-parse-entity-using-actor-keyword.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse entity using actor keyword"
+  },
+  {
+   "file": "120-should-handle-fail-parsing-when-alias-token-causes-conflicts.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should handle fail parsing when alias token causes conflicts in participant definition"
+  },
+  {
+   "file": "121-should-not-hang-when-as-is-used-without-a-space-before-the-a.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should not hang when \"as\" is used without a space before the alias text"
+  },
+  {
+   "file": "122-should-parse-participant-with-stereotype-and-alias.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse participant with stereotype and alias"
+  },
+  {
+   "file": "123-should-parse-actor-with-stereotype-and-alias.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse actor with stereotype and alias"
+  },
+  {
+   "file": "124-should-parse-participant-with-stereotype-and-simple-alias.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse participant with stereotype and simple alias"
+  },
+  {
+   "file": "125-should-parse-participant-with-inline-alias-in-config-object.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse participant with inline alias in config object"
+  },
+  {
+   "file": "126-should-parse-actor-with-inline-alias-in-config-object.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should parse actor with inline alias in config object"
+  },
+  {
+   "file": "127-should-prioritize-external-alias-over-inline-alias.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should prioritize external alias over inline alias"
+  },
+  {
+   "file": "128-should-handle-participant-with-only-inline-alias-no-type.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should handle participant with only inline alias (no type)"
+  },
+  {
+   "file": "129-should-handle-mixed-inline-and-external-alias-syntax.mmd",
+   "outcome": "parses",
+   "suite": "when parsing extended participant syntax/participant type parsing",
+   "name": "should handle mixed inline and external alias syntax"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "starts and ends every lifeline on the two datum lines",
+   "reason": "no parse call"
+  },
+  {
+   "name": "puts every outside label on one baseline, clear of the lifeline, header and footer",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps a multiline label on the datum, growing away from it",
+   "reason": "no parse call"
+  },
+  {
+   "name": "renders every glyph inside the bands, transforms included",
+   "reason": "no parse call"
+  },
+  {
+   "name": "reports one uniform actor height back into the pipeline",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle a sequenceDiagram definition",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle a simple bound call",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle an expanding bound",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle inserts within the bound without changing the outer bounds",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle a loop without expanding the area",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle multiple loops without expanding the bounds",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle a loop that expands the area",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should have functions used in sequence JISON as own property",
+   "reason": "no parse call"
+  }
+ ]
+}

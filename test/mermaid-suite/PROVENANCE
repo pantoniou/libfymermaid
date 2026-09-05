@@ -1,0 +1,44 @@
+Corpus imported from mermaid-js/mermaid by
+scripts/import-mermaid-suite.py.
+
+upstream: https://github.com/mermaid-js/mermaid
+commit:   fe0e2375348eb23ddc85c71c721010b6db2478ea
+licence:  MIT, see LICENSE in this directory
+
+Each case is one `it()` from an upstream parser spec: the
+diagram source it parses, and whether upstream expects that
+parse to succeed or to fail. A case whose source is not a
+literal, and one that never parses, is skipped and counted
+in the manifest of its suite.
+
+total: 1271 cases, 65 of which must fail; 701 skipped
+
+  agentflow        68 cases (  0 must fail), 167 skipped
+  architecture     17 cases (  3 must fail),  12 skipped
+  block            24 cases (  0 must fail),   6 skipped
+  c4               25 cases (  0 must fail),  25 skipped
+  class           223 cases (  0 must fail),   4 skipped
+  common            3 cases (  0 must fail),  20 skipped
+  er               72 cases (  3 must fail),  69 skipped
+  eventmodeling     7 cases (  0 must fail),   0 skipped
+  flowchart       198 cases (  2 must fail),  74 skipped
+  gantt             7 cases (  0 must fail),  25 skipped
+  gitgraph         63 cases ( 11 must fail),   6 skipped
+  info              4 cases (  2 must fail),   0 skipped
+  ishikawa          3 cases (  0 must fail),   0 skipped
+  journey           7 cases (  0 must fail),   1 skipped
+  kanban           30 cases (  3 must fail),   0 skipped
+  mindmap          26 cases (  2 must fail),   0 skipped
+  packet           15 cases (  7 must fail),   0 skipped
+  pie              13 cases (  2 must fail),   1 skipped
+  quadrant         24 cases (  2 must fail),   5 skipped
+  radar            10 cases (  0 must fail),  10 skipped
+  railroad         75 cases (  9 must fail),  35 skipped
+  requirement       3 cases (  0 must fail),  44 skipped
+  sequence        130 cases (  0 must fail),  13 skipped
+  state            77 cases (  2 must fail),   6 skipped
+  timeline         11 cases (  0 must fail),   0 skipped
+  treeView          6 cases (  0 must fail), 110 skipped
+  usecase          53 cases (  1 must fail),  54 skipped
+  wardley          19 cases (  0 must fail),   5 skipped
+  xychart          58 cases ( 16 must fail),   9 skipped

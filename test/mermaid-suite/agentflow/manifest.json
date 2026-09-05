@@ -1,0 +1,1082 @@
+{
+ "cases": [
+  {
+   "file": "000-attaches-a-position-from-the-element-mapping-when-a-nodeid-i.mmd",
+   "outcome": "parses",
+   "suite": "agentflow diagnostics/emitWarning",
+   "name": "attaches a position from the element mapping when a nodeId is given"
+  },
+  {
+   "file": "001-parses-a-comment-before-the-agentflow-keyword.mmd",
+   "outcome": "parses",
+   "suite": "around the header",
+   "name": "parses a comment before the agentflow keyword"
+  },
+  {
+   "file": "002-parses-multiple-comments-before-the-header.mmd",
+   "outcome": "parses",
+   "suite": "around the header",
+   "name": "parses multiple comments before the header"
+  },
+  {
+   "file": "003-parses-a-comment-immediately-after-the-agentflow-keyword.mmd",
+   "outcome": "parses",
+   "suite": "around the header",
+   "name": "parses a comment immediately after the agentflow keyword"
+  },
+  {
+   "file": "004-parses-a-comment-between-two-vertex-statements.mmd",
+   "outcome": "parses",
+   "suite": "between statements",
+   "name": "parses a comment between two vertex statements"
+  },
+  {
+   "file": "005-parses-back-to-back-comments-between-statements.mmd",
+   "outcome": "parses",
+   "suite": "between statements",
+   "name": "parses back-to-back comments between statements"
+  },
+  {
+   "file": "006-parses-a-trailing-comment-at-end-of-diagram.mmd",
+   "outcome": "parses",
+   "suite": "between statements",
+   "name": "parses a trailing comment at end of diagram"
+  },
+  {
+   "file": "007-parses-comment-with-no-space-between-and-the-text.mmd",
+   "outcome": "parses",
+   "suite": "between statements",
+   "name": "parses %%comment with no space between %% and the text"
+  },
+  {
+   "file": "008-parses-empty-comment-line.mmd",
+   "outcome": "parses",
+   "suite": "between statements",
+   "name": "parses empty %% comment line"
+  },
+  {
+   "file": "009-strips-comment-inside-a-square-label-text-state.mmd",
+   "outcome": "parses",
+   "suite": "inside node shapes",
+   "name": "strips %% comment inside a square label (text state)"
+  },
+  {
+   "file": "010-strips-comment-inside-an-ellipse-label-ellipsetext-state.mmd",
+   "outcome": "parses",
+   "suite": "inside node shapes",
+   "name": "strips %% comment inside an ellipse label (ellipseText state)"
+  },
+  {
+   "file": "011-strips-comment-inside-a-trapezoid-label-traptext-state.mmd",
+   "outcome": "parses",
+   "suite": "inside node shapes",
+   "name": "strips %% comment inside a trapezoid label (trapText state)"
+  },
+  {
+   "file": "012-parses-comments-inside-and-around-a-flow-container.mmd",
+   "outcome": "parses",
+   "suite": "around containers",
+   "name": "parses comments inside and around a flow container"
+  },
+  {
+   "file": "013-parses-comments-around-connector-declarations.mmd",
+   "outcome": "parses",
+   "suite": "around containers",
+   "name": "parses comments around connector declarations"
+  },
+  {
+   "file": "014-surfaces-edgesemantic-in-getsemanticmodel-edges.mmd",
+   "outcome": "parses",
+   "suite": "agentflow edge semantic/semantic model export",
+   "name": "surfaces edgeSemantic in getSemanticModel().edges"
+  },
+  {
+   "file": "015-captures-a-position-for-a-plain-labelled-vertex.mmd",
+   "outcome": "parses",
+   "suite": "agentflow element mappings/vertex positions",
+   "name": "captures a position for a plain labelled vertex"
+  },
+  {
+   "file": "016-captures-vertices-for-inline-shapes.mmd",
+   "outcome": "parses",
+   "suite": "agentflow element mappings/vertex positions",
+   "name": "captures vertices for inline shapes"
+  },
+  {
+   "file": "017-captures-a-position-for-an-edge-statement.mmd",
+   "outcome": "parses",
+   "suite": "agentflow element mappings/edge positions",
+   "name": "captures a position for an edge statement"
+  },
+  {
+   "file": "018-captures-separate-mappings-for-sequential-edge-statements.mmd",
+   "outcome": "parses",
+   "suite": "agentflow element mappings/edge positions",
+   "name": "captures separate mappings for sequential edge statements"
+  },
+  {
+   "file": "019-captures-a-position-spanning-from-keyword-to-end-for-a-flow-.mmd",
+   "outcome": "parses",
+   "suite": "agentflow element mappings/container positions",
+   "name": "captures a position spanning from keyword to end for a flow container"
+  },
+  {
+   "file": "020-captures-positions-for-nested-flow-containers.mmd",
+   "outcome": "parses",
+   "suite": "agentflow element mappings/container positions",
+   "name": "captures positions for nested flow containers"
+  },
+  {
+   "file": "021-shifts-positions-by-the-frontmatter-line-offset.mmd",
+   "outcome": "parses",
+   "suite": "agentflow element mappings/frontmatter offset",
+   "name": "shifts positions by the frontmatter line offset"
+  },
+  {
+   "file": "022-reports-un-shifted-positions-when-no-frontmatter-offset-is-s.mmd",
+   "outcome": "parses",
+   "suite": "agentflow element mappings/frontmatter offset",
+   "name": "reports un-shifted positions when no frontmatter offset is set"
+  },
+  {
+   "file": "023-getelementsonline-returns-all-mappings-that-intersect-a-give.mmd",
+   "outcome": "parses",
+   "suite": "agentflow element mappings/lookup helpers",
+   "name": "getElementsOnLine returns all mappings that intersect a given line"
+  },
+  {
+   "file": "024-getelementatposition-prefers-the-innermost-span.mmd",
+   "outcome": "parses",
+   "suite": "agentflow element mappings/lookup helpers",
+   "name": "getElementAtPosition prefers the innermost span"
+  },
+  {
+   "file": "025-getmappingstats-reports-counts-per-statement-type.mmd",
+   "outcome": "parses",
+   "suite": "agentflow element mappings/lookup helpers",
+   "name": "getMappingStats reports counts per statement type"
+  },
+  {
+   "file": "026-clear-drops-element-mappings-and-the-frontmatter-offset.mmd",
+   "outcome": "parses",
+   "suite": "agentflow element mappings/reset",
+   "name": "clear() drops element mappings and the frontmatter offset"
+  },
+  {
+   "file": "027-recognises-shape-subroutine-canonical-as-a-tool-definition.mmd",
+   "outcome": "parses",
+   "suite": "agentflow shape-based tool model/tool recognition by shape",
+   "name": "recognises `shape: subroutine` (canonical) as a tool definition"
+  },
+  {
+   "file": "028-recognises-the-alias-tool-as-a-tool-definition.mmd",
+   "outcome": "parses",
+   "suite": "agentflow shape-based tool model/tool recognition by shape",
+   "name": "recognises the alias `tool` as a tool definition"
+  },
+  {
+   "file": "029-recognises-the-alias-subprocess-as-a-tool-definition.mmd",
+   "outcome": "parses",
+   "suite": "agentflow shape-based tool model/tool recognition by shape",
+   "name": "recognises the alias `subprocess` as a tool definition"
+  },
+  {
+   "file": "030-does-not-recognise-a-default-shape-node-as-a-tool.mmd",
+   "outcome": "parses",
+   "suite": "agentflow shape-based tool model/tool recognition by shape",
+   "name": "does NOT recognise a default-shape node as a tool"
+  },
+  {
+   "file": "031-does-not-recognise-an-input-action-node-as-a-tool.mmd",
+   "outcome": "parses",
+   "suite": "agentflow shape-based tool model/tool recognition by shape",
+   "name": "does NOT recognise an input / action node as a tool"
+  },
+  {
+   "file": "032-gettools-returns-all-tool-shaped-vertices.mmd",
+   "outcome": "parses",
+   "suite": "agentflow shape-based tool model/tool recognition by shape",
+   "name": "`getTools()` returns all tool-shaped vertices"
+  },
+  {
+   "file": "033-tool-nodes-get-vertexkind-tool-in-getsemanticmodel.mmd",
+   "outcome": "parses",
+   "suite": "agentflow shape-based tool model/semantic model surfaces vertexKind",
+   "name": "tool nodes get vertexKind: \"tool\" in getSemanticModel()"
+  },
+  {
+   "file": "034-alias-shaped-tools-also-surface-vertexkind-tool.mmd",
+   "outcome": "parses",
+   "suite": "agentflow shape-based tool model/semantic model surfaces vertexKind",
+   "name": "alias-shaped tools also surface vertexKind: \"tool\""
+  },
+  {
+   "file": "035-retry-cache-survive-on-a-tool.mmd",
+   "outcome": "parses",
+   "suite": "agentflow shape-based tool model/tool retry / cache metadata still parses",
+   "name": "retry + cache survive on a tool"
+  },
+  {
+   "file": "036-a-well-formed-block-parses-without-throwing.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "a well-formed @{ } block parses without throwing"
+  },
+  {
+   "file": "037-parses-an-empty-diagram-with-just-the-keyword-newline.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/smoke",
+   "name": "parses an empty diagram with just the keyword + newline"
+  },
+  {
+   "file": "038-parses-two-nodes-and-an-edge.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/smoke",
+   "name": "parses two nodes and an edge"
+  },
+  {
+   "file": "039-captures-node-labels.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/smoke",
+   "name": "captures node labels"
+  },
+  {
+   "file": "040-parses-lr-direction.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/smoke",
+   "name": "parses LR direction"
+  },
+  {
+   "file": "041-renders-a-self-loop-edge-a-a.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/self-loop edges (issue #58)",
+   "name": "renders a self-loop edge (a --> a)"
+  },
+  {
+   "file": "042-keeps-a-self-loop-alongside-a-normal-edge.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/self-loop edges (issue #58)",
+   "name": "keeps a self-loop alongside a normal edge"
+  },
+  {
+   "file": "043-still-drops-collapse-induced-self-loops-issue-53-invariant.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/self-loop edges (issue #58)",
+   "name": "still drops collapse-induced self-loops (issue #53 invariant)"
+  },
+  {
+   "file": "044-parses-a-flow-with-a-quoted-label.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/flow containers",
+   "name": "parses a flow with a quoted label"
+  },
+  {
+   "file": "045-parses-a-flow-without-a-label.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/flow containers",
+   "name": "parses a flow without a label"
+  },
+  {
+   "file": "046-parses-nested-flows.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/flow containers",
+   "name": "parses nested flows"
+  },
+  {
+   "file": "047-exposes-flow-as-the-container-type-in-layout-data.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/flow containers",
+   "name": "exposes flow as the container type in layout data"
+  },
+  {
+   "file": "048-parses-as-arrow-point-sequence.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/edge types (v0.8.1)",
+   "name": "parses `-->` as arrow_point + sequence"
+  },
+  {
+   "file": "049-parses-x-as-arrow-cross-failure.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/edge types (v0.8.1)",
+   "name": "parses `--x` as arrow_cross + failure"
+  },
+  {
+   "file": "050-parses-as-a-dotted-reference-edge.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/edge types (v0.8.1)",
+   "name": "parses `-.-` as a dotted reference edge"
+  },
+  {
+   "file": "051-accepts-labels-on.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/edge types (v0.8.1)",
+   "name": "accepts labels on `-->`"
+  },
+  {
+   "file": "052-accepts-shape-tool.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/shape aliases (v0.8.1)",
+   "name": "accepts `shape: tool`"
+  },
+  {
+   "file": "053-accepts-shape-action.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/shape aliases (v0.8.1)",
+   "name": "accepts `shape: action`"
+  },
+  {
+   "file": "054-accepts-shape-input.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/shape aliases (v0.8.1)",
+   "name": "accepts `shape: input`"
+  },
+  {
+   "file": "055-accepts-shape-refdoc.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/shape aliases (v0.8.1)",
+   "name": "accepts `shape: refdoc`"
+  },
+  {
+   "file": "056-accepts-shape-decision-and-inline-id-diamond-syntax.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/shape aliases (v0.8.1)",
+   "name": "accepts `shape: decision` and inline `id{\u2026}` diamond syntax"
+  },
+  {
+   "file": "057-parses-a-connector-declaration.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/connector keyword (v0.8.1)",
+   "name": "parses a connector declaration"
+  },
+  {
+   "file": "058-multiple-connectors-are-tracked-separately.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/connector keyword (v0.8.1)",
+   "name": "multiple connectors are tracked separately"
+  },
+  {
+   "file": "059-parses-inline-metadata-on-a-labeled-connector-declaration.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/connector keyword (v0.8.1)",
+   "name": "parses inline metadata on a labeled connector declaration"
+  },
+  {
+   "file": "060-parses-inline-metadata-on-a-bare-connector-declaration.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/connector keyword (v0.8.1)",
+   "name": "parses inline metadata on a bare connector declaration"
+  },
+  {
+   "file": "061-merges-inline-metadata-with-a-later-standalone-attachment.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/connector keyword (v0.8.1)",
+   "name": "merges inline metadata with a later standalone attachment"
+  },
+  {
+   "file": "062-parses-multi-line-inline-metadata-on-a-connector-declaration.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/connector keyword (v0.8.1)",
+   "name": "parses multi-line inline metadata on a connector declaration"
+  },
+  {
+   "file": "063-expands-a-b-c-into-two-edges.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/parallel fan-out (`&`)",
+   "name": "expands `a --> b & c` into two edges"
+  },
+  {
+   "file": "064-parses-flat-metadata-on-a-vertex.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/metadata @{ \u2026 }",
+   "name": "parses flat metadata on a vertex"
+  },
+  {
+   "file": "065-merges-multiple-metadata-statements-on-the-same-vertex.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/metadata @{ \u2026 }",
+   "name": "merges multiple metadata statements on the same vertex"
+  },
+  {
+   "file": "066-parses-metadata-on-a-flow-container.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/metadata @{ \u2026 }",
+   "name": "parses metadata on a flow container"
+  },
+  {
+   "file": "067-marks-a-subgraph-as-collapsed-via-view-collapsed.mmd",
+   "outcome": "parses",
+   "suite": "parsing an agentflow diagram/view hint (collapsed / expanded)",
+   "name": "marks a subgraph as collapsed via @{ view: \"collapsed\" }"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "reports an unsupported shape after getData(), without rendering",
+   "reason": "no parse call"
+  },
+  {
+   "name": "reports a removed shape as an error after getData()",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not accumulate duplicates when getData() is called more than once",
+   "reason": "no parse call"
+  },
+  {
+   "name": "reports the position of the offending node when one was captured",
+   "reason": "no parse call"
+  },
+  {
+   "name": "exposes emitWarning / emitError / getDiagnostics",
+   "reason": "no parse call"
+  },
+  {
+   "name": "records a structured diagnostic with the given ID and message",
+   "reason": "no parse call"
+  },
+  {
+   "name": "also writes to log.warn so console output is preserved",
+   "reason": "no parse call"
+  },
+  {
+   "name": "leaves position undefined when no nodeId is given",
+   "reason": "no parse call"
+  },
+  {
+   "name": "leaves position undefined when the referenced nodeId has no mapping",
+   "reason": "no parse call"
+  },
+  {
+   "name": "accumulates multiple diagnostics in order",
+   "reason": "no parse call"
+  },
+  {
+   "name": "records a diagnostic with severity=error and writes to log.error",
+   "reason": "no parse call"
+  },
+  {
+   "name": "emits SHAPE_UNSUPPORTED through emitWarning when a DB is passed",
+   "reason": "no parse call"
+  },
+  {
+   "name": "falls back to log.warn when no DB is passed",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not emit for supported shapes",
+   "reason": "no parse call"
+  },
+  {
+   "name": "clear() drops diagnostics",
+   "reason": "no parse call"
+  },
+  {
+   "name": "exposes getSemanticModel()",
+   "reason": "no parse call"
+  },
+  {
+   "name": "returns a model with vertices, edges, subGraphs, connectors, diagnostics",
+   "reason": "no parse call"
+  },
+  {
+   "name": "produces identical models for styled and unstyled variants of the same diagram",
+   "reason": "no parse call"
+  },
+  {
+   "name": "view: collapsed does not leak into the vertex/edge/subgraph semantics",
+   "reason": "no parse call"
+  },
+  {
+   "name": "never includes styles, classes, icon, img, w, h, view on vertices",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not expose element mappings, classes, or link styles on the root model",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps domain metadata on flow containers (model, memory)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "surfaces declared connectors in the connectors projection",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps `value` on input vertices",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps edge type / stroke / label",
+   "reason": "no parse call"
+  },
+  {
+   "name": "includes diagnostics emitted during the render pipeline",
+   "reason": "no parse call"
+  },
+  {
+   "name": "carries icon metadata through without selecting an icon shape",
+   "reason": "no parse call"
+  },
+  {
+   "name": "carries image metadata through without selecting an image shape",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps the label when icon or image metadata is present",
+   "reason": "no parse call"
+  },
+  {
+   "name": "still reports an explicitly authored out-of-catalogue shape",
+   "reason": "no parse call"
+  },
+  {
+   "name": "strips presentation keys from the semantic model",
+   "reason": "no parse call"
+  },
+  {
+   "name": "leaves the six domain shapes working",
+   "reason": "no parse call"
+  },
+  {
+   "name": "tags a node with the kind the db reports",
+   "reason": "no parse call"
+  },
+  {
+   "name": "gives two nodes of one kind the same class, wherever they sit",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps any classes the node already carried",
+   "reason": "no parse call"
+  },
+  {
+   "name": "numbers containers from the order it is given, above the kind slots",
+   "reason": "no parse call"
+  },
+  {
+   "name": "never folds a container back onto a kind slot",
+   "reason": "no parse call"
+  },
+  {
+   "name": "stamps a slot the stylesheet actually names, on a palette shorter than the kinds",
+   "reason": "no parse call"
+  },
+  {
+   "name": "agrees with the stylesheet at every palette length",
+   "reason": "no parse call"
+  },
+  {
+   "name": "emits a rule for every kind, at that kind slot colour",
+   "reason": "no parse call"
+  },
+  {
+   "name": "paints containers from the slots above the kind range",
+   "reason": "no parse call"
+  },
+  {
+   "name": "names both forms of a container, so a collapsed one is not left grey",
+   "reason": "no parse call"
+  },
+  {
+   "name": "uses no container slot below the kind range",
+   "reason": "no parse call"
+  },
+  {
+   "name": "strokes without filling when the theme carries no background palette",
+   "reason": "no parse call"
+  },
+  {
+   "name": "emits nothing for a theme that carries no palette",
+   "reason": "no parse call"
+  },
+  {
+   "name": "rejects a look that would break out of the selector",
+   "reason": "no parse call"
+  },
+  {
+   "name": "gives the first declared container the first container slot",
+   "reason": "no parse call"
+  },
+  {
+   "name": "numbers a parent before the container nested inside it",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps a collapsed container in the sequence",
+   "reason": "no parse call"
+  },
+  {
+   "name": "partitions every ID into emitted or reserved",
+   "reason": "no parse call"
+  },
+  {
+   "name": "has a reproduction for every ID claimed as emitted",
+   "reason": "no parse call"
+  },
+  {
+   "name": "emits nothing for a clean diagram",
+   "reason": "no parse call"
+  },
+  {
+   "name": "has discovered at least one fixture",
+   "reason": "no parse call"
+  },
+  {
+   "name": "matches its expected outcome and diagnostics",
+   "reason": "no parse call"
+  },
+  {
+   "name": "fails when semanticAssertions are declared but no semantic model exists",
+   "reason": "no parse call"
+  },
+  {
+   "name": "fails on a diagnostic the fixture did not declare",
+   "reason": "no parse call"
+  },
+  {
+   "name": "allows extra diagnostics when the fixture opts in",
+   "reason": "no parse call"
+  },
+  {
+   "name": "fails when the parse error does not match parseErrorContains",
+   "reason": "no parse call"
+  },
+  {
+   "name": "produces a semantic model for a diagram that parses",
+   "reason": "no parse call"
+  },
+  {
+   "name": "reports parse-error and no semantic model when the parser throws",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a standalone task attachment maps as `attachment`, not a second `vertex`",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a flow attachment maps as `attachment`, so the flow id owns no vertex mapping",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a connector attachment maps as `attachment`",
+   "reason": "no parse call"
+  },
+  {
+   "name": "an edge-metadata attachment (`e1@{ ... }` after `a e1@--> b`) maps as `attachment`",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a multiline standalone block spans through the closing brace and is hit-testable",
+   "reason": "no parse call"
+  },
+  {
+   "name": "inline id[\"...\"]@{ ... } keeps its single widened `vertex` mapping (issue #60)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a bare reference without a block stays a `vertex` mapping",
+   "reason": "no parse call"
+  },
+  {
+   "name": "getMappingStats counts attachments separately",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a blank line directly after an inline @{ } block does not shift the next node",
+   "reason": "no parse call"
+  },
+  {
+   "name": "the fold accumulates \u2014 two blank lines after @{ } would drift by two",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a comment line after an @{ } block is already correct and stays correct",
+   "reason": "no parse call"
+  },
+  {
+   "name": "an edge after a @{ }+blank block keeps its source line",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a thrown parse error reports the source line, not a folded line",
+   "reason": "no parse call"
+  },
+  {
+   "name": "still strips trailing whitespace after } so the statement reduces",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not emit a parent chain that closes a cycle",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps the first containment and drops only the one closing the loop",
+   "reason": "no parse call"
+  },
+  {
+   "name": "reports the dropped nesting as a containment violation",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not recurse forever",
+   "reason": "no parse call"
+  },
+  {
+   "name": "still draws the collapsed container it was asked to draw",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not recurse forever",
+   "reason": "no parse call"
+  },
+  {
+   "name": "draws at least one of the two containers rather than blanking",
+   "reason": "no parse call"
+  },
+  {
+   "name": "terminates",
+   "reason": "no parse call"
+  },
+  {
+   "name": "surfaces instruction on the raw edge (getEdges)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "carries instruction into the IR (getData) \u2014 issue #62",
+   "reason": "no parse call"
+  },
+  {
+   "name": "carries instruction into the semantic model",
+   "reason": "no parse call"
+  },
+  {
+   "name": "leaves metadata undefined for edges without it",
+   "reason": "no parse call"
+  },
+  {
+   "name": "`-->` maps to sequence",
+   "reason": "no parse call"
+  },
+  {
+   "name": "`-.-` maps to reference",
+   "reason": "no parse call"
+  },
+  {
+   "name": "`--x` maps to failure",
+   "reason": "no parse call"
+  },
+  {
+   "name": "`---->` (longer normal) is still sequence",
+   "reason": "no parse call"
+  },
+  {
+   "name": "`-->` keeps {type: arrow_point, stroke: normal}",
+   "reason": "no parse call"
+  },
+  {
+   "name": "`-.-` keeps {stroke: dotted}",
+   "reason": "no parse call"
+  },
+  {
+   "name": "`--x` keeps {type: arrow_cross, stroke: normal}",
+   "reason": "no parse call"
+  },
+  {
+   "name": "multi-line empty block @{\\\\n} parses without crashing (the reported repro)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "whitespace-only multi-line block parses without crashing",
+   "reason": "no parse call"
+  },
+  {
+   "name": "whitespace-only single-line block @{   } parses without crashing",
+   "reason": "no parse call"
+  },
+  {
+   "name": "multi-line empty block behaves identically to single-line @{}",
+   "reason": "no parse call"
+  },
+  {
+   "name": "empty multi-line block on a flow parses and matches single-line @{} behaviour",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a genuinely malformed block still throws a positioned YAML error, not a TypeError",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a non-string shape value is rejected as an unknown shape, not a TypeError",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a valid metadata block is unaffected",
+   "reason": "no parse call"
+  },
+  {
+   "name": "attaches multi-line inline metadata to the flow (issue example)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "attaches single-line inline metadata to the flow",
+   "reason": "no parse call"
+  },
+  {
+   "name": "supports the labelled inline form and keeps the title",
+   "reason": "no parse call"
+  },
+  {
+   "name": "carries inline metadata verbatim without validating it (issue #64)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not make the flow a member of its own subgraph",
+   "reason": "no parse call"
+  },
+  {
+   "name": "emits the flow node without a self parentId",
+   "reason": "no parse call"
+  },
+  {
+   "name": "still emits the task inside the flow and the edge to the flow",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a nested flow referencing its own id degrades the same way",
+   "reason": "no parse call"
+  },
+  {
+   "name": "self-reference at the middle of a three-level nesting keeps the chain intact",
+   "reason": "no parse call"
+  },
+  {
+   "name": "self-references at two nesting levels at once are both dropped",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a normal flow membership is untouched",
+   "reason": "no parse call"
+  },
+  {
+   "name": "rejects a caret in shape data exactly like flowchart does",
+   "reason": "no parse call"
+  },
+  {
+   "name": "excludes a global node from the flow membership",
+   "reason": "no parse call"
+  },
+  {
+   "name": "emits the global node without a parentId while flow members keep theirs",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps the edges from the flow intact",
+   "reason": "no parse call"
+  },
+  {
+   "name": "emits no container node for the global block itself",
+   "reason": "no parse call"
+  },
+  {
+   "name": "is order-independent: a global block after the flow still releases the node",
+   "reason": "no parse call"
+  },
+  {
+   "name": "allows edges inside the global block; both endpoints become global",
+   "reason": "no parse call"
+  },
+  {
+   "name": "acts as an escape hatch when nested inside a flow",
+   "reason": "no parse call"
+  },
+  {
+   "name": "supports labels and shapes on nodes declared in the global block",
+   "reason": "no parse call"
+  },
+  {
+   "name": "merges multiple global blocks",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps \"global\" usable inside bracketed labels",
+   "reason": "no parse call"
+  },
+  {
+   "name": "inline id[\"...\"]@{ ... } spans the block, so cursors inside resolve to the node",
+   "reason": "no parse call"
+  },
+  {
+   "name": "inline block on an edge destination (a --> b[\"...\"]@{ ... }) spans the block",
+   "reason": "no parse call"
+  },
+  {
+   "name": "single-line inline metadata keeps the node on its declaration line",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a node without inline metadata is unaffected (decl-only span)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "opts into source-faithful parsing so Diagram.ts keeps comments and offsets",
+   "reason": "no parse call"
+  },
+  {
+   "name": "starts with an empty element-mappings list",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps an unknown metadata key on a vertex without warning",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps an unknown metadata key on a flow without warning",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps a \"misapplied\" known key (model on a flow-only? no \u2014 execution on a flow) and does not warn",
+   "reason": "no parse call"
+  },
+  {
+   "name": "carries arbitrary edge metadata, not just instruction",
+   "reason": "no parse call"
+  },
+  {
+   "name": "carries `prompt` as an ordinary unknown key (no alias, no rename, no warning)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not resolve/validate connectorRef",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not warn on a flow with no input node",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not warn on a duplicate id",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not warn on declaring the reserved `connectors` id",
+   "reason": "no parse call"
+  },
+  {
+   "name": "still rejects an invalid shape name (unknown-shape error)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "still records view: collapsed on a flow",
+   "reason": "no parse call"
+  },
+  {
+   "name": "drops an authored __proto__ key from vertex metadata",
+   "reason": "no parse call"
+  },
+  {
+   "name": "drops constructor and prototype keys too",
+   "reason": "no parse call"
+  },
+  {
+   "name": "strips nested prototype keys while keeping the surrounding structure",
+   "reason": "no parse call"
+  },
+  {
+   "name": "leaves ordinary metadata untouched",
+   "reason": "no parse call"
+  },
+  {
+   "name": "inline connector: every line comma-terminated",
+   "reason": "no parse call"
+  },
+  {
+   "name": "inline connector: mixed lines with and without commas",
+   "reason": "no parse call"
+  },
+  {
+   "name": "standalone vertex attachment with trailing commas",
+   "reason": "no parse call"
+  },
+  {
+   "name": "flow header inline metadata with trailing commas",
+   "reason": "no parse call"
+  },
+  {
+   "name": "strips a comma sitting before a line-trailing comment",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps commas inside block scalar content",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps separator commas in flow sequences spanning lines",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps a comma ending a line inside a single-quoted scalar",
+   "reason": "no parse call"
+  },
+  {
+   "name": "parses a full diagram around a trailing-comma connector declaration",
+   "reason": "no parse call"
+  },
+  {
+   "name": "single-line form still tolerates a trailing comma",
+   "reason": "no parse call"
+  },
+  {
+   "name": "invalid YAML that commas cannot fix still throws",
+   "reason": "no parse call"
+  },
+  {
+   "name": "two sibling flows do not overlap on the boundary line",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a nested inner flow ends at its own `end`, not the parent content",
+   "reason": "no parse call"
+  },
+  {
+   "name": "a flow whose `end` is the last line (no trailing newline) still parses and maps",
+   "reason": "no parse call"
+  },
+  {
+   "name": "prefers the tighter span when a nested container shares the point",
+   "reason": "no parse call"
+  },
+  {
+   "name": "still resolves the innermost element when a label is wider than 1000 columns",
+   "reason": "no parse call"
+  },
+  {
+   "name": "single-line block: maps (block 2:16) to the source line of the @{ } block",
+   "reason": "no parse call"
+  },
+  {
+   "name": "multi-line block: maps the body line into source space and keeps the tab caret",
+   "reason": "no parse call"
+  },
+  {
+   "name": "multi-line block: error on the @{ line itself maps with the content-column offset",
+   "reason": "no parse call"
+  },
+  {
+   "name": "composes with the blank-line fold fix: a block below a @{ }+blank keeps its source line",
+   "reason": "no parse call"
+  },
+  {
+   "name": "applies the frontmatter line offset on top of the block position",
+   "reason": "no parse call"
+  },
+  {
+   "name": "leaves the message of a non-YAML error alone but still locates it",
+   "reason": "no parse call"
+  },
+  {
+   "name": "applies the frontmatter offset to a shape error too",
+   "reason": "no parse call"
+  }
+ ]
+}

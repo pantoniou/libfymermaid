@@ -1,0 +1,4 @@
+parses:000-should-handle-an-info-definition.mmd
+parses:001-should-handle-an-info-definition-with-showinfo.mmd
+fails:002-should-throw-because-of-unsupported-info-grammar.mmd
+fails:003-should-throw-because-of-unsupported-info-grammar-2.mmd

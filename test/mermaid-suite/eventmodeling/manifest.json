@@ -1,0 +1,47 @@
+{
+ "cases": [
+  {
+   "file": "000-should-handle-a-simple-eventmodeling-definition.mmd",
+   "outcome": "parses",
+   "suite": "eventmodeling diagrams",
+   "name": "should handle a simple eventmodeling definition"
+  },
+  {
+   "file": "001-should-handle-data-inline-in-frames.mmd",
+   "outcome": "parses",
+   "suite": "eventmodeling diagrams",
+   "name": "should handle data inline in frames"
+  },
+  {
+   "file": "002-should-handle-data-block-references.mmd",
+   "outcome": "parses",
+   "suite": "eventmodeling diagrams",
+   "name": "should handle data block references"
+  },
+  {
+   "file": "003-should-handle-qualified-names.mmd",
+   "outcome": "parses",
+   "suite": "eventmodeling diagrams",
+   "name": "should handle qualified names"
+  },
+  {
+   "file": "004-should-handle-multiple-source-frames.mmd",
+   "outcome": "parses",
+   "suite": "eventmodeling diagrams",
+   "name": "should handle multiple source frames"
+  },
+  {
+   "file": "005-should-handle-reset-frames.mmd",
+   "outcome": "parses",
+   "suite": "eventmodeling diagrams",
+   "name": "should handle reset frames"
+  },
+  {
+   "file": "006-should-handle-all-entity-types.mmd",
+   "outcome": "parses",
+   "suite": "eventmodeling diagrams",
+   "name": "should handle all entity types"
+  }
+ ],
+ "skipped": []
+}

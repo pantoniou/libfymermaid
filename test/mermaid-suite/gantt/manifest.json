@@ -1,0 +1,148 @@
+{
+ "cases": [
+  {
+   "file": "000-should-handle-a-dateformat-definition.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gantt diagram it",
+   "name": "should handle a dateFormat definition"
+  },
+  {
+   "file": "001-should-handle-a-inclusive-end-date-definition.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gantt diagram it",
+   "name": "should handle a inclusive end date definition"
+  },
+  {
+   "file": "002-should-handle-an-excludes-definition.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gantt diagram it",
+   "name": "should handle an excludes definition"
+  },
+  {
+   "file": "003-should-handle-a-todaymarker-definition.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gantt diagram it",
+   "name": "should handle a todayMarker definition"
+  },
+  {
+   "file": "004-should-handle-multiline-section-titles-with-different-line-b.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gantt diagram it",
+   "name": "should handle multiline section titles with different line breaks"
+  },
+  {
+   "file": "005-should-handle-a-task-with-start-end-time-relative-to-other-t.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gantt diagram it",
+   "name": "should handle a task with start/end time relative to other tasks"
+  },
+  {
+   "file": "006-should-parse-callback-specifier-with-no-args.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a gantt diagram it",
+   "name": "should parse callback specifier with no args"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "should handle milliseconds",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle relative start date based on id regardless of sections",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle relative end date based on id regardless of sections",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle relative start date based on multiple id",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle relative end date based on multiple id",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should ignore weekends",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should ignore weekends starting on friday",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should not infinite loop when excluding everything",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should merge tokens across multiple setExcludes calls (issue #6270)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should dedupe tokens across multiple setExcludes calls (issue #6270)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should merge tokens across multiple setIncludes calls (issue #6270)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should maintain the order in which tasks are created",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should work when end date is the 31st",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should add 1 day even on days with 25 hours",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should automatically add one day to all end dates",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should reject dates with ridiculous years",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle seconds-only format with valid numeric values (issue #5496)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle dates with year typo like 202 instead of 2024 (issue #5496)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle a title definition",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should concatenate tokens across multiple excludes lines (issue #6270)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle a section definition",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle a task definition",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should parse callback specifier with arbitrary number of args",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should allow for a accessibility title and description (accDescr)",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should allow for a accessibility title and multiline description (accDescr)",
+   "reason": "source is not a literal"
+  }
+ ]
+}

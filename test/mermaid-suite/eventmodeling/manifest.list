@@ -1,0 +1,7 @@
+parses:000-should-handle-a-simple-eventmodeling-definition.mmd
+parses:001-should-handle-data-inline-in-frames.mmd
+parses:002-should-handle-data-block-references.mmd
+parses:003-should-handle-qualified-names.mmd
+parses:004-should-handle-multiple-source-frames.mmd
+parses:005-should-handle-reset-frames.mmd
+parses:006-should-handle-all-entity-types.mmd

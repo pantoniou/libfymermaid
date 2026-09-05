@@ -1,0 +1,256 @@
+{
+ "cases": [
+  {
+   "file": "000-should-handle-parameter-names-that-are-keywords.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 diagram",
+   "name": "should handle parameter names that are keywords"
+  },
+  {
+   "file": "001-should-allow-default-in-the-parameters.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 diagram",
+   "name": "should allow default in the parameters"
+  },
+  {
+   "file": "002-keeps-tags-a-string-when-the-description-is-omitted.mmd",
+   "outcome": "parses",
+   "suite": "named attributes arriving in a positional text slot",
+   "name": "keeps $tags a string when the description is omitted"
+  },
+  {
+   "file": "003-keeps-tags-a-string-when-the-description-is-given.mmd",
+   "outcome": "parses",
+   "suite": "named attributes arriving in a positional text slot",
+   "name": "keeps $tags a string when the description is given"
+  },
+  {
+   "file": "004-still-stores-the-description-as-text-when-it-is-the-one-name.mmd",
+   "outcome": "parses",
+   "suite": "named attributes arriving in a positional text slot",
+   "name": "still stores the description as text when it is the one named"
+  },
+  {
+   "file": "005-keeps-sprite-and-link-strings-on-a-container.mmd",
+   "outcome": "parses",
+   "suite": "named attributes arriving in a positional text slot",
+   "name": "keeps $sprite and $link strings on a container"
+  },
+  {
+   "file": "006-keeps-a-relationship-tags-a-string-when-techn-and-descr-are-.mmd",
+   "outcome": "parses",
+   "suite": "named attributes arriving in a positional text slot",
+   "name": "keeps a relationship $tags a string when techn and descr are omitted"
+  },
+  {
+   "file": "007-keeps-a-named-descr-that-lands-in-an-earlier-slot.mmd",
+   "outcome": "parses",
+   "suite": "named attributes arriving in a positional text slot",
+   "name": "keeps a named $descr that lands in an earlier slot"
+  },
+  {
+   "file": "008-still-defaults-descr-to-empty-when-it-is-genuinely-absent.mmd",
+   "outcome": "parses",
+   "suite": "named attributes arriving in a positional text slot",
+   "name": "still defaults descr to empty when it is genuinely absent"
+  },
+  {
+   "file": "009-keeps-a-named-descr-on-a-relationship-where-techn-also-comes.mmd",
+   "outcome": "parses",
+   "suite": "named attributes arriving in a positional text slot",
+   "name": "keeps a named $descr on a relationship, where techn also comes first"
+  },
+  {
+   "file": "010-should-parse-a-c4-diagram-with-one-person-correctly.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person",
+   "name": "should parse a C4 diagram with one Person correctly"
+  },
+  {
+   "file": "011-should-parse-the-alias.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person",
+   "name": "should parse the alias"
+  },
+  {
+   "file": "012-should-parse-the-label.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person",
+   "name": "should parse the label"
+  },
+  {
+   "file": "013-should-parse-the-description.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person",
+   "name": "should parse the description"
+  },
+  {
+   "file": "014-should-parse-a-sprite.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person",
+   "name": "should parse a sprite"
+  },
+  {
+   "file": "015-should-parse-a-link.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person",
+   "name": "should parse a link"
+  },
+  {
+   "file": "016-should-parse-tags.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person",
+   "name": "should parse tags"
+  },
+  {
+   "file": "017-should-keep-named-attributes-that-land-in-an-earlier-positio.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person",
+   "name": "should keep named attributes that land in an earlier positional slot"
+  },
+  {
+   "file": "018-should-parse-a-c4-diagram-with-one-person-ext-correctly.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person_Ext",
+   "name": "should parse a C4 diagram with one Person_Ext correctly"
+  },
+  {
+   "file": "019-should-parse-the-alias-2.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person_Ext",
+   "name": "should parse the alias"
+  },
+  {
+   "file": "020-should-parse-the-label-2.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person_Ext",
+   "name": "should parse the label"
+  },
+  {
+   "file": "021-should-parse-the-description-2.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person_Ext",
+   "name": "should parse the description"
+  },
+  {
+   "file": "022-should-parse-a-sprite-2.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person_Ext",
+   "name": "should parse a sprite"
+  },
+  {
+   "file": "023-should-parse-a-link-2.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person_Ext",
+   "name": "should parse a link"
+  },
+  {
+   "file": "024-should-parse-tags-2.mmd",
+   "outcome": "parses",
+   "suite": "parsing a C4 Person_Ext",
+   "name": "should parse tags"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "should parse a C4 diagram with one Boundary correctly",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse the alias",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse the label",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse the type",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse a link",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse tags",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should resolve a boundary alias as a relation endpoint",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse a C4 diagram with one Component correctly",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle a trailing whitespaces after Component",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse a C4 diagram with one Container correctly",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse the alias",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse the label",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse the technology",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse the description",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse a sprite",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse a link",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse tags",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should handle a trailing whitespaces after statements",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse a C4 diagram with one System correctly",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse the alias",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse the label",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse the description",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse a sprite",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse a link",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should parse tags",
+   "reason": "source is not a literal"
+  }
+ ]
+}

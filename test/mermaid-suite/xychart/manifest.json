@@ -1,0 +1,390 @@
+{
+ "cases": [
+  {
+   "file": "000-should-throw-error-if-xychart-text-is-not-there.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "should throw error if xychart text is not there"
+  },
+  {
+   "file": "001-should-not-throw-error-if-only-xychart-is-there.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "should not throw error if only xychart is there"
+  },
+  {
+   "file": "002-parse-title-of-the-chart-within.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse title of the chart within \""
+  },
+  {
+   "file": "003-parse-title-of-the-chart-without.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse title of the chart without \""
+  },
+  {
+   "file": "004-parse-chart-orientation.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse chart orientation"
+  },
+  {
+   "file": "005-parse-chart-orientation-with-spaces.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse chart orientation with spaces"
+  },
+  {
+   "file": "006-parse-x-axis.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis"
+  },
+  {
+   "file": "007-parse-x-axis-with-axis-name-without.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis with axis name without \""
+  },
+  {
+   "file": "008-parse-x-axis-with-axis-name-with.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis with axis name with \""
+  },
+  {
+   "file": "009-parse-x-axis-with-axis-name-with-with-spaces.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis with axis name with \" with spaces"
+  },
+  {
+   "file": "010-parse-x-axis-with-axis-name-and-range-data.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis with axis name and range data"
+  },
+  {
+   "file": "011-parse-x-axis-throw-error-for-invalid-range-data.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis throw error for invalid range data"
+  },
+  {
+   "file": "012-parse-x-axis-with-axis-name-and-range-data-with-only-decimal.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis with axis name and range data with only decimal part"
+  },
+  {
+   "file": "013-parse-x-axis-without-axis-name-and-range-data.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis without axis name and range data"
+  },
+  {
+   "file": "014-parse-x-axis-with-axis-name-and-category-data.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis with axis name and category data"
+  },
+  {
+   "file": "015-parse-x-axis-without-axis-name-and-category-data.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis without axis name and category data"
+  },
+  {
+   "file": "016-parse-x-axis-throw-error-if-unbalanced-bracket.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis throw error if unbalanced bracket"
+  },
+  {
+   "file": "017-parse-x-axis-complete-variant-1.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis complete variant 1"
+  },
+  {
+   "file": "018-parse-x-axis-complete-variant-2.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis complete variant 2"
+  },
+  {
+   "file": "019-parse-x-axis-complete-variant-3.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse x-axis complete variant 3"
+  },
+  {
+   "file": "020-parse-y-axis-with-axis-name.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse y-axis with axis name"
+  },
+  {
+   "file": "021-parse-y-axis-with-axis-name-with-spaces.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse y-axis with axis name with spaces"
+  },
+  {
+   "file": "022-parse-y-axis-with-axis-name-with.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse y-axis with axis name with \""
+  },
+  {
+   "file": "023-parse-y-axis-with-axis-name-with-and-spaces.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse y-axis with axis name with \" and spaces"
+  },
+  {
+   "file": "024-parse-y-axis-with-axis-name-with-range-data.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse y-axis with axis name with range data"
+  },
+  {
+   "file": "025-parse-y-axis-without-axis-name-with-range-data.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse y-axis without axis name with range data"
+  },
+  {
+   "file": "026-parse-y-axis-with-axis-name-with-range-data-with-only-decima.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse y-axis with axis name with range data with only decimal part"
+  },
+  {
+   "file": "027-parse-y-axis-throw-error-for-invalid-number-in-range-data.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse y-axis throw error for invalid number in range data"
+  },
+  {
+   "file": "028-parse-y-axis-throws-error-if-range-data-is-passed.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse y-axis throws error if range data is passed"
+  },
+  {
+   "file": "029-parse-both-axis-at-once.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse both axis at once"
+  },
+  {
+   "file": "030-parse-line-data.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse line Data"
+  },
+  {
+   "file": "031-parse-line-data-with-spaces-and-symbols.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse line Data with spaces and +,- symbols"
+  },
+  {
+   "file": "032-parse-line-data-without-title.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse line Data without title"
+  },
+  {
+   "file": "033-parse-line-data-throws-error-unbalanced-brackets.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse line Data throws error unbalanced brackets"
+  },
+  {
+   "file": "034-parse-line-data-throws-error-if-data-is-not-provided.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse line Data throws error if data is not provided"
+  },
+  {
+   "file": "035-parse-line-data-throws-error-if-data-is-empty.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse line Data throws error if data is empty"
+  },
+  {
+   "file": "036-parse-line-data-throws-error-if-is-not-in-proper.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse line Data throws error if , is not in proper"
+  },
+  {
+   "file": "037-parse-line-data-throws-error-if-not-number.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse line Data throws error if not number"
+  },
+  {
+   "file": "038-parse-bar-data.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse bar Data"
+  },
+  {
+   "file": "039-parse-bar-data-spaces-and-symbol.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse bar Data spaces and +,- symbol"
+  },
+  {
+   "file": "040-parse-bar-data-without-plot-title.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse bar Data without plot title"
+  },
+  {
+   "file": "041-parse-bar-should-throw-for-unbalanced-brackets.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse bar should throw for unbalanced brackets"
+  },
+  {
+   "file": "042-parse-bar-should-throw-error-if-data-is-not-provided.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse bar should throw error if data is not provided"
+  },
+  {
+   "file": "043-parse-bar-should-throw-error-if-data-is-empty.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse bar should throw error if data is empty"
+  },
+  {
+   "file": "044-parse-bar-should-throw-error-if-comma-is-not-proper.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse bar should throw error if comma is not proper"
+  },
+  {
+   "file": "045-parse-bar-should-throw-error-if-number-is-not-passed.mmd",
+   "outcome": "fails",
+   "suite": "Testing xychart jison file",
+   "name": "parse bar should throw error if number is not passed"
+  },
+  {
+   "file": "046-parse-multiple-bar-and-line-variant-1.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse multiple bar and line variant 1"
+  },
+  {
+   "file": "047-parse-multiple-bar-and-line-variant-2.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file",
+   "name": "parse multiple bar and line variant 2"
+  },
+  {
+   "file": "048-parse-line-data-with-point-labels.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file/point labels",
+   "name": "parse line data with point labels"
+  },
+  {
+   "file": "049-parse-line-data-with-mixed-labels-and-no-labels.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file/point labels",
+   "name": "parse line data with mixed labels and no labels"
+  },
+  {
+   "file": "050-parse-line-data-with-labels-containing-spaces.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file/point labels",
+   "name": "parse line data with labels containing spaces"
+  },
+  {
+   "file": "051-parse-line-data-with-title-and-point-labels.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file/point labels",
+   "name": "parse line data with title and point labels"
+  },
+  {
+   "file": "052-parse-bar-data-with-point-labels.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file/point labels",
+   "name": "parse bar data with point labels"
+  },
+  {
+   "file": "053-parse-line-data-with-decimal-values-and-labels.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file/point labels",
+   "name": "parse line data with decimal values and labels"
+  },
+  {
+   "file": "054-should-handle-acctitle.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file/accessibility",
+   "name": "should handle accTitle"
+  },
+  {
+   "file": "055-should-handle-single-line-accdescr.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file/accessibility",
+   "name": "should handle single-line accDescr"
+  },
+  {
+   "file": "056-should-handle-multiline-accdescr.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file/accessibility",
+   "name": "should handle multiline accDescr"
+  },
+  {
+   "file": "057-should-handle-both-acctitle-and-accdescr.mmd",
+   "outcome": "parses",
+   "suite": "Testing xychart jison file/accessibility",
+   "name": "should handle both accTitle and accDescr"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "preserves sanitized line and bar titles for legends",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should truncate bar data when it exceeds the number of x-axis categories",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should truncate line data when it exceeds the number of x-axis categories",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should not affect data when data length matches category count",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should not affect data when data length is less than category count",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should compute y-axis range only from visible (truncated) data",
+   "reason": "no parse call"
+  },
+  {
+   "name": "renders marker and label drawables for named line and bar plots",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not render when legends are disabled or no named plots fit",
+   "reason": "no parse call"
+  },
+  {
+   "name": "creates a legend component and integrates with the chart builder",
+   "reason": "no parse call"
+  }
+ ]
+}

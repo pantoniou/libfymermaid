@@ -1,0 +1,200 @@
+{
+ "cases": [
+  {
+   "file": "000-will-accept-styling-a-requirement.mmd",
+   "outcome": "parses",
+   "suite": "when parsing requirement diagram it...",
+   "name": "will accept styling a requirement"
+  },
+  {
+   "file": "001-will-accept-styling-an-element.mmd",
+   "outcome": "parses",
+   "suite": "when parsing requirement diagram it...",
+   "name": "will accept styling an element"
+  },
+  {
+   "file": "002-will-accept-defining-a-class.mmd",
+   "outcome": "parses",
+   "suite": "when parsing requirement diagram it...",
+   "name": "will accept defining a class"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "should add a requirement",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should add an element",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should add a relationship",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should create unique edge ids for parallel relationships",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should detect single class",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should detect many classes",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should detect direction",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should add styles to a requirement and element",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should add classes to a requirement and element",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should add styles to a requirement and element inherited from a class",
+   "reason": "no parse call"
+  },
+  {
+   "name": "will accept full requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept full element definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will use a accessibility title and description (accDescr)",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will use a accessibility title and multiline description (accDescr)",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept full relationship definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"requirement\" type of requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"functionalRequirement\" type of requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"interfaceRequirement\" type of requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"performanceRequirement\" type of requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"physicalRequirement\" type of requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"designConstraint\" type of requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"low\" type of risk requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"medium\" type of risk requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"high\" type of risk requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"Analysis\" type of verification method requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"Inspection\" type of verification method requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"Test\" type of verification method requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept \"Demonstration\" type of verification method requirement definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept contains relationship definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept copies relationship definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept derives relationship definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept satisfies relationship definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept verifies relationship definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept refines relationship definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept traces relationship definition",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept ${property} as requirement id",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept ${property} as element id",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept styling multiple things at once",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept defining multiple classes at once",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept assigning a class via the class statement",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept assigning multiple classes to multiple things via the class statement",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept assigning a class via the shorthand syntax",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept assigning multiple classes via the shorthand syntax",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "will accept assigning a class or multiple via the shorthand syntax when defining a requirement or element",
+   "reason": "source is not a literal"
+  }
+ ]
+}

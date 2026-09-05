@@ -1,0 +1,23 @@
+{
+ "cases": [
+  {
+   "file": "000-should-parse-a-basic-ishikawa-hierarchy.mmd",
+   "outcome": "parses",
+   "suite": "when parsing an Ishikawa diagram",
+   "name": "should parse a basic Ishikawa hierarchy"
+  },
+  {
+   "file": "001-should-support-an-unindented-root-with-nested-causes.mmd",
+   "outcome": "parses",
+   "suite": "when parsing an Ishikawa diagram",
+   "name": "should support an unindented root with nested causes"
+  },
+  {
+   "file": "002-should-handle-effect-indented-more-than-causes.mmd",
+   "outcome": "parses",
+   "suite": "when parsing an Ishikawa diagram",
+   "name": "should handle effect indented more than causes"
+  }
+ ],
+ "skipped": []
+}

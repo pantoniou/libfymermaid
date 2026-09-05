@@ -1,0 +1,140 @@
+{
+ "cases": [
+  {
+   "file": "000-parses-custom-evolution-stages.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "parses custom evolution stages"
+  },
+  {
+   "file": "001-parses-dual-label-evolution-stages-with-slashes.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "parses dual-label evolution stages with slashes"
+  },
+  {
+   "file": "002-parses-pipeline-blocks-with-single-coordinate-components.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "parses pipeline blocks with single-coordinate components"
+  },
+  {
+   "file": "003-parses-custom-stage-widths-with-boundary-notation.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "parses custom stage widths with boundary notation"
+  },
+  {
+   "file": "004-parses-notes-with-quoted-text.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "parses notes with quoted text"
+  },
+  {
+   "file": "005-parses-annotations-with-quoted-text.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "parses annotations with quoted text"
+  },
+  {
+   "file": "006-parses-anchors.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "parses anchors"
+  },
+  {
+   "file": "007-parses-evolve-statements.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "parses evolve statements"
+  },
+  {
+   "file": "008-parses-component-decorators.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "parses component decorators"
+  },
+  {
+   "file": "009-parses-size-directive.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "parses size directive"
+  },
+  {
+   "file": "010-handles-quoted-identifiers-inline-labels-and-converts-coordi.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "handles quoted identifiers, inline labels, and converts coordinates to percentages"
+  },
+  {
+   "file": "011-accepts-hyphens-in-unquoted-component-names.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "accepts hyphens in unquoted component names"
+  },
+  {
+   "file": "012-accepts-hyphens-in-link-endpoints.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "accepts hyphens in link endpoints"
+  },
+  {
+   "file": "013-accepts-hyphens-in-anchor-names.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "accepts hyphens in anchor names"
+  },
+  {
+   "file": "014-still-tokenises-a-b-as-an-arrow-no-space-regression.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "still tokenises A->B as an arrow (no-space regression)"
+  },
+  {
+   "file": "015-parses-foo-bar-baz-as-link-from-foo-bar-to-baz.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "parses foo-bar->baz as link from foo-bar to baz"
+  },
+  {
+   "file": "016-accepts-hyphens-in-pipeline-component-names-with-label-overr.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "accepts hyphens in pipeline component names with label overrides"
+  },
+  {
+   "file": "017-accepts-consecutive-hyphens-inside-a-name.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "accepts consecutive hyphens inside a name"
+  },
+  {
+   "file": "018-accepts-a-trailing-hyphen-in-a-name.mmd",
+   "outcome": "parses",
+   "suite": "wardley parser",
+   "name": "accepts a trailing hyphen in a name"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "returns the id when a node exists with that exact id",
+   "reason": "no parse call"
+  },
+  {
+   "name": "falls back to label match for pipeline-style synthetic ids",
+   "reason": "no parse call"
+  },
+  {
+   "name": "returns the input unchanged when no id or label matches",
+   "reason": "no parse call"
+  },
+  {
+   "name": "prefers exact id over label match when both exist",
+   "reason": "no parse call"
+  },
+  {
+   "name": "parses components and links",
+   "reason": "source is not a literal"
+  }
+ ]
+}

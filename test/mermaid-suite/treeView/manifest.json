@@ -1,0 +1,482 @@
+{
+ "cases": [
+  {
+   "file": "000-should-return-indent-based-input-unchanged.mmd",
+   "outcome": "parses",
+   "suite": "boxDrawingPreprocessor/preprocessBoxDrawing/indent format passthrough",
+   "name": "should return indent-based input unchanged"
+  },
+  {
+   "file": "001-should-return-input-without-keyword-unchanged.mmd",
+   "outcome": "parses",
+   "suite": "boxDrawingPreprocessor/preprocessBoxDrawing/indent format passthrough",
+   "name": "should return input without keyword unchanged"
+  },
+  {
+   "file": "002-flat-list.mmd",
+   "outcome": "parses",
+   "suite": "box-drawing \u2194 indent equivalence",
+   "name": "flat list"
+  },
+  {
+   "file": "003-nested-directories.mmd",
+   "outcome": "parses",
+   "suite": "box-drawing \u2194 indent equivalence",
+   "name": "nested directories"
+  },
+  {
+   "file": "004-with-annotations.mmd",
+   "outcome": "parses",
+   "suite": "box-drawing \u2194 indent equivalence",
+   "name": "with annotations"
+  },
+  {
+   "file": "005-deeply-nested-4-levels.mmd",
+   "outcome": "parses",
+   "suite": "box-drawing \u2194 indent equivalence",
+   "name": "deeply nested (4 levels)"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "should detect standard box-drawing characters",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should detect heavy box-drawing characters",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should detect vertical continuation character",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return false for indent-only lines",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return false for empty lines",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return false for plain text",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should convert a simple tree",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle a deeply nested tree",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle a flat list (all at depth 1)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle no root line (all box-drawing)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle space continuation correctly",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle \u251c\u2500\u2500\u2500 (extra dash)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle \u251c\u2500\u2500 with no trailing space",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle \u251c\u2500\u2500\u2500\u2500\u2500 (many dashes)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle \u2514\u2500 (minimal dash)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle heavy box-drawing characters",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle heavy variants with extra dashes",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should preserve :::class annotation",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should preserve icon() annotation",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should preserve ## description annotation",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should preserve all annotations combined",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should preserve %% comments",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should preserve blank lines",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should pass through title line",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should pass through accTitle line",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should pass through accDescr line",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should skip lines with only \u2502 characters",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should map output lines to original line numbers",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle skipped decoration lines in mapping",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should throw on empty content after prefix",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should normalize tabs to spaces",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle tab-indented box-drawing lines",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should throw on indented line without box chars in box mode",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should include line number in empty-content error",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle typical Linux tree output",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle tree output with annotations",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should remap line numbers found in the map",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should leave unmapped line numbers unchanged",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle multiple line references",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should be case-insensitive",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should reset state to initial root",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return a root node at level -1",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should start at 1",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should increment with each added node",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should add a child to root at level 0",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should add nested children using increasing levels",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should pop stack when level decreases",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should add siblings at the same level",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should store cssClass",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should store icon",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should store description",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should store all optional fields together",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should build a deep tree",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should assign unique incrementing ids",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return a config object with required fields",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should set and get accTitle",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should set and get accDescription",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should set and get diagram title",
+   "reason": "no parse call"
+  },
+  {
+   "name": "uses the mermaid-treeview prefix",
+   "reason": "no parse call"
+  },
+  {
+   "name": "contains exactly the built-in file and folder icons",
+   "reason": "no parse call"
+  },
+  {
+   "name": "every icon has a non-empty body that inherits color via currentColor",
+   "reason": "no parse call"
+  },
+  {
+   "name": "has no built-in mapping \u2014 returns undefined without configured maps",
+   "reason": "no parse call"
+  },
+  {
+   "name": "matches exact filenames from filenameIcons",
+   "reason": "no parse call"
+  },
+  {
+   "name": "matches extensions from extensionIcons, with or without the leading dot",
+   "reason": "no parse call"
+  },
+  {
+   "name": "matches extensions case-insensitively",
+   "reason": "no parse call"
+  },
+  {
+   "name": "filename matches beat extension matches",
+   "reason": "no parse call"
+  },
+  {
+   "name": "uses the last extension for multi-dot names",
+   "reason": "no parse call"
+  },
+  {
+   "name": "does not extension-match dotfiles",
+   "reason": "no parse call"
+  },
+  {
+   "name": "returns undefined for none regardless of config",
+   "reason": "no parse call"
+  },
+  {
+   "name": "returns prefixed explicit icons as-is, regardless of showIcons",
+   "reason": "no parse call"
+  },
+  {
+   "name": "qualifies built-in names with the built-in pack, even when defaultIconPack is set",
+   "reason": "no parse call"
+  },
+  {
+   "name": "qualifies unprefixed explicit icons with the defaultIconPack",
+   "reason": "no parse call"
+  },
+  {
+   "name": "qualifies unprefixed explicit icons with the built-in pack when no defaultIconPack is set",
+   "reason": "no parse call"
+  },
+  {
+   "name": "returns undefined without an explicit icon when showIcons is off",
+   "reason": "no parse call"
+  },
+  {
+   "name": "uses the built-in icons by node type when showIcons is on",
+   "reason": "no parse call"
+  },
+  {
+   "name": "picks file icons from extensionIcons when showIcons is on",
+   "reason": "no parse call"
+  },
+  {
+   "name": "uses prefixed map values as-is, even without a defaultIconPack",
+   "reason": "no parse call"
+  },
+  {
+   "name": "ignores the maps when showIcons is off",
+   "reason": "no parse call"
+  },
+  {
+   "name": "hides the icon for files mapped to none",
+   "reason": "no parse call"
+  },
+  {
+   "name": "allows map values to reference the built-in icons",
+   "reason": "no parse call"
+  },
+  {
+   "name": "falls back to the built-in file icon when nothing matches",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should parse a simple filename",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should detect directory from trailing slash",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should parse dotfiles",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should parse filenames with hyphens",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should strip double quotes",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should strip single quotes",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle empty quoted string",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should extract class from bare label",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should extract class from quoted label",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle class with hyphens",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should extract icon override",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should accept prefixed iconify names",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should extract description from bare label",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should extract description from quoted label",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle description with no text after ##",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle all annotations together",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle quoted label with all annotations",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle directory with class",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle folder names with spaces",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle folder names with spaces and annotations",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle file names with spaces",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should preserve consecutive spaces and unicode in bare names",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should preserve consecutive spaces and unicode in quoted names",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should trim trailing whitespace from bare names",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should not assign an icon without an annotation \u2014 defaults are resolved at render time",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should set icon to none for icon(none)",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should set icon to none for empty icon()",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should suppress icon on a directory",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should combine icon(none) with other annotations",
+   "reason": "no parse call"
+  }
+ ]
+}

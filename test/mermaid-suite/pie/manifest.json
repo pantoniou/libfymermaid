@@ -1,0 +1,88 @@
+{
+ "cases": [
+  {
+   "file": "000-should-handle-very-simple-pie.mmd",
+   "outcome": "parses",
+   "suite": "pie/parse",
+   "name": "should handle very simple pie"
+  },
+  {
+   "file": "001-should-handle-simple-pie.mmd",
+   "outcome": "parses",
+   "suite": "pie/parse",
+   "name": "should handle simple pie"
+  },
+  {
+   "file": "002-should-handle-simple-pie-with-showdata.mmd",
+   "outcome": "parses",
+   "suite": "pie/parse",
+   "name": "should handle simple pie with showData"
+  },
+  {
+   "file": "003-should-handle-simple-pie-with-comments.mmd",
+   "outcome": "parses",
+   "suite": "pie/parse",
+   "name": "should handle simple pie with comments"
+  },
+  {
+   "file": "004-should-handle-simple-pie-with-a-title.mmd",
+   "outcome": "parses",
+   "suite": "pie/parse",
+   "name": "should handle simple pie with a title"
+  },
+  {
+   "file": "005-should-handle-simple-pie-with-an-acc-title-acctitle.mmd",
+   "outcome": "parses",
+   "suite": "pie/parse",
+   "name": "should handle simple pie with an acc title (accTitle)"
+  },
+  {
+   "file": "006-should-handle-simple-pie-with-an-acc-description-accdescr.mmd",
+   "outcome": "parses",
+   "suite": "pie/parse",
+   "name": "should handle simple pie with an acc description (accDescr)"
+  },
+  {
+   "file": "007-should-handle-simple-pie-with-a-multiline-acc-description-ac.mmd",
+   "outcome": "parses",
+   "suite": "pie/parse",
+   "name": "should handle simple pie with a multiline acc description (accDescr)"
+  },
+  {
+   "file": "008-should-handle-simple-pie-with-positive-decimal.mmd",
+   "outcome": "parses",
+   "suite": "pie/parse",
+   "name": "should handle simple pie with positive decimal"
+  },
+  {
+   "file": "009-should-handle-simple-pie-with-negative-decimal.mmd",
+   "outcome": "fails",
+   "suite": "pie/parse",
+   "name": "should handle simple pie with negative decimal"
+  },
+  {
+   "file": "010-should-handle-simple-pie-with-zero-slice-value.mmd",
+   "outcome": "parses",
+   "suite": "pie/parse",
+   "name": "should handle simple pie with zero slice value"
+  },
+  {
+   "file": "011-should-handle-simple-pie-with-negative-slice-value.mmd",
+   "outcome": "fails",
+   "suite": "pie/parse",
+   "name": "should handle simple pie with negative slice value"
+  },
+  {
+   "file": "012-should-handle-unsafe-properties.mmd",
+   "outcome": "parses",
+   "suite": "pie/parse",
+   "name": "should handle unsafe properties"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "getConfig",
+   "reason": "no parse call"
+  }
+ ]
+}

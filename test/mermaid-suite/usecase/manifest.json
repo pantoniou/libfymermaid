@@ -1,0 +1,540 @@
+{
+ "cases": [
+  {
+   "file": "000-accepts-the-header-at-eof-and-publishes-an-empty-ast.mmd",
+   "outcome": "parses",
+   "suite": "usecase parser publication and normalized AST",
+   "name": "accepts the header at EOF and publishes an empty AST"
+  },
+  {
+   "file": "001-publishes-accessibility-text-through-common-db-and-normalize.mmd",
+   "outcome": "parses",
+   "suite": "usecase parser publication and normalized AST",
+   "name": "publishes accessibility text through common DB and normalized AST transactionally"
+  },
+  {
+   "file": "002-accepts-a-final-statement-without-a-newline-and-keeps-end-ex.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "accepts a final statement without a newline and keeps end-exclusive source spans"
+  },
+  {
+   "file": "003-isolates-success-clear-failure-and-a-second-success-across-s.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "isolates success, clear, failure, and a second success across singleton reuse"
+  },
+  {
+   "file": "004-finalizes-unresolved-relation-endpoints-as-ellipse-use-cases.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "finalizes unresolved relation endpoints as ellipse use cases without actor inference"
+  },
+  {
+   "file": "005-merges-equivalent-repeated-declarations-including-equivalent.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "merges equivalent repeated declarations, including equivalent parent ownership"
+  },
+  {
+   "file": "006-publishes-no-draft-collection-or-ast-when-final-semantic-res.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "publishes no draft collection or AST when final semantic resolution fails"
+  },
+  {
+   "file": "007-allocates-anonymous-edge-and-note-ids-deterministically-in-s.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "allocates anonymous edge and note IDs deterministically in source order"
+  },
+  {
+   "file": "008-distinguishes-generated-and-explicit-ids-and-records-their-e.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "distinguishes generated and explicit IDs and records their exact occurrences"
+  },
+  {
+   "file": "009-publishes-exact-true-fast-slow-and-false-animation-state-and.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "publishes exact true, fast, slow, and false animation state and rejects invalid values"
+  },
+  {
+   "file": "010-declares-a-boundary-with-an-explicit-id-a-label-inline-metad.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "declares a boundary with an explicit id, a label, inline metadata, and classes"
+  },
+  {
+   "file": "011-keeps-plain-ids-derived-ids-and-separate-metadata-statements.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "keeps plain ids, derived ids, and separate metadata statements working"
+  },
+  {
+   "file": "012-lets-a-later-metadata-statement-override-inline-boundary-met.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "lets a later metadata statement override inline boundary metadata"
+  },
+  {
+   "file": "013-records-the-boundary-id-title-and-inline-metadata-spans-in-t.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "records the boundary id, title, and inline metadata spans in the AST"
+  },
+  {
+   "file": "014-rejects-inline-boundary-metadata-that-a-boundary-does-not-ac.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "rejects inline boundary metadata that a boundary does not accept"
+  },
+  {
+   "file": "015-publishes-a-complete-serializable-ast-v1-with-ordered-statem.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "publishes a complete serializable AST v1 with ordered statements and exact spans"
+  },
+  {
+   "file": "016-preserves-the-separators-inside-multi-word-style-and-classde.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "preserves the separators inside multi-word style and classDef values"
+  },
+  {
+   "file": "017-reports-the-source-position-of-a-lexer-failure.mmd",
+   "outcome": "fails",
+   "suite": "",
+   "name": "reports the source position of a lexer failure"
+  },
+  {
+   "file": "018-accepts-ids-that-start-with-a-digit.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "accepts ids that start with a digit"
+  },
+  {
+   "file": "019-keeps-decimal-style-values-intact-now-that-ids-may-start-wit.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "keeps decimal style values intact now that ids may start with a digit"
+  },
+  {
+   "file": "020-should-parse-a-single-actor.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing basic actors",
+   "name": "should parse a single actor"
+  },
+  {
+   "file": "021-should-parse-multiple-actors.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing basic actors",
+   "name": "should parse multiple actors"
+  },
+  {
+   "file": "022-should-parse-actor-with-simple-name.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing basic actors",
+   "name": "should parse actor with simple name"
+  },
+  {
+   "file": "023-should-parse-use-cases-from-relationships.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing use cases",
+   "name": "should parse use cases from relationships"
+  },
+  {
+   "file": "024-should-parse-multiple-use-cases-from-relationships.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing use cases",
+   "name": "should parse multiple use cases from relationships"
+  },
+  {
+   "file": "025-should-parse-use-case-from-relationship.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing use cases",
+   "name": "should parse use case from relationship"
+  },
+  {
+   "file": "026-should-parse-use-cases-with-quoted-names.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing use cases",
+   "name": "should parse use cases with quoted names"
+  },
+  {
+   "file": "027-should-parse-actor-to-use-case-relationship.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing relationships",
+   "name": "should parse actor to use case relationship"
+  },
+  {
+   "file": "028-should-parse-multiple-relationships.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing relationships",
+   "name": "should parse multiple relationships"
+  },
+  {
+   "file": "029-should-parse-relationship-with-label.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing relationships",
+   "name": "should parse relationship with label"
+  },
+  {
+   "file": "030-should-parse-different-arrow-types.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing relationships",
+   "name": "should parse different arrow types"
+  },
+  {
+   "file": "031-should-parse-a-system-boundary.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing system boundaries",
+   "name": "should parse a system boundary"
+  },
+  {
+   "file": "032-should-parse-use-cases-within-system-boundary.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing system boundaries",
+   "name": "should parse use cases within system boundary"
+  },
+  {
+   "file": "033-should-parse-a-boundary-with-an-explicit-id-a-label-and-inli.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing system boundaries",
+   "name": "should parse a boundary with an explicit id, a label, and inline metadata"
+  },
+  {
+   "file": "034-should-handle-tb-direction.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing direction",
+   "name": "should handle TB direction"
+  },
+  {
+   "file": "035-should-handle-lr-direction.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing direction",
+   "name": "should handle LR direction"
+  },
+  {
+   "file": "036-should-normalize-td-to-tb.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing direction",
+   "name": "should normalize TD to TB"
+  },
+  {
+   "file": "037-should-parse-actor-with-metadata.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing actor metadata",
+   "name": "should parse actor with metadata"
+  },
+  {
+   "file": "038-should-parse-multiple-actors-with-different-metadata.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing actor metadata",
+   "name": "should parse multiple actors with different metadata"
+  },
+  {
+   "file": "039-should-parse-a-complete-authentication-system.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing complex diagrams",
+   "name": "should parse a complete authentication system"
+  },
+  {
+   "file": "040-should-parse-diagram-with-multiple-arrow-types.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing complex diagrams",
+   "name": "should parse diagram with multiple arrow types"
+  },
+  {
+   "file": "041-should-handle-use-case-creation-from-relationships.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing complex diagrams",
+   "name": "should handle use case creation from relationships"
+  },
+  {
+   "file": "042-should-handle-classdef.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/when parsing class definitions",
+   "name": "should handle classDef"
+  },
+  {
+   "file": "043-should-clear-all-data.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/database methods",
+   "name": "should clear all data"
+  },
+  {
+   "file": "044-should-get-specific-actor-by-id.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/database methods",
+   "name": "should get specific actor by id"
+  },
+  {
+   "file": "045-should-get-specific-use-case-by-id.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/database methods",
+   "name": "should get specific use case by id"
+  },
+  {
+   "file": "046-should-convert-diagram-data-to-layoutdata-format.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/getData method",
+   "name": "should convert diagram data to LayoutData format"
+  },
+  {
+   "file": "047-should-include-direction-in-layout-data.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser/getData method",
+   "name": "should include direction in layout data"
+  },
+  {
+   "file": "048-projects-parser-produced-actor-and-use-case-geometry-exactly.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser",
+   "name": "projects parser-produced actor and use-case geometry exactly into AST and LayoutData"
+  },
+  {
+   "file": "049-projects-base-one-extra-n-extra-and-labelled-minimum-lengths.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser",
+   "name": "projects base, one-extra, N-extra, and labelled minimum lengths from parser to layout"
+  },
+  {
+   "file": "050-projects-parser-produced-animation-metadata-into-exact-share.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser",
+   "name": "projects parser-produced animation metadata into exact shared layout classes"
+  },
+  {
+   "file": "051-projects-complex-source-ordered-json-a-forward-edge-classes-.mmd",
+   "outcome": "parses",
+   "suite": "UseCase diagram with Chevrotain parser",
+   "name": "projects complex source-ordered JSON, a forward edge, classes, and styles end to end"
+  },
+  {
+   "file": "052-balances-nested-json-while-ignoring-escaped-quotes-and-brace.mmd",
+   "outcome": "parses",
+   "suite": "",
+   "name": "balances nested JSON while ignoring escaped quotes and braces in strings"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "names both exact locations and the source labels for generated and explicit ID collisions",
+   "reason": "no parse call"
+  },
+  {
+   "name": "preserves entity codes and literal backslash-n while accepting physical newlines only in Markdown labels",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "accepts markdown markers, punctuation, and non-ASCII characters in unquoted labels",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "reports exact actor metadata and incompatible icon locations",
+   "reason": "no parse call"
+  },
+  {
+   "name": "rejects mixed-kind generalization and actor include at the exact relation span",
+   "reason": "no parse call"
+  },
+  {
+   "name": "rejects duplicate and unknown edge class/style targets with exact locations",
+   "reason": "no parse call"
+  },
+  {
+   "name": "rejects notes targeting JSON, boundary, and explicit edge IDs with both locations",
+   "reason": "no parse call"
+  },
+  {
+   "name": "rejects business icon, awesome, and rectangular declarations at exact locations",
+   "reason": "no parse call"
+  },
+  {
+   "name": "rejects JSON in boundaries and JSON semantic or circle relations at exact locations",
+   "reason": "no parse call"
+  },
+  {
+   "name": "requires inline boundary metadata before the class suffix",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return undefined for non-existent actor",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should return undefined for non-existent use case",
+   "reason": "no parse call"
+  },
+  {
+   "name": "emits every node and boundary variant in committed model order",
+   "reason": "no parse call"
+  },
+  {
+   "name": "maps relationship semantics, markers, animation, styles, and note attachments exactly",
+   "reason": "no parse call"
+  },
+  {
+   "name": "flattens JSON rows depth-first using source property order",
+   "reason": "no parse call"
+  },
+  {
+   "name": "hands schema-driven layout, viewport, and font configuration to the renderer contract",
+   "reason": "no parse call"
+  },
+  {
+   "name": "consolidates canonical selectors and relies on shared animation keyframes",
+   "reason": "no parse call"
+  },
+  {
+   "name": "atomically replaces committed state with a detached model",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps the previous commit when a replacement is incomplete",
+   "reason": "no parse call"
+  },
+  {
+   "name": "clears every collection, counter, AST, direction, config, title, and accessibility field",
+   "reason": "no parse call"
+  },
+  {
+   "name": "gives oval use cases extra label clearance over rectangular use cases",
+   "reason": "no parse call"
+  },
+  {
+   "name": "emits no slot rules at all on a theme without a palette",
+   "reason": "no parse call"
+  },
+  {
+   "name": "gives actors, use cases and boundaries three distinct role colours",
+   "reason": "no parse call"
+  },
+  {
+   "name": "falls back to the previous colours when a theme declares no role tokens",
+   "reason": "no parse call"
+  },
+  {
+   "name": "separates include from extend by hue, not only by dash",
+   "reason": "no parse call"
+  },
+  {
+   "name": "qualifies the use case body rules under neo",
+   "reason": "no parse call"
+  },
+  {
+   "name": "qualifies the business marker rule under neo",
+   "reason": "no parse call"
+  },
+  {
+   "name": "qualifies the actor glyph rule under neo",
+   "reason": "no parse call"
+  },
+  {
+   "name": "omits the element-qualified rules under handDrawn",
+   "reason": "no parse call"
+  },
+  {
+   "name": "honours a themeVariables override of a role token",
+   "reason": "no parse call"
+  },
+  {
+   "name": "uses longest operator and delimiter precedence",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps exact keywords out of longer identifiers and matches semantic words case-insensitively",
+   "reason": "no parse call"
+  },
+  {
+   "name": "preserves multiline Markdown and treats comment lookalikes inside it as data",
+   "reason": "no parse call"
+  },
+  {
+   "name": "emits indented whole-line comments but not percent pairs after another token",
+   "reason": "no parse call"
+  },
+  {
+   "name": "consumes an unclosed JSON object once from its opening brace",
+   "reason": "no parse call"
+  },
+  {
+   "name": "consumes unclosed Markdown and stereotypes once instead of rescanning every suffix",
+   "reason": "no parse call"
+  },
+  {
+   "name": "preserves strict strings, colors, CSS units, and escaped commas",
+   "reason": "no parse call"
+  },
+  {
+   "name": "lexes leftover punctuation and non-ASCII characters as label text",
+   "reason": "no parse call"
+  },
+  {
+   "name": "lexes digit-leading ids as identifiers while decimals stay numbers",
+   "reason": "no parse call"
+  },
+  {
+   "name": "defines the stable canonical CST rule names",
+   "reason": "no parse call"
+  },
+  {
+   "name": "accepts canonical actors, use cases, metadata, stereotypes, and class suffixes",
+   "reason": "no parse call"
+  },
+  {
+   "name": "accepts multiline metadata with newline and comma separators and a trailing comma",
+   "reason": "no parse call"
+  },
+  {
+   "name": "accepts restricted system-boundary declarations, blanks, and comments",
+   "reason": "no parse call"
+  },
+  {
+   "name": "accepts explicit boundary ids with labels, inline metadata, and class suffixes",
+   "reason": "no parse call"
+  },
+  {
+   "name": "accepts metadata assignments, notes, JSON, direction, classes, and styles",
+   "reason": "no parse call"
+  },
+  {
+   "name": "accepts single-line and multiline accessibility statements",
+   "reason": "no parse call"
+  },
+  {
+   "name": "collects escaped JSON Pointer order for nested objects and objects inside arrays",
+   "reason": "no parse call"
+  },
+  {
+   "name": "preserves source order for integer-like property names",
+   "reason": "no parse call"
+  },
+  {
+   "name": "keeps a duplicate key first in order while retaining its last value and nested order",
+   "reason": "no parse call"
+  },
+  {
+   "name": "records empty objects and accepts empty arrays and strings as property values",
+   "reason": "no parse call"
+  },
+  {
+   "name": "ignores braces, brackets, and escaped quotes inside string values",
+   "reason": "no parse call"
+  },
+  {
+   "name": "maps a malformed JSON offset across physical lines into diagram coordinates",
+   "reason": "no parse call"
+  },
+  {
+   "name": "adds the token start column to malformed JSON on its first line",
+   "reason": "no parse call"
+  },
+  {
+   "name": "maps CRLF as one physical line break",
+   "reason": "no parse call"
+  }
+ ]
+}

@@ -25,17 +25,24 @@
  */
 
 /*
- * Driven by ctest, one case per (input, mode) pair:
+ * Driven by ctest, one case per input and mode:
  *
- *	fymm-golden-test <mode> <input.mmd> <expected>
+ *	fymm-golden-test <mode> <input.mmd> [expected]
  *
- * with mode one of `model', `unicode' or `ascii'.  There is no interpreter
- * and no subprocess in the loop: the driver links the library and compares
- * the bytes it produced, so a failure points straight at the code.
+ * The golden modes are `model', `unicode', `ascii' and `diag'. Each compares
+ * the output against @expected. The corpus modes are `parses' and `fails',
+ * which take no expected file and assert only the outcome of the parse; they
+ * run the cases imported from upstream mermaid.
+ *
+ * There is no interpreter and no subprocess in the loop. The driver links the
+ * library and compares the bytes it produced, so a failure names the code.
+ * Each run is independent and reads only its own arguments, so ctest runs the
+ * suite in parallel.
  */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 
 #include <libfymermaid.h>
@@ -113,25 +120,36 @@ int main(int argc, char *argv[])
 	struct fymm_diagram *d;
 	char *src, *want, *got, *diags;
 	const char *mode;
+	bool corpus, errors;
 	int rc = 1;
 
-	if (argc != 4) {
-		fprintf(stderr, "usage: %s <model|unicode|ascii> <input> <expected>\n",
-			argv[0]);
+	if (argc < 3 || argc > 4) {
+		fprintf(stderr,
+			"usage: %s <model|unicode|ascii|diag> <input> <expected>\n"
+			"       %s <parses|fails> <input>\n", argv[0], argv[0]);
 		return 2;
 	}
 	mode = argv[1];
+	corpus = !strcmp(mode, "parses") || !strcmp(mode, "fails");
+	if (corpus != (argc == 3)) {
+		fprintf(stderr, "mode '%s' takes %s expected file\n", mode,
+			corpus ? "no" : "an");
+		return 2;
+	}
 
 	src = read_file(argv[2], NULL);
 	if (!src) {
 		fprintf(stderr, "cannot read %s\n", argv[2]);
 		return 2;
 	}
-	want = read_file(argv[3], NULL);
-	if (!want) {
-		fprintf(stderr, "cannot read %s\n", argv[3]);
-		free(src);
-		return 2;
+	want = NULL;
+	if (!corpus) {
+		want = read_file(argv[3], NULL);
+		if (!want) {
+			fprintf(stderr, "cannot read %s\n", argv[3]);
+			free(src);
+			return 2;
+		}
 	}
 
 	memset(&pcfg, 0, sizeof(pcfg));
@@ -141,6 +159,25 @@ int main(int argc, char *argv[])
 	d = fymm_parse(src, FYMM_NT, &pcfg);
 	if (!d) {
 		fprintf(stderr, "parse failed outright\n");
+		goto out;
+	}
+
+	/*
+	 * A corpus case carries one expectation: upstream mermaid accepts the
+	 * source, or upstream rejects it. Compare that and stop.
+	 */
+	if (corpus) {
+		errors = fymm_diagram_has_errors(d);
+		if (errors == !strcmp(mode, "fails")) {
+			rc = 0;
+		} else if (errors) {
+			diags = fymm_diagram_diagnostics_string(d);
+			fprintf(stderr, "expected this to parse, but:\n%s",
+				diags ? diags : "");
+			free(diags);
+		} else {
+			fprintf(stderr, "expected this to fail, but it parsed\n");
+		}
 		goto out;
 	}
 

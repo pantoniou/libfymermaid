@@ -1,0 +1,17 @@
+parses:000-should-handle-the-architecture-keyword.mmd
+parses:001-should-handle-a-simple-radar-definition.mmd
+parses:002-should-handle-title-on-the-first-line.mmd
+parses:003-should-handle-title-on-another-line.mmd
+parses:004-should-handle-accessibility-title-and-description.mmd
+parses:005-should-handle-multiline-accessibility-description.mmd
+parses:006-should-parse-a-complex-deeply-nested-diagram-with-randomize-.mmd
+fails:007-should-throw-when-missing-a-group.mmd
+parses:008-should-allow-proto-as-a-group-name.mmd
+parses:009-should-block-proto-pollution-via-service-id.mmd
+parses:010-should-store-services-in-the-order-they-were-added.mmd
+parses:011-should-parse-a-row-alignment-and-expose-it-via-getlayouthint.mmd
+parses:012-should-parse-a-column-alignment.mmd
+fails:013-should-reject-an-align-directive-whose-member-is-not-a-servi.mmd
+fails:014-should-reject-an-align-directive-that-lists-the-same-member-.mmd
+parses:015-should-not-collide-with-services-whose-id-starts-with-row-or.mmd
+parses:016-should-not-crash-with-group-name-prefix-matching-a-service-n.mmd

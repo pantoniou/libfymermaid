@@ -1,0 +1,156 @@
+{
+ "cases": [
+  {
+   "file": "000-should-handle-the-architecture-keyword.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams/architecture diagram definitions",
+   "name": "should handle the architecture keyword"
+  },
+  {
+   "file": "001-should-handle-a-simple-radar-definition.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams/architecture diagram definitions",
+   "name": "should handle a simple radar definition"
+  },
+  {
+   "file": "002-should-handle-title-on-the-first-line.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams/should handle TitleAndAccessibilities",
+   "name": "should handle title on the first line"
+  },
+  {
+   "file": "003-should-handle-title-on-another-line.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams/should handle TitleAndAccessibilities",
+   "name": "should handle title on another line"
+  },
+  {
+   "file": "004-should-handle-accessibility-title-and-description.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams/should handle TitleAndAccessibilities",
+   "name": "should handle accessibility title and description"
+  },
+  {
+   "file": "005-should-handle-multiline-accessibility-description.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams/should handle TitleAndAccessibilities",
+   "name": "should handle multiline accessibility description"
+  },
+  {
+   "file": "006-should-parse-a-complex-deeply-nested-diagram-with-randomize-.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams/randomize config",
+   "name": "should parse a complex deeply-nested diagram with randomize defaulting to false"
+  },
+  {
+   "file": "007-should-throw-when-missing-a-group.mmd",
+   "outcome": "fails",
+   "suite": "architecture diagrams",
+   "name": "should throw when missing a group"
+  },
+  {
+   "file": "008-should-allow-proto-as-a-group-name.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams",
+   "name": "should allow __proto__ as a group name"
+  },
+  {
+   "file": "009-should-block-proto-pollution-via-service-id.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams",
+   "name": "should block proto pollution via service id"
+  },
+  {
+   "file": "010-should-store-services-in-the-order-they-were-added.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams",
+   "name": "should store services in the order they were added"
+  },
+  {
+   "file": "011-should-parse-a-row-alignment-and-expose-it-via-getlayouthint.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams/align directive",
+   "name": "should parse a row alignment and expose it via getLayoutHints"
+  },
+  {
+   "file": "012-should-parse-a-column-alignment.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams/align directive",
+   "name": "should parse a column alignment"
+  },
+  {
+   "file": "013-should-reject-an-align-directive-whose-member-is-not-a-servi.mmd",
+   "outcome": "fails",
+   "suite": "architecture diagrams/align directive",
+   "name": "should reject an align directive whose member is not a service or junction"
+  },
+  {
+   "file": "014-should-reject-an-align-directive-that-lists-the-same-member-.mmd",
+   "outcome": "fails",
+   "suite": "architecture diagrams/align directive",
+   "name": "should reject an align directive that lists the same member twice"
+  },
+  {
+   "file": "015-should-not-collide-with-services-whose-id-starts-with-row-or.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams/align directive",
+   "name": "should not collide with services whose id starts with row or column"
+  },
+  {
+   "file": "016-should-not-crash-with-group-name-prefix-matching-a-service-n.mmd",
+   "outcome": "parses",
+   "suite": "architecture diagrams/addJunction validation",
+   "name": "should not crash with group name prefix matching a service name (issue #7408)"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "should not produce console warnings for edges without labels",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should default randomize to false",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should default the fcose knobs to documented values",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should round-trip user-supplied fcose knobs",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should leave defaults intact when only one knob is set",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should reject an align directive with fewer than two members at the DB level",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should throw if junction id is already in use by a service",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should throw if junction id is already in use by a group",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should throw if junction parent does not exist",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should throw if junction parent is a node (service), not a group",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should throw if junction is placed within itself",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should allow junction in a valid group",
+   "reason": "no parse call"
+  }
+ ]
+}

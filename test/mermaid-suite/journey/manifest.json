@@ -1,0 +1,52 @@
+{
+ "cases": [
+  {
+   "file": "000-should-handle-a-title-definition.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a journey diagram it",
+   "name": "should handle a title definition"
+  },
+  {
+   "file": "001-should-handle-an-accessibility-description-accdescr.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a journey diagram it",
+   "name": "should handle an accessibility description (accDescr)"
+  },
+  {
+   "file": "002-should-handle-an-accessibility-multiline-description-accdesc.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a journey diagram it",
+   "name": "should handle an accessibility multiline description (accDescr)"
+  },
+  {
+   "file": "003-should-handle-an-accessibility-title-accdescr.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a journey diagram it",
+   "name": "should handle an accessibility title (accDescr)"
+  },
+  {
+   "file": "004-should-handle-a-section-definition.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a journey diagram it",
+   "name": "should handle a section definition"
+  },
+  {
+   "file": "005-should-handle-multiline-section-titles-with-different-line-b.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a journey diagram it",
+   "name": "should handle multiline section titles with different line breaks"
+  },
+  {
+   "file": "006-should-handle-a-task-definition.mmd",
+   "outcome": "parses",
+   "suite": "when parsing a journey diagram it",
+   "name": "should handle a task definition"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "tasks and actors should be added",
+   "reason": "no parse call"
+  }
+ ]
+}

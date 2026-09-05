@@ -1,0 +1,10 @@
+parses:000-should-handle-a-simple-radar-definition.mmd
+parses:001-should-handle-diagram-with-data-and-title.mmd
+parses:002-should-handle-a-radar-diagram-with-options.mmd
+parses:003-should-handle-curve-with-detailed-data-in-any-order.mmd
+parses:004-should-handle-radar-diagram-with-comments.mmd
+parses:005-should-handle-radar-diagram-with-config-override.mmd
+parses:006-should-parse-radar-diagram-with-theme-override.mmd
+parses:007-should-handle-radar-diagram-with-radar-style-override.mmd
+parses:008-should-draw-a-simple-radar-diagram.mmd
+parses:009-should-draw-a-complex-radar-diagram.mmd

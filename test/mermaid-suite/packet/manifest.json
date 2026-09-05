@@ -1,0 +1,95 @@
+{
+ "cases": [
+  {
+   "file": "000-should-handle-a-packet-beta-definition.mmd",
+   "outcome": "parses",
+   "suite": "packet diagrams",
+   "name": "should handle a packet-beta definition"
+  },
+  {
+   "file": "001-should-handle-a-packet-definition.mmd",
+   "outcome": "parses",
+   "suite": "packet diagrams",
+   "name": "should handle a packet definition"
+  },
+  {
+   "file": "002-should-handle-diagram-with-data-and-title.mmd",
+   "outcome": "parses",
+   "suite": "packet diagrams",
+   "name": "should handle diagram with data and title"
+  },
+  {
+   "file": "003-should-handle-single-bits.mmd",
+   "outcome": "parses",
+   "suite": "packet diagrams",
+   "name": "should handle single bits"
+  },
+  {
+   "file": "004-should-handle-bit-counts.mmd",
+   "outcome": "parses",
+   "suite": "packet diagrams",
+   "name": "should handle bit counts"
+  },
+  {
+   "file": "005-should-handle-bit-counts-with-bit-or-bits.mmd",
+   "outcome": "parses",
+   "suite": "packet diagrams",
+   "name": "should handle bit counts with bit or bits"
+  },
+  {
+   "file": "006-should-split-into-multiple-rows.mmd",
+   "outcome": "parses",
+   "suite": "packet diagrams",
+   "name": "should split into multiple rows"
+  },
+  {
+   "file": "007-should-split-into-multiple-rows-when-cut-at-exact-length.mmd",
+   "outcome": "parses",
+   "suite": "packet diagrams",
+   "name": "should split into multiple rows when cut at exact length"
+  },
+  {
+   "file": "008-should-throw-error-if-numbers-are-not-continuous.mmd",
+   "outcome": "fails",
+   "suite": "packet diagrams",
+   "name": "should throw error if numbers are not continuous"
+  },
+  {
+   "file": "009-should-throw-error-if-numbers-are-not-continuous-with-bit-co.mmd",
+   "outcome": "fails",
+   "suite": "packet diagrams",
+   "name": "should throw error if numbers are not continuous with bit counts"
+  },
+  {
+   "file": "010-should-throw-error-if-numbers-are-not-continuous-for-single-.mmd",
+   "outcome": "fails",
+   "suite": "packet diagrams",
+   "name": "should throw error if numbers are not continuous for single packets"
+  },
+  {
+   "file": "011-should-throw-error-if-numbers-are-not-continuous-for-single--2.mmd",
+   "outcome": "fails",
+   "suite": "packet diagrams",
+   "name": "should throw error if numbers are not continuous for single packets with bit counts"
+  },
+  {
+   "file": "012-should-throw-error-if-numbers-are-not-continuous-for-single--3.mmd",
+   "outcome": "fails",
+   "suite": "packet diagrams",
+   "name": "should throw error if numbers are not continuous for single packets - 2"
+  },
+  {
+   "file": "013-should-throw-error-if-end-is-less-than-start.mmd",
+   "outcome": "fails",
+   "suite": "packet diagrams",
+   "name": "should throw error if end is less than start"
+  },
+  {
+   "file": "014-should-throw-error-if-bit-count-is-0.mmd",
+   "outcome": "fails",
+   "suite": "packet diagrams",
+   "name": "should throw error if bit count is 0"
+  }
+ ],
+ "skipped": []
+}

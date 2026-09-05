@@ -1,0 +1,174 @@
+{
+ "cases": [
+  {
+   "file": "000-a-diagram-with-a-node.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "a diagram with a node"
+  },
+  {
+   "file": "001-a-node-with-a-square-shape-and-a-label.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "a node with a square shape and a label"
+  },
+  {
+   "file": "002-sanitizes-labels-with-the-current-dompurify-config.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "sanitizes labels with the current dompurify config"
+  },
+  {
+   "file": "003-a-diagram-with-multiple-nodes.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "a diagram with multiple nodes"
+  },
+  {
+   "file": "004-a-diagram-with-multiple-nodes-2.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "a diagram with multiple nodes"
+  },
+  {
+   "file": "005-a-node-with-a-square-shape-and-a-label-2.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "a node with a square shape and a label"
+  },
+  {
+   "file": "006-a-diagram-with-multiple-nodes-with-edges-abc123.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "a diagram with multiple nodes with edges abc123"
+  },
+  {
+   "file": "007-a-diagram-with-multiple-nodes-with-edges-abc123-2.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "a diagram with multiple nodes with edges abc123"
+  },
+  {
+   "file": "008-a-diagram-with-column-statements.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "a diagram with column statements"
+  },
+  {
+   "file": "009-a-diagram-without-column-statements.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "a diagram without column statements"
+  },
+  {
+   "file": "010-a-diagram-with-auto-column-statements.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "a diagram with auto column statements"
+  },
+  {
+   "file": "011-blocks-next-to-each-other.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "blocks next to each other"
+  },
+  {
+   "file": "012-blocks-on-top-of-each-other.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "blocks on top of each other"
+  },
+  {
+   "file": "013-compound-blocks-2.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "compound blocks 2"
+  },
+  {
+   "file": "014-compound-blocks-of-compound-blocks.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "compound blocks of compound blocks"
+  },
+  {
+   "file": "015-compound-blocks-with-title.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "compound blocks with title"
+  },
+  {
+   "file": "016-blocks-mixed-with-compound-blocks.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "blocks mixed with compound blocks"
+  },
+  {
+   "file": "017-arrow-blocks.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "Arrow blocks"
+  },
+  {
+   "file": "018-arrow-blocks-with-multiple-points.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "Arrow blocks with multiple points"
+  },
+  {
+   "file": "019-blocks-with-different-widths.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "blocks with different widths"
+  },
+  {
+   "file": "020-empty-blocks.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "empty blocks"
+  },
+  {
+   "file": "021-classdef-statements-applied-to-a-block.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "classDef statements applied to a block"
+  },
+  {
+   "file": "022-style-statements-applied-to-a-block.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "style statements applied to a block"
+  },
+  {
+   "file": "023-should-log-a-warning-when-block-width-exceeds-column-width.mmd",
+   "outcome": "parses",
+   "suite": "Block diagram/when parsing a block diagram graph it should handle > ",
+   "name": "should log a warning when block width exceeds column width"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "should correctly identify edge thickness",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should correctly identify edge patterns",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should correctly identify start and end arrows",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should call getConfig at sanitization time, not at module load time",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should work with a __proto__ property",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should work with a constructor property",
+   "reason": "no parse call"
+  }
+ ]
+}

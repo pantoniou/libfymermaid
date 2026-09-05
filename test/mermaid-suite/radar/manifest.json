@@ -1,0 +1,106 @@
+{
+ "cases": [
+  {
+   "file": "000-should-handle-a-simple-radar-definition.mmd",
+   "outcome": "parses",
+   "suite": "radar diagrams",
+   "name": "should handle a simple radar definition"
+  },
+  {
+   "file": "001-should-handle-diagram-with-data-and-title.mmd",
+   "outcome": "parses",
+   "suite": "radar diagrams",
+   "name": "should handle diagram with data and title"
+  },
+  {
+   "file": "002-should-handle-a-radar-diagram-with-options.mmd",
+   "outcome": "parses",
+   "suite": "radar diagrams",
+   "name": "should handle a radar diagram with options"
+  },
+  {
+   "file": "003-should-handle-curve-with-detailed-data-in-any-order.mmd",
+   "outcome": "parses",
+   "suite": "radar diagrams",
+   "name": "should handle curve with detailed data in any order"
+  },
+  {
+   "file": "004-should-handle-radar-diagram-with-comments.mmd",
+   "outcome": "parses",
+   "suite": "radar diagrams",
+   "name": "should handle radar diagram with comments"
+  },
+  {
+   "file": "005-should-handle-radar-diagram-with-config-override.mmd",
+   "outcome": "parses",
+   "suite": "radar diagrams",
+   "name": "should handle radar diagram with config override"
+  },
+  {
+   "file": "006-should-parse-radar-diagram-with-theme-override.mmd",
+   "outcome": "parses",
+   "suite": "radar diagrams",
+   "name": "should parse radar diagram with theme override"
+  },
+  {
+   "file": "007-should-handle-radar-diagram-with-radar-style-override.mmd",
+   "outcome": "parses",
+   "suite": "radar diagrams",
+   "name": "should handle radar diagram with radar style override"
+  },
+  {
+   "file": "008-should-draw-a-simple-radar-diagram.mmd",
+   "outcome": "parses",
+   "suite": "radar diagrams/renderer/draw",
+   "name": "should draw a simple radar diagram"
+  },
+  {
+   "file": "009-should-draw-a-complex-radar-diagram.mmd",
+   "outcome": "parses",
+   "suite": "radar diagrams/renderer/draw",
+   "name": "should draw a complex radar diagram"
+  }
+ ],
+ "skipped": [
+  {
+   "name": "should limit the number of ticks to MAX_TICKS",
+   "reason": "source is not a literal"
+  },
+  {
+   "name": "should calculate relative radius",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle min value",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle max value",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should clip values below min",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should clip values above max",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should handle negative min",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should construct a polygon if tension is 0",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should construct a simple round curve",
+   "reason": "no parse call"
+  },
+  {
+   "name": "should construct a closed round curve",
+   "reason": "no parse call"
+  }
+ ]
+}
