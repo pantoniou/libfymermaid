@@ -1,3 +1,0 @@
-parses:000-should-remove-script-tag.mmd
-parses:001-should-allow-html-tags-in-sandbox-mode.mmd
-parses:002-should-remove-script-tags-in-sandbox-mode.mmd

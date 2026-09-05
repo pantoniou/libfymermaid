@@ -25,415 +25,379 @@
    "name": "should detect Railroad-Beta mixed case"
   },
   {
-   "file": "004-should-not-detect-non-railroad-diagrams.mmd",
-   "outcome": "parses",
-   "suite": "Railroad Detector/detector",
-   "name": "should not detect non-railroad diagrams"
-  },
-  {
-   "file": "005-should-not-detect-railroad-beta-in-middle-of-text.mmd",
-   "outcome": "parses",
-   "suite": "Railroad Detector/detector",
-   "name": "should not detect railroad-beta in middle of text"
-  },
-  {
-   "file": "006-should-detect-railroad-beta-with-newlines-before-it.mmd",
+   "file": "004-should-detect-railroad-beta-with-newlines-before-it.mmd",
    "outcome": "parses",
    "suite": "Railroad Detector/detector",
    "name": "should detect railroad-beta with newlines before it"
   },
   {
-   "file": "007-should-parse-string-literal.mmd",
+   "file": "005-should-parse-string-literal.mmd",
    "outcome": "parses",
    "suite": "ABNF Parser/Basic Parsing",
    "name": "should parse string literal"
   },
   {
-   "file": "008-should-parse-numeric-value.mmd",
+   "file": "006-should-parse-numeric-value.mmd",
    "outcome": "parses",
    "suite": "ABNF Parser/Basic Parsing",
    "name": "should parse numeric value"
   },
   {
-   "file": "009-should-parse-rule-name-reference.mmd",
+   "file": "007-should-parse-rule-name-reference.mmd",
    "outcome": "parses",
    "suite": "ABNF Parser/Basic Parsing",
    "name": "should parse rule name reference"
   },
   {
-   "file": "010-should-parse-concatenation.mmd",
+   "file": "008-should-parse-concatenation.mmd",
    "outcome": "parses",
    "suite": "ABNF Parser/Basic Parsing",
    "name": "should parse concatenation"
   },
   {
-   "file": "011-should-parse-alternation.mmd",
+   "file": "009-should-parse-alternation.mmd",
    "outcome": "parses",
    "suite": "ABNF Parser/Basic Parsing",
    "name": "should parse alternation"
   },
   {
-   "file": "012-should-parse-optional-group.mmd",
+   "file": "010-should-parse-optional-group.mmd",
    "outcome": "parses",
    "suite": "ABNF Parser/Basic Parsing",
    "name": "should parse optional group"
   },
   {
-   "file": "013-should-parse-zero-or-more-repetition.mmd",
+   "file": "011-should-parse-zero-or-more-repetition.mmd",
    "outcome": "parses",
    "suite": "ABNF Parser/Basic Parsing",
    "name": "should parse zero-or-more repetition"
   },
   {
-   "file": "014-should-parse-one-or-more-repetition.mmd",
+   "file": "012-should-parse-one-or-more-repetition.mmd",
    "outcome": "parses",
    "suite": "ABNF Parser/Basic Parsing",
    "name": "should parse one-or-more repetition"
   },
   {
-   "file": "015-should-parse-title.mmd",
+   "file": "013-should-parse-title.mmd",
    "outcome": "parses",
    "suite": "ABNF Parser/Basic Parsing",
    "name": "should parse title"
   },
   {
-   "file": "016-should-parse-uri-like-grammar.mmd",
+   "file": "014-should-parse-uri-like-grammar.mmd",
    "outcome": "parses",
    "suite": "ABNF Parser/Real-world Examples",
    "name": "should parse URI-like grammar"
   },
   {
-   "file": "017-should-throw-on-missing-keyword.mmd",
-   "outcome": "fails",
-   "suite": "ABNF Parser/Error Handling",
-   "name": "should throw on missing keyword"
-  },
-  {
-   "file": "018-should-throw-on-missing-semicolon.mmd",
+   "file": "015-should-throw-on-missing-semicolon.mmd",
    "outcome": "fails",
    "suite": "ABNF Parser/Error Handling",
    "name": "should throw on missing semicolon"
   },
   {
-   "file": "019-should-parse-simple-terminal.mmd",
+   "file": "016-should-parse-simple-terminal.mmd",
    "outcome": "parses",
    "suite": "EBNF Parser/Basic Parsing",
    "name": "should parse simple terminal"
   },
   {
-   "file": "020-should-parse-non-terminal-reference.mmd",
+   "file": "017-should-parse-non-terminal-reference.mmd",
    "outcome": "parses",
    "suite": "EBNF Parser/Basic Parsing",
    "name": "should parse non-terminal reference"
   },
   {
-   "file": "021-should-parse-sequence.mmd",
+   "file": "018-should-parse-sequence.mmd",
    "outcome": "parses",
    "suite": "EBNF Parser/Basic Parsing",
    "name": "should parse sequence"
   },
   {
-   "file": "022-should-parse-choice.mmd",
+   "file": "019-should-parse-choice.mmd",
    "outcome": "parses",
    "suite": "EBNF Parser/Basic Parsing",
    "name": "should parse choice"
   },
   {
-   "file": "023-should-parse-optional-w3c.mmd",
+   "file": "020-should-parse-optional-w3c.mmd",
    "outcome": "parses",
    "suite": "EBNF Parser/Basic Parsing",
    "name": "should parse optional (W3C)"
   },
   {
-   "file": "024-should-parse-optional-iso.mmd",
+   "file": "021-should-parse-optional-iso.mmd",
    "outcome": "parses",
    "suite": "EBNF Parser/Basic Parsing",
    "name": "should parse optional (ISO)"
   },
   {
-   "file": "025-should-parse-repetition-zero-or-more.mmd",
+   "file": "022-should-parse-repetition-zero-or-more.mmd",
    "outcome": "parses",
    "suite": "EBNF Parser/Basic Parsing",
    "name": "should parse repetition zero-or-more"
   },
   {
-   "file": "026-should-parse-repetition-one-or-more.mmd",
+   "file": "023-should-parse-repetition-one-or-more.mmd",
    "outcome": "parses",
    "suite": "EBNF Parser/Basic Parsing",
    "name": "should parse repetition one-or-more"
   },
   {
-   "file": "027-should-parse-iso-repetition.mmd",
+   "file": "024-should-parse-iso-repetition.mmd",
    "outcome": "parses",
    "suite": "EBNF Parser/Basic Parsing",
    "name": "should parse ISO repetition"
   },
   {
-   "file": "028-should-parse-title-2.mmd",
+   "file": "025-should-parse-title-2.mmd",
    "outcome": "parses",
    "suite": "EBNF Parser/Basic Parsing",
    "name": "should parse title"
   },
   {
-   "file": "029-should-parse-special-sequence.mmd",
+   "file": "026-should-parse-special-sequence.mmd",
    "outcome": "parses",
    "suite": "EBNF Parser/Basic Parsing",
    "name": "should parse special sequence"
   },
   {
-   "file": "030-should-parse-expression-grammar.mmd",
+   "file": "027-should-parse-expression-grammar.mmd",
    "outcome": "parses",
    "suite": "EBNF Parser/Real-world Examples",
    "name": "should parse expression grammar"
   },
   {
-   "file": "031-should-throw-on-missing-keyword-2.mmd",
-   "outcome": "fails",
-   "suite": "EBNF Parser/Error Handling",
-   "name": "should throw on missing keyword"
-  },
-  {
-   "file": "032-should-throw-on-missing-semicolon-2.mmd",
+   "file": "028-should-throw-on-missing-semicolon-2.mmd",
    "outcome": "fails",
    "suite": "EBNF Parser/Error Handling",
    "name": "should throw on missing semicolon"
   },
   {
-   "file": "033-should-parse-literal.mmd",
+   "file": "029-should-parse-literal.mmd",
    "outcome": "parses",
    "suite": "PEG Parser/Basic Parsing",
    "name": "should parse literal"
   },
   {
-   "file": "034-should-parse-identifier-reference.mmd",
+   "file": "030-should-parse-identifier-reference.mmd",
    "outcome": "parses",
    "suite": "PEG Parser/Basic Parsing",
    "name": "should parse identifier reference"
   },
   {
-   "file": "035-should-parse-sequence-2.mmd",
+   "file": "031-should-parse-sequence-2.mmd",
    "outcome": "parses",
    "suite": "PEG Parser/Basic Parsing",
    "name": "should parse sequence"
   },
   {
-   "file": "036-should-parse-ordered-choice.mmd",
+   "file": "032-should-parse-ordered-choice.mmd",
    "outcome": "parses",
    "suite": "PEG Parser/Basic Parsing",
    "name": "should parse ordered choice"
   },
   {
-   "file": "037-should-parse-optional-suffix.mmd",
+   "file": "033-should-parse-optional-suffix.mmd",
    "outcome": "parses",
    "suite": "PEG Parser/Basic Parsing",
    "name": "should parse optional suffix"
   },
   {
-   "file": "038-should-parse-zero-or-more-suffix.mmd",
+   "file": "034-should-parse-zero-or-more-suffix.mmd",
    "outcome": "parses",
    "suite": "PEG Parser/Basic Parsing",
    "name": "should parse zero-or-more suffix"
   },
   {
-   "file": "039-should-parse-one-or-more-suffix.mmd",
+   "file": "035-should-parse-one-or-more-suffix.mmd",
    "outcome": "parses",
    "suite": "PEG Parser/Basic Parsing",
    "name": "should parse one-or-more suffix"
   },
   {
-   "file": "040-should-parse-any-character.mmd",
+   "file": "036-should-parse-any-character.mmd",
    "outcome": "parses",
    "suite": "PEG Parser/Basic Parsing",
    "name": "should parse any character"
   },
   {
-   "file": "041-should-parse-lookahead-prefix.mmd",
+   "file": "037-should-parse-lookahead-prefix.mmd",
    "outcome": "parses",
    "suite": "PEG Parser/Basic Parsing",
    "name": "should parse lookahead prefix"
   },
   {
-   "file": "042-should-parse-not-predicate-prefix.mmd",
+   "file": "038-should-parse-not-predicate-prefix.mmd",
    "outcome": "parses",
    "suite": "PEG Parser/Basic Parsing",
    "name": "should parse not-predicate prefix"
   },
   {
-   "file": "043-should-parse-title-3.mmd",
+   "file": "039-should-parse-title-3.mmd",
    "outcome": "parses",
    "suite": "PEG Parser/Basic Parsing",
    "name": "should parse title"
   },
   {
-   "file": "044-should-parse-expression-grammar-2.mmd",
+   "file": "040-should-parse-expression-grammar-2.mmd",
    "outcome": "parses",
    "suite": "PEG Parser/Real-world Examples",
    "name": "should parse expression grammar"
   },
   {
-   "file": "045-should-throw-on-missing-keyword-3.mmd",
-   "outcome": "fails",
-   "suite": "PEG Parser/Error Handling",
-   "name": "should throw on missing keyword"
-  },
-  {
-   "file": "046-should-throw-on-missing-semicolon-3.mmd",
+   "file": "041-should-throw-on-missing-semicolon-3.mmd",
    "outcome": "fails",
    "suite": "PEG Parser/Error Handling",
    "name": "should throw on missing semicolon"
   },
   {
-   "file": "047-should-parse-terminal.mmd",
+   "file": "042-should-parse-terminal.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Basic Parsing",
    "name": "should parse terminal"
   },
   {
-   "file": "048-should-parse-nonterminal.mmd",
+   "file": "043-should-parse-nonterminal.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Basic Parsing",
    "name": "should parse nonterminal"
   },
   {
-   "file": "049-should-parse-sequence-3.mmd",
+   "file": "044-should-parse-sequence-3.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Basic Parsing",
    "name": "should parse sequence"
   },
   {
-   "file": "050-should-collapse-single-element-sequence.mmd",
+   "file": "045-should-collapse-single-element-sequence.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Basic Parsing",
    "name": "should collapse single-element sequence"
   },
   {
-   "file": "051-should-parse-choice-2.mmd",
+   "file": "046-should-parse-choice-2.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Basic Parsing",
    "name": "should parse choice"
   },
   {
-   "file": "052-should-collapse-single-element-choice.mmd",
+   "file": "047-should-collapse-single-element-choice.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Basic Parsing",
    "name": "should collapse single-element choice"
   },
   {
-   "file": "053-should-parse-optional.mmd",
+   "file": "048-should-parse-optional.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Basic Parsing",
    "name": "should parse optional"
   },
   {
-   "file": "054-should-parse-zeroormore.mmd",
+   "file": "049-should-parse-zeroormore.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Basic Parsing",
    "name": "should parse zeroOrMore"
   },
   {
-   "file": "055-should-parse-oneormore.mmd",
+   "file": "050-should-parse-oneormore.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Basic Parsing",
    "name": "should parse oneOrMore"
   },
   {
-   "file": "056-should-parse-special.mmd",
+   "file": "051-should-parse-special.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Basic Parsing",
    "name": "should parse special"
   },
   {
-   "file": "057-should-parse-title-4.mmd",
+   "file": "052-should-parse-title-4.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Basic Parsing",
    "name": "should parse title"
   },
   {
-   "file": "058-should-parse-multiple-rules.mmd",
+   "file": "053-should-parse-multiple-rules.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Complex Grammars",
    "name": "should parse multiple rules"
   },
   {
-   "file": "059-should-handle-nested-structures.mmd",
+   "file": "054-should-handle-nested-structures.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Complex Grammars",
    "name": "should handle nested structures"
   },
   {
-   "file": "060-should-parse-complex-expression-grammar.mmd",
+   "file": "055-should-parse-complex-expression-grammar.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Complex Grammars",
    "name": "should parse complex expression grammar"
   },
   {
-   "file": "061-should-throw-on-missing-railroad-beta-keyword.mmd",
-   "outcome": "fails",
-   "suite": "Railroad Parser/Error Handling",
-   "name": "should throw on missing railroad-beta keyword"
-  },
-  {
-   "file": "062-should-throw-on-missing-semicolon-4.mmd",
+   "file": "056-should-throw-on-missing-semicolon-4.mmd",
    "outcome": "fails",
    "suite": "Railroad Parser/Error Handling",
    "name": "should throw on missing semicolon"
   },
   {
-   "file": "063-should-throw-on-unterminated-string.mmd",
+   "file": "057-should-throw-on-unterminated-string.mmd",
    "outcome": "fails",
    "suite": "Railroad Parser/Error Handling",
    "name": "should throw on unterminated string"
   },
   {
-   "file": "064-should-handle-empty-rules-list.mmd",
+   "file": "058-should-handle-empty-rules-list.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Edge Cases",
    "name": "should handle empty rules list"
   },
   {
-   "file": "065-should-handle-whitespace-in-strings.mmd",
+   "file": "059-should-handle-whitespace-in-strings.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Edge Cases",
    "name": "should handle whitespace in strings"
   },
   {
-   "file": "066-should-handle-underscore-in-rule-names.mmd",
+   "file": "060-should-handle-underscore-in-rule-names.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Edge Cases",
    "name": "should handle underscore in rule names"
   },
   {
-   "file": "067-should-handle-numbers-in-rule-names.mmd",
+   "file": "061-should-handle-numbers-in-rule-names.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Edge Cases",
    "name": "should handle numbers in rule names"
   },
   {
-   "file": "068-should-parse-deeply-nested-ir.mmd",
+   "file": "062-should-parse-deeply-nested-ir.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Edge Cases",
    "name": "should parse deeply nested IR"
   },
   {
-   "file": "069-should-parse-zeroormore-with-choice.mmd",
+   "file": "063-should-parse-zeroormore-with-choice.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Edge Cases",
    "name": "should parse zeroOrMore with choice"
   },
   {
-   "file": "070-should-parse-block-comments.mmd",
+   "file": "064-should-parse-block-comments.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Edge Cases",
    "name": "should parse block comments"
   },
   {
-   "file": "071-should-parse-an-expression-grammar.mmd",
+   "file": "065-should-parse-an-expression-grammar.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Real-world Examples",
    "name": "should parse an expression grammar"
   },
   {
-   "file": "072-should-parse-json-grammar-excerpt.mmd",
+   "file": "066-should-parse-json-grammar-excerpt.mmd",
    "outcome": "parses",
    "suite": "Railroad Parser/Real-world Examples",
    "name": "should parse JSON grammar excerpt"
@@ -587,6 +551,30 @@
   {
    "name": "should return diagram with renderer",
    "reason": "no parse call"
+  },
+  {
+   "name": "should not detect non-railroad diagrams",
+   "reason": "not a railroad source"
+  },
+  {
+   "name": "should not detect railroad-beta in middle of text",
+   "reason": "not a railroad source"
+  },
+  {
+   "name": "should throw on missing keyword",
+   "reason": "not a railroad source"
+  },
+  {
+   "name": "should throw on missing keyword",
+   "reason": "not a railroad source"
+  },
+  {
+   "name": "should throw on missing keyword",
+   "reason": "not a railroad source"
+  },
+  {
+   "name": "should throw on missing railroad-beta keyword",
+   "reason": "not a railroad source"
   }
  ]
 }

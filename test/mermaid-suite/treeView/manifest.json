@@ -7,31 +7,25 @@
    "name": "should return indent-based input unchanged"
   },
   {
-   "file": "001-should-return-input-without-keyword-unchanged.mmd",
-   "outcome": "parses",
-   "suite": "boxDrawingPreprocessor/preprocessBoxDrawing/indent format passthrough",
-   "name": "should return input without keyword unchanged"
-  },
-  {
-   "file": "002-flat-list.mmd",
+   "file": "001-flat-list.mmd",
    "outcome": "parses",
    "suite": "box-drawing \u2194 indent equivalence",
    "name": "flat list"
   },
   {
-   "file": "003-nested-directories.mmd",
+   "file": "002-nested-directories.mmd",
    "outcome": "parses",
    "suite": "box-drawing \u2194 indent equivalence",
    "name": "nested directories"
   },
   {
-   "file": "004-with-annotations.mmd",
+   "file": "003-with-annotations.mmd",
    "outcome": "parses",
    "suite": "box-drawing \u2194 indent equivalence",
    "name": "with annotations"
   },
   {
-   "file": "005-deeply-nested-4-levels.mmd",
+   "file": "004-deeply-nested-4-levels.mmd",
    "outcome": "parses",
    "suite": "box-drawing \u2194 indent equivalence",
    "name": "deeply nested (4 levels)"
@@ -197,6 +191,10 @@
   {
    "name": "should be case-insensitive",
    "reason": "no parse call"
+  },
+  {
+   "name": "should return input without keyword unchanged",
+   "reason": "not a treeView source"
   },
   {
    "name": "should reset state to initial root",

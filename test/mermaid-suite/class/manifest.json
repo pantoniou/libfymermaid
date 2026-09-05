@@ -793,547 +793,7 @@
    "name": "should parse classes with different text labels"
   },
   {
-   "file": "132-should-parse-correctly.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has no parameters",
-   "name": "should parse correctly"
-  },
-  {
-   "file": "133-should-handle-public-visibility.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has no parameters",
-   "name": "should handle public visibility"
-  },
-  {
-   "file": "134-should-handle-private-visibility.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has no parameters",
-   "name": "should handle private visibility"
-  },
-  {
-   "file": "135-should-handle-protected-visibility.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has no parameters",
-   "name": "should handle protected visibility"
-  },
-  {
-   "file": "136-should-handle-internal-visibility.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has no parameters",
-   "name": "should handle internal visibility"
-  },
-  {
-   "file": "137-should-return-correct-css-for-static-classifier.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has no parameters",
-   "name": "should return correct css for static classifier"
-  },
-  {
-   "file": "138-should-return-correct-css-for-abstract-classifier.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has no parameters",
-   "name": "should return correct css for abstract classifier"
-  },
-  {
-   "file": "139-should-parse-correctly-2.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter value",
-   "name": "should parse correctly"
-  },
-  {
-   "file": "140-should-handle-public-visibility-2.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter value",
-   "name": "should handle public visibility"
-  },
-  {
-   "file": "141-should-handle-private-visibility-2.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter value",
-   "name": "should handle private visibility"
-  },
-  {
-   "file": "142-should-handle-protected-visibility-2.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter value",
-   "name": "should handle protected visibility"
-  },
-  {
-   "file": "143-should-handle-internal-visibility-2.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter value",
-   "name": "should handle internal visibility"
-  },
-  {
-   "file": "144-should-return-correct-css-for-static-classifier-2.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter value",
-   "name": "should return correct css for static classifier"
-  },
-  {
-   "file": "145-should-return-correct-css-for-abstract-classifier-2.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter value",
-   "name": "should return correct css for abstract classifier"
-  },
-  {
-   "file": "146-should-parse-correctly-3.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
-   "name": "should parse correctly"
-  },
-  {
-   "file": "147-should-handle-public-visibility-3.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
-   "name": "should handle public visibility"
-  },
-  {
-   "file": "148-should-handle-private-visibility-3.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
-   "name": "should handle private visibility"
-  },
-  {
-   "file": "149-should-handle-protected-visibility-3.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
-   "name": "should handle protected visibility"
-  },
-  {
-   "file": "150-should-handle-internal-visibility-3.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
-   "name": "should handle internal visibility"
-  },
-  {
-   "file": "151-should-return-correct-css-for-static-classifier-3.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
-   "name": "should return correct css for static classifier"
-  },
-  {
-   "file": "152-should-return-correct-css-for-abstract-classifier-3.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (type first)",
-   "name": "should return correct css for abstract classifier"
-  },
-  {
-   "file": "153-should-parse-correctly-4.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
-   "name": "should parse correctly"
-  },
-  {
-   "file": "154-should-handle-public-visibility-4.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
-   "name": "should handle public visibility"
-  },
-  {
-   "file": "155-should-handle-private-visibility-4.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
-   "name": "should handle private visibility"
-  },
-  {
-   "file": "156-should-handle-protected-visibility-4.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
-   "name": "should handle protected visibility"
-  },
-  {
-   "file": "157-should-handle-internal-visibility-4.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
-   "name": "should handle internal visibility"
-  },
-  {
-   "file": "158-should-return-correct-css-for-static-classifier-4.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
-   "name": "should return correct css for static classifier"
-  },
-  {
-   "file": "159-should-return-correct-css-for-abstract-classifier-4.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has single parameter type and name (name first)",
-   "name": "should return correct css for abstract classifier"
-  },
-  {
-   "file": "160-should-parse-correctly-5.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has multiple parameters",
-   "name": "should parse correctly"
-  },
-  {
-   "file": "161-should-handle-public-visibility-5.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has multiple parameters",
-   "name": "should handle public visibility"
-  },
-  {
-   "file": "162-should-handle-private-visibility-5.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has multiple parameters",
-   "name": "should handle private visibility"
-  },
-  {
-   "file": "163-should-handle-protected-visibility-5.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has multiple parameters",
-   "name": "should handle protected visibility"
-  },
-  {
-   "file": "164-should-handle-internal-visibility-5.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has multiple parameters",
-   "name": "should handle internal visibility"
-  },
-  {
-   "file": "165-should-return-correct-css-for-static-classifier-5.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has multiple parameters",
-   "name": "should return correct css for static classifier"
-  },
-  {
-   "file": "166-should-return-correct-css-for-abstract-classifier-5.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has multiple parameters",
-   "name": "should return correct css for abstract classifier"
-  },
-  {
-   "file": "167-should-parse-correctly-6.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has return type",
-   "name": "should parse correctly"
-  },
-  {
-   "file": "168-should-handle-public-visibility-6.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has return type",
-   "name": "should handle public visibility"
-  },
-  {
-   "file": "169-should-handle-private-visibility-6.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has return type",
-   "name": "should handle private visibility"
-  },
-  {
-   "file": "170-should-handle-protected-visibility-6.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has return type",
-   "name": "should handle protected visibility"
-  },
-  {
-   "file": "171-should-handle-internal-visibility-6.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has return type",
-   "name": "should handle internal visibility"
-  },
-  {
-   "file": "172-should-return-correct-css-for-static-classifier-6.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has return type",
-   "name": "should return correct css for static classifier"
-  },
-  {
-   "file": "173-should-return-correct-css-for-abstract-classifier-6.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method has return type",
-   "name": "should return correct css for abstract classifier"
-  },
-  {
-   "file": "174-should-parse-correctly-7.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is generic",
-   "name": "should parse correctly"
-  },
-  {
-   "file": "175-should-handle-public-visibility-7.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is generic",
-   "name": "should handle public visibility"
-  },
-  {
-   "file": "176-should-handle-private-visibility-7.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is generic",
-   "name": "should handle private visibility"
-  },
-  {
-   "file": "177-should-handle-protected-visibility-7.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is generic",
-   "name": "should handle protected visibility"
-  },
-  {
-   "file": "178-should-handle-internal-visibility-7.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is generic",
-   "name": "should handle internal visibility"
-  },
-  {
-   "file": "179-should-return-correct-css-for-static-classifier-7.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is generic",
-   "name": "should return correct css for static classifier"
-  },
-  {
-   "file": "180-should-return-correct-css-for-abstract-classifier-7.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is generic",
-   "name": "should return correct css for abstract classifier"
-  },
-  {
-   "file": "181-should-parse-correctly-8.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter contains two generic",
-   "name": "should parse correctly"
-  },
-  {
-   "file": "182-should-handle-public-visibility-8.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter contains two generic",
-   "name": "should handle public visibility"
-  },
-  {
-   "file": "183-should-handle-private-visibility-8.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter contains two generic",
-   "name": "should handle private visibility"
-  },
-  {
-   "file": "184-should-handle-protected-visibility-8.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter contains two generic",
-   "name": "should handle protected visibility"
-  },
-  {
-   "file": "185-should-handle-internal-visibility-8.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter contains two generic",
-   "name": "should handle internal visibility"
-  },
-  {
-   "file": "186-should-return-correct-css-for-static-classifier-8.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter contains two generic",
-   "name": "should return correct css for static classifier"
-  },
-  {
-   "file": "187-should-return-correct-css-for-abstract-classifier-8.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter contains two generic",
-   "name": "should return correct css for abstract classifier"
-  },
-  {
-   "file": "188-should-parse-correctly-9.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is a nested generic",
-   "name": "should parse correctly"
-  },
-  {
-   "file": "189-should-handle-public-visibility-9.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is a nested generic",
-   "name": "should handle public visibility"
-  },
-  {
-   "file": "190-should-handle-private-visibility-9.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is a nested generic",
-   "name": "should handle private visibility"
-  },
-  {
-   "file": "191-should-handle-protected-visibility-9.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is a nested generic",
-   "name": "should handle protected visibility"
-  },
-  {
-   "file": "192-should-handle-internal-visibility-9.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is a nested generic",
-   "name": "should handle internal visibility"
-  },
-  {
-   "file": "193-should-return-correct-css-for-static-classifier-9.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is a nested generic",
-   "name": "should return correct css for static classifier"
-  },
-  {
-   "file": "194-should-return-correct-css-for-abstract-classifier-9.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is a nested generic",
-   "name": "should return correct css for abstract classifier"
-  },
-  {
-   "file": "195-should-handle-public-visibility-10.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is a composite generic",
-   "name": "should handle public visibility"
-  },
-  {
-   "file": "196-should-handle-private-visibility-10.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is a composite generic",
-   "name": "should handle private visibility"
-  },
-  {
-   "file": "197-should-handle-protected-visibility-10.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is a composite generic",
-   "name": "should handle protected visibility"
-  },
-  {
-   "file": "198-should-handle-internal-visibility-10.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method parameter is a composite generic",
-   "name": "should handle internal visibility"
-  },
-  {
-   "file": "199-should-parse-correctly-10.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is generic",
-   "name": "should parse correctly"
-  },
-  {
-   "file": "200-should-handle-public-visibility-11.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is generic",
-   "name": "should handle public visibility"
-  },
-  {
-   "file": "201-should-handle-private-visibility-11.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is generic",
-   "name": "should handle private visibility"
-  },
-  {
-   "file": "202-should-handle-protected-visibility-11.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is generic",
-   "name": "should handle protected visibility"
-  },
-  {
-   "file": "203-should-handle-internal-visibility-11.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is generic",
-   "name": "should handle internal visibility"
-  },
-  {
-   "file": "204-should-return-correct-css-for-static-classifier-10.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is generic",
-   "name": "should return correct css for static classifier"
-  },
-  {
-   "file": "205-should-return-correct-css-for-abstract-classifier-10.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is generic",
-   "name": "should return correct css for abstract classifier"
-  },
-  {
-   "file": "206-should-parse-correctly-11.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is a nested generic",
-   "name": "should parse correctly"
-  },
-  {
-   "file": "207-should-handle-public-visibility-12.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is a nested generic",
-   "name": "should handle public visibility"
-  },
-  {
-   "file": "208-should-handle-private-visibility-12.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is a nested generic",
-   "name": "should handle private visibility"
-  },
-  {
-   "file": "209-should-handle-protected-visibility-12.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is a nested generic",
-   "name": "should handle protected visibility"
-  },
-  {
-   "file": "210-should-handle-internal-visibility-12.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is a nested generic",
-   "name": "should handle internal visibility"
-  },
-  {
-   "file": "211-should-return-correct-css-for-static-classifier-11.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is a nested generic",
-   "name": "should return correct css for static classifier"
-  },
-  {
-   "file": "212-should-return-correct-css-for-abstract-classifier-11.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /when method return type is a nested generic",
-   "name": "should return correct css for abstract classifier"
-  },
-  {
-   "file": "213-member-name-should-handle-double-colons.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /--uncategorized tests--",
-   "name": "member name should handle double colons"
-  },
-  {
-   "file": "214-member-name-should-handle-generic-type.mmd",
-   "outcome": "parses",
-   "suite": "given text representing a method, /--uncategorized tests--",
-   "name": "member name should handle generic type"
-  },
-  {
-   "file": "215-should-parse-the-display-text-correctly.mmd",
-   "outcome": "parses",
-   "suite": "given text representing an attribute/when the attribute has no modifiers",
-   "name": "should parse the display text correctly"
-  },
-  {
-   "file": "216-should-parse-the-display-text-correctly-2.mmd",
-   "outcome": "parses",
-   "suite": "given text representing an attribute/when the attribute has public \"+\" modifier",
-   "name": "should parse the display text correctly"
-  },
-  {
-   "file": "217-should-parse-the-display-text-correctly-3.mmd",
-   "outcome": "parses",
-   "suite": "given text representing an attribute/when the attribute has protected \"#\" modifier",
-   "name": "should parse the display text correctly"
-  },
-  {
-   "file": "218-should-parse-the-display-text-correctly-4.mmd",
-   "outcome": "parses",
-   "suite": "given text representing an attribute/when the attribute has private \"-\" modifier",
-   "name": "should parse the display text correctly"
-  },
-  {
-   "file": "219-should-parse-the-display-text-correctly-5.mmd",
-   "outcome": "parses",
-   "suite": "given text representing an attribute/when the attribute has internal \"~\" modifier",
-   "name": "should parse the display text correctly"
-  },
-  {
-   "file": "220-should-parse-the-display-text-correctly-and-apply-static-css.mmd",
-   "outcome": "parses",
-   "suite": "given text representing an attribute/when the attribute has static \"$\" modifier",
-   "name": "should parse the display text correctly and apply static css style"
-  },
-  {
-   "file": "221-should-parse-the-display-text-correctly-and-apply-abstract-c.mmd",
-   "outcome": "parses",
-   "suite": "given text representing an attribute/when the attribute has abstract \"*\" modifier",
-   "name": "should parse the display text correctly and apply abstract css style"
-  },
-  {
-   "file": "222-should-handle-backtick-quoted-namespace-names.mmd",
+   "file": "132-should-handle-backtick-quoted-namespace-names.mmd",
    "outcome": "parses",
    "suite": "class diagram/backtick escaping",
    "name": "should handle backtick-quoted namespace names"
@@ -1355,6 +815,366 @@
   {
    "name": "should return correct css for abstract classifier",
    "reason": "no parse call"
+  },
+  {
+   "name": "should parse correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle public visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle private visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle protected visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle internal visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for static classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for abstract classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle public visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle private visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle protected visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle internal visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for static classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for abstract classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle public visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle private visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle protected visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle internal visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for static classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for abstract classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle public visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle private visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle protected visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle internal visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for static classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for abstract classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle public visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle private visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle protected visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle internal visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for static classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for abstract classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle public visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle private visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle protected visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle internal visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for static classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for abstract classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle public visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle private visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle protected visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle internal visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for static classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for abstract classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle public visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle private visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle protected visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle internal visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for static classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for abstract classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle public visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle private visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle protected visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle internal visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for static classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for abstract classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle public visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle private visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle protected visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle internal visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle public visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle private visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle protected visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle internal visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for static classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for abstract classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle public visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle private visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle protected visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should handle internal visibility",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for static classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should return correct css for abstract classifier",
+   "reason": "not a class source"
+  },
+  {
+   "name": "member name should handle double colons",
+   "reason": "not a class source"
+  },
+  {
+   "name": "member name should handle generic type",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse the display text correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse the display text correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse the display text correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse the display text correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse the display text correctly",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse the display text correctly and apply static css style",
+   "reason": "not a class source"
+  },
+  {
+   "name": "should parse the display text correctly and apply abstract css style",
+   "reason": "not a class source"
   }
  ]
 }

@@ -311,12 +311,6 @@
    "outcome": "parses",
    "suite": "UseCase diagram with Chevrotain parser",
    "name": "projects complex source-ordered JSON, a forward edge, classes, and styles end to end"
-  },
-  {
-   "file": "052-balances-nested-json-while-ignoring-escaped-quotes-and-brace.mmd",
-   "outcome": "parses",
-   "suite": "",
-   "name": "balances nested JSON while ignoring escaped quotes and braces in strings"
   }
  ],
  "skipped": [
@@ -475,6 +469,10 @@
   {
    "name": "lexes digit-leading ids as identifiers while decimals stay numbers",
    "reason": "no parse call"
+  },
+  {
+   "name": "balances nested JSON while ignoring escaped quotes and braces in strings",
+   "reason": "not a usecase source"
   },
   {
    "name": "defines the stable canonical CST rule names",

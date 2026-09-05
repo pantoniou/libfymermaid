@@ -1,6 +1,5 @@
 parses:000-should-return-indent-based-input-unchanged.mmd
-parses:001-should-return-input-without-keyword-unchanged.mmd
-parses:002-flat-list.mmd
-parses:003-nested-directories.mmd
-parses:004-with-annotations.mmd
-parses:005-deeply-nested-4-levels.mmd
+parses:001-flat-list.mmd
+parses:002-nested-directories.mmd
+parses:003-with-annotations.mmd
+parses:004-deeply-nested-4-levels.mmd

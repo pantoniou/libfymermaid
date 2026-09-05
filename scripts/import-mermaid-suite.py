@@ -44,6 +44,37 @@ RENAME = {
     'quadrant-chart': 'quadrant',
 }
 
+# A diagram source opens with the keyword that names its type. Some specs
+# parse a fragment instead -- one member of a class, one label -- and those
+# are not diagrams, so a case whose first line does not open with the
+# keyword of its suite is not one either.
+#
+# The suite name is the keyword for most types; these are the exceptions.
+KEYWORDS = {
+    'flowchart': ('flowchart', 'graph', 'swimlane-beta'),
+    'gitgraph': ('gitgraph',),
+    'journey': ('journey',),
+    'quadrant': ('quadrant',),
+    'treeView': ('treeview', 'treemap'),
+    'eventmodeling': ('eventmodeling', 'event-modeling'),
+}
+
+
+def looks_like_diagram(src, suite):
+    """Does @src open with the diagram keyword its suite implies?"""
+    for raw in src.splitlines():
+        line = raw.strip()
+        if not line or line.startswith('%%'):
+            continue
+        if line.startswith('---'):          # frontmatter; trust it
+            return True
+        head = line.lower()
+        for kw in KEYWORDS.get(suite, (suite.lower(),)):
+            if head.startswith(kw):
+                return True
+        return False
+    return False
+
 ESC = {'n': '\n', 't': '\t', 'r': '\r', '\\': '\\',
        '`': '`', "'": "'", '"': '"', '0': '\0'}
 
@@ -233,7 +264,12 @@ def main():
         for path in suites[name]:
             text = open(os.path.join(root, BASE, path)).read()
             c, s = extract(text)
-            cases.extend(c)
+            for case in c:
+                if looks_like_diagram(case['src'], name):
+                    cases.append(case)
+                else:
+                    s.append({'name': case['name'],
+                              'reason': 'not a %s source' % name})
             skipped.extend(s)
         if not cases:
             continue

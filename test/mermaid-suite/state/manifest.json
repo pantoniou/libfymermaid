@@ -1,463 +1,457 @@
 {
  "cases": [
   {
-   "file": "000-removes-only-the-first-leading.mmd",
-   "outcome": "parses",
-   "suite": "State Diagram stateDb/addDescription to a state",
-   "name": "removes only the first leading :"
-  },
-  {
-   "file": "001-super-simple.mmd",
+   "file": "000-super-simple.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "super simple"
   },
   {
-   "file": "002-simple.mmd",
+   "file": "001-simple.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "simple"
   },
   {
-   "file": "003-simple-with-accdescription.mmd",
+   "file": "002-simple-with-accdescription.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "simple with accDescription"
   },
   {
-   "file": "004-simple-with-title.mmd",
+   "file": "003-simple-with-title.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "simple with title"
   },
   {
-   "file": "005-should-handle-relation-definitions.mmd",
+   "file": "004-should-handle-relation-definitions.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle relation definitions"
   },
   {
-   "file": "006-hide-empty-description.mmd",
+   "file": "005-hide-empty-description.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "hide empty description"
   },
   {
-   "file": "007-handle-as-in-state-names.mmd",
+   "file": "006-handle-as-in-state-names.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "handle \"as\" in state names"
   },
   {
-   "file": "008-handle-as-in-state-names-1.mmd",
+   "file": "007-handle-as-in-state-names-1.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "handle \"as\" in state names 1"
   },
   {
-   "file": "009-handle-as-in-state-names-2.mmd",
+   "file": "008-handle-as-in-state-names-2.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "handle \"as\" in state names 2"
   },
   {
-   "file": "010-handle-as-in-state-names-3.mmd",
+   "file": "009-handle-as-in-state-names-3.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "handle \"as\" in state names 3"
   },
   {
-   "file": "011-simple-states-with-labels.mmd",
+   "file": "010-simple-states-with-labels.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it/relationship labels",
    "name": "simple states with : labels"
   },
   {
-   "file": "012-scale.mmd",
+   "file": "011-scale.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "scale"
   },
   {
-   "file": "013-description-after-second-state.mmd",
+   "file": "012-description-after-second-state.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "description after second state"
   },
   {
-   "file": "014-shall-handle-descriptions-including-minus-signs.mmd",
+   "file": "013-shall-handle-descriptions-including-minus-signs.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "shall handle descriptions including minus signs"
   },
   {
-   "file": "015-should-handle-state-statements.mmd",
+   "file": "014-should-handle-state-statements.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle state statements"
   },
   {
-   "file": "016-should-handle-recursive-state-definitions.mmd",
+   "file": "015-should-handle-recursive-state-definitions.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle recursive state definitions"
   },
   {
-   "file": "017-should-handle-multiple-recursive-state-definitions.mmd",
+   "file": "016-should-handle-multiple-recursive-state-definitions.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle multiple recursive state definitions"
   },
   {
-   "file": "018-should-handle-state-definitions-with-separation-of-id.mmd",
+   "file": "017-should-handle-state-definitions-with-separation-of-id.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle state definitions with separation of id"
   },
   {
-   "file": "019-should-handle-state-definitions-with-separation-of-id-2.mmd",
+   "file": "018-should-handle-state-definitions-with-separation-of-id-2.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle state definitions with separation of id"
   },
   {
-   "file": "020-should-state-definition-with-quotes.mmd",
+   "file": "019-should-state-definition-with-quotes.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should State definition with quotes"
   },
   {
-   "file": "021-should-handle-fork-statements.mmd",
+   "file": "020-should-handle-fork-statements.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle fork statements"
   },
   {
-   "file": "022-should-handle-concurrent-state.mmd",
+   "file": "021-should-handle-concurrent-state.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle concurrent state"
   },
   {
-   "file": "023-should-handle-concurrent-state-2.mmd",
+   "file": "022-should-handle-concurrent-state-2.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle concurrent state"
   },
   {
-   "file": "024-should-handle-arrow-directions-definitions.mmd",
+   "file": "023-should-handle-arrow-directions-definitions.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle arrow directions definitions"
   },
   {
-   "file": "025-should-handle-note-statements.mmd",
+   "file": "024-should-handle-note-statements.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle note statements"
   },
   {
-   "file": "026-should-handle-multiline-notes-with-different-line-breaks.mmd",
+   "file": "025-should-handle-multiline-notes-with-different-line-breaks.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle multiline notes with different line breaks"
   },
   {
-   "file": "027-should-handle-floating-notes.mmd",
+   "file": "026-should-handle-floating-notes.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle floating notes"
   },
   {
-   "file": "028-should-handle-floating-notes-2.mmd",
+   "file": "027-should-handle-floating-notes-2.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle floating notes"
   },
   {
-   "file": "029-should-handle-notes-for-composite-nested-states.mmd",
+   "file": "028-should-handle-notes-for-composite-nested-states.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should handle notes for composite (nested) states"
   },
   {
-   "file": "030-a-composite-state-should-be-able-to-link-to-itself.mmd",
+   "file": "029-a-composite-state-should-be-able-to-link-to-itself.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "A composite state should be able to link to itself"
   },
   {
-   "file": "031-should-check-default-diagram-direction.mmd",
+   "file": "030-should-check-default-diagram-direction.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "should check default diagram direction"
   },
   {
-   "file": "032-retrieve-the-diagram-direction-correctly.mmd",
+   "file": "031-retrieve-the-diagram-direction-correctly.mmd",
    "outcome": "parses",
    "suite": "state diagram V2, /when parsing an info graph it",
    "name": "retrieve the diagram direction correctly"
   },
   {
-   "file": "033-super-simple-2.mmd",
+   "file": "032-super-simple-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "super simple"
   },
   {
-   "file": "034-simple-2.mmd",
+   "file": "033-simple-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "simple"
   },
   {
-   "file": "035-simple-with-accdescription-accdescr.mmd",
+   "file": "034-simple-with-accdescription-accdescr.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "simple with accDescription (accDescr)"
   },
   {
-   "file": "036-simple-with-multiline-accdescription-accdescr.mmd",
+   "file": "035-simple-with-multiline-accdescription-accdescr.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "simple with multiline accDescription (accDescr)"
   },
   {
-   "file": "037-simple-with-title-accdescr.mmd",
+   "file": "036-simple-with-title-accdescr.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "simple with title  (accDescr)"
   },
   {
-   "file": "038-should-handle-relation-definitions-2.mmd",
+   "file": "037-should-handle-relation-definitions-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle relation definitions"
   },
   {
-   "file": "039-hide-empty-description-2.mmd",
+   "file": "038-hide-empty-description-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "hide empty description"
   },
   {
-   "file": "040-handle-as-in-state-names-4.mmd",
+   "file": "039-handle-as-in-state-names-4.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "handle \"as\" in state names"
   },
   {
-   "file": "041-handle-as-in-state-names-1-2.mmd",
+   "file": "040-handle-as-in-state-names-1-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "handle \"as\" in state names 1"
   },
   {
-   "file": "042-handle-as-in-state-names-2-2.mmd",
+   "file": "041-handle-as-in-state-names-2-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "handle \"as\" in state names 2"
   },
   {
-   "file": "043-handle-as-in-state-names-3-2.mmd",
+   "file": "042-handle-as-in-state-names-3-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "handle \"as\" in state names 3"
   },
   {
-   "file": "044-scale-2.mmd",
+   "file": "043-scale-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "scale"
   },
   {
-   "file": "045-description-after-second-state-2.mmd",
+   "file": "044-description-after-second-state-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "description after second state"
   },
   {
-   "file": "046-shall-handle-descriptions-including-minus-signs-2.mmd",
+   "file": "045-shall-handle-descriptions-including-minus-signs-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "shall handle descriptions including minus signs"
   },
   {
-   "file": "047-should-handle-state-statements-2.mmd",
+   "file": "046-should-handle-state-statements-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle state statements"
   },
   {
-   "file": "048-should-handle-recursive-state-definitions-2.mmd",
+   "file": "047-should-handle-recursive-state-definitions-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle recursive state definitions"
   },
   {
-   "file": "049-should-handle-multiple-recursive-state-definitions-2.mmd",
+   "file": "048-should-handle-multiple-recursive-state-definitions-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle multiple recursive state definitions"
   },
   {
-   "file": "050-should-handle-state-definitions-with-separation-of-id-3.mmd",
+   "file": "049-should-handle-state-definitions-with-separation-of-id-3.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle state definitions with separation of id"
   },
   {
-   "file": "051-should-handle-state-definitions-with-separation-of-id-4.mmd",
+   "file": "050-should-handle-state-definitions-with-separation-of-id-4.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle state definitions with separation of id"
   },
   {
-   "file": "052-should-state-definition-with-quotes-2.mmd",
+   "file": "051-should-state-definition-with-quotes-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should State definition with quotes"
   },
   {
-   "file": "053-should-handle-fork-statements-2.mmd",
+   "file": "052-should-handle-fork-statements-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle fork statements"
   },
   {
-   "file": "054-should-handle-concurrent-state-3.mmd",
+   "file": "053-should-handle-concurrent-state-3.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle concurrent state"
   },
   {
-   "file": "055-should-handle-concurrent-state-4.mmd",
+   "file": "054-should-handle-concurrent-state-4.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle concurrent state"
   },
   {
-   "file": "056-should-handle-arrow-directions-definitions-2.mmd",
+   "file": "055-should-handle-arrow-directions-definitions-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle arrow directions definitions"
   },
   {
-   "file": "057-should-handle-note-statements-2.mmd",
+   "file": "056-should-handle-note-statements-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle note statements"
   },
   {
-   "file": "058-should-handle-multiline-notes-with-different-line-breaks-2.mmd",
+   "file": "057-should-handle-multiline-notes-with-different-line-breaks-2.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle multiline notes with different line breaks"
   },
   {
-   "file": "059-should-handle-floating-notes-3.mmd",
+   "file": "058-should-handle-floating-notes-3.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle floating notes"
   },
   {
-   "file": "060-should-handle-floating-notes-4.mmd",
+   "file": "059-should-handle-floating-notes-4.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle floating notes"
   },
   {
-   "file": "061-should-handle-notes-for-composite-states.mmd",
+   "file": "060-should-handle-notes-for-composite-states.mmd",
    "outcome": "parses",
    "suite": "state diagram, /when parsing an info graph it",
    "name": "should handle notes for composite states"
   },
   {
-   "file": "062-should-only-accept-1-word.mmd",
+   "file": "061-should-only-accept-1-word.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../invalid name between state and curly bracket/valid syntax",
    "name": "should only accept 1 word"
   },
   {
-   "file": "063-should-throw-error-with-2-words.mmd",
+   "file": "062-should-throw-error-with-2-words.mmd",
    "outcome": "fails",
    "suite": "state parser can parse.../invalid name between state and curly bracket/invalid syntax",
    "name": "should throw error with 2 words"
   },
   {
-   "file": "064-should-also-throw-with-more-than-2-words.mmd",
+   "file": "063-should-also-throw-with-more-than-2-words.mmd",
    "outcome": "fails",
    "suite": "state parser can parse.../invalid name between state and curly bracket/invalid syntax",
    "name": "should also throw with more than 2 words"
   },
   {
-   "file": "065-stateid-as-some-name.mmd",
+   "file": "064-stateid-as-some-name.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../states with id displayed as a (name)/syntax 1: stateID as \"name in quotes\"",
    "name": "stateID as \"some name\""
   },
   {
-   "file": "066-space-before-and-after-the-colon.mmd",
+   "file": "065-space-before-and-after-the-colon.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../states with id displayed as a (name)/syntax 2: stateID: \"name in quotes\" [colon after the id]",
    "name": "space before and after the colon"
   },
   {
-   "file": "067-no-spaces-before-and-after-the-colon.mmd",
+   "file": "066-no-spaces-before-and-after-the-colon.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../states with id displayed as a (name)/syntax 2: stateID: \"name in quotes\" [colon after the id]",
    "name": "no spaces before and after the colon"
   },
   {
-   "file": "068-assemble-assemblies-state-assemble-state-assemblies.mmd",
+   "file": "067-assemble-assemblies-state-assemble-state-assemblies.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../can handle \"as\" in a state name",
    "name": "assemble, assemblies, state assemble, state assemblies"
   },
   {
-   "file": "069-state-as-as-as.mmd",
+   "file": "068-state-as-as-as.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../can handle \"as\" in a state name",
    "name": "state \"as\" as as"
   },
   {
-   "file": "070-state-group-name-as-stateidentifier.mmd",
+   "file": "069-state-group-name-as-stateidentifier.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../groups (clusters/containers)",
    "name": "state \"Group Name\" as stateIdentifier"
   },
   {
-   "file": "071-group-has-a-state-with-stateid-as-state-name-and-state2id-an.mmd",
+   "file": "070-group-has-a-state-with-stateid-as-state-name-and-state2id-an.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../groups (clusters/containers)",
    "name": "group has a state with stateID AS \"state name\" and state2ID: \"another state name\""
   },
   {
-   "file": "072-should-allow-a-colon-inside-transition-text.mmd",
+   "file": "071-should-allow-a-colon-inside-transition-text.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../colons in transition descriptions (issue #7418)",
    "name": "should allow a colon inside transition text"
   },
   {
-   "file": "073-should-allow-multiple-colons-inside-transition-text.mmd",
+   "file": "072-should-allow-multiple-colons-inside-transition-text.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../colons in transition descriptions (issue #7418)",
    "name": "should allow multiple colons inside transition text"
   },
   {
-   "file": "074-should-allow-a-colon-inside-state-description-text.mmd",
+   "file": "073-should-allow-a-colon-inside-state-description-text.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../colons in transition descriptions (issue #7418)",
    "name": "should allow a colon inside state description text"
   },
   {
-   "file": "075-should-not-terminate-a-note-when-send-note-appears-within-th.mmd",
+   "file": "074-should-not-terminate-a-note-when-send-note-appears-within-th.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../note parsing (issue #7089)",
    "name": "should not terminate a note when \"send note\" appears within the note text"
   },
   {
-   "file": "076-should-not-treat-end-note-as-a-closing-keyword-when-it-is-pa.mmd",
+   "file": "075-should-not-treat-end-note-as-a-closing-keyword-when-it-is-pa.mmd",
    "outcome": "parses",
    "suite": "state parser can parse.../note parsing (issue #7089)",
    "name": "should not treat \"end note\" as a closing keyword when it is part of the note text"
@@ -483,6 +477,10 @@
   {
    "name": "should have functions used in flow JISON as own property",
    "reason": "no parse call"
+  },
+  {
+   "name": "removes only the first leading :",
+   "reason": "not a state source"
   },
   {
    "name": "should store links from click statements manually passed to extract()",
