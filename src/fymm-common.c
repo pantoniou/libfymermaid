@@ -131,6 +131,12 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "timeline",
+		.config_key = "timeline",
+		.type = FYMM_DT_TIMELINE,
+		.parse = fymm_parse_timeline,
+		.render = fymm_render_timeline,
+	}, {
 		.keyword = "pie",
 		.config_key = "pie",
 		.type = FYMM_DT_PIE,

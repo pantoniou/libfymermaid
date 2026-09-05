@@ -174,6 +174,11 @@ int fymm_parse_gitgraph(struct fymm_parser *p, fy_generic config,
 char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 			   const struct fymm_render_cfg *cfg);
 
+int fymm_parse_timeline(struct fymm_parser *p, fy_generic config,
+			fy_generic title, struct fymm_token *toks, int n);
+char *fymm_render_timeline(const struct fymm_diagram *d, fy_generic model,
+			   const struct fymm_render_cfg *cfg);
+
 int fymm_parse_pie(struct fymm_parser *p, fy_generic config,
 		   fy_generic title, struct fymm_token *toks, int n);
 char *fymm_render_pie(const struct fymm_diagram *d, fy_generic model,

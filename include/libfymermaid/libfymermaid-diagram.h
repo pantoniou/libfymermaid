@@ -48,11 +48,13 @@ extern "C" {
  * @FYMM_DT_UNKNOWN: the header did not name a diagram we can parse
  * @FYMM_DT_GITGRAPH: a gitGraph diagram
  * @FYMM_DT_PIE: a pie chart
+ * @FYMM_DT_TIMELINE: a timeline
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
 	FYMM_DT_GITGRAPH,
 	FYMM_DT_PIE,
+	FYMM_DT_TIMELINE,
 };
 
 /* the opaque parsed diagram */
