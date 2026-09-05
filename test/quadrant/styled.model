@@ -1,0 +1,21 @@
+type: quadrantChart
+title: null
+accTitle: null
+accDescr: null
+config: {}
+xAxis:
+  low: Completeness of Vision
+  high: Execution
+yAxis: null
+quadrants:
+- Leaders
+- null
+- null
+- null
+points:
+- name: Microsoft
+  x: 0.75
+  y: 0.75
+- name: Salesforce
+  x: 0.55000000000000004
+  y: 0.59999999999999998

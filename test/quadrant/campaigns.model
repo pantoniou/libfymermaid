@@ -1,0 +1,29 @@
+type: quadrantChart
+title: Reach and engagement of campaigns
+accTitle: null
+accDescr: null
+config: {}
+xAxis:
+  low: Low Reach
+  high: High Reach
+yAxis:
+  low: Low Engagement
+  high: High Engagement
+quadrants:
+- We should expand
+- Need to promote
+- Re-evaluate
+- May be improved
+points:
+- name: Campaign A
+  x: 0.29999999999999999
+  y: 0.59999999999999998
+- name: Campaign B
+  x: 0.45000000000000001
+  y: 0.23000000000000001
+- name: Campaign C
+  x: 0.56999999999999995
+  y: 0.68999999999999995
+- name: Campaign D
+  x: 0.78000000000000003
+  y: 0.34000000000000002
