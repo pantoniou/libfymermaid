@@ -1,0 +1,27 @@
+type: c4
+c4Type: C4Context
+title: Banking
+accTitle: null
+accDescr: null
+config: {}
+elements:
+- id: a
+  label: Customer
+  description: A bank customer
+  kind: person
+  call: Person
+  named: {}
+  parent: null
+- id: s
+  label: Internet Banking
+  description: Lets customers view accounts
+  kind: system
+  call: System
+  named: {}
+  parent: null
+relations:
+- call: Rel
+  from: a
+  to: s
+  label: Uses
+  named: {}

@@ -1,0 +1,15 @@
+Banking
+
+      ╭─────────────────╮
+      │ Customer        │
+      │ [person]        │
+      │ A bank customer │
+      ╰─────────────────╯
+               │
+               ╰╮ Uses
+                ▼
+┌──────────────────────────────┐
+│ Internet Banking             │
+│ [system]                     │
+│ Lets customers view accounts │
+└──────────────────────────────┘

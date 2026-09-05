@@ -1,0 +1,33 @@
+type: block
+title: null
+accTitle: null
+accDescr: null
+config:
+  columns: 3
+blocks:
+- id: A
+  label: Alpha
+  shape: rect
+  span: 1
+  parent: null
+- id: B
+  label: Beta
+  shape: rect
+  span: 1
+  parent: null
+- id: C
+  label: Gamma
+  shape: rect
+  span: 1
+  parent: null
+- id: D
+  label: null
+  shape: rect
+  span: 2
+  parent: null
+- id: E
+  label: null
+  shape: rect
+  span: 1
+  parent: null
+arrows: []
