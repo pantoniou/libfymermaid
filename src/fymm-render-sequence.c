@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 /* the gap kept either side of a participant label in its column */
 #define SEQ_PAD 4
@@ -56,10 +57,10 @@ static size_t seq_index(fy_generic participants, const char *id)
 static void seq_centre(struct fymm_canvas *cv, int x, int y, const char *text,
 		       int color, uint8_t attr)
 {
-	int w = fymm_text_width(text);
+	int w = fymm_rich_measure(text);
 
 	x -= w / 2;
-	fymm_canvas_text(cv, x < 0 ? 0 : x, y, text, color, attr);
+	fymm_rich_text(cv, x < 0 ? 0 : x, y, text, color, attr);
 }
 
 /*
@@ -101,7 +102,7 @@ static int seq_draw_message(struct fymm_canvas *cv, const struct seq_geom *g,
 		fymm_canvas_hline(cv, y, x0 + 1, x0 + 3, color, dotted);
 		fymm_canvas_line(cv, x0 + 3, y, FYMM_LN_W | FYMM_LN_S, color,
 				 dotted);
-		fymm_canvas_text(cv, x0 + 5, y, text, FYMM_COLOR_DEFAULT, 0);
+		fymm_rich_text(cv, x0 + 5, y, text, FYMM_COLOR_DEFAULT, 0);
 		y++;
 		fymm_canvas_line(cv, x0 + 3, y, FYMM_LN_N | FYMM_LN_W, color,
 				 dotted);
@@ -116,7 +117,7 @@ static int seq_draw_message(struct fymm_canvas *cv, const struct seq_geom *g,
 	x0 = g->x[from < to ? from : to];
 	x1 = g->x[from < to ? to : from];
 	mid = (x0 + x1) / 2;
-	w = fymm_text_width(text);
+	w = fymm_rich_measure(text);
 
 	/* the label goes above when the shaft cannot hold it */
 	if (w && w + 4 > x1 - x0) {
@@ -246,7 +247,7 @@ char *fymm_render_sequence(const struct fymm_diagram *d, fy_generic model,
 	for (i = 0; i < ns; i++) {
 		st = fy_get_at(statements, i);
 		kind = fy_get(st, "kind", "");
-		w = fymm_text_width(fy_get(st, "text", ""));
+		w = fymm_rich_measure(fy_get(st, "text", ""));
 
 		if (!strcmp(kind, "message")) {
 			height += 2 + (w ? 1 : 0);
@@ -272,7 +273,7 @@ char *fymm_render_sequence(const struct fymm_diagram *d, fy_generic model,
 
 	y = 0;
 	if (title) {
-		fymm_canvas_text(cv, 0, y, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 		y += 2;
 	}
@@ -298,10 +299,10 @@ char *fymm_render_sequence(const struct fymm_diagram *d, fy_generic model,
 					     autonumber ? number : 0);
 		} else if (!strcmp(kind, "note")) {
 			y++;
-			w = fymm_text_width(text);
+			w = fymm_rich_measure(text);
 			x = seq_note_x(&g, participants, st, w + 4);
 			fymm_canvas_text(cv, x, y, "[ ", FYMM_PAL_TAG, 0);
-			fymm_canvas_text(cv, x + 2, y, text, FYMM_PAL_TAG, 0);
+			fymm_rich_text(cv, x + 2, y, text, FYMM_PAL_TAG, 0);
 			fymm_canvas_text(cv, x + 2 + w, y, " ]", FYMM_PAL_TAG,
 					 0);
 			y++;

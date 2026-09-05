@@ -129,7 +129,7 @@ static bool fc_shape_known(const char *name, size_t len)
 
 /* Record a node the first time it is named; a later label replaces the id. */
 static const char *fc_node(struct fc *f, const char *id, size_t idlen,
-			   const char *text, const char *shape)
+			   const char *text, const char *shape, bool markdown)
 {
 	const char *iid = fy_gb_intern_string_size(f->gb, id, idlen);
 	fy_generic n;
@@ -146,6 +146,7 @@ static const char *fc_node(struct fc *f, const char *id, size_t idlen,
 					"id", iid,
 					"text", text,
 					"shape", shape ? shape : "rect",
+					"markdown", markdown,
 					"subgraph", fy_get(n, "subgraph")));
 		return iid;
 	}
@@ -155,6 +156,7 @@ static const char *fc_node(struct fc *f, const char *id, size_t idlen,
 			"id", iid,
 			"text", text ? text : iid,
 			"shape", shape ? shape : "rect",
+			"markdown", markdown,
 			"subgraph", fy_len(f->stack) ?
 				fy_get_at(f->stack, fy_len(f->stack) - 1) :
 				fy_null));
@@ -182,6 +184,7 @@ static const char *fc_read_node(struct fc *f, const char *s, const char *e,
 	fy_generic_sized_string input;
 	const char *id = s, *q, *close, *ts, *te;
 	const char *text = NULL, *shape = NULL;
+	bool markdown = false;
 	fy_generic meta;
 	size_t i, ol, cl;
 
@@ -249,7 +252,7 @@ static const char *fc_read_node(struct fc *f, const char *s, const char *e,
 				   "unknown node shape '%s'", shape);
 			return NULL;
 		}
-		*idp = fc_node(f, id, (size_t)(q - id), text, shape);
+		*idp = fc_node(f, id, (size_t)(q - id), text, shape, markdown);
 		return close + 1;
 	}
 
@@ -270,19 +273,21 @@ static const char *fc_read_node(struct fc *f, const char *s, const char *e,
 
 		ts = q + ol;
 		te = close;
-		/* a quoted label keeps what is inside it, markdown included */
+		/* backticks inside the quotes make it a markdown string, and
+		 * only then is the text read as markdown */
 		if (te - ts >= 2 && *ts == '"' && te[-1] == '"') {
 			ts++;
 			te--;
 			if (te - ts >= 2 && *ts == '`' && te[-1] == '`') {
 				ts++;
 				te--;
+				markdown = true;
 			}
 		}
 		*idp = fc_node(f, id, (size_t)(q - id),
 			       fy_gb_intern_string_size(f->gb, ts,
 							(size_t)(te - ts)),
-			       fc_shapes[i].shape);
+			       fc_shapes[i].shape, markdown);
 		q = fc_skip_class(close + cl, e);
 		/* `C[Hello]@{ shape: circle }` carries both */
 		if (q + 1 < e && *q == '@' && q[1] == '{') {
@@ -298,7 +303,7 @@ static const char *fc_read_node(struct fc *f, const char *s, const char *e,
 		return q;
 	}
 
-	*idp = fc_node(f, id, (size_t)(q - id), NULL, NULL);
+	*idp = fc_node(f, id, (size_t)(q - id), NULL, NULL, false);
 	return fc_skip_class(q, e);
 }
 

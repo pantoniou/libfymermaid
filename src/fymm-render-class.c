@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 #define CD_RANK_GAP 3
 #define CD_COL_GAP 3
@@ -161,14 +162,14 @@ char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,
 			 box[i].generic : "", box[i].generic ? ">" : "");
 		w = fymm_text_width(buf);
 		if (box[i].annotation) {
-			int aw = fymm_text_width(box[i].annotation) + 4;
+			int aw = fymm_rich_measure(box[i].annotation) + 4;
 
 			if (aw > w)
 				w = aw;
 		}
 		if (fy_is_sequence(box[i].members)) {
 			fy_foreach(member, box[i].members) {
-				int mw = fymm_text_width(fy_str(member));
+				int mw = fymm_rich_measure(fy_str(member));
 
 				if (mw > w)
 					w = mw;
@@ -219,8 +220,8 @@ char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,
 
 	height = y - CD_RANK_GAP;
 	width += 2;
-	if (title && fymm_text_width(title) + 2 > width)
-		width = fymm_text_width(title) + 2;
+	if (title && fymm_rich_measure(title) + 2 > width)
+		width = fymm_rich_measure(title) + 2;
 
 	cv = fymm_canvas_create(width, height,
 				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
@@ -231,7 +232,7 @@ char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
 	if (title)
-		fymm_canvas_text(cv, 0, 0, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 
 	/* the relations first, so a box sits on top of its connectors */
@@ -325,9 +326,9 @@ char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,
 					ascii ? '+' : 0x2524, color, 0);
 			r++;
 			fy_foreach(member, box[i].members) {
-				fymm_canvas_text(cv, x + 2, y + r,
-						 fy_str(member),
-						 FYMM_COLOR_DEFAULT, 0);
+				fymm_rich_text(cv, x + 2, y + r,
+					       fy_str(member),
+					       FYMM_COLOR_DEFAULT, 0);
 				r++;
 			}
 		}

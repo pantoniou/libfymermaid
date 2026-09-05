@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 /*
  * Mermaid lays a timeline out across the page, one column per task. A
@@ -63,13 +64,13 @@ char *fymm_render_timeline(const struct fymm_diagram *d, fy_generic model,
 
 	/* measure: the widest line decides the width, and the rows are the
 	 * sum of every section, task and event plus a blank between sections */
-	width = title ? fymm_text_width(title) : 0;
+	width = title ? fymm_rich_measure(title) : 0;
 	height = title ? 2 : 0;
 	for (si = 0; si < nsections; si++) {
 		section = fy_get_at(sections, si);
 		name = fy_get(section, "name", (const char *)NULL);
 		if (name) {
-			w = fymm_text_width(name) + 6;
+			w = fymm_rich_measure(name) + 6;
 			if (w > width)
 				width = w;
 			height += 1;
@@ -78,14 +79,14 @@ char *fymm_render_timeline(const struct fymm_diagram *d, fy_generic model,
 		ntasks = fy_is_sequence(tasks) ? fy_len(tasks) : 0;
 		for (ti = 0; ti < ntasks; ti++) {
 			task = fy_get_at(tasks, ti);
-			w = fymm_text_width(fy_get(task, "name", "")) + 4;
+			w = fymm_rich_measure(fy_get(task, "name", "")) + 4;
 			if (w > width)
 				width = w;
 			height += 1;
 			events = fy_get(task, "events");
 			nevents = fy_is_sequence(events) ? fy_len(events) : 0;
 			for (ei = 0; ei < nevents; ei++) {
-				w = fymm_text_width(fy_get_at(events, ei, "")) + 8;
+				w = fymm_rich_measure(fy_get_at(events, ei, "")) + 8;
 				if (w > width)
 					width = w;
 			}
@@ -108,7 +109,7 @@ char *fymm_render_timeline(const struct fymm_diagram *d, fy_generic model,
 
 	y = 0;
 	if (title) {
-		fymm_canvas_text(cv, 0, y, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 		y += 2;
 	}
@@ -120,8 +121,8 @@ char *fymm_render_timeline(const struct fymm_diagram *d, fy_generic model,
 
 		/* the section heading, ruled out to the full width */
 		if (name) {
-			w = fymm_canvas_text(cv, 0, y, name, color,
-					     FYMM_ATTR_BOLD);
+			w = fymm_rich_text(cv, 0, y, name, color,
+					   FYMM_ATTR_BOLD);
 			rule = width - w - 3;
 			if (rule > 0)
 				fymm_canvas_hline(cv, y, w + 1, w + rule, color,
@@ -135,8 +136,8 @@ char *fymm_render_timeline(const struct fymm_diagram *d, fy_generic model,
 			task = fy_get_at(tasks, ti);
 			fymm_canvas_put(cv, 1, y, bullet, color,
 					FYMM_ATTR_BOLD);
-			fymm_canvas_text(cv, 3, y, fy_get(task, "name", ""),
-					 FYMM_COLOR_DEFAULT, 0);
+			fymm_rich_text(cv, 3, y, fy_get(task, "name", ""),
+				       FYMM_COLOR_DEFAULT, 0);
 			y++;
 
 			events = fy_get(task, "events");
@@ -144,8 +145,8 @@ char *fymm_render_timeline(const struct fymm_diagram *d, fy_generic model,
 			for (ei = 0; ei < nevents; ei++) {
 				event = fy_get_at(events, ei);
 				fymm_canvas_put(cv, 5, y, dot, color, 0);
-				fymm_canvas_text(cv, 7, y, fy_str(event),
-						 FYMM_PAL_LABEL, 0);
+				fymm_rich_text(cv, 7, y, fy_str(event),
+					       FYMM_PAL_LABEL, 0);
 				y++;
 			}
 		}

@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 #include "fymm-layout.h"
 
 #define C4_COL_GAP 3
@@ -83,12 +84,12 @@ char *fymm_render_c4(const struct fymm_diagram *d, fy_generic model,
 		kindp[i] = fy_get(el, "kind", "system");
 		descr[i] = fy_get(el, "description", (const char *)NULL);
 
-		w = fymm_text_width(label[i]);
+		w = fymm_rich_measure(label[i]);
 		snprintf(buf, sizeof(buf), "[%s]", kindp[i]);
 		if (fymm_text_width(buf) > w)
 			w = fymm_text_width(buf);
-		if (descr[i] && fymm_text_width(descr[i]) > w)
-			w = fymm_text_width(descr[i]);
+		if (descr[i] && fymm_rich_measure(descr[i]) > w)
+			w = fymm_rich_measure(descr[i]);
 		/* a description can be a sentence; clip the box, not the page */
 		if (w > 40)
 			w = 40;
@@ -119,12 +120,12 @@ char *fymm_render_c4(const struct fymm_diagram *d, fy_generic model,
 		if (!text || !*text)
 			continue;
 		w = node[edge[i].to].x + node[edge[i].to].w / 2 + 3 +
-		    fymm_text_width(text);
+		    fymm_rich_measure(text);
 		if (w > width)
 			width = w;
 	}
-	if (title && fymm_text_width(title) + 2 > width)
-		width = fymm_text_width(title) + 2;
+	if (title && fymm_rich_measure(title) + 2 > width)
+		width = fymm_rich_measure(title) + 2;
 
 	cv = fymm_canvas_create(width, height,
 				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
@@ -135,7 +136,7 @@ char *fymm_render_c4(const struct fymm_diagram *d, fy_generic model,
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
 	if (title)
-		fymm_canvas_text(cv, 0, 0, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 
 	for (i = 0; i < nrel; i++) {
@@ -186,14 +187,14 @@ char *fymm_render_c4(const struct fymm_diagram *d, fy_generic model,
 					ascii ? '|' : 0x2502, color, 0);
 		}
 
-		fymm_canvas_text(cv, x + 2, y + 1, label[i], color,
-				 FYMM_ATTR_BOLD);
+		fymm_rich_text(cv, x + 2, y + 1, label[i], color,
+			       FYMM_ATTR_BOLD);
 		snprintf(buf, sizeof(buf), "[%s]", kindp[i]);
 		fymm_canvas_text(cv, x + 2, y + 2, buf, FYMM_PAL_LABEL,
 				 FYMM_ATTR_DIM);
 		if (descr[i])
-			fymm_canvas_text(cv, x + 2, y + 3, descr[i],
-					 FYMM_COLOR_DEFAULT, 0);
+			fymm_rich_text(cv, x + 2, y + 3, descr[i],
+				       FYMM_COLOR_DEFAULT, 0);
 	}
 
 	out = fymm_canvas_emit(cv);

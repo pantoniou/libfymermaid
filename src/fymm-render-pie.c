@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 /*
  * A circle drawn in character cells reads badly and measures worse: a reader
@@ -83,7 +84,7 @@ char *fymm_render_pie(const struct fymm_diagram *d, fy_generic model,
 	total = 0.0;
 	for (i = 0; i < nslices; i++) {
 		slice = fy_get_at(slices, i);
-		w = fymm_text_width(fy_get(slice, "label", ""));
+		w = fymm_rich_measure(fy_get(slice, "label", ""));
 		if (w > label_w)
 			label_w = w;
 		value = fy_number(fy_get(slice, "value"), 0.0);
@@ -119,7 +120,7 @@ char *fymm_render_pie(const struct fymm_diagram *d, fy_generic model,
 		return NULL;
 
 	if (title)
-		fymm_canvas_text(cv, 0, 0, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 
 	for (i = 0; i < nslices; i++) {
@@ -130,8 +131,8 @@ char *fymm_render_pie(const struct fymm_diagram *d, fy_generic model,
 		y = top + (int)i;
 
 		/* the label, right aligned into the gutter */
-		x = label_w - fymm_text_width(label);
-		fymm_canvas_text(cv, x < 0 ? 0 : x, y, label, FYMM_PAL_LABEL,
+		x = label_w - fymm_rich_measure(label);
+		fymm_rich_text(cv, x < 0 ? 0 : x, y, label, FYMM_PAL_LABEL,
 				 0);
 
 		/* the bar, to an eighth of a cell */

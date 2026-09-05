@@ -31,6 +31,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 #define XY_PLOT_H 16
 #define XY_MIN_SLOT 4
@@ -152,7 +153,7 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 	slot = XY_MIN_SLOT;
 	if (fy_is_sequence(categories)) {
 		for (i = 0; i < fy_len(categories); i++) {
-			int w = fymm_text_width(fy_get_at(categories, i, "")) + 2;
+			int w = fymm_rich_measure(fy_get_at(categories, i, "")) + 2;
 
 			if (w > slot)
 				slot = w;
@@ -179,7 +180,7 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
 	if (title)
-		fymm_canvas_text(cv, 0, 0, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 
 	/* the axes */
@@ -263,9 +264,9 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 			snprintf(buf, sizeof(buf), "%zu", j + 1);
 			name = buf;
 		}
-		if (fymm_text_width(name) > slot)
+		if (fymm_rich_measure(name) > slot)
 			continue;
-		fymm_canvas_text(cv, x + (slot - fymm_text_width(name)) / 2,
+		fymm_rich_text(cv, x + (slot - fymm_rich_measure(name)) / 2,
 				 top + plot_h + 1, name, FYMM_PAL_LABEL, 0);
 	}
 
@@ -282,7 +283,7 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 					(ascii ? '#' : xy_eighths[7]) :
 					(ascii ? 'o' : 0x25cf),
 				(int)(i % 8), 0);
-		x += 2 + fymm_canvas_text(cv, x + 2, y, name, FYMM_PAL_LABEL,
+		x += 2 + fymm_rich_text(cv, x + 2, y, name, FYMM_PAL_LABEL,
 					  0) + 2;
 	}
 

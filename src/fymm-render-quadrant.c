@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 /* the plot area, in cells; the x axis is wider because glyphs are tall */
 #define QD_PLOT_W 60
@@ -94,7 +95,7 @@ char *fymm_render_quadrant(const struct fymm_diagram *d, fy_generic model,
 	dot = cv->charset == FYMM_CHARSET_ASCII ? 'o' : 0x25cf;
 
 	if (title)
-		fymm_canvas_text(cv, 0, 0, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 
 	/* the frame and the cross that divides it */
@@ -123,10 +124,10 @@ char *fymm_render_quadrant(const struct fymm_diagram *d, fy_generic model,
 			name = fy_get_at(quadrants, i, (const char *)NULL);
 			if (!name || !*name)
 				continue;
-			w = fymm_text_width(name);
+			w = fymm_rich_measure(name);
 			x = qx[i] > 0 ? cx + 2 : cx - 1 - w;
 			y = qy[i] > 0 ? cy + 2 : cy - 2;
-			fymm_canvas_text(cv, x < left + 1 ? left + 1 : x, y,
+			fymm_rich_text(cv, x < left + 1 ? left + 1 : x, y,
 					 name, (int)(i % 8), FYMM_ATTR_BOLD);
 		}
 	}
@@ -142,10 +143,10 @@ char *fymm_render_quadrant(const struct fymm_diagram *d, fy_generic model,
 		    (int)(fy_number(fy_get(point, "y"), 0.0) * (plot_h - 3));
 
 		fymm_canvas_put(cv, x, y, dot, (int)(i % 8), FYMM_ATTR_BOLD);
-		if (x + 2 + fymm_text_width(name) < width)
-			fymm_canvas_text(cv, x + 2, y, name, FYMM_PAL_LABEL, 0);
+		if (x + 2 + fymm_rich_measure(name) < width)
+			fymm_rich_text(cv, x + 2, y, name, FYMM_PAL_LABEL, 0);
 		else
-			fymm_canvas_text(cv, x - 1 - fymm_text_width(name), y,
+			fymm_rich_text(cv, x - 1 - fymm_rich_measure(name), y,
 					 name, FYMM_PAL_LABEL, 0);
 	}
 
@@ -153,21 +154,21 @@ char *fymm_render_quadrant(const struct fymm_diagram *d, fy_generic model,
 	low = fy_get(yaxis, "low", (const char *)NULL);
 	high = fy_get(yaxis, "high", (const char *)NULL);
 	if (high) {
-		w = fymm_text_width(high) + 2;
+		w = fymm_rich_measure(high) + 2;
 		x = cx - w / 2;
 		fymm_canvas_put(cv, cx - w / 2 + w - 1, top - 1,
 				cv->charset == FYMM_CHARSET_ASCII ? '^' :
 					0x25b2, FYMM_PAL_TAG, 0);
-		fymm_canvas_text(cv, x < 0 ? 0 : x, top - 1, high,
+		fymm_rich_text(cv, x < 0 ? 0 : x, top - 1, high,
 				 FYMM_PAL_TAG, 0);
 	}
 	if (low) {
-		w = fymm_text_width(low) + 2;
+		w = fymm_rich_measure(low) + 2;
 		x = cx - w / 2;
 		fymm_canvas_put(cv, cx - w / 2 + w - 1, top + plot_h,
 				cv->charset == FYMM_CHARSET_ASCII ? 'v' :
 					0x25bc, FYMM_PAL_TAG, 0);
-		fymm_canvas_text(cv, x < 0 ? 0 : x, top + plot_h, low,
+		fymm_rich_text(cv, x < 0 ? 0 : x, top + plot_h, low,
 				 FYMM_PAL_TAG, 0);
 	}
 
@@ -179,10 +180,10 @@ char *fymm_render_quadrant(const struct fymm_diagram *d, fy_generic model,
 		fymm_canvas_put(cv, left, y,
 				cv->charset == FYMM_CHARSET_ASCII ? '<' :
 					0x25c0, FYMM_PAL_TAG, 0);
-		fymm_canvas_text(cv, left + 2, y, low, FYMM_PAL_TAG, 0);
+		fymm_rich_text(cv, left + 2, y, low, FYMM_PAL_TAG, 0);
 	}
 	if (high) {
-		w = fymm_text_width(high);
+		w = fymm_rich_measure(high);
 		fymm_canvas_text(cv, left + plot_w - w - 2, y, high,
 				 FYMM_PAL_TAG, 0);
 		fymm_canvas_put(cv, left + plot_w - 1, y,

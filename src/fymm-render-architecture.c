@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 #include "fymm-layout.h"
 
 #define AR_COL_GAP 3
@@ -89,7 +90,7 @@ char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
 		if (!text[nsvc])
 			text[nsvc] = node[nsvc].id;
 		icon[nsvc] = fy_get(nd, "icon", (const char *)NULL);
-		node[nsvc].w = fymm_text_width(text[nsvc]) + 4;
+		node[nsvc].w = fymm_rich_measure(text[nsvc]) + 4;
 		node[nsvc].h = 3;
 		nsvc++;
 	}
@@ -115,8 +116,8 @@ char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
 
 	width = lay.width + 2;
 	height = top + lay.height + AR_RANK_GAP;
-	if (title && fymm_text_width(title) + 2 > width)
-		width = fymm_text_width(title) + 2;
+	if (title && fymm_rich_measure(title) + 2 > width)
+		width = fymm_rich_measure(title) + 2;
 
 	cv = fymm_canvas_create(width, height,
 				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
@@ -128,7 +129,7 @@ char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
 
 	y = 0;
 	if (title) {
-		fymm_canvas_text(cv, 0, y, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 		y += 2;
 	}
@@ -184,8 +185,8 @@ char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
 		fymm_canvas_put(cv, x, y + 1, ascii ? '|' : 0x2502, color, 0);
 		fymm_canvas_put(cv, x + w - 1, y + 1, ascii ? '|' : 0x2502,
 				color, 0);
-		fymm_canvas_text(cv, x + 2, y + 1, text[i], FYMM_COLOR_DEFAULT,
-				 0);
+		fymm_rich_text(cv, x + 2, y + 1, text[i], FYMM_COLOR_DEFAULT,
+			       0);
 	}
 
 	out = fymm_canvas_emit(cv);

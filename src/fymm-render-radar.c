@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 #define RD_BAR_CELLS 28
 
@@ -134,7 +135,7 @@ char *fymm_render_radar(const struct fymm_diagram *d, fy_generic model,
 		name = fy_get(curve, "label", (const char *)NULL);
 		if (!name)
 			name = fy_get(curve, "name", "");
-		w = fymm_text_width(name);
+		w = fymm_rich_measure(name);
 		if (w > label_w)
 			label_w = w;
 	}
@@ -159,7 +160,7 @@ char *fymm_render_radar(const struct fymm_diagram *d, fy_generic model,
 
 	y = 0;
 	if (title) {
-		fymm_canvas_text(cv, 0, y, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 		y += 2;
 	}
@@ -170,7 +171,7 @@ char *fymm_render_radar(const struct fymm_diagram *d, fy_generic model,
 		if (!name)
 			name = fy_get(axis, "name", "");
 
-		w = fymm_canvas_text(cv, 0, y, name, (int)(ai % 8),
+		w = fymm_rich_text(cv, 0, y, name, (int)(ai % 8),
 				     FYMM_ATTR_BOLD);
 		if (width - w - 2 > 0)
 			fymm_canvas_hline(cv, y, w + 1, width - 2,
@@ -184,8 +185,8 @@ char *fymm_render_radar(const struct fymm_diagram *d, fy_generic model,
 				name = fy_get(curve, "name", "");
 			v = rd_value(curve, axis, ai, &have);
 
-			x = label_w - fymm_text_width(name) + 2;
-			fymm_canvas_text(cv, x < 0 ? 0 : x, y, name,
+			x = label_w - fymm_rich_measure(name) + 2;
+			fymm_rich_text(cv, x < 0 ? 0 : x, y, name,
 					 FYMM_PAL_LABEL, 0);
 			x = label_w + 4;
 			if (!have) {

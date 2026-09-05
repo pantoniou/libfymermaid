@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 /* the rows a node box occupies, and the rows left between two ranks */
 #define FC_BOX_ROWS 3
@@ -82,11 +83,11 @@ struct fc_pair {
 /* struct fc_box - one node, placed */
 struct fc_box {
 	const char *id;
-	const char *text;
+	struct fymm_rich *text;
 	enum fc_border border;
 	int rank;
 	int order;		/* position within the rank */
-	int x, y, w;		/* the top left cell and the width */
+	int x, y, w, h;		/* the top left cell, the width and the height */
 };
 
 struct fc_layout {
@@ -95,6 +96,7 @@ struct fc_layout {
 	int *rank_width;	/* the cells each rank occupies */
 	int *rank_y;
 	int nranks;
+	int tall;		/* the tallest box, which sets the rank pitch */
 	int width, height;
 };
 
@@ -177,7 +179,7 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	bool *back = NULL;
 	const char *title, *text;
 	size_t nnodes, nedges, i, j, from, to;
-	int r, x, y, w, top, maxw, color, sx, sy, dx, dy, ymid;
+	int r, x, y, w, top, color, sx, sy, dx, dy, ymid;
 	bool ascii;
 	char *out = NULL;
 
@@ -202,9 +204,15 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	for (i = 0; i < nnodes; i++) {
 		node = fy_get_at(nodes, i);
 		l.box[i].id = fy_get(node, "id", "");
-		l.box[i].text = fy_get(node, "text", "");
+		l.box[i].text = fymm_rich_parse(fy_get(node, "text", ""),
+						fy_get(node, "markdown", false));
+		if (!l.box[i].text)
+			goto out;
 		l.box[i].border = fc_border_of(fy_get(node, "shape", "rect"));
-		l.box[i].w = fymm_text_width(l.box[i].text) + 4;
+		l.box[i].w = fymm_rich_width(l.box[i].text) + 4;
+		l.box[i].h = (int)fymm_rich_lines(l.box[i].text) + 2;
+		if (l.box[i].h > l.tall)
+			l.tall = l.box[i].h;
 	}
 
 	/* resolve the edges once, then find the ones that close a cycle */
@@ -268,13 +276,17 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
+	/* a rank is as tall as its tallest box, and a label with a `<br>` in
+	 * it makes a box taller than the three rows a one-line one needs */
 	top = title ? 2 : 0;
+	if (l.tall < FC_BOX_ROWS)
+		l.tall = FC_BOX_ROWS;
 	for (r = 0; r < l.nranks; r++)
-		l.rank_y[r] = top + r * (FC_BOX_ROWS + FC_RANK_GAP);
+		l.rank_y[r] = top + r * (l.tall + FC_RANK_GAP);
 	for (i = 0; i < nnodes; i++)
 		l.box[i].y = l.rank_y[l.box[i].rank];
 
-	l.height = top + l.nranks * (FC_BOX_ROWS + FC_RANK_GAP) - FC_RANK_GAP;
+	l.height = top + l.nranks * (l.tall + FC_RANK_GAP) - FC_RANK_GAP;
 	/* a returning link leaves the bottom of its source, so the last rank
 	 * needs a row beneath it to turn in */
 	for (i = 0; i < nedges; i++) {
@@ -289,13 +301,13 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 		to = pair[i].to;
 		if (!text || !*text || to == (size_t)-1)
 			continue;
-		w = l.box[to].x + l.box[to].w / 2 + 3 + fymm_text_width(text);
+		w = l.box[to].x + l.box[to].w / 2 + 3 + fymm_rich_measure(text);
 		if (w > l.width)
 			l.width = w;
 	}
 	l.width += 2 + FC_RETURN_LANES;
-	if (title && fymm_text_width(title) + 2 > l.width)
-		l.width = fymm_text_width(title) + 2;
+	if (title && fymm_rich_measure(title) + 2 > l.width)
+		l.width = fymm_rich_measure(title) + 2;
 
 	cv = fymm_canvas_create(l.width, l.height,
 				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
@@ -306,7 +318,7 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
 	if (title)
-		fymm_canvas_text(cv, 0, 0, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 
 	/* the edges first, so that a box always sits on top of its links */
@@ -320,7 +332,7 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 		color = l.box[from].rank % 8;
 		sx = l.box[from].x + l.box[from].w / 2;
 		dx = l.box[to].x + l.box[to].w / 2;
-		sy = l.box[from].y + FC_BOX_ROWS - 1;
+		sy = l.box[from].y + l.box[from].h - 1;
 		dy = l.box[to].y;
 
 		/*
@@ -371,46 +383,45 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	/* then the boxes */
 	for (i = 0; i < nnodes; i++) {
 		const uint32_t *c = corners[l.box[i].border];
+		size_t line, nlines;
 
 		x = l.box[i].x;
 		y = l.box[i].y;
 		w = l.box[i].w;
 		color = l.box[i].rank % 8;
+		nlines = fymm_rich_lines(l.box[i].text);
 
-		if (ascii) {
-			for (j = 1; j + 1 < (size_t)w; j++) {
-				fymm_canvas_put(cv, x + (int)j, y, '-', color, 0);
-				fymm_canvas_put(cv, x + (int)j, y + 2, '-',
-						color, 0);
-			}
-			fymm_canvas_put(cv, x, y, '+', color, 0);
-			fymm_canvas_put(cv, x + w - 1, y, '+', color, 0);
-			fymm_canvas_put(cv, x, y + 2, '+', color, 0);
-			fymm_canvas_put(cv, x + w - 1, y + 2, '+', color, 0);
-			fymm_canvas_put(cv, x, y + 1, '|', color, 0);
-			fymm_canvas_put(cv, x + w - 1, y + 1, '|', color, 0);
-		} else {
-			for (j = 1; j + 1 < (size_t)w; j++) {
-				fymm_canvas_put(cv, x + (int)j, y, c[4], color, 0);
-				fymm_canvas_put(cv, x + (int)j, y + 2, c[4],
-						color, 0);
-			}
-			fymm_canvas_put(cv, x, y, c[0], color, 0);
-			fymm_canvas_put(cv, x + w - 1, y, c[1], color, 0);
-			fymm_canvas_put(cv, x, y + 2, c[2], color, 0);
-			fymm_canvas_put(cv, x + w - 1, y + 2, c[3], color, 0);
-			fymm_canvas_put(cv, x, y + 1, c[5], color, 0);
-			fymm_canvas_put(cv, x + w - 1, y + 1, c[5], color, 0);
+		for (j = 1; j + 1 < (size_t)w; j++) {
+			fymm_canvas_put(cv, x + (int)j, y,
+					ascii ? '-' : c[4], color, 0);
+			fymm_canvas_put(cv, x + (int)j, y + l.box[i].h - 1,
+					ascii ? '-' : c[4], color, 0);
 		}
-		fymm_canvas_text(cv, x + 2, y + 1, l.box[i].text,
-				 FYMM_COLOR_DEFAULT, 0);
+		fymm_canvas_put(cv, x, y, ascii ? '+' : c[0], color, 0);
+		fymm_canvas_put(cv, x + w - 1, y, ascii ? '+' : c[1], color, 0);
+		fymm_canvas_put(cv, x, y + l.box[i].h - 1, ascii ? '+' : c[2],
+				color, 0);
+		fymm_canvas_put(cv, x + w - 1, y + l.box[i].h - 1,
+				ascii ? '+' : c[3], color, 0);
+		for (j = 1; j + 1 < (size_t)l.box[i].h; j++) {
+			fymm_canvas_put(cv, x, y + (int)j, ascii ? '|' : c[5],
+					color, 0);
+			fymm_canvas_put(cv, x + w - 1, y + (int)j,
+					ascii ? '|' : c[5], color, 0);
+		}
+
+		for (line = 0; line < nlines; line++)
+			fymm_rich_draw_line(cv, x + 2, y + 1 + (int)line,
+					    l.box[i].text, line,
+					    FYMM_COLOR_DEFAULT, 0);
 	}
 
-	(void)maxw;
 	out = fymm_canvas_emit(cv);
 	fymm_canvas_destroy(cv);
 
 out:
+	for (i = 0; i < nnodes; i++)
+		fymm_rich_destroy(l.box[i].text);
 	free(pair);
 	free(back);
 	free(state);

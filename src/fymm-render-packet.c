@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 /* how many bits a row of the diagram shows */
 #define PK_BITS_PER_ROW 32
@@ -89,7 +90,7 @@ char *fymm_render_packet(const struct fymm_diagram *d, fy_generic model,
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
 	if (title)
-		fymm_canvas_text(cv, 0, 0, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 
 	/* the bit numbers, every eighth bit */
@@ -138,9 +139,9 @@ char *fymm_render_packet(const struct fymm_diagram *d, fy_generic model,
 			fymm_canvas_put(cv, x + w - 1, y + 1,
 					ascii ? '|' : 0x2502, color, 0);
 
-			if (fymm_text_width(label) + 2 <= w)
-				fymm_canvas_text(cv,
-					x + (w - fymm_text_width(label)) / 2,
+			if (fymm_rich_measure(label) + 2 <= w)
+				fymm_rich_text(cv,
+					x + (w - fymm_rich_measure(label)) / 2,
 					y + 1, label, FYMM_COLOR_DEFAULT, 0);
 			else if (w > 3)
 				fymm_canvas_text(cv, x + 1, y + 1, "...",

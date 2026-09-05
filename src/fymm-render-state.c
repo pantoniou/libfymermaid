@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 #include "fymm-layout.h"
 
 #define ST_COL_GAP 3
@@ -94,7 +95,7 @@ char *fymm_render_state(const struct fymm_diagram *d, fy_generic model,
 				    !strcmp(kind[i], "join") ? 9 : 3;
 			node[i].h = 1;
 		} else {
-			node[i].w = fymm_text_width(text[i]) + 4;
+			node[i].w = fymm_rich_measure(text[i]) + 4;
 			node[i].h = 3;
 		}
 	}
@@ -118,8 +119,8 @@ char *fymm_render_state(const struct fymm_diagram *d, fy_generic model,
 
 	width = lay.width + 2 + ST_RETURN_LANES;
 	height = top + lay.height + ST_RANK_GAP;
-	if (title && fymm_text_width(title) + 2 > width)
-		width = fymm_text_width(title) + 2;
+	if (title && fymm_rich_measure(title) + 2 > width)
+		width = fymm_rich_measure(title) + 2;
 
 	/* a transition label sits beside the arrowhead it belongs to */
 	for (i = 0; i < ntrans; i++) {
@@ -128,7 +129,7 @@ char *fymm_render_state(const struct fymm_diagram *d, fy_generic model,
 		if (!label || !*label)
 			continue;
 		w = node[edge[i].to].x + node[edge[i].to].w / 2 + 3 +
-		    fymm_text_width(label);
+		    fymm_rich_measure(label);
 		if (w > width)
 			width = w;
 	}
@@ -142,7 +143,7 @@ char *fymm_render_state(const struct fymm_diagram *d, fy_generic model,
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
 	if (title)
-		fymm_canvas_text(cv, 0, 0, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 
 	/* the transitions first, so a state sits on top of its arrows */

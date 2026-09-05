@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 /* struct gt_bar - one task, resolved to a span of days */
 struct gt_bar {
@@ -195,7 +196,7 @@ char *fymm_render_gantt(const struct fymm_diagram *d, fy_generic model,
 			bar[i].raw_end = fy_get(task, "end");
 			bar[i].milestone = gt_has_tag(bar[i].tags, "milestone");
 			bar[i].section = (int)si;
-			w = fymm_text_width(bar[i].name);
+			w = fymm_rich_measure(bar[i].name);
 			if (w > name_w)
 				name_w = w;
 		}
@@ -235,7 +236,7 @@ char *fymm_render_gantt(const struct fymm_diagram *d, fy_generic model,
 
 	y = 0;
 	if (title) {
-		fymm_canvas_text(cv, 0, y, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 		y += 2;
 	}
@@ -247,8 +248,8 @@ char *fymm_render_gantt(const struct fymm_diagram *d, fy_generic model,
 		color = (int)(si % 8);
 
 		if (name && *name) {
-			w = fymm_canvas_text(cv, 0, y, name, color,
-					     FYMM_ATTR_BOLD);
+			w = fymm_rich_text(cv, 0, y, name, color,
+					   FYMM_ATTR_BOLD);
 			if (width - w - 2 > 0)
 				fymm_canvas_hline(cv, y, w + 1, width - 2,
 						  color, false);
@@ -262,9 +263,9 @@ char *fymm_render_gantt(const struct fymm_diagram *d, fy_generic model,
 			int x1 = name_w + 2 +
 				 (int)((bar[i].end - lo) / span * plot);
 
-			x = name_w - fymm_text_width(bar[i].name);
-			fymm_canvas_text(cv, x < 0 ? 0 : x, y, bar[i].name,
-					 FYMM_COLOR_DEFAULT, 0);
+			x = name_w - fymm_rich_measure(bar[i].name);
+			fymm_rich_text(cv, x < 0 ? 0 : x, y, bar[i].name,
+				       FYMM_COLOR_DEFAULT, 0);
 
 			if (x1 <= x0)
 				x1 = x0 + 1;

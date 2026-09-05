@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 /* A journey score runs from one to five. */
 #define JOURNEY_MAX_SCORE 5
@@ -71,8 +72,8 @@ char *fymm_render_journey(const struct fymm_diagram *d, fy_generic model,
 		tasks = fy_get(section, "tasks");
 		ntasks = fy_is_sequence(tasks) ? fy_len(tasks) : 0;
 		for (ti = 0; ti < ntasks; ti++) {
-			w = fymm_text_width(fy_get(fy_get_at(tasks, ti),
-						   "name", ""));
+			w = fymm_rich_measure(fy_get(fy_get_at(tasks, ti),
+						     "name", ""));
 			if (w > name_w)
 				name_w = w;
 		}
@@ -87,7 +88,7 @@ char *fymm_render_journey(const struct fymm_diagram *d, fy_generic model,
 		section = fy_get_at(sections, si);
 		name = fy_get(section, "name", (const char *)NULL);
 		if (name) {
-			w = fymm_text_width(name) + 4;
+			w = fymm_rich_measure(name) + 4;
 			if (w > width)
 				width = w;
 		}
@@ -99,14 +100,14 @@ char *fymm_render_journey(const struct fymm_diagram *d, fy_generic model,
 			nactors = fy_is_sequence(actors) ? fy_len(actors) : 0;
 			w = 0;
 			for (ai = 0; ai < nactors; ai++)
-				w += fymm_text_width(fy_get_at(actors, ai, "")) + 2;
+				w += fymm_rich_measure(fy_get_at(actors, ai, "")) + 2;
 			w += name_w + JOURNEY_MAX_SCORE + 8;
 			if (w > width)
 				width = w;
 		}
 	}
-	if (title && fymm_text_width(title) + 2 > width)
-		width = fymm_text_width(title) + 2;
+	if (title && fymm_rich_measure(title) + 2 > width)
+		width = fymm_rich_measure(title) + 2;
 
 	cv = fymm_canvas_create(width, height,
 				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
@@ -120,7 +121,7 @@ char *fymm_render_journey(const struct fymm_diagram *d, fy_generic model,
 
 	y = 0;
 	if (title) {
-		fymm_canvas_text(cv, 0, y, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 		y += 2;
 	}
@@ -130,8 +131,8 @@ char *fymm_render_journey(const struct fymm_diagram *d, fy_generic model,
 		color = (int)(si % 8);
 		name = fy_get(section, "name", (const char *)NULL);
 		if (name) {
-			w = fymm_canvas_text(cv, 0, y, name, color,
-					     FYMM_ATTR_BOLD);
+			w = fymm_rich_text(cv, 0, y, name, color,
+					   FYMM_ATTR_BOLD);
 			if (width - w - 3 > 0)
 				fymm_canvas_hline(cv, y, w + 1, width - 2,
 						  color, false);
@@ -142,8 +143,8 @@ char *fymm_render_journey(const struct fymm_diagram *d, fy_generic model,
 		ntasks = fy_is_sequence(tasks) ? fy_len(tasks) : 0;
 		for (ti = 0; ti < ntasks; ti++) {
 			task = fy_get_at(tasks, ti);
-			fymm_canvas_text(cv, 2, y, fy_get(task, "name", ""),
-					 FYMM_COLOR_DEFAULT, 0);
+			fymm_rich_text(cv, 2, y, fy_get(task, "name", ""),
+				       FYMM_COLOR_DEFAULT, 0);
 
 			/* the pips, filled to the score */
 			score = (int)fy_number(fy_get(task, "score"), 0.0);
@@ -158,7 +159,7 @@ char *fymm_render_journey(const struct fymm_diagram *d, fy_generic model,
 			actors = fy_get(task, "actors");
 			nactors = fy_is_sequence(actors) ? fy_len(actors) : 0;
 			for (ai = 0; ai < nactors; ai++) {
-				x += fymm_canvas_text(cv, x, y,
+				x += fymm_rich_text(cv, x, y,
 						      fy_get_at(actors, ai, ""),
 						      FYMM_PAL_TAG, 0);
 				if (ai + 1 < nactors)

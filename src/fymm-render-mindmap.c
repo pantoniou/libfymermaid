@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 /*
  * Mermaid radiates a mindmap out from its root. A terminal has one useful
@@ -93,13 +94,13 @@ static int mm_width(fy_generic node, int depth)
 	const char *icon, *cls;
 	int w, best;
 
-	w = depth * 3 + 2 + fymm_text_width(fy_get(node, "text", ""));
+	w = depth * 3 + 2 + fymm_rich_measure(fy_get(node, "text", ""));
 	icon = fy_get(node, "icon", (const char *)NULL);
 	if (icon)
-		w += fymm_text_width(icon) + 3;
+		w += fymm_rich_measure(icon) + 3;
 	cls = fy_get(node, "class", (const char *)NULL);
 	if (cls)
-		w += fymm_text_width(cls) + 3;
+		w += fymm_rich_measure(cls) + 3;
 
 	best = w;
 	children = fy_get(node, "children");
@@ -152,9 +153,9 @@ static int mm_draw(struct fymm_canvas *cv, fy_generic node, int x, int y,
 					     fy_get(node, "shape", "default")),
 			depth % 8, depth ? 0 : FYMM_ATTR_BOLD);
 	tx += 2;
-	tx += fymm_canvas_text(cv, tx, y, fy_get(node, "text", ""),
-			       depth ? FYMM_COLOR_DEFAULT : FYMM_PAL_TITLE,
-			       depth ? 0 : FYMM_ATTR_BOLD);
+	tx += fymm_rich_text(cv, tx, y, fy_get(node, "text", ""),
+			     depth ? FYMM_COLOR_DEFAULT : FYMM_PAL_TITLE,
+			     depth ? 0 : FYMM_ATTR_BOLD);
 
 	icon = fy_get(node, "icon", (const char *)NULL);
 	if (icon) {
@@ -204,8 +205,8 @@ char *fymm_render_mindmap(const struct fymm_diagram *d, fy_generic model,
 
 	top = title ? 2 : 0;
 	width = mm_width(root, 0) + 2;
-	if (title && fymm_text_width(title) + 2 > width)
-		width = fymm_text_width(title) + 2;
+	if (title && fymm_rich_measure(title) + 2 > width)
+		width = fymm_rich_measure(title) + 2;
 	height = top + mm_rows(root);
 
 	cv = fymm_canvas_create(width, height,
@@ -216,7 +217,7 @@ char *fymm_render_mindmap(const struct fymm_diagram *d, fy_generic model,
 		return NULL;
 
 	if (title)
-		fymm_canvas_text(cv, 0, 0, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 
 	mm_draw(cv, root, 1, top, 0, true, rails);

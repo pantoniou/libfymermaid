@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-markdown.h"
 
 #define BK_COL_GAP 2
 #define BK_MIN_W 9
@@ -74,7 +75,7 @@ char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
 		text = fy_get(block, "label", (const char *)NULL);
 		if (!text)
 			text = fy_get(block, "id", "");
-		w = fymm_text_width(text) + 4;
+		w = fymm_rich_measure(text) + 4;
 		if (w > cell)
 			cell = w;
 	}
@@ -107,8 +108,8 @@ char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
 	}
 	height = top + (row + 1) * 4;
 	width = columns * (cell + BK_COL_GAP) + 2;
-	if (title && fymm_text_width(title) + 2 > width)
-		width = fymm_text_width(title) + 2;
+	if (title && fymm_rich_measure(title) + 2 > width)
+		width = fymm_rich_measure(title) + 2;
 
 	cv = fymm_canvas_create(width, height,
 				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
@@ -119,7 +120,7 @@ char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
 	if (title)
-		fymm_canvas_text(cv, 0, 0, title, FYMM_PAL_TITLE,
+		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
 
 	col = 0;
@@ -175,9 +176,9 @@ char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
 					color, 0);
 			fymm_canvas_put(cv, x + w - 1, y + 1,
 					ascii ? '|' : 0x2502, color, 0);
-			fymm_canvas_text(cv,
-					 x + (w - fymm_text_width(text)) / 2,
-					 y + 1, text, FYMM_COLOR_DEFAULT, 0);
+			fymm_rich_text(cv,
+				       x + (w - fymm_rich_measure(text)) / 2,
+				       y + 1, text, FYMM_COLOR_DEFAULT, 0);
 		}
 
 		col += span;
