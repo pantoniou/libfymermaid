@@ -1,0 +1,83 @@
+type: flowchart
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+nodes:
+- id: a
+  text: rect
+  shape: rect
+  subgraph: null
+- id: b
+  text: round
+  shape: round
+  subgraph: null
+- id: c
+  text: stadium
+  shape: stadium
+  subgraph: null
+- id: d
+  text: subroutine
+  shape: subroutine
+  subgraph: null
+- id: e
+  text: cylinder
+  shape: cylinder
+  subgraph: null
+- id: f
+  text: circle
+  shape: circle
+  subgraph: null
+- id: g
+  text: rhombus
+  shape: rhombus
+  subgraph: null
+- id: h
+  text: hexagon
+  shape: hexagon
+  subgraph: null
+edges:
+- from: a
+  to: b
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+- from: b
+  to: c
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+- from: c
+  to: d
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+- from: d
+  to: e
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+- from: e
+  to: f
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+- from: f
+  to: g
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+- from: g
+  to: h
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+subgraphs: []

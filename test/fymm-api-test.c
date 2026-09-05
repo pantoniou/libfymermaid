@@ -88,9 +88,12 @@ static void test_bad_input(void)
 	CHECK(!fymm_render(d, NULL), "a diagram with errors must not render");
 	fymm_diagram_destroy(d);
 
-	d = parse("flowchart TD\n  A --> B\n");
+	/* a real mermaid diagram whose type this library does not implement */
+	d = parse("erDiagram\n  CUSTOMER ||--o{ ORDER : places\n");
 	CHECK(d && fymm_diagram_has_errors(d),
 	      "an unsupported diagram type should be an error");
+	CHECK(d && fymm_diagram_type(d) == FYMM_DT_UNKNOWN,
+	      "an unsupported diagram type should report as unknown");
 	fymm_diagram_destroy(d);
 }
 

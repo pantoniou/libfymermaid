@@ -1,0 +1,25 @@
+type: flowchart
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+nodes:
+- id: A
+  text: One line
+  shape: rounded
+  subgraph: null
+- id: B
+  text: |-
+    A literal
+    block
+  shape: circle
+  subgraph: null
+edges:
+- from: A
+  to: B
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+subgraphs: []
