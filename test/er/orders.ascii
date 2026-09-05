@@ -1,0 +1,24 @@
+  +-------------------+
+  |     CUSTOMER      |
+  +-------------------+
+  | string name       |
+  | string custNumber |
+  | string sector     |
+  +-------------------+
+            =
+            ++ places
+             |
+             V
++------------------------+
+|         ORDER          |
++------------------------+
+| int orderNumber        |
+| string deliveryAddress |
++------------------------+
+             =
+            ++contains
+            |
+            V
+      +-----------+
+      | LINE-ITEM |
+      +-----------+

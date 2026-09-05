@@ -1,0 +1,58 @@
+type: erDiagram
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+entities:
+- name: A
+  attributes: []
+- name: B
+  attributes: []
+- name: C
+  attributes: []
+- name: D
+  attributes: []
+- name: E
+  attributes: []
+- name: F
+  attributes: []
+- name: G
+  attributes: []
+- name: H
+  attributes: []
+- name: PROJECT
+  attributes: []
+- name: TEAM_MEMBER
+  attributes: []
+relations:
+- from: A
+  to: B
+  fromCardinality: exactly one
+  toCardinality: one or more
+  line: identifying
+  label: has
+- from: C
+  to: D
+  fromCardinality: zero or one
+  toCardinality: zero or one
+  line: non-identifying
+  label: has
+- from: E
+  to: F
+  fromCardinality: one or more
+  toCardinality: zero or one
+  line: non-identifying
+  label: has
+- from: G
+  to: H
+  fromCardinality: zero or more
+  toCardinality: exactly one
+  line: non-identifying
+  label: has
+- from: PROJECT
+  to: TEAM_MEMBER
+  fromCardinality: parent
+  toCardinality: zero or more
+  line: identifying
+  label: '"parent"'

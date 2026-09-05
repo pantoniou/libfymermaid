@@ -1,0 +1,48 @@
+type: erDiagram
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+entities:
+- name: CUSTOMER
+  attributes:
+  - type: string
+    name: name
+    keys: []
+    comment: null
+  - type: string
+    name: custNumber
+    keys:
+    - PK
+    comment: null
+  - type: string
+    name: sector
+    keys: []
+    comment: null
+- name: ORDER
+  attributes:
+  - type: int
+    name: orderNumber
+    keys:
+    - PK
+    comment: null
+  - type: string
+    name: deliveryAddress
+    keys: []
+    comment: null
+- name: LINE-ITEM
+  attributes: []
+relations:
+- from: CUSTOMER
+  to: ORDER
+  fromCardinality: exactly one
+  toCardinality: zero or more
+  line: identifying
+  label: places
+- from: ORDER
+  to: LINE-ITEM
+  fromCardinality: exactly one
+  toCardinality: one or more
+  line: identifying
+  label: contains
