@@ -1,0 +1,75 @@
+type: sequenceDiagram
+title: null
+accTitle: null
+accDescr: null
+config:
+  autonumber: true
+participants:
+- id: A
+  label: Alice
+  actor: false
+- id: B
+  label: Bob
+  actor: false
+- id: C
+  label: Carol
+  actor: true
+statements:
+- kind: message
+  from: A
+  to: B
+  line: solid
+  head: arrow
+  bidirectional: false
+  activation: none
+  text: Hello Bob, how are you?
+  depth: 0
+- kind: message
+  from: B
+  to: A
+  line: dotted
+  head: arrow
+  bidirectional: false
+  activation: none
+  text: I am good thanks!
+  depth: 0
+- kind: message
+  from: B
+  to: C
+  line: solid
+  head: arrow
+  bidirectional: false
+  activation: none
+  text: Hi Carol
+  depth: 0
+- kind: message
+  from: C
+  to: B
+  line: solid
+  head: open
+  bidirectional: false
+  activation: none
+  text: async reply
+  depth: 0
+- kind: message
+  from: A
+  to: A
+  line: solid
+  head: arrow
+  bidirectional: false
+  activation: none
+  text: thinking
+  depth: 0
+- kind: note
+  placement: over
+  actors:
+  - A
+  - B
+  text: They know each other
+  depth: 0
+- kind: note
+  placement: right
+  actors:
+  - C
+  text: Carol waits
+  depth: 0

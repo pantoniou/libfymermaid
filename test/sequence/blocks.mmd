@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant A as Alice
+    participant B as Bob
+    loop Every minute
+        A->>B: ping
+        alt is awake
+            B-->>A: pong
+        else is asleep
+            B--xA: nothing
+        end
+    end

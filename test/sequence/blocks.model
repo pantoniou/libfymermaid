@@ -1,0 +1,57 @@
+type: sequenceDiagram
+title: null
+accTitle: null
+accDescr: null
+config:
+  autonumber: false
+participants:
+- id: A
+  label: Alice
+  actor: false
+- id: B
+  label: Bob
+  actor: false
+statements:
+- kind: block-start
+  block: loop
+  text: Every minute
+  depth: 0
+- kind: message
+  from: A
+  to: B
+  line: solid
+  head: arrow
+  bidirectional: false
+  activation: none
+  text: ping
+  depth: 1
+- kind: block-start
+  block: alt
+  text: is awake
+  depth: 1
+- kind: message
+  from: B
+  to: A
+  line: dotted
+  head: arrow
+  bidirectional: false
+  activation: none
+  text: pong
+  depth: 2
+- kind: block-alt
+  block: else
+  text: is asleep
+  depth: 1
+- kind: message
+  from: B
+  to: A
+  line: dotted
+  head: cross
+  bidirectional: false
+  activation: none
+  text: nothing
+  depth: 2
+- kind: block-end
+  depth: 1
+- kind: block-end
+  depth: 0

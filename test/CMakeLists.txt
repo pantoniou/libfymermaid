@@ -58,7 +58,7 @@ endforeach()
 #
 # Each case is an independent process that reads only its own input, so the
 # corpus runs under `ctest -j`.
-set(FYMM_IMPLEMENTED_SUITES "gitgraph;pie;timeline;journey;mindmap" CACHE STRING
+set(FYMM_IMPLEMENTED_SUITES "gitgraph;pie;timeline;journey;mindmap;sequence" CACHE STRING
     "mermaid corpus suites expected to pass; set to a wider list to measure the gap")
 
 set(_ms_dir "${CMAKE_CURRENT_SOURCE_DIR}/mermaid-suite")
@@ -78,6 +78,10 @@ foreach(_manifest ${_ms_manifests})
         set(_disabled TRUE)
         set(_label unimplemented)
     endif()
+
+    # re-run configure when a manifest changes; CONFIGURE_DEPENDS on the
+    # glob catches a new suite, not an edit to an existing one
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${_manifest}")
 
     file(STRINGS "${_manifest}" _cases)
     foreach(_case ${_cases})

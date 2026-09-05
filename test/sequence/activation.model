@@ -1,0 +1,38 @@
+type: sequenceDiagram
+title: null
+accTitle: null
+accDescr: null
+config:
+  autonumber: false
+participants:
+- id: U
+  label: User
+  actor: false
+- id: S
+  label: Server
+  actor: false
+statements:
+- kind: message
+  from: U
+  to: S
+  line: solid
+  head: arrow
+  bidirectional: false
+  activation: activate
+  text: Request
+  depth: 0
+- kind: message
+  from: S
+  to: U
+  line: dotted
+  head: arrow
+  bidirectional: false
+  activation: deactivate
+  text: Response
+  depth: 0
+- kind: activate
+  actor: S
+  depth: 0
+- kind: deactivate
+  actor: S
+  depth: 0

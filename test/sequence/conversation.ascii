@@ -1,0 +1,22 @@
+    Alice      Bob      Carol
+      |         |         |
+Hello Bob, how are you?   |
+1     |-------->|         |
+      |         |         |
+   I am good thanks!      |
+2     |<........|         |
+      |         |         |
+      |         |Hi Carol |
+3     |         |-------->|
+      |         |         |
+      |         async reply
+4     |         |>--------|
+      |         |         |
+5     +--+ thinking       |
+      |<-+      |         |
+      |         |         |
+[ They know each other ]  |
+      |         |         |
+      |         |         | [ Carol waits ]
+      |         |         |
+    Alice      Bob      Carol

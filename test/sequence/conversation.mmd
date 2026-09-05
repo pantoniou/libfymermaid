@@ -1,0 +1,12 @@
+sequenceDiagram
+    autonumber
+    participant A as Alice
+    participant B as Bob
+    actor C as Carol
+    A->>B: Hello Bob, how are you?
+    B-->>A: I am good thanks!
+    B->>C: Hi Carol
+    C-)B: async reply
+    A->>A: thinking
+    Note over A,B: They know each other
+    Note right of C: Carol waits

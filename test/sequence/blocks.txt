@@ -1,0 +1,15 @@
+    Alice      Bob
+loop Every minute
+      │         │
+      │─ ping ─▶│
+  alt is awake  │
+      │         │
+      │◀ pong ╌╌│
+  else is asleep│
+      │         │
+      │ nothing │
+      │✗╌╌╌╌╌╌╌╌│
+  end │         │
+end   │         │
+      │         │
+    Alice      Bob

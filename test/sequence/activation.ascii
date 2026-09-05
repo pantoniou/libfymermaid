@@ -1,0 +1,8 @@
+    User      Server
+      |          |
+      | Request >|
+      |          |
+      |Response  |
+      |<.........|
+      |          |
+    User      Server
