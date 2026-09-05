@@ -176,6 +176,12 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "kanban",
+		.config_key = "kanban",
+		.type = FYMM_DT_KANBAN,
+		.parse = fymm_parse_kanban,
+		.render = fymm_render_kanban,
+	}, {
 		.keyword = "erDiagram",
 		.config_key = "er",
 		.type = FYMM_DT_ER,

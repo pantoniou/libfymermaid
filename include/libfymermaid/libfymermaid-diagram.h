@@ -60,6 +60,7 @@ extern "C" {
  * @FYMM_DT_GANTT: a gantt chart
  * @FYMM_DT_STATE: a state diagram
  * @FYMM_DT_ER: an entity relationship diagram
+ * @FYMM_DT_KANBAN: a kanban board
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
@@ -77,6 +78,7 @@ enum fymm_diagram_type {
 	FYMM_DT_GANTT,
 	FYMM_DT_STATE,
 	FYMM_DT_ER,
+	FYMM_DT_KANBAN,
 };
 
 /* the opaque parsed diagram */
