@@ -108,10 +108,20 @@ PARSE_CALL = re.compile(r'\.parse\s*\(|Diagram\.fromText\s*\(')
 # and `resolves.not.toThrow` say the opposite, so they are removed first.
 NOT_THROW = re.compile(r'\bnot\.toThrow\b')
 FAILS = re.compile(r'rejects\.toThrow|\.toThrow\(|expect\(true\)\.toBe\(false\)')
+# A third shape sets a flag in a catch and asserts it afterwards:
+#     let error = false;
+#     try { await parse(...) } catch (e) { error = true }
+#     expect(error).toBe(true);
+CAUGHT = re.compile(r'catch\s*\([^)]*\)\s*\{[^{}]*\b(\w+)\s*=\s*true')
 
 
 def expects_failure(body):
-    return bool(FAILS.search(NOT_THROW.sub('', body)))
+    text = NOT_THROW.sub('', body)
+    if FAILS.search(text):
+        return True
+    m = CAUGHT.search(text)
+    return bool(m and re.search(r'expect\(\s*%s\s*\)\.toBe\(true\)'
+                                % re.escape(m.group(1)), text))
 
 
 def extract(text):

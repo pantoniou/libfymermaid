@@ -86,7 +86,7 @@
   },
   {
    "file": "014-should-not-allow-sequence-numbers-to-have-decimals-to-the-th.mmd",
-   "outcome": "parses",
+   "outcome": "fails",
    "suite": "when parsing a sequenceDiagram",
    "name": "should not allow sequence numbers to have decimals to the thousandths place or greater"
   },
@@ -224,7 +224,7 @@
   },
   {
    "file": "037-should-handle-fail-parsing-when-activating-an-inactive-parti.mmd",
-   "outcome": "parses",
+   "outcome": "fails",
    "suite": "when parsing a sequenceDiagram",
    "name": "should handle fail parsing when activating an inactive participant"
   },
@@ -638,19 +638,19 @@
   },
   {
    "file": "106-should-fail-for-malformed-json-in-participant-definition.mmd",
-   "outcome": "parses",
+   "outcome": "fails",
    "suite": "when parsing extended participant syntax",
    "name": "should fail for malformed JSON in participant definition"
   },
   {
    "file": "107-should-fail-for-missing-colon-separator.mmd",
-   "outcome": "parses",
+   "outcome": "fails",
    "suite": "when parsing extended participant syntax",
    "name": "should fail for missing colon separator"
   },
   {
    "file": "108-should-fail-for-missing-closing-brace.mmd",
-   "outcome": "parses",
+   "outcome": "fails",
    "suite": "when parsing extended participant syntax",
    "name": "should fail for missing closing brace"
   },
@@ -722,7 +722,7 @@
   },
   {
    "file": "120-should-handle-fail-parsing-when-alias-token-causes-conflicts.mmd",
-   "outcome": "parses",
+   "outcome": "fails",
    "suite": "when parsing extended participant syntax/participant type parsing",
    "name": "should handle fail parsing when alias token causes conflicts in participant definition"
   },

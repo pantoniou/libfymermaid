@@ -12,7 +12,7 @@ parses:010-should-not-break-existing-parsing-without-central-connection.mmd
 parses:011-should-not-show-sequence-numbers-per-default.mmd
 parses:012-should-show-sequence-numbers-when-autonumber-is-enabled.mmd
 parses:013-should-allow-sequence-numbers-to-have-decimals-up-to-the-hun.mmd
-parses:014-should-not-allow-sequence-numbers-to-have-decimals-to-the-th.mmd
+fails:014-should-not-allow-sequence-numbers-to-have-decimals-to-the-th.mmd
 parses:015-should-handle-a-sequencediagram-definition-with-a-title.mmd
 parses:016-should-handle-a-sequencediagram-definition-with-a-title-with.mmd
 parses:017-should-handle-a-sequencediagram-definition-with-a-accessibil.mmd
@@ -35,7 +35,7 @@ parses:033-should-handle-bidirectional-dotted-arrow-messages.mmd
 parses:034-should-handle-actor-activation.mmd
 parses:035-should-handle-actor-one-line-notation-activation.mmd
 parses:036-should-handle-stacked-activations.mmd
-parses:037-should-handle-fail-parsing-when-activating-an-inactive-parti.mmd
+fails:037-should-handle-fail-parsing-when-activating-an-inactive-parti.mmd
 parses:038-should-handle-comments-in-a-sequencediagram.mmd
 parses:039-should-handle-new-lines-in-a-sequencediagram.mmd
 parses:040-should-handle-semicolons.mmd
@@ -104,9 +104,9 @@ parses:102-1-should-parse.mmd
 parses:103-2-should-parse.mmd
 parses:104-should-parse-participants-with-different-quote-styles-and-wh.mmd
 parses:105-should-parse-mixed-participant-types-with-extended-syntax.mmd
-parses:106-should-fail-for-malformed-json-in-participant-definition.mmd
-parses:107-should-fail-for-missing-colon-separator.mmd
-parses:108-should-fail-for-missing-closing-brace.mmd
+fails:106-should-fail-for-malformed-json-in-participant-definition.mmd
+fails:107-should-fail-for-missing-colon-separator.mmd
+fails:108-should-fail-for-missing-closing-brace.mmd
 parses:109-should-parse-boundary-participant.mmd
 parses:110-should-parse-control-participant.mmd
 parses:111-should-parse-entity-participant.mmd
@@ -118,7 +118,7 @@ parses:116-should-parse-participant-participant.mmd
 parses:117-should-parse-boundary-using-actor-keyword.mmd
 parses:118-should-parse-control-using-participant-keyword.mmd
 parses:119-should-parse-entity-using-actor-keyword.mmd
-parses:120-should-handle-fail-parsing-when-alias-token-causes-conflicts.mmd
+fails:120-should-handle-fail-parsing-when-alias-token-causes-conflicts.mmd
 parses:121-should-not-hang-when-as-is-used-without-a-space-before-the-a.mmd
 parses:122-should-parse-participant-with-stereotype-and-alias.mmd
 parses:123-should-parse-actor-with-stereotype-and-alias.mmd
