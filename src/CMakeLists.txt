@@ -99,6 +99,7 @@ set(_fymm_sources
     fymm-state.c fymm-render-state.c
     fymm-er.c fymm-render-er.c
     fymm-kanban.c fymm-render-kanban.c
+    fymm-usecase.c fymm-render-usecase.c
     fymm-internal.h
 )
 

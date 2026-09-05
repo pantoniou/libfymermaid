@@ -194,6 +194,11 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 /* how deep a mindmap may nest before the rails stop being tracked */
 #define FYMM_MINDMAP_MAX_DEPTH 64
 
+int fymm_parse_usecase(struct fymm_parser *p, fy_generic config,
+		       fy_generic title, struct fymm_token *toks, int n);
+char *fymm_render_usecase(const struct fymm_diagram *d, fy_generic model,
+			  const struct fymm_render_cfg *cfg);
+
 int fymm_parse_kanban(struct fymm_parser *p, fy_generic config,
 		      fy_generic title, struct fymm_token *toks, int n);
 char *fymm_render_kanban(const struct fymm_diagram *d, fy_generic model,

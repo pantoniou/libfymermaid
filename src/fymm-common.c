@@ -176,6 +176,12 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "usecase-beta",
+		.config_key = "usecase",
+		.type = FYMM_DT_USECASE,
+		.parse = fymm_parse_usecase,
+		.render = fymm_render_usecase,
+	}, {
 		.keyword = "kanban",
 		.config_key = "kanban",
 		.type = FYMM_DT_KANBAN,
