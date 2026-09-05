@@ -1,0 +1,23 @@
+type: radar
+title: null
+accTitle: null
+accDescr: null
+config: {}
+axes:
+- name: A
+  label: null
+- name: B
+  label: null
+- name: C
+  label: null
+curves:
+- name: mycurve
+  label: null
+  values:
+  - axis: C
+    value: 3
+  - axis: A
+    value: 1
+  - axis: B
+    value: 2
+  keyed: true

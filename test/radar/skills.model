@@ -1,0 +1,40 @@
+type: radar
+title: Team skills
+accTitle: null
+accDescr: null
+config:
+  max: 10
+axes:
+- name: Speed
+  label: Speed
+- name: Power
+  label: Power
+- name: Range
+  label: Range
+- name: Cost
+  label: Cost
+curves:
+- name: alpha
+  label: Team Alpha
+  values:
+  - axis: null
+    value: 8
+  - axis: null
+    value: 6
+  - axis: null
+    value: 9
+  - axis: null
+    value: 3
+  keyed: false
+- name: beta
+  label: Team Beta
+  values:
+  - axis: null
+    value: 5
+  - axis: null
+    value: 9
+  - axis: null
+    value: 4
+  - axis: null
+    value: 7
+  keyed: false

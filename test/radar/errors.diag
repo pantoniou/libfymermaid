@@ -1,0 +1,4 @@
+input.mmd:3:1: error: curve value ' notanumber' is not a number
+input.mmd:4:1: error: a curve needs its values in braces
+input.mmd:5:1: error: 'ticks' takes a number, got 'lots'
+input.mmd:6:1: error: unknown radar statement 'frobnicate'
