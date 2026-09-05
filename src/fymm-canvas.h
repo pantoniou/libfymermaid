@@ -42,6 +42,10 @@
 /* text attributes */
 #define FYMM_ATTR_BOLD 0x01
 #define FYMM_ATTR_DIM 0x02
+#define FYMM_ATTR_ITALIC 0x04
+#define FYMM_ATTR_UNDERLINE 0x08
+#define FYMM_ATTR_STRIKE 0x10
+#define FYMM_ATTR_REVERSE 0x20
 
 /* the second cell of a double width glyph; never drawn on its own */
 #define FYMM_CP_CONT 0xfffffffeu

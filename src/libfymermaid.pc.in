@@ -7,5 +7,6 @@ Description: Mermaid diagram renderer for the terminal.
 Version: @PROJECT_VERSION@
 URL: @PROJECT_HOMEPAGE_URL@
 Requires: libfyaml
+Requires.private: md4c
 Libs: -L${libdir} -lfymermaid
 Cflags: -I${includedir}

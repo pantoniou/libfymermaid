@@ -6,6 +6,24 @@ include(JoinPaths.cmake)
 join_paths(PKGCONFIG_INCLUDEDIR "\${prefix}" "${CMAKE_INSTALL_INCLUDEDIR}")
 join_paths(PKGCONFIG_LIBDIR "\${prefix}" "${CMAKE_INSTALL_LIBDIR}")
 
+# md4c reads the inline markdown a label may carry: mermaid's markdown
+# strings, `["`**bold**`"]`, format the text inside them. Reusing a real
+# CommonMark parser keeps the edge cases right and matches what the rest of
+# this family already builds on.
+find_package(PkgConfig QUIET)
+if(PkgConfig_FOUND)
+    pkg_check_modules(MD4C QUIET md4c)
+endif()
+if(NOT MD4C_FOUND)
+    find_path(MD4C_INCLUDE_DIR NAMES md4c.h)
+    find_library(MD4C_LIBRARY NAMES md4c)
+    if(NOT MD4C_INCLUDE_DIR OR NOT MD4C_LIBRARY)
+        message(FATAL_ERROR "md4c not found (required: labels may carry markdown)")
+    endif()
+    set(MD4C_INCLUDE_DIRS "${MD4C_INCLUDE_DIR}")
+    set(MD4C_LIBRARIES "${MD4C_LIBRARY}")
+endif()
+
 # libfyaml is not an implementation detail here: the diagram model handed out
 # by fymm_diagram_model() is a fy_generic, so the public header includes
 # libfyaml's.  Reuse a parent-provided imported target, then libfyaml's own
@@ -82,6 +100,7 @@ set(_fymm_sources
     fymm-common.c
     fymm-canvas.c fymm-canvas.h
     fymm-layout.c fymm-layout.h
+    fymm-markdown.c fymm-markdown.h
     fymm-color.c fymm-color.h
     fymm-theme.c
     fymm-render.c
@@ -133,6 +152,7 @@ foreach(_t fymermaid fymermaid_static)
         "$<BUILD_INTERFACE:${LIBFYAML_INCLUDE_DIR}>"
     )
     target_include_directories(${_t} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/generated")
+    target_include_directories(${_t} PRIVATE ${MD4C_INCLUDE_DIRS})
     target_compile_definitions(${_t} PRIVATE "FYMM_VERSION_STRING=\"${PROJECT_VERSION}\"")
     target_compile_definitions(${_t} PRIVATE "$<$<CONFIG:Debug>:DEBUG>")
     if(CMAKE_C_COMPILER_ID MATCHES GNU|Clang)
@@ -157,7 +177,8 @@ target_link_libraries(fymermaid_static PUBLIC ${_fymm_fyaml_static})
 
 # the xy chart scales its plot with the C maths library
 foreach(_t fymermaid fymermaid_static)
-    target_link_libraries(${_t} PRIVATE m)
+    target_link_libraries(${_t} PRIVATE m ${MD4C_LIBRARIES})
+    target_link_directories(${_t} PRIVATE ${MD4C_LIBRARY_DIRS})
 endforeach()
 
 set_target_properties(fymermaid PROPERTIES

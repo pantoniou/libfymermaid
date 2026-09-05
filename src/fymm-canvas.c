@@ -546,6 +546,14 @@ static void fymm_emit_sgr(struct fymm_canvas *cv, struct fymm_buf *b,
 		fymm_buf_puts(b, ";1");
 	if (attr & FYMM_ATTR_DIM)
 		fymm_buf_puts(b, ";2");
+	if (attr & FYMM_ATTR_ITALIC)
+		fymm_buf_puts(b, ";3");
+	if (attr & FYMM_ATTR_UNDERLINE)
+		fymm_buf_puts(b, ";4");
+	if (attr & FYMM_ATTR_REVERSE)
+		fymm_buf_puts(b, ";7");
+	if (attr & FYMM_ATTR_STRIKE)
+		fymm_buf_puts(b, ";9");
 	if (e && e->rgb != FYMM_RGB_INVALID) {
 		switch (cv->color) {
 		case FYMM_COLOR_TRUECOLOR:
