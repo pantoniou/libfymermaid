@@ -194,6 +194,11 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 /* how deep a mindmap may nest before the rails stop being tracked */
 #define FYMM_MINDMAP_MAX_DEPTH 64
 
+int fymm_parse_quadrant(struct fymm_parser *p, fy_generic config,
+			fy_generic title, struct fymm_token *toks, int n);
+char *fymm_render_quadrant(const struct fymm_diagram *d, fy_generic model,
+			   const struct fymm_render_cfg *cfg);
+
 int fymm_parse_class(struct fymm_parser *p, fy_generic config,
 		     fy_generic title, struct fymm_token *toks, int n);
 char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,

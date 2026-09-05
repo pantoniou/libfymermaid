@@ -176,6 +176,12 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "quadrantChart",
+		.config_key = "quadrantChart",
+		.type = FYMM_DT_QUADRANT,
+		.parse = fymm_parse_quadrant,
+		.render = fymm_render_quadrant,
+	}, {
 		.keyword = "classDiagram",
 		.config_key = "class",
 		.type = FYMM_DT_CLASS,

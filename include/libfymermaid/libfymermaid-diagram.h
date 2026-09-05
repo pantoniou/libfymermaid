@@ -54,6 +54,7 @@ extern "C" {
  * @FYMM_DT_SEQUENCE: a sequence diagram
  * @FYMM_DT_FLOWCHART: a flowchart, also spelled `graph`
  * @FYMM_DT_CLASS: a class diagram
+ * @FYMM_DT_QUADRANT: a quadrant chart
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
@@ -65,6 +66,7 @@ enum fymm_diagram_type {
 	FYMM_DT_SEQUENCE,
 	FYMM_DT_FLOWCHART,
 	FYMM_DT_CLASS,
+	FYMM_DT_QUADRANT,
 };
 
 /* the opaque parsed diagram */

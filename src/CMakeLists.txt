@@ -91,6 +91,7 @@ set(_fymm_sources
     fymm-sequence.c fymm-render-sequence.c
     fymm-flowchart.c fymm-render-flowchart.c
     fymm-class.c fymm-render-class.c
+    fymm-quadrant.c fymm-render-quadrant.c
     fymm-internal.h
 )
 
