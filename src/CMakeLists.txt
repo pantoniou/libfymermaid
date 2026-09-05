@@ -93,6 +93,7 @@ set(_fymm_sources
     fymm-class.c fymm-render-class.c
     fymm-quadrant.c fymm-render-quadrant.c
     fymm-xychart.c fymm-render-xychart.c
+    fymm-radar.c fymm-render-radar.c
     fymm-internal.h
 )
 
