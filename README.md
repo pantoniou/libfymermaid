@@ -44,8 +44,10 @@ test suite pins.
 
 | diagram | corpus | notes |
 | --- | --- | --- |
+| `flowchart` / `graph` | 195/195 | layered top to bottom |
+| `classDiagram` | 133/133 | boxed compartments, UML relation ends |
+| `sequenceDiagram` | 130/130 | participant columns, arrows, notes, blocks |
 | `gitGraph` | 63/63 | `LR` orientation |
-| `sequenceDiagram` | 129/129 | participant columns, arrows, notes, blocks |
 | `mindmap` | 26/26 | drawn as an indented tree |
 | `pie` | 13/13 | drawn as a proportional bar chart |
 | `timeline` | 11/11 | drawn down the page, not across |
@@ -70,7 +72,8 @@ branch, an empty merged branch and two branches with the same head.
 
 Two deliberate differences:
 
-- `TB` and `BT` parse and render, with a warning, as `LR`.
+- A gitGraph in `TB` or `BT`, and a flowchart in any direction but `TB`, parse
+  and render with a warning in the direction that is implemented.
 - A commit written without an `id:` is labelled with its sequence number rather
   than with a random hash, so a diagram renders identically every time and the
   label stays usable as a `cherry-pick` target.
@@ -104,13 +107,13 @@ uses that to carry the structure with bold and dim alone.
 
 ## Conformance
 
-`test/mermaid-suite/` carries upstream mermaid's own parser corpus: 1271 cases
-across 29 diagram types, each one an `it()` from an upstream spec, reduced to
+`test/mermaid-suite/` carries upstream mermaid's own parser corpus: 1148 cases
+across 27 diagram types, each one an `it()` from an upstream spec, reduced to
 the diagram source and whether upstream expects it to parse or to fail.
 `scripts/import-mermaid-suite.py` regenerates it from a mermaid checkout, and
 `test/mermaid-suite/PROVENANCE` records the upstream commit.
 
-The implemented types pass 250 of 250. The remaining suites are registered and disabled
+The implemented types pass 578 of 578. The remaining suites are registered and disabled
 until their diagram type exists, so the corpus is countable and `ctest` stays
 green; `ctest -L unimplemented -N` lists what is still missing. Set
 `-DFYMM_IMPLEMENTED_SUITES=<list>` to run a suite that is not implemented yet

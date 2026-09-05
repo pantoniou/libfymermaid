@@ -223,6 +223,10 @@ call knowing about the other. Add a line shape by extending the mask table.
 A literal glyph, such as a commit or a label, is never overwritten by a line.
 Column widths come from the label widths, which keeps a collision rare.
 
+`fymm_canvas_route_v()` draws a link that goes down, across and down again.
+Use it rather than a pair of hline and vline calls: a run of one cell carries
+no direction and draws nothing, which is how the corners went missing twice.
+
 A solid line wins over a dashed one in a shared cell. A merge edge and a
 cherry-pick edge run along the same lane, and a merge drawn dashed reports a
 relationship that is not there.
