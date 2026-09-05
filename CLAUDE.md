@@ -96,9 +96,33 @@ statement and continue.
 
 ## Mermaid conformance
 
-`packages/mermaid/src/diagrams/git/gitGraph.spec.ts` in `mermaid-js/mermaid` is
-the reference for gitGraph behavior. It asserts against the parsed data model,
-which matches what this library produces.
+Upstream tests its diagrams against the parsed data model, not against rendered
+SVG. `test/mermaid-suite/` carries that corpus: one case for each upstream
+`it()`, holding the diagram source and whether upstream expects it to parse or
+to fail. `scripts/import-mermaid-suite.py` produces it from a mermaid checkout.
+`test/mermaid-suite/PROVENANCE` records the upstream commit.
+
+The importer is offline tooling. It is not part of the build and not part of
+the test path. Re-running it is a corpus change: commit it on its own, with the
+new upstream commit in `PROVENANCE`, and state which cases changed.
+
+A corpus case is verbatim upstream input. Do not reformat one and do not strip
+its trailing whitespace; one upstream case tests that whitespace. `.gitattributes`
+exempts the corpus from the whitespace checks for this reason.
+
+`FYMM_IMPLEMENTED_SUITES` in `test/CMakeLists.txt` lists the suites that must
+pass. Every other suite is registered and disabled, so the corpus stays
+countable and `ctest` stays green. Implementing a diagram type means adding its
+suite to that list and making the whole suite pass.
+
+A corpus case asserts the outcome of a parse and no more. It does not assert
+the model. Use it to find a syntax the parser does not accept and a source it
+accepts that it must reject. Pin behavior beyond that with a golden file or
+with `test/fymm-api-test.c`.
+
+A `fails` case in a suite that is not implemented passes for the wrong reason:
+the diagram type is rejected before its syntax is read. Do not read a pass rate
+for a disabled suite as coverage.
 
 Follow upstream where the behavior is observable. These cases are settled:
 
@@ -140,6 +164,19 @@ A missing golden file removes that case. CTest registers one test for each pair
 as `gitgraph/<name>/<mode>`. `test/fymm-api-test.c` holds the assertions that a
 golden file cannot express: lane order, config layering, and one diagnostic for
 one mistake.
+
+`test/mermaid-suite/` carries the upstream corpus; see Mermaid conformance.
+
+Each test is one process that reads only its own arguments. It holds no shared
+state and it writes no temporary file, so the suite runs under `ctest -j`.
+Keep it that way. Confirm that a change does not break it:
+
+```sh
+ctest --test-dir build -j1  >/dev/null
+ctest --test-dir build -j$(nproc)
+```
+
+Both runs must report the same result for each test.
 
 Do not regenerate a golden file to make a change pass. A moved expectation is a
 behavior change. State it in the commit message with a reason.

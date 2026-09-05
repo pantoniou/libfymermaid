@@ -68,6 +68,24 @@ Two deliberate differences:
   than with a random hash, so a diagram renders identically every time and the
   label stays usable as a `cherry-pick` target.
 
+## Conformance
+
+`test/mermaid-suite/` carries upstream mermaid's own parser corpus: 1271 cases
+across 29 diagram types, each one an `it()` from an upstream spec, reduced to
+the diagram source and whether upstream expects it to parse or to fail.
+`scripts/import-mermaid-suite.py` regenerates it from a mermaid checkout, and
+`test/mermaid-suite/PROVENANCE` records the upstream commit.
+
+gitGraph passes 63 of 63. The remaining suites are registered and disabled
+until their diagram type exists, so the corpus is countable and `ctest` stays
+green; `ctest -L unimplemented -N` lists what is still missing. Set
+`-DFYMM_IMPLEMENTED_SUITES=<list>` to run a suite that is not implemented yet
+and measure the gap.
+
+The corpus found real bugs on the first run, which is the point of carrying it:
+the `commit "message"` shorthand was unimplemented, and four error-versus-
+warning decisions disagreed with upstream.
+
 ## Building
 
 ```sh
@@ -78,6 +96,9 @@ ctest --test-dir build --output-on-failure
 
 Needs libfyaml with the generic API. `-DENABLE_ASAN=ON` for a sanitized build,
 `-DBUILD_FYMERMAID_EXECUTABLE=OFF` for the library alone.
+
+The suite is process-per-case and shares no state, so `ctest -j$(nproc)` is
+safe and gives the same result as a serial run.
 
 ## Using it
 
