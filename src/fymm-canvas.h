@@ -57,6 +57,31 @@ enum fymm_palette {
 	FYMM_PAL_COUNT,
 };
 
+/* struct fymm_pal_entry - one resolved palette entry
+ *
+ * @rgb: the colour, or FYMM_RGB_INVALID to leave the terminal's own
+ * @attr: a mask of FYMM_ATTR_*, applied wherever the entry is used
+ */
+struct fymm_pal_entry {
+	unsigned int rgb;
+	uint8_t attr;
+};
+
+/* struct fymm_theme - a resolved palette, by enum fymm_palette index */
+struct fymm_theme {
+	struct fymm_pal_entry entry[FYMM_PAL_COUNT];
+};
+
+/* The key each palette entry is read from in a theme file. */
+extern const char *const fymm_palette_keys[FYMM_PAL_COUNT];
+
+/* Fill @theme in from the built-in default. */
+void fymm_theme_default(struct fymm_theme *theme);
+
+/* Apply the `colors` mapping of a theme generic over @theme. Returns the
+ * number of keys that were not recognised. */
+int fymm_theme_apply(struct fymm_theme *theme, fy_generic colors);
+
 /* FYMM_COLOR_DEFAULT - leave the cell in the terminal's own colour */
 #define FYMM_COLOR_DEFAULT (-1)
 
@@ -73,10 +98,12 @@ struct fymm_canvas {
 	struct fymm_cell *cells;
 	enum fymm_charset charset;
 	enum fymm_color_mode color;
+	struct fymm_theme theme;
 };
 
 struct fymm_canvas *fymm_canvas_create(int w, int h, enum fymm_charset charset,
-				       enum fymm_color_mode color);
+				       enum fymm_color_mode color,
+				       const struct fymm_theme *theme);
 void fymm_canvas_destroy(struct fymm_canvas *cv);
 
 void fymm_canvas_put(struct fymm_canvas *cv, int x, int y, uint32_t cp,

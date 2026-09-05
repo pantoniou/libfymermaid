@@ -41,6 +41,9 @@ static const struct option lopts[] = {
 	{ "color",	required_argument,	NULL,	'c' },
 	{ "charset",	required_argument,	NULL,	'C' },
 	{ "ascii",	no_argument,		NULL,	'a' },
+	{ "theme",	required_argument,	NULL,	't' },
+	{ "style",	required_argument,	NULL,	'S' },
+	{ "list-themes",no_argument,		NULL,	'L' },
 	{ "dump-model",	no_argument,		NULL,	'm' },
 	{ "flow",	no_argument,		NULL,	'f' },
 	{ "strict",	no_argument,		NULL,	's' },
@@ -64,6 +67,9 @@ static void usage(FILE *fp)
 "  -c, --color MODE    auto (default), none, 16, 256 or true\n"
 "  -C, --charset SET   auto (default), ascii or unicode\n"
 "  -a, --ascii         shorthand for --charset ascii\n"
+"  -t, --theme NAME    colour theme; --list-themes names them\n"
+"  -S, --style FILE    a theme file, applied over --theme\n"
+"  -L, --list-themes   list the built-in themes and exit\n"
 "  -m, --dump-model    emit the parsed model as YAML instead of rendering\n"
 "  -f, --flow          with --dump-model, emit flow style rather than block\n"
 "  -s, --strict        treat warnings as errors\n"
@@ -71,6 +77,32 @@ static void usage(FILE *fp)
 "  -V, --version       print the library version and exit\n"
 "  -h, --help          print this message and exit\n",
 		progname);
+}
+
+static void list_themes(FILE *fp)
+{
+	const struct fymm_theme_info *ti;
+	void *iter = NULL;
+
+	while ((ti = fymm_theme_iterate(&iter)) != NULL)
+		fprintf(fp, "  %-10s %s\n", ti->name, ti->description);
+}
+
+/* Check a theme name against the catalogue, so that a typo is reported once
+ * and by name rather than as a failure to render every input. */
+static int check_theme(const char *name)
+{
+	const struct fymm_theme_info *ti;
+	void *iter = NULL;
+
+	while ((ti = fymm_theme_iterate(&iter)) != NULL) {
+		if (!strcmp(ti->name, name))
+			return 0;
+	}
+	fprintf(stderr, "%s: unknown theme '%s'; the built-in themes are:\n",
+		progname, name);
+	list_themes(stderr);
+	return -1;
 }
 
 static int parse_color(const char *s, enum fymm_color_mode *modep)
@@ -169,7 +201,7 @@ int main(int argc, char *argv[])
 
 	fymm_render_cfg_default(&rcfg);
 
-	while ((opt = getopt_long(argc, argv, "o:w:c:C:amfsqVh", lopts,
+	while ((opt = getopt_long(argc, argv, "o:w:c:C:at:S:LmfsqVh", lopts,
 				  NULL)) != -1) {
 		switch (opt) {
 		case 'o':
@@ -195,6 +227,15 @@ int main(int argc, char *argv[])
 		case 'a':
 			rcfg.charset = FYMM_CHARSET_ASCII;
 			break;
+		case 't':
+			rcfg.theme = optarg;
+			break;
+		case 'S':
+			rcfg.theme_path = optarg;
+			break;
+		case 'L':
+			list_themes(stdout);
+			return 0;
 		case 'm':
 			dump_model = true;
 			break;
@@ -218,6 +259,9 @@ int main(int argc, char *argv[])
 			return 1;
 		}
 	}
+
+	if (rcfg.theme && check_theme(rcfg.theme))
+		return 1;
 
 	if (output) {
 		out = fopen(output, "wb");

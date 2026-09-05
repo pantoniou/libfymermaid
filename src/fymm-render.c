@@ -112,6 +112,8 @@ void fymm_render_cfg_default(struct fymm_render_cfg *cfg)
 	cfg->color = FYMM_COLOR_AUTO;
 	cfg->charset = FYMM_CHARSET_AUTO;
 	cfg->options = fy_invalid;
+	cfg->theme = NULL;
+	cfg->theme_path = NULL;
 }
 
 /*
@@ -263,6 +265,7 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 {
 	fy_generic config, commits, branches, commit, tags, parents;
 	struct fymm_canvas *cv;
+	struct fymm_theme theme;
 	struct gg_geom g;
 	const char *title, *label, *type, *orientation;
 	bool show_branches, show_labels, parallel;
@@ -270,9 +273,10 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 	int k, w, color, x, y, cherry;
 	char *tag_text, *out;
 
-	(void)d;
-
 	memset(&g, 0, sizeof(g));
+
+	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d)))
+		return NULL;
 
 	config = fy_get(model, "config");
 	commits = fy_get(model, "commits");
@@ -388,7 +392,7 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 	cv = fymm_canvas_create(g.width, g.height,
 				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
 					cfg->charset : FYMM_CHARSET_UNICODE,
-				cfg ? cfg->color : FYMM_COLOR_NONE);
+				cfg ? cfg->color : FYMM_COLOR_NONE, &theme);
 	if (!cv)
 		goto err_out;
 

@@ -1,0 +1,19 @@
+# A theme with no colour. The structure is carried by weight alone, for a
+# terminal that has no colour, and for output that is going to be pasted
+# somewhere that would lose it.
+name: mono
+description: No colour; structure carried by bold and dim alone
+
+colors:
+  git0: { bold: true }
+  git1: { dim: true }
+  git2: { bold: true }
+  git3: { dim: true }
+  git4: { bold: true }
+  git5: { dim: true }
+  git6: { bold: true }
+  git7: { dim: true }
+
+  commitLabel: { dim: true }
+  tag: { bold: true }
+  title: { bold: true }

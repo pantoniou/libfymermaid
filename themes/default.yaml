@@ -1,0 +1,25 @@
+# The default theme: eight branch colours for a dark terminal.
+#
+# A colour is `#rgb`, `#rrggbb`, an xterm palette index from 0 to 255, or one
+# of the sixteen ANSI colour names. It is reduced to the nearest entry of the
+# terminal's palette when the terminal cannot take 24 bit colour.
+#
+# An entry may also be a mapping, to carry attributes:
+#     tag: { color: "#ffd479", bold: true }
+name: default
+description: Eight branch colours for a dark terminal
+
+colors:
+  # git0 to git7 cycle over the branches, as they do in mermaid
+  git0: "#3b8eea"
+  git1: "#23d18b"
+  git2: "#d670d6"
+  git3: "#e5c07b"
+  git4: "#29b8db"
+  git5: "#f14c4c"
+  git6: "#e5a00d"
+  git7: "#83a598"
+
+  commitLabel: "#bdc3c7"
+  tag: { color: "#ffd479", bold: true }
+  title: { color: "#ffffff", bold: true }

@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include "fymm-canvas.h"
+#include "fymm-color.h"
 
 /*
  * The box drawing glyph for each combination of the four directions.  Line
@@ -79,7 +80,8 @@ static uint32_t fymm_box_glyph(enum fymm_charset cs, uint8_t mask, bool dashed)
 }
 
 struct fymm_canvas *fymm_canvas_create(int w, int h, enum fymm_charset charset,
-				       enum fymm_color_mode color)
+				       enum fymm_color_mode color,
+				       const struct fymm_theme *theme)
 {
 	struct fymm_canvas *cv;
 	int i;
@@ -95,6 +97,10 @@ struct fymm_canvas *fymm_canvas_create(int w, int h, enum fymm_charset charset,
 	cv->h = h;
 	cv->charset = charset;
 	cv->color = color;
+	if (theme)
+		cv->theme = *theme;
+	else
+		fymm_theme_default(&cv->theme);
 	cv->cells = malloc((size_t)w * (size_t)h * sizeof(*cv->cells));
 	if (!cv->cells) {
 		free(cv);
@@ -336,29 +342,94 @@ int fymm_canvas_text(struct fymm_canvas *cv, int x, int y, const char *s,
 	return x - x0;
 }
 
-/*
- * The palette.  Each entry names the same colour three ways so that the
- * output degrades cleanly: a bright ANSI code for a sixteen colour terminal,
- * an xterm cube index for a 256 colour one, and the RGB truecolor terminals
- * take.  The eight branch colours lead, matching mermaid's git0..git7.
- */
-static const struct {
-	int ansi16;
-	int xterm256;
-	unsigned int rgb;
-} fymm_palette[FYMM_PAL_COUNT] = {
-	[FYMM_PAL_BRANCH0 + 0] = { 94, 39, 0x3b8eea },	/* blue */
-	[FYMM_PAL_BRANCH0 + 1] = { 92, 78, 0x23d18b },	/* green */
-	[FYMM_PAL_BRANCH0 + 2] = { 95, 170, 0xd670d6 },	/* magenta */
-	[FYMM_PAL_BRANCH0 + 3] = { 93, 220, 0xe5c07b },	/* yellow */
-	[FYMM_PAL_BRANCH0 + 4] = { 96, 80, 0x29b8db },	/* cyan */
-	[FYMM_PAL_BRANCH0 + 5] = { 91, 203, 0xf14c4c },	/* red */
-	[FYMM_PAL_BRANCH0 + 6] = { 33, 214, 0xe5a00d },	/* orange */
-	[FYMM_PAL_BRANCH0 + 7] = { 37, 109, 0x83a598 },	/* teal */
-	[FYMM_PAL_LABEL] = { 37, 250, 0xbdc3c7 },	/* label grey */
-	[FYMM_PAL_TAG] = { 93, 222, 0xffd479 },		/* tag amber */
-	[FYMM_PAL_TITLE] = { 97, 255, 0xffffff },	/* title white */
+const char *const fymm_palette_keys[FYMM_PAL_COUNT] = {
+	[FYMM_PAL_BRANCH0 + 0] = "git0",
+	[FYMM_PAL_BRANCH0 + 1] = "git1",
+	[FYMM_PAL_BRANCH0 + 2] = "git2",
+	[FYMM_PAL_BRANCH0 + 3] = "git3",
+	[FYMM_PAL_BRANCH0 + 4] = "git4",
+	[FYMM_PAL_BRANCH0 + 5] = "git5",
+	[FYMM_PAL_BRANCH0 + 6] = "git6",
+	[FYMM_PAL_BRANCH0 + 7] = "git7",
+	[FYMM_PAL_LABEL] = "commitLabel",
+	[FYMM_PAL_TAG] = "tag",
+	[FYMM_PAL_TITLE] = "title",
 };
+
+/*
+ * The built-in palette, used when no theme is selected and as the base every
+ * theme is applied over. A theme that sets one key keeps the rest.
+ */
+static const struct fymm_pal_entry fymm_default_palette[FYMM_PAL_COUNT] = {
+	[FYMM_PAL_BRANCH0 + 0] = { 0x3b8eea, 0 },	/* blue */
+	[FYMM_PAL_BRANCH0 + 1] = { 0x23d18b, 0 },	/* green */
+	[FYMM_PAL_BRANCH0 + 2] = { 0xd670d6, 0 },	/* magenta */
+	[FYMM_PAL_BRANCH0 + 3] = { 0xe5c07b, 0 },	/* yellow */
+	[FYMM_PAL_BRANCH0 + 4] = { 0x29b8db, 0 },	/* cyan */
+	[FYMM_PAL_BRANCH0 + 5] = { 0xf14c4c, 0 },	/* red */
+	[FYMM_PAL_BRANCH0 + 6] = { 0xe5a00d, 0 },	/* orange */
+	[FYMM_PAL_BRANCH0 + 7] = { 0x83a598, 0 },	/* teal */
+	[FYMM_PAL_LABEL] = { 0xbdc3c7, 0 },
+	[FYMM_PAL_TAG] = { 0xffd479, FYMM_ATTR_BOLD },
+	[FYMM_PAL_TITLE] = { 0xffffff, FYMM_ATTR_BOLD },
+};
+
+void fymm_theme_default(struct fymm_theme *theme)
+{
+	size_t i;
+
+	for (i = 0; i < FYMM_PAL_COUNT; i++)
+		theme->entry[i] = fymm_default_palette[i];
+}
+
+int fymm_theme_apply(struct fymm_theme *theme, fy_generic colors)
+{
+	struct fymm_pal_entry *e;
+	unsigned int rgb;
+	fy_generic v, k;
+	size_t i;
+	int unknown = 0;
+
+	if (!fy_is_mapping(colors))
+		return 0;
+
+	fy_foreach_key_value(k, v, colors) {
+		e = NULL;
+		for (i = 0; i < FYMM_PAL_COUNT; i++) {
+			if (fy_equal(k, fymm_palette_keys[i])) {
+				e = &theme->entry[i];
+				break;
+			}
+		}
+		if (!e) {
+			unknown++;
+			continue;
+		}
+
+		/* an entry is a colour, or a mapping that adds attributes */
+		if (fy_is_mapping(v)) {
+			e->attr = 0;
+			if (fy_get(v, "bold", false))
+				e->attr |= FYMM_ATTR_BOLD;
+			if (fy_get(v, "dim", false))
+				e->attr |= FYMM_ATTR_DIM;
+			if (fy_is_invalid(fy_get(v, "color"))) {
+				e->rgb = FYMM_RGB_INVALID;
+				continue;
+			}
+			v = fy_get(v, "color");
+		} else {
+			e->attr = 0;
+		}
+
+		rgb = fymm_color_parse(fy_str(v));
+		if (rgb == FYMM_RGB_INVALID)
+			unknown++;
+		else
+			e->rgb = rgb;
+	}
+	return unknown;
+}
 
 struct fymm_buf {
 	char *data;
@@ -396,17 +467,30 @@ static void fymm_buf_puts(struct fymm_buf *b, const char *s)
 	fymm_buf_put(b, s, strlen(s));
 }
 
-/* Emit the SGR sequence taking the terminal from @from to @to. */
-static void fymm_emit_sgr(struct fymm_buf *b, enum fymm_color_mode mode,
+/*
+ * Emit the SGR sequence that selects palette entry @color with @attr. The
+ * attributes of the entry are added to the ones the caller asked for, so a
+ * theme makes every tag bold without the renderer knowing.
+ *
+ * A colour reaches a terminal that cannot take 24 bit as the nearest entry of
+ * the palette that terminal does have.
+ */
+static void fymm_emit_sgr(struct fymm_canvas *cv, struct fymm_buf *b,
 			  int color, uint8_t attr)
 {
+	const struct fymm_pal_entry *e;
 	char seq[64];
-	int n;
+	int n = 0;
 
-	if (mode == FYMM_COLOR_NONE)
+	if (cv->color == FYMM_COLOR_NONE)
 		return;
 
-	if (color == FYMM_COLOR_DEFAULT && !attr) {
+	e = color != FYMM_COLOR_DEFAULT && color < FYMM_PAL_COUNT ?
+	    &cv->theme.entry[color] : NULL;
+	if (e)
+		attr |= e->attr;
+
+	if ((!e || e->rgb == FYMM_RGB_INVALID) && !attr) {
 		fymm_buf_puts(b, "\033[0m");
 		return;
 	}
@@ -416,22 +500,20 @@ static void fymm_emit_sgr(struct fymm_buf *b, enum fymm_color_mode mode,
 		fymm_buf_puts(b, ";1");
 	if (attr & FYMM_ATTR_DIM)
 		fymm_buf_puts(b, ";2");
-	if (color != FYMM_COLOR_DEFAULT && color < FYMM_PAL_COUNT) {
-		unsigned int rgb = fymm_palette[color].rgb;
-
-		switch (mode) {
+	if (e && e->rgb != FYMM_RGB_INVALID) {
+		switch (cv->color) {
 		case FYMM_COLOR_TRUECOLOR:
 			n = snprintf(seq, sizeof(seq), ";38;2;%u;%u;%u",
-				     (rgb >> 16) & 0xff, (rgb >> 8) & 0xff,
-				     rgb & 0xff);
+				     (e->rgb >> 16) & 0xff,
+				     (e->rgb >> 8) & 0xff, e->rgb & 0xff);
 			break;
 		case FYMM_COLOR_256:
 			n = snprintf(seq, sizeof(seq), ";38;5;%d",
-				     fymm_palette[color].xterm256);
+				     fymm_rgb_to_xterm256(e->rgb));
 			break;
 		default:
 			n = snprintf(seq, sizeof(seq), ";%d",
-				     fymm_palette[color].ansi16);
+				     fymm_rgb_to_ansi16(e->rgb));
 			break;
 		}
 		if (n > 0)
@@ -506,7 +588,7 @@ char *fymm_canvas_emit(struct fymm_canvas *cv)
 			}
 
 			if (c->color != cur_color || c->attr != cur_attr) {
-				fymm_emit_sgr(&b, cv->color, c->color, c->attr);
+				fymm_emit_sgr(cv, &b, c->color, c->attr);
 				cur_color = c->color;
 				cur_attr = c->attr;
 				styled = cv->color != FYMM_COLOR_NONE &&

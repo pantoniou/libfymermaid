@@ -121,6 +121,13 @@ void fymm_diagf(struct fymm_parser *p, bool error, int line, int col,
 int fymm_parse_gitgraph(struct fymm_parser *p, fy_generic config,
 			const char *orientation, fy_generic title);
 
+/* Resolve the theme a render configuration asks for. Reports through @p when
+ * a name or a file does not resolve; @p may be NULL. */
+struct fymm_theme;
+int fymm_theme_resolve(struct fymm_theme *theme,
+		       const struct fymm_render_cfg *cfg,
+		       struct fy_generic_builder *gb);
+
 /* the renderer, one entry point per diagram kind */
 char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 			   const struct fymm_render_cfg *cfg);

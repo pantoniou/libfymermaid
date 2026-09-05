@@ -36,6 +36,43 @@ endif()
 
 configure_file(libfymermaid.pc.in libfymermaid.pc @ONLY)
 
+# Embed themes/*.yaml as byte arrays, so a built library carries its whole
+# catalogue and needs nothing installed beside it. The name and description
+# are lifted here as well, for fymm_theme_iterate(). Editing a theme re-runs
+# configure through CMAKE_CONFIGURE_DEPENDS.
+set(_fymm_themes_dir "${CMAKE_CURRENT_SOURCE_DIR}/../themes")
+file(GLOB _fymm_theme_files CONFIGURE_DEPENDS "${_fymm_themes_dir}/*.yaml")
+list(SORT _fymm_theme_files)
+set(_fymm_themes_inc "${CMAKE_CURRENT_BINARY_DIR}/generated/fymm_themes.inc")
+file(WRITE "${_fymm_themes_inc}" "/* Generated from the themes directory. */\n")
+set(_fymm_theme_table "")
+set(_fymm_theme_count 0)
+foreach(_theme_file IN LISTS _fymm_theme_files)
+    get_filename_component(_theme "${_theme_file}" NAME_WE)
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${_theme_file}")
+    file(READ "${_theme_file}" _theme_hex HEX)
+    string(REGEX REPLACE "(..)" "0x\\1," _theme_bytes "${_theme_hex}")
+    string(TOUPPER "${_theme}" _theme_upper)
+    # the one-line summary shown by --list-themes
+    file(STRINGS "${_theme_file}" _theme_descr REGEX "^description:")
+    string(REGEX REPLACE "^description:[ \t]*" "" _theme_descr "${_theme_descr}")
+    string(REPLACE "\"" "\\\"" _theme_descr "${_theme_descr}")
+    # a `;` in the text arrives escaped, because CMake strings are lists
+    string(REPLACE "\\;" ";" _theme_descr "${_theme_descr}")
+    file(APPEND "${_fymm_themes_inc}"
+        "static const unsigned char FYMM_THEME_${_theme_upper}[] = {${_theme_bytes}};\n")
+    string(APPEND _fymm_theme_table
+        "\t{ \"${_theme}\", \"${_theme_descr}\", FYMM_THEME_${_theme_upper}, sizeof(FYMM_THEME_${_theme_upper}) },\n")
+    math(EXPR _fymm_theme_count "${_fymm_theme_count} + 1")
+endforeach()
+if(_fymm_theme_count EQUAL 0)
+    message(FATAL_ERROR "no themes found in ${_fymm_themes_dir}")
+endif()
+file(APPEND "${_fymm_themes_inc}"
+    "static const struct fymm_embedded_theme FYMM_THEMES[] = {\n${_fymm_theme_table}};\n"
+    "#define FYMM_THEME_COUNT ${_fymm_theme_count}\n"
+    "#define FYMM_THEME_COUNT_MAX ${_fymm_theme_count}\n")
+
 set(_fymm_incdir "${CMAKE_CURRENT_SOURCE_DIR}/../include")
 
 set(_fymm_sources
@@ -43,6 +80,8 @@ set(_fymm_sources
     fymm-lex.c
     fymm-gitgraph.c
     fymm-canvas.c fymm-canvas.h
+    fymm-color.c fymm-color.h
+    fymm-theme.c
     fymm-render.c
     fymm-internal.h
 )
@@ -72,6 +111,7 @@ foreach(_t fymermaid fymermaid_static)
         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
         "$<BUILD_INTERFACE:${LIBFYAML_INCLUDE_DIR}>"
     )
+    target_include_directories(${_t} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/generated")
     target_compile_definitions(${_t} PRIVATE "FYMM_VERSION_STRING=\"${PROJECT_VERSION}\"")
     target_compile_definitions(${_t} PRIVATE "$<$<CONFIG:Debug>:DEBUG>")
     if(CMAKE_C_COMPILER_ID MATCHES GNU|Clang)
@@ -123,6 +163,8 @@ install(FILES
     "${_fymm_incdir}/libfymermaid/libfymermaid-diagram.h"
     "${_fymm_incdir}/libfymermaid/libfymermaid-render.h"
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libfymermaid)
+install(FILES ${_fymm_theme_files}
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/libfymermaid/themes)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libfymermaid.pc
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 

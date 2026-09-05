@@ -1,0 +1,18 @@
+# A theme for a light terminal: darker, more saturated branch colours, and a
+# commit label that stays readable on white.
+name: light
+description: Darker branch colours for a light terminal
+
+colors:
+  git0: "#0b5cad"
+  git1: "#1a7f4b"
+  git2: "#8b3a8b"
+  git3: "#8a6d1f"
+  git4: "#0f6f88"
+  git5: "#b02020"
+  git6: "#9a6a00"
+  git7: "#4a6a63"
+
+  commitLabel: "#4a4a4a"
+  tag: { color: "#7a4a00", bold: true }
+  title: { color: "#000000", bold: true }

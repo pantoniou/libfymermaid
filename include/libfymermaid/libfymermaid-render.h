@@ -86,6 +86,9 @@ enum fymm_charset {
  * @options: a mapping of overrides applied over the diagram's own config,
  *           using the same keys mermaid's %%{init: ...}%% directive uses
  *           (`showBranches`, `showCommitLabel`, `mainBranchName`, ...)
+ * @theme: the name of a built-in theme, or NULL for the default; see
+ *         fymm_theme_iterate()
+ * @theme_path: a theme file to read, applied over @theme; NULL for none
  *
  * A NULL cfg selects the defaults for every field.
  */
@@ -95,7 +98,35 @@ struct fymm_render_cfg {
 	enum fymm_color_mode color;
 	enum fymm_charset charset;
 	fy_generic options;
+	const char *theme;
+	const char *theme_path;
 };
+
+/**
+ * struct fymm_theme_info - a built-in theme
+ *
+ * @name: the name to pass as fymm_render_cfg.theme
+ * @description: a one line summary, for a usage message
+ */
+struct fymm_theme_info {
+	const char *name;
+	const char *description;
+};
+
+/**
+ * fymm_theme_iterate() - walk the built-in themes
+ *
+ * Start with a NULL @prevp and call until it returns NULL::
+ *
+ *     void *iter = NULL;
+ *     const struct fymm_theme_info *ti;
+ *
+ *     while ((ti = fymm_theme_iterate(&iter)) != NULL)
+ *             printf("%s - %s\n", ti->name, ti->description);
+ */
+const struct fymm_theme_info *
+fymm_theme_iterate(void **prevp)
+	FYMM_EXPORT;
 
 /* fymm_render_cfg_default() - fill @cfg in with the defaults */
 void
