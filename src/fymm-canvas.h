@@ -117,6 +117,14 @@ void fymm_canvas_vline(struct fymm_canvas *cv, int x, int y0, int y1,
 int fymm_canvas_text(struct fymm_canvas *cv, int x, int y, const char *s,
 		     int color, uint8_t attr);
 
+/*
+ * Route a link that leaves (@sx, @sy) heading down and arrives at (@dx, @dy)
+ * from above, turning on row @ymid. Corners carry their own direction masks,
+ * because a run of one cell reaches nowhere and would draw nothing.
+ */
+void fymm_canvas_route_v(struct fymm_canvas *cv, int sx, int sy, int dx,
+			 int dy, int ymid, int color, bool dashed);
+
 /* the display width of a UTF-8 string, in terminal columns */
 int fymm_text_width(const char *s);
 

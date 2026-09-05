@@ -190,6 +190,52 @@ void fymm_canvas_vline(struct fymm_canvas *cv, int x, int y0, int y1,
 				 color, dashed);
 }
 
+/*
+ * A run whose every cell reaches both ways, so that a crossing resolves to a
+ * junction without either call knowing about the other.
+ */
+static void fymm_run_v(struct fymm_canvas *cv, int x, int y0, int y1,
+		       int color, bool dashed)
+{
+	int y;
+
+	for (y = y0; y <= y1; y++)
+		fymm_canvas_line(cv, x, y, FYMM_LN_N | FYMM_LN_S, color,
+				 dashed);
+}
+
+static void fymm_run_h(struct fymm_canvas *cv, int y, int x0, int x1,
+		       int color, bool dashed)
+{
+	int x;
+
+	for (x = x0; x <= x1; x++)
+		fymm_canvas_line(cv, x, y, FYMM_LN_W | FYMM_LN_E, color,
+				 dashed);
+}
+
+void fymm_canvas_route_v(struct fymm_canvas *cv, int sx, int sy, int dx,
+			 int dy, int ymid, int color, bool dashed)
+{
+	if (sx == dx) {
+		fymm_run_v(cv, sx, sy, dy, color, dashed);
+		return;
+	}
+
+	fymm_run_v(cv, sx, sy, ymid - 1, color, dashed);
+	fymm_canvas_line(cv, sx, ymid,
+			 (uint8_t)(FYMM_LN_N | (dx > sx ? FYMM_LN_E :
+						FYMM_LN_W)), color, dashed);
+	if (dx > sx)
+		fymm_run_h(cv, ymid, sx + 1, dx - 1, color, dashed);
+	else
+		fymm_run_h(cv, ymid, dx + 1, sx - 1, color, dashed);
+	fymm_canvas_line(cv, dx, ymid,
+			 (uint8_t)(FYMM_LN_S | (dx > sx ? FYMM_LN_W :
+						FYMM_LN_E)), color, dashed);
+	fymm_run_v(cv, dx, ymid + 1, dy, color, dashed);
+}
+
 /* Decode one UTF-8 sequence, returning its length; invalid bytes decode as
  * themselves so that a mislabelled input still renders something. */
 static size_t fymm_utf8_decode(const char *s, uint32_t *cpp)

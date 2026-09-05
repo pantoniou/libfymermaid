@@ -159,54 +159,6 @@ static void fc_rank(struct fc_layout *l, const struct fc_pair *pair,
 	}
 }
 
-/*
- * A vertical run whose every cell reaches both ways, so that a crossing with
- * a horizontal run resolves to a junction on its own.
- */
-static void fc_run_v(struct fymm_canvas *cv, int x, int y0, int y1, int color)
-{
-	int y;
-
-	for (y = y0; y <= y1; y++)
-		fymm_canvas_line(cv, x, y, FYMM_LN_N | FYMM_LN_S, color, false);
-}
-
-static void fc_run_h(struct fymm_canvas *cv, int y, int x0, int x1, int color)
-{
-	int x;
-
-	for (x = x0; x <= x1; x++)
-		fymm_canvas_line(cv, x, y, FYMM_LN_W | FYMM_LN_E, color, false);
-}
-
-/*
- * Route a link that leaves the bottom of a box at (@sx, @sy) and enters the
- * top of another at (@dx, @dy), turning on row @ymid. The corners carry their
- * own masks; a single cell run would otherwise reach nowhere and draw
- * nothing.
- */
-static void fc_route(struct fymm_canvas *cv, int sx, int sy, int dx, int dy,
-		     int ymid, int color)
-{
-	if (sx == dx) {
-		fc_run_v(cv, sx, sy, dy, color);
-		return;
-	}
-
-	fc_run_v(cv, sx, sy, ymid - 1, color);
-	fymm_canvas_line(cv, sx, ymid,
-			 (uint8_t)(FYMM_LN_N | (dx > sx ? FYMM_LN_E :
-						FYMM_LN_W)), color, false);
-	if (dx > sx)
-		fc_run_h(cv, ymid, sx + 1, dx - 1, color);
-	else
-		fc_run_h(cv, ymid, dx + 1, sx - 1, color);
-	fymm_canvas_line(cv, dx, ymid,
-			 (uint8_t)(FYMM_LN_S | (dx > sx ? FYMM_LN_W :
-						FYMM_LN_E)), color, false);
-	fc_run_v(cv, dx, ymid + 1, dy, color);
-}
-
 char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 			    const struct fymm_render_cfg *cfg)
 {
@@ -381,18 +333,19 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 
 			fymm_canvas_line(cv, sx, sy + 1,
 					 FYMM_LN_N | FYMM_LN_E, color, false);
-			fc_run_h(cv, sy + 1, sx + 1, lane - 1, color);
+			fymm_canvas_hline(cv, sy + 1, sx + 1, lane - 1, color, false);
 			fymm_canvas_line(cv, lane, sy + 1,
 					 FYMM_LN_W | FYMM_LN_N, color, false);
-			fc_run_v(cv, lane, dy, sy, color);
+			fymm_canvas_vline(cv, lane, dy, sy, color, false);
 			fymm_canvas_line(cv, lane, dy - 1,
 					 FYMM_LN_S | FYMM_LN_W, color, false);
-			fc_run_h(cv, dy - 1, dx + 1, lane - 1, color);
+			fymm_canvas_hline(cv, dy - 1, dx + 1, lane - 1, color, false);
 			fymm_canvas_line(cv, dx, dy - 1,
 					 FYMM_LN_E | FYMM_LN_S, color, false);
 		} else {
 			ymid = sy + 1 + (dy - sy - 2) / 2;
-			fc_route(cv, sx, sy + 1, dx, dy - 1, ymid, color);
+			fymm_canvas_route_v(cv, sx, sy + 1, dx, dy - 1, ymid,
+					    color, false);
 		}
 
 		/* the arrowhead sits on the row above the box it enters */
