@@ -86,6 +86,16 @@ void fymm_theme_default(struct fymm_theme *theme);
  * number of keys that were not recognised. */
 int fymm_theme_apply(struct fymm_theme *theme, fy_generic colors);
 
+/*
+ * Apply a mermaid `themeVariables` mapping over @theme.
+ *
+ * Mermaid names its colours differently per diagram -- `git0` for a gitGraph
+ * branch, `pie1` for a pie slice, `cScale0` for a journey or a radar series --
+ * and they all land on the same eight series colours here. A name that means
+ * nothing to a terminal, a font size or a background, is ignored.
+ */
+void fymm_theme_apply_mermaid(struct fymm_theme *theme, fy_generic vars);
+
 /* FYMM_COLOR_DEFAULT - leave the cell in the terminal's own colour */
 #define FYMM_COLOR_DEFAULT (-1)
 

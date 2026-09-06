@@ -54,7 +54,7 @@ char *fymm_render_packet(const struct fymm_diagram *d, fy_generic model,
 	char buf[32];
 	char *out;
 
-	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d)))
+	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
 
 	fields = fy_get(model, "fields");

@@ -195,7 +195,7 @@ char *fymm_render_mindmap(const struct fymm_diagram *d, fy_generic model,
 	int width, height, top;
 	char *out;
 
-	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d)))
+	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
 
 	root = fy_get(model, "root");

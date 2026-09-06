@@ -165,7 +165,7 @@ char *fymm_render_gantt(const struct fymm_diagram *d, fy_generic model,
 	bool ascii;
 	char *out = NULL;
 
-	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d)))
+	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
 
 	sections = fy_get(model, "sections");

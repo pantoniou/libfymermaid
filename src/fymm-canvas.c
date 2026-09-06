@@ -499,6 +499,73 @@ int fymm_theme_apply(struct fymm_theme *theme, fy_generic colors)
 	return unknown;
 }
 
+/*
+ * How mermaid's own theme variables land on this palette. Mermaid names its
+ * colours per diagram, so several names reach the same entry: the eight
+ * series colours are `git0`..`git7` in a gitGraph, `pie1`..`pie8` in a pie
+ * and `cScale0`..`cScale7` elsewhere.
+ */
+static const struct {
+	const char *name;
+	int entry;
+} fymm_mermaid_vars[] = {
+	{ "git0", FYMM_PAL_BRANCH0 + 0 },
+	{ "git1", FYMM_PAL_BRANCH0 + 1 },
+	{ "git2", FYMM_PAL_BRANCH0 + 2 },
+	{ "git3", FYMM_PAL_BRANCH0 + 3 },
+	{ "git4", FYMM_PAL_BRANCH0 + 4 },
+	{ "git5", FYMM_PAL_BRANCH0 + 5 },
+	{ "git6", FYMM_PAL_BRANCH0 + 6 },
+	{ "git7", FYMM_PAL_BRANCH0 + 7 },
+	/* a pie numbers its slices from one */
+	{ "pie1", FYMM_PAL_BRANCH0 + 0 },
+	{ "pie2", FYMM_PAL_BRANCH0 + 1 },
+	{ "pie3", FYMM_PAL_BRANCH0 + 2 },
+	{ "pie4", FYMM_PAL_BRANCH0 + 3 },
+	{ "pie5", FYMM_PAL_BRANCH0 + 4 },
+	{ "pie6", FYMM_PAL_BRANCH0 + 5 },
+	{ "pie7", FYMM_PAL_BRANCH0 + 6 },
+	{ "pie8", FYMM_PAL_BRANCH0 + 7 },
+	{ "cScale0", FYMM_PAL_BRANCH0 + 0 },
+	{ "cScale1", FYMM_PAL_BRANCH0 + 1 },
+	{ "cScale2", FYMM_PAL_BRANCH0 + 2 },
+	{ "cScale3", FYMM_PAL_BRANCH0 + 3 },
+	{ "cScale4", FYMM_PAL_BRANCH0 + 4 },
+	{ "cScale5", FYMM_PAL_BRANCH0 + 5 },
+	{ "cScale6", FYMM_PAL_BRANCH0 + 6 },
+	{ "cScale7", FYMM_PAL_BRANCH0 + 7 },
+	/* the named entries */
+	{ "commitLabelColor", FYMM_PAL_LABEL },
+	{ "labelColor", FYMM_PAL_LABEL },
+	{ "textColor", FYMM_PAL_LABEL },
+	{ "tagLabelColor", FYMM_PAL_TAG },
+	{ "titleColor", FYMM_PAL_TITLE },
+	{ "primaryTextColor", FYMM_PAL_TITLE },
+};
+
+void fymm_theme_apply_mermaid(struct fymm_theme *theme, fy_generic vars)
+{
+	unsigned int rgb;
+	fy_generic k, v;
+	size_t i;
+
+	if (!fy_is_mapping(vars))
+		return;
+
+	fy_foreach_key_value(k, v, vars) {
+		for (i = 0; i < sizeof(fymm_mermaid_vars) /
+			    sizeof(fymm_mermaid_vars[0]); i++) {
+			if (!fy_equal(k, fymm_mermaid_vars[i].name))
+				continue;
+			rgb = fymm_color_parse(fy_str(v));
+			if (rgb != FYMM_RGB_INVALID)
+				theme->entry[fymm_mermaid_vars[i].entry].rgb =
+					rgb;
+			break;
+		}
+	}
+}
+
 struct fymm_buf {
 	char *data;
 	size_t size, alloc;

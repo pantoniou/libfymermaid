@@ -93,18 +93,19 @@ static const struct fymm_embedded_theme *fymm_theme_find(const char *name)
 
 int fymm_theme_resolve(struct fymm_theme *theme,
 		       const struct fymm_render_cfg *cfg,
-		       struct fy_generic_builder *gb)
+		       struct fy_generic_builder *gb, fy_generic model)
 {
 	const struct fymm_embedded_theme *et;
 	fy_generic doc;
 
 	fymm_theme_default(theme);
-	if (!cfg)
-		return 0;
 
-	/* a named theme is applied over the default, and a theme file over
-	 * whatever that produced, so a file may carry one key */
-	if (cfg->theme && *cfg->theme) {
+	/*
+	 * The layers, in order: the built-in default, the theme the caller
+	 * named, the diagram's own `themeVariables`, and last a theme file,
+	 * so that whoever runs the tool can always have the final word.
+	 */
+	if (cfg && cfg->theme && *cfg->theme) {
 		et = fymm_theme_find(cfg->theme);
 		if (!et)
 			return -1;
@@ -113,7 +114,11 @@ int fymm_theme_resolve(struct fymm_theme *theme,
 			return -1;
 	}
 
-	if (cfg->theme_path && *cfg->theme_path) {
+	fymm_theme_apply_mermaid(theme,
+				 fy_get(fy_get(model, "config"),
+					"themeVariables"));
+
+	if (cfg && cfg->theme_path && *cfg->theme_path) {
 		doc = fy_parse_file(gb, FYMM_YAML_PARSE_FLAGS, cfg->theme_path);
 		if (!fy_is_mapping(doc))
 			return -1;

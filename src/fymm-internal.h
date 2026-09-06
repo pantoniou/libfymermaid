@@ -183,7 +183,7 @@ const struct fymm_diagram_ops *fymm_diagram_ops_by_type(enum fymm_diagram_type t
 struct fymm_theme;
 int fymm_theme_resolve(struct fymm_theme *theme,
 		       const struct fymm_render_cfg *cfg,
-		       struct fy_generic_builder *gb);
+		       struct fy_generic_builder *gb, fy_generic model);
 
 /* one parser and one renderer per diagram type */
 int fymm_parse_gitgraph(struct fymm_parser *p, fy_generic config,

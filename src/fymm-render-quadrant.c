@@ -55,7 +55,7 @@ char *fymm_render_quadrant(const struct fymm_diagram *d, fy_generic model,
 	uint32_t dot;
 	char *out;
 
-	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d)))
+	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
 
 	points = fy_get(model, "points");

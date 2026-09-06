@@ -93,7 +93,7 @@ char *fymm_render_radar(const struct fymm_diagram *d, fy_generic model,
 	char buf[64];
 	char *out;
 
-	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d)))
+	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
 
 	axes = fy_get(model, "axes");

@@ -73,6 +73,7 @@ enum fymm_color_mode fymm_detect_color_mode(int fd)
 	if (!(env && *env && strcmp(env, "0")) && fd >= 0 && !isatty(fd))
 		return FYMM_COLOR_NONE;
 
+	/* the de facto marker a 24 bit terminal sets for itself */
 	env = getenv("COLORTERM");
 	if (env && (!strcmp(env, "truecolor") || !strcmp(env, "24bit")))
 		return FYMM_COLOR_TRUECOLOR;
@@ -80,7 +81,15 @@ enum fymm_color_mode fymm_detect_color_mode(int fd)
 	env = getenv("TERM");
 	if (!env || !*env || !strcmp(env, "dumb"))
 		return FYMM_COLOR_NONE;
-	if (strstr(env, "256color") || strstr(env, "direct"))
+	/*
+	 * A terminfo entry ending in `-direct` is the direct-colour form of
+	 * its terminal: `xterm-direct` and `tmux-direct` mean 24 bit, not
+	 * 256. Reading them as 256 threw away the colour they were asking
+	 * for.
+	 */
+	if (strstr(env, "-direct") || strstr(env, "truecolor"))
+		return FYMM_COLOR_TRUECOLOR;
+	if (strstr(env, "256color") || strstr(env, "256"))
 		return FYMM_COLOR_256;
 	return FYMM_COLOR_16;
 }
@@ -275,7 +284,7 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 
 	memset(&g, 0, sizeof(g));
 
-	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d)))
+	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
 
 	config = fy_get(model, "config");
