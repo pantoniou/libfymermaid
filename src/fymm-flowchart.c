@@ -206,6 +206,77 @@ static const char *fc_node(struct fc *f, const char *id, size_t idlen,
 	return iid;
 }
 
+/*
+ * Strip the quotes a label may carry. Backticks inside the quotes make it a
+ * markdown string, and only then is the text read as markdown.
+ */
+static void fc_unquote(const char **sp, const char **ep, bool *markdown)
+{
+	const char *ts = *sp, *te = *ep;
+
+	if (te - ts >= 2 && *ts == '"' && te[-1] == '"') {
+		ts++;
+		te--;
+		if (te - ts >= 2 && *ts == '`' && te[-1] == '`') {
+			ts++;
+			te--;
+			*markdown = true;
+		}
+	}
+	*sp = ts;
+	*ep = te;
+}
+
+/*
+ * Read the header of a container: `subgraph uid[Title]`, `subgraph "Title"`,
+ * or `subgraph plain words`. The id is what a later statement names the
+ * container by, and the title is what is drawn on its frame; a header that
+ * carries only one of them uses it as both.
+ */
+static fy_generic fc_container(struct fc *f, const char *t, const char *e)
+{
+	const char *q, *close, *ts, *te;
+	const char *id, *ide;
+	bool markdown = false;
+	bool titled;
+
+	while (t < e && (*t == ' ' || *t == '\t'))
+		t++;
+	while (e > t && (e[-1] == ' ' || e[-1] == '\t'))
+		e--;
+
+	/* an id runs up to the bracket that opens the title */
+	for (q = t; q < e && *q != '[' && *q != '('; q++)
+		;
+	close = q < e ? fc_match(q, e, *q == '[' ? "[" : "(",
+				 *q == '[' ? "]" : ")") : NULL;
+	titled = q > t && close;
+	if (titled) {
+		id = t;
+		ide = q;
+		ts = q + 1;
+		te = close;
+	} else {
+		id = ts = t;
+		ide = te = e;
+	}
+
+	fc_unquote(&ts, &te, &markdown);
+	/* a header with no bracket names the container by its own title */
+	if (!titled) {
+		id = ts;
+		ide = te;
+	}
+
+	return fy_mapping(f->gb,
+		"id", fymm_trim_text(f->gb, id, ide),
+		"title", fy_value(f->gb,
+				  fy_gb_intern_string_size(f->gb, ts,
+							   (size_t)(te - ts))),
+		"markdown", markdown,
+		"depth", (long long)fy_len(f->stack));
+}
+
 /* Skip a `:::className` decoration; a terminal has no use for the class. */
 static const char *fc_skip_class(const char *q, const char *e)
 {
@@ -317,17 +388,7 @@ static const char *fc_read_node(struct fc *f, const char *s, const char *e,
 
 		ts = q + ol;
 		te = close;
-		/* backticks inside the quotes make it a markdown string, and
-		 * only then is the text read as markdown */
-		if (te - ts >= 2 && *ts == '"' && te[-1] == '"') {
-			ts++;
-			te--;
-			if (te - ts >= 2 && *ts == '`' && te[-1] == '`') {
-				ts++;
-				te--;
-				markdown = true;
-			}
-		}
+		fc_unquote(&ts, &te, &markdown);
 		*idp = fc_node(f, id, (size_t)(q - id),
 			       fy_gb_intern_string_size(f->gb, ts,
 							(size_t)(te - ts)),
@@ -722,16 +783,10 @@ static int fc_parse(struct fymm_parser *p, fy_generic config,
 				  line[4] == '\t')) :
 				(len >= 8 && !strncasecmp(line, "subgraph", 8))) {
 			const char *t = line + (agentflow ? 4 : 8);
-			fy_generic name;
+			fy_generic sg = fc_container(&f, t, e);
 
-			while (t < e && (*t == ' ' || *t == '\t'))
-				t++;
-			name = t < e ? fymm_trim_text(gb, t, e) :
-				       fy_value(gb, "");
-			f.stack = fy_append(gb, f.stack, name);
-			f.subgraphs = fy_append(gb, f.subgraphs,
-				fy_mapping(gb, "title", name,
-					   "depth", (long long)(fy_len(f.stack) - 1)));
+			f.stack = fy_append(gb, f.stack, fy_get(sg, "id"));
+			f.subgraphs = fy_append(gb, f.subgraphs, sg);
 			continue;
 		}
 		if (len == 3 && !strncasecmp(line, "end", 3)) {

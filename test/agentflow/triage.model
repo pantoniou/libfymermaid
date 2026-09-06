@@ -14,17 +14,17 @@ nodes:
   text: new issue
   shape: parallelogram
   markdown: false
-  subgraph: triage["Triage"]
+  subgraph: triage
 - id: classify
   text: classify
   shape: rounded
   markdown: false
-  subgraph: triage["Triage"]
+  subgraph: triage
 - id: ok
   text: actionable?
   shape: rhombus
   markdown: false
-  subgraph: triage["Triage"]
+  subgraph: triage
 - id: assign
   text: assign
   shape: subroutine
@@ -67,7 +67,9 @@ edges:
   bidirectional: false
   text: null
 subgraphs:
-- title: triage["Triage"]
+- id: triage
+  title: Triage
+  markdown: false
   depth: 0
 connectors:
 - github
