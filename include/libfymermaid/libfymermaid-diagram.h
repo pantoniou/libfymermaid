@@ -66,6 +66,10 @@ extern "C" {
  * @FYMM_DT_BLOCK: a block diagram
  * @FYMM_DT_PACKET: a packet diagram
  * @FYMM_DT_ARCHITECTURE: an architecture diagram
+ * @FYMM_DT_INFO: the info diagram, which reports the renderer
+ * @FYMM_DT_ISHIKAWA: a cause and effect diagram
+ * @FYMM_DT_TREEVIEW: a file tree
+ * @FYMM_DT_EVENTMODELING: an event model
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
@@ -89,6 +93,10 @@ enum fymm_diagram_type {
 	FYMM_DT_BLOCK,
 	FYMM_DT_PACKET,
 	FYMM_DT_ARCHITECTURE,
+	FYMM_DT_INFO,
+	FYMM_DT_ISHIKAWA,
+	FYMM_DT_TREEVIEW,
+	FYMM_DT_EVENTMODELING,
 };
 
 /* the opaque parsed diagram */

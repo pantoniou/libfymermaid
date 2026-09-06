@@ -125,6 +125,10 @@ set(_fymm_sources
     fymm-block.c fymm-render-block.c
     fymm-packet.c fymm-render-packet.c
     fymm-architecture.c fymm-render-architecture.c
+    fymm-eventmodeling.c fymm-render-eventmodeling.c
+    fymm-info.c fymm-render-info.c
+    fymm-ishikawa.c fymm-render-ishikawa.c
+    fymm-treeview.c fymm-render-treeview.c
     fymm-internal.h
 )
 

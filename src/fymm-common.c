@@ -176,6 +176,30 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "eventmodeling",
+		.config_key = "eventmodeling",
+		.type = FYMM_DT_EVENTMODELING,
+		.parse = fymm_parse_eventmodeling,
+		.render = fymm_render_eventmodeling,
+	}, {
+		.keyword = "info",
+		.config_key = "info",
+		.type = FYMM_DT_INFO,
+		.parse = fymm_parse_info,
+		.render = fymm_render_info,
+	}, {
+		.keyword = "ishikawa-beta",
+		.config_key = "ishikawa",
+		.type = FYMM_DT_ISHIKAWA,
+		.parse = fymm_parse_ishikawa,
+		.render = fymm_render_ishikawa,
+	}, {
+		.keyword = "treeView-beta",
+		.config_key = "treeView",
+		.type = FYMM_DT_TREEVIEW,
+		.parse = fymm_parse_treeview,
+		.render = fymm_render_treeview,
+	}, {
 		.keyword = "architecture-beta",
 		.config_key = "architecture",
 		.type = FYMM_DT_ARCHITECTURE,
