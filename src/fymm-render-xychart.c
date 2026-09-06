@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "fymm-braille.h"
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
 #include "fymm-markdown.h"
@@ -104,6 +105,7 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 	int px, py, prev_x = 0, prev_y = 0;
 	double lo, hi, v, span;
 	bool ascii, first;
+	struct fymm_braille *br = NULL;
 	char buf[64];
 	char *out;
 
@@ -176,7 +178,12 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 	cv = fymm_canvas_create_cfg(width, height, cfg, &theme);
 	if (!cv)
 		return NULL;
-	ascii = cv->charset == FYMM_CHARSET_ASCII;
+	ascii = fymm_charset_ascii(cv->charset);
+
+	/* a line series is plotted on a braille surface when the charset
+	 * allows it, and stepped through the cells when it does not */
+	if (fymm_charset_rich(cv->charset))
+		br = fymm_braille_create(width - left, plot_h);
 
 	if (title)
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
@@ -240,6 +247,24 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 						fymm_canvas_put(cv, bx + k, y,
 								g, color, 0);
 				}
+			} else if (br) {
+				/*
+				 * On a braille surface the point keeps its
+				 * place within the cell, so the line between
+				 * two points is a line rather than a stair.
+				 */
+				int bx = (px - left) * 2;
+				int by = (int)((double)(v - lo) / span *
+					       (plot_h * 4 - 1));
+
+				by = plot_h * 4 - 1 - by;
+				if (!first)
+					fymm_braille_line(br, prev_x, prev_y,
+							  bx, by, color);
+				fymm_braille_point(br, bx, by, color);
+				prev_x = bx;
+				prev_y = by;
+				first = false;
 			} else {
 				if (!first)
 					xy_step(cv, prev_x, prev_y, px, py,
@@ -284,6 +309,11 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 				(int)(i % 8), 0);
 		x += 2 + fymm_rich_text(cv, x + 2, y, name, FYMM_PAL_LABEL,
 					  0) + 2;
+	}
+
+	if (br) {
+		fymm_braille_blit(cv, left, top, br);
+		fymm_braille_destroy(br);
 	}
 
 	out = fymm_canvas_emit(cv);
