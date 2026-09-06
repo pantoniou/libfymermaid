@@ -241,6 +241,18 @@ call knowing about the other. Add a line shape by extending the mask table.
 A literal glyph, such as a commit or a label, is never overwritten by a line.
 Column widths come from the label widths, which keeps a collision rare.
 
+The width a render is given is a limit. A renderer measures at the size its
+content needs and `fymm_canvas_create_cfg()` clips on the way out, in the
+canvas, where the cells are still cells and no escape has been written. Do not
+make a renderer aware that the terminal is narrower than the diagram; add the
+clip, not a second layout.
+
+`FYMM_FIT_SHRINK` closes the gaps first, through `fymm_layout_cfg.max_width`.
+The budget given to the layout is the width itself, not the width minus what
+the renderer draws around the graph: the margin, the return lanes and the
+container frames are only drawn where they are used, so subtracting them closes
+up a graph that already fits.
+
 A flowchart container is framed after the layout has run, not during it. The
 layered layout places each rank on its own, so a node can land inside the
 rectangle that covers another container's members; the renderer pushes such a

@@ -137,7 +137,27 @@ Write to \fIFILE\fR instead of standard output.
 .TP
 .BR \-w ", " \-\-width " \fIN\fR"
 Render for a terminal \fIN\fR columns wide.  The default is taken from
-\fB$COLUMNS\fR, then from the terminal itself, then 80.
+\fB$COLUMNS\fR, then from the terminal itself, then 80.  The width is a
+limit: no line of the output goes over it unless \fB\-\-fit none\fR says so.
+.TP
+.BR \-F ", " \-\-fit " \fIPOLICY\fR"
+What to do with a diagram wider than the width.
+.RS
+.TP
+.B shrink
+Close the gaps between the parts of the drawing until it fits, then clip
+whatever is still over.  This keeps the whole diagram on the screen for as
+long as closing it up can.  An edge label that no longer fits the gap it sits
+in is cut and ends in an ellipsis.  The default.
+.TP
+.B clip
+Draw at the natural size and clip to the width.  What fits is drawn exactly as
+it would be with no limit, and the rest is lost off the right.
+.TP
+.B none
+Ignore the width and emit the whole drawing, however wide.  For a pager that
+scrolls sideways, or a file.
+.RE
 .TP
 .BR \-c ", " \-\-color " \fIMODE\fR"
 One of \fBauto\fR (the default), \fBnone\fR, \fB16\fR, \fB256\fR or \fBtrue\fR.

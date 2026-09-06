@@ -107,6 +107,24 @@ Two deliberate differences:
   than with a random hash, so a diagram renders identically every time and the
   label stays usable as a `cherry-pick` target.
 
+## Fitting the terminal
+
+The width is a limit, not a hint. A diagram wider than it is closed up until it
+fits and whatever is still over is clipped, so no line of the output goes over
+the width. `fy-mermaid --fit` and `fymm_render_cfg.fit` choose between that
+(`shrink`, the default), clipping at the natural size (`clip`), and emitting
+the whole drawing however wide (`none`, for a pager that scrolls sideways).
+
+Closing up reduces the gaps between the parts of the drawing, never the
+content: a node keeps its label. An edge label that sits in a gap that has been
+closed is cut and ends in an ellipsis, because the alternative is drawing it
+over the node beside it.
+
+```
+$ fy-mermaid -w 60 --fit clip     three of six nodes, the rest off the right
+$ fy-mermaid -w 60 --fit shrink   all six, in 58 columns
+```
+
 ## Colour
 
 Three depths, chosen automatically or with `--color`: 24-bit, the xterm-256
