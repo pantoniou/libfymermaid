@@ -241,6 +241,33 @@ call knowing about the other. Add a line shape by extending the mask table.
 A literal glyph, such as a commit or a label, is never overwritten by a line.
 Column widths come from the label widths, which keeps a collision rare.
 
+## Looking at a render
+
+Colour and box drawing do not survive a paste into a bug report or a review, so
+turn a render into an image rather than describing it:
+
+```sh
+cat > /tmp/one.sh <<'EOS'
+#!/bin/bash
+fy-mermaid -w 44 --fit legend -c truecolor test/gitgraph/many-branches.mmd
+EOS
+chmod +x /tmp/one.sh
+TERM=xterm-256color COLORTERM=truecolor \
+    asciinema rec --overwrite --cols 60 --rows 16 -c /tmp/one.sh /tmp/one.cast
+agg --font-family "DejaVu Sans Mono" --font-size 22 --theme asciinema \
+    --last-frame-duration 1 /tmp/one.cast /tmp/one.gif
+convert "/tmp/one.gif[-1]" -trim +repage -bordercolor '#121314' -border 16 \
+    /tmp/one.png
+```
+
+Two things that go wrong. Recording several renders into one cast and taking
+the last frame superimposes them, because `agg` composites; record one render
+per cast. And `agg`'s default font has no box drawing, so `\(en` and the
+junctions come out as letters; name a font that has them.
+
+Set `--cols` and `--rows` explicitly. The default is the recording terminal's
+size, which makes the image depend on the window it was made in.
+
 `src/fymm-legend.c` holds the labels a drawing has no room for, so that a
 narrow terminal loses the place of a label rather than the label itself. A
 marker is drawn in `fymm_legend_color()`, which is the colour of its legend
