@@ -70,6 +70,7 @@ extern "C" {
  * @FYMM_DT_ISHIKAWA: a cause and effect diagram
  * @FYMM_DT_TREEVIEW: a file tree
  * @FYMM_DT_EVENTMODELING: an event model
+ * @FYMM_DT_WARDLEY: a Wardley map
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
@@ -97,6 +98,7 @@ enum fymm_diagram_type {
 	FYMM_DT_ISHIKAWA,
 	FYMM_DT_TREEVIEW,
 	FYMM_DT_EVENTMODELING,
+	FYMM_DT_WARDLEY,
 };
 
 /* the opaque parsed diagram */

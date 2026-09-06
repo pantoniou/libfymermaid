@@ -176,6 +176,12 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "wardley-beta",
+		.config_key = "wardley",
+		.type = FYMM_DT_WARDLEY,
+		.parse = fymm_parse_wardley,
+		.render = fymm_render_wardley,
+	}, {
 		.keyword = "eventmodeling",
 		.config_key = "eventmodeling",
 		.type = FYMM_DT_EVENTMODELING,
