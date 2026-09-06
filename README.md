@@ -64,7 +64,13 @@ test suite pins.
 | `radar` | 10/10 | bars grouped by axis, not a polygon |
 | `journey` | 7/7 | scores drawn as pips |
 | `gantt` | 7/7 | day-resolved bars, `after`/`until` honoured |
-| `agentflow`, `railroad`, `wardley`, `treeView`, `eventmodeling`, `info`, `ishikawa` | — | not yet; the header is reported as unsupported |
+| `agentflow` | 68/68 | the flowchart grammar with flows, connectors and agent shapes |
+| `railroad` | 67/67 | four grammar notations, drawn as rails |
+| `wardley` | 19/19 | evolution across, visibility up, names in a legend |
+| `eventmodeling` | 7/7 | frames in the column their kind belongs to |
+| `treeView` | 5/5 | an indentation tree, with comments beside entries |
+| `info` | 4/4 | the library version |
+| `ishikawa` | 3/3 | causes as ribs off a spine |
 
 "corpus" is upstream mermaid's own parser suite; see Conformance.
 
@@ -92,6 +98,9 @@ Two deliberate differences:
   composite shape that mermaid nests -- a subgraph, a C4 boundary, an
   architecture group -- becomes a heading over its members. Character cells
   cannot nest a box inside a box and keep either legible.
+- A Wardley map plots its nodes and numbers them, with the names in a legend
+  beneath: at terminal resolution the names cannot sit on the plot without
+  colliding. Its links are right-angled routes rather than straight lines.
 - A commit written without an `id:` is labelled with its sequence number rather
   than with a random hash, so a diagram renders identically every time and the
   label stays usable as a `cherry-pick` target.

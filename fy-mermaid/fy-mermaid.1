@@ -74,6 +74,27 @@ tasks with their scores as pips
 .TP
 .B gantt
 day\-resolved bars, honouring \fBafter\fR and \fBuntil\fR
+.TP
+.B agentflow\-beta
+the flowchart grammar with flows, connectors and agent shapes
+.TP
+.BR railroad\-beta ", " railroad\-ebnf\-beta ", " railroad\-peg\-beta ", " railroad\-abnf\-beta
+a grammar drawn as rails, in any of four notations
+.TP
+.B wardley\-beta
+evolution across, visibility up, names in a legend
+.TP
+.B eventmodeling
+frames in the column their kind belongs to
+.TP
+.B treeView\-beta
+an indentation tree, with comments beside entries
+.TP
+.B ishikawa\-beta
+causes drawn as ribs off a spine
+.TP
+.B info
+the library version
 .PP
 A header naming any other diagram type is reported as unsupported.
 .SH RENDERING NOTES
@@ -83,6 +104,9 @@ differently rather than badly:
 A pie becomes a sorted bar chart and a radar becomes bars grouped by axis.
 Two angles a few percent apart cannot be compared by eye at this resolution;
 two bars can.
+.IP \(bu 2
+A Wardley map numbers its nodes on the plot and names them in a legend
+beneath it, because the names cannot sit on the plot without colliding.
 .IP \(bu 2
 A timeline runs down the page rather than across it, because a terminal is
 tall and task text is prose.

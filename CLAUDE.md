@@ -119,7 +119,12 @@ exempts the corpus from the whitespace checks for this reason.
 `FYMM_IMPLEMENTED_SUITES` in `test/CMakeLists.txt` lists the suites that must
 pass. Every other suite is registered and disabled, so the corpus stays
 countable and `ctest` stays green. Implementing a diagram type means adding its
-suite to that list and making the whole suite pass.
+suite to that list and making the whole suite pass. Every suite is now on that
+list: all 1144 imported cases are active, so a new suite arrives only with a
+re-import from upstream, and a disabled one is a regression.
+
+It is a `CACHE STRING`, so editing it does not reach an existing build tree.
+Configure fresh after changing it, or the corpus silently stays as it was.
 
 A corpus case asserts the outcome of a parse and no more. It does not assert
 the model. Use it to find a syntax the parser does not accept and a source it
