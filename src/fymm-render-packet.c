@@ -81,10 +81,7 @@ char *fymm_render_packet(const struct fymm_diagram *d, fy_generic model,
 	/* a number row, then a box of three rows for each row of bits */
 	height = top + rows * 5;
 
-	cv = fymm_canvas_create(width, height,
-				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
-					cfg->charset : FYMM_CHARSET_UNICODE,
-				cfg ? cfg->color : FYMM_COLOR_NONE, &theme);
+	cv = fymm_canvas_create_cfg(width, height, cfg, &theme);
 	if (!cv)
 		return NULL;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;

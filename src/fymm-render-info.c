@@ -48,10 +48,7 @@ char *fymm_render_info(const struct fymm_diagram *d, fy_generic model,
 	version = fy_get(model, "version", "");
 	snprintf(buf, sizeof(buf), "libfymermaid %s", version);
 
-	cv = fymm_canvas_create(fymm_text_width(buf) + 2, 1,
-				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
-					cfg->charset : FYMM_CHARSET_UNICODE,
-				cfg ? cfg->color : FYMM_COLOR_NONE, &theme);
+	cv = fymm_canvas_create_cfg(fymm_text_width(buf) + 2, 1, cfg, &theme);
 	if (!cv)
 		return NULL;
 

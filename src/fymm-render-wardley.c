@@ -98,10 +98,7 @@ char *fymm_render_wardley(const struct fymm_diagram *d, fy_generic model,
 	legend_y = plot_y + WL_PLOT_H + 2;
 	height = legend_y + (int)(nnodes + nnotes + npipes) + 1;
 
-	cv = fymm_canvas_create(width, height,
-				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
-					cfg->charset : FYMM_CHARSET_UNICODE,
-				cfg ? cfg->color : FYMM_COLOR_NONE, &theme);
+	cv = fymm_canvas_create_cfg(width, height, cfg, &theme);
 	if (!cv)
 		goto err;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;

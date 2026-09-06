@@ -348,10 +348,7 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 	g.width = g.x[g.ncols - 1] + g.slot[g.ncols - 1] + 1;
 	g.height = g.top + (int)nbranches * 3;
 
-	cv = fymm_canvas_create(g.width, g.height,
-				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
-					cfg->charset : FYMM_CHARSET_UNICODE,
-				cfg ? cfg->color : FYMM_COLOR_NONE, &theme);
+	cv = fymm_canvas_create_cfg(g.width, g.height, cfg, &theme);
 	if (!cv)
 		goto err_out;
 

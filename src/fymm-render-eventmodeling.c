@@ -98,10 +98,7 @@ char *fymm_render_eventmodeling(const struct fymm_diagram *d, fy_generic model,
 	top = (title ? 2 : 0) + 2;
 	height = top + (int)nframes;
 
-	cv = fymm_canvas_create(width + 2, height,
-				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
-					cfg->charset : FYMM_CHARSET_UNICODE,
-				cfg ? cfg->color : FYMM_COLOR_NONE, &theme);
+	cv = fymm_canvas_create_cfg(width + 2, height, cfg, &theme);
 	if (!cv)
 		return NULL;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;

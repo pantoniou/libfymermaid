@@ -107,8 +107,18 @@ struct fymm_cell {
 	uint8_t attr;
 };
 
+/*
+ * struct fymm_canvas - the cell grid a diagram is drawn on
+ *
+ * @w and @h are the grid the renderer measured for its content. @clip_w and
+ * @clip_h are what the caller will accept, and emission stops there; 0 means
+ * no limit. A drawing is measured at the size its content needs and clipped
+ * on the way out, so a renderer never has to know the terminal is narrower
+ * than the diagram.
+ */
 struct fymm_canvas {
 	int w, h;
+	int clip_w, clip_h;
 	struct fymm_cell *cells;
 	enum fymm_charset charset;
 	enum fymm_color_mode color;
@@ -118,6 +128,15 @@ struct fymm_canvas {
 struct fymm_canvas *fymm_canvas_create(int w, int h, enum fymm_charset charset,
 				       enum fymm_color_mode color,
 				       const struct fymm_theme *theme);
+
+/*
+ * The same, taking the charset, the colour mode and the width to clip to from
+ * a render configuration. Every renderer wants exactly this, so the defaulting
+ * lives here rather than in each of them.
+ */
+struct fymm_canvas *fymm_canvas_create_cfg(int w, int h,
+					   const struct fymm_render_cfg *cfg,
+					   const struct fymm_theme *theme);
 void fymm_canvas_destroy(struct fymm_canvas *cv);
 
 void fymm_canvas_put(struct fymm_canvas *cv, int x, int y, uint32_t cp,

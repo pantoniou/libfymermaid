@@ -81,10 +81,7 @@ char *fymm_render_ishikawa(const struct fymm_diagram *d, fy_generic model,
 		height += 1 + (int)ncauses + 1;
 	}
 
-	cv = fymm_canvas_create(width + 2, height + 1,
-				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
-					cfg->charset : FYMM_CHARSET_UNICODE,
-				cfg ? cfg->color : FYMM_COLOR_NONE, &theme);
+	cv = fymm_canvas_create_cfg(width + 2, height + 1, cfg, &theme);
 	if (!cv)
 		return NULL;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;

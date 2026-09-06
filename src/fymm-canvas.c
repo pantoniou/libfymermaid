@@ -112,6 +112,30 @@ struct fymm_canvas *fymm_canvas_create(int w, int h, enum fymm_charset charset,
 	return cv;
 }
 
+/*
+ * The width a render was asked for is a limit, not a hint: a diagram wider
+ * than the terminal is unreadable, and wrapping it would break every box it
+ * draws. The canvas is measured at the size the content needs and clipped to
+ * the width on the way out.
+ */
+struct fymm_canvas *fymm_canvas_create_cfg(int w, int h,
+					   const struct fymm_render_cfg *cfg,
+					   const struct fymm_theme *theme)
+{
+	struct fymm_canvas *cv;
+
+	cv = fymm_canvas_create(w, h,
+				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
+					cfg->charset : FYMM_CHARSET_UNICODE,
+				cfg ? cfg->color : FYMM_COLOR_NONE, theme);
+	if (!cv)
+		return NULL;
+
+	if (cfg && cfg->width > 0)
+		cv->clip_w = cfg->width;
+	return cv;
+}
+
 void fymm_canvas_destroy(struct fymm_canvas *cv)
 {
 	if (!cv)
@@ -697,6 +721,9 @@ char *fymm_canvas_emit(struct fymm_canvas *cv)
 		}
 	}
 
+	if (cv->clip_h > 0 && stop - first > cv->clip_h)
+		stop = first + cv->clip_h;
+
 	for (y = first; y < stop; y++) {
 		/* trailing blanks are noise in a golden file and in a pager */
 		last = -1;
@@ -704,6 +731,31 @@ char *fymm_canvas_emit(struct fymm_canvas *cv)
 			c = &cv->cells[(size_t)y * (size_t)cv->w + (size_t)x];
 			if (c->cp || c->lines)
 				last = x;
+		}
+		if (cv->clip_w > 0 && last > cv->clip_w - 1) {
+			last = cv->clip_w - 1;
+
+			/*
+			 * A double width glyph split by the clip would leave
+			 * its lead cell on the line and its other half off
+			 * it, and the line would be a column short. The cell
+			 * past the clip is that other half, so drop the lead
+			 * with it.
+			 */
+			while (last >= 0 &&
+			       cv->cells[(size_t)y * (size_t)cv->w +
+					 (size_t)last + 1].cp == FYMM_CP_CONT)
+				last--;
+
+			/* what the clip leaves may end in the blanks that
+			 * stood between two parts of the drawing */
+			while (last >= 0) {
+				c = &cv->cells[(size_t)y * (size_t)cv->w +
+					       (size_t)last];
+				if (c->cp || c->lines)
+					break;
+				last--;
+			}
 		}
 
 		cur_color = FYMM_COLOR_DEFAULT;

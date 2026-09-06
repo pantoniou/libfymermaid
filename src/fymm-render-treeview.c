@@ -75,10 +75,7 @@ char *fymm_render_treeview(const struct fymm_diagram *d, fy_generic model,
 	top = title ? 2 : 0;
 	height = top + (int)nentries;
 
-	cv = fymm_canvas_create(width + 2, height,
-				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
-					cfg->charset : FYMM_CHARSET_UNICODE,
-				cfg ? cfg->color : FYMM_COLOR_NONE, &theme);
+	cv = fymm_canvas_create_cfg(width + 2, height, cfg, &theme);
 	if (!cv)
 		return NULL;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;

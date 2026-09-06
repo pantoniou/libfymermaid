@@ -568,10 +568,7 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 			l.width = w;
 	}
 
-	cv = fymm_canvas_create(l.width, l.height,
-				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
-					cfg->charset : FYMM_CHARSET_UNICODE,
-				cfg ? cfg->color : FYMM_COLOR_NONE, &theme);
+	cv = fymm_canvas_create_cfg(l.width, l.height, cfg, &theme);
 	if (!cv)
 		goto out;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
