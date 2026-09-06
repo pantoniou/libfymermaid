@@ -111,9 +111,11 @@ beneath it, because the names cannot sit on the plot without colliding.
 A timeline runs down the page rather than across it, because a terminal is
 tall and task text is prose.
 .IP \(bu 2
-A container that mermaid nests \(em a subgraph, a C4 boundary, an
-architecture group \(em becomes a heading over its members. A box inside a box
-leaves neither legible.
+A flowchart subgraph and an agentflow flow are drawn as a dashed frame around
+the nodes they hold, with the title on the top edge. A C4 boundary and an
+architecture group become a heading over their members instead: those nest
+boxes that carry their own borders, and a frame around them leaves neither
+legible.
 .IP \(bu 2
 A flowchart is drawn in the direction it asks for, \fBTB\fR or \fBLR\fR.
 \fBBT\fR and \fBRL\fR reverse an axis the renderer does not reverse, and are

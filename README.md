@@ -94,10 +94,12 @@ Two deliberate differences:
   `RL` reverse an axis the renderer does not reverse, so they are drawn as
   `TB` and `LR` with a warning saying so. A gitGraph in `TB` or `BT` is drawn
   left to right, likewise with a warning.
-- A radar is drawn as bars grouped by axis rather than as a polygon, and a
-  composite shape that mermaid nests -- a subgraph, a C4 boundary, an
-  architecture group -- becomes a heading over its members. Character cells
-  cannot nest a box inside a box and keep either legible.
+- A radar is drawn as bars grouped by axis rather than as a polygon.
+- A flowchart subgraph and an agentflow flow are framed, with the title on the
+  top edge and a link that leaves the container crossing it. A C4 boundary and
+  an architecture group still become a heading over their members: those two
+  nest boxes that already carry their own borders, and a frame around them
+  leaves neither legible.
 - A Wardley map plots its nodes and numbers them, with the names in a legend
   beneath: at terminal resolution the names cannot sit on the plot without
   colliding. Its links are right-angled routes rather than straight lines.

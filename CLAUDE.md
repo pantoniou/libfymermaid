@@ -241,6 +241,12 @@ call knowing about the other. Add a line shape by extending the mask table.
 A literal glyph, such as a commit or a label, is never overwritten by a line.
 Column widths come from the label widths, which keeps a collision rare.
 
+A flowchart container is framed after the layout has run, not during it. The
+layered layout places each rank on its own, so a node can land inside the
+rectangle that covers another container's members; the renderer pushes such a
+node to the right and measures the frames again, and a node only ever moves
+right so the pass settles. Do not make the frame a node in the layout.
+
 `fymm_canvas_route_v()` draws a link that goes down, across and down again.
 Use it rather than a pair of hline and vline calls: a run of one cell carries
 no direction and draws nothing, which is how the corners went missing twice.
