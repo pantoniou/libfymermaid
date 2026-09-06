@@ -108,11 +108,66 @@ enum fymm_fit {
 #define FYMM_WIDTH_INF (0)
 
 /**
+ * struct fymm_metrics - the spacing a diagram is drawn with
+ *
+ * @struct_size: sizeof(struct fymm_metrics), the forward compatibility guard
+ * @margin: the cells left around the whole drawing
+ * @col_gap: the cells left between two nodes of the same rank
+ * @rank_gap: the cells left between two ranks
+ * @plot_height: the rows a plotted chart gives its plot area
+ * @max_width: the cells the drawing may occupy, or 0 to take it from
+ *             fymm_render_cfg.width
+ * @max_height: the rows it may occupy, or 0 for no limit
+ *
+ * A field left at zero takes the default for the diagram type, so setting one
+ * thing needs nothing else:
+ *
+ *	struct fymm_metrics met = FYMM_METRICS_INIT;
+ *
+ *	met.margin = 2;
+ *	rcfg.metrics = &met;
+ *
+ * Zero is the default of every field that has a useful zero -- no margin, no
+ * width limit, no height limit -- so nothing is lost by spelling it that way.
+ * Use fymm_metrics_default() to read the values a type is drawn with.
+ *
+ * A diagram type that has no use for a field ignores it: only a graph has
+ * ranks, and only a plotted chart has a plot area.
+ */
+struct fymm_metrics {
+	size_t struct_size;
+	int margin;
+	int col_gap;
+	int rank_gap;
+	int plot_height;
+	int max_width;
+	int max_height;
+};
+
+/* FYMM_METRICS_INIT - a metrics structure that asks for every default */
+#define FYMM_METRICS_INIT \
+	{ sizeof(struct fymm_metrics), 0, 0, 0, 0, 0, 0 }
+
+/**
+ * fymm_metrics_default() - fill @m with the spacing @type is drawn with
+ * @m: the structure to fill
+ * @type: the diagram type whose defaults are wanted, or FYMM_DT_UNKNOWN for
+ *        the values a graph uses
+ *
+ * These are what a render uses when fymm_render_cfg.metrics is NULL.
+ */
+void
+fymm_metrics_default(struct fymm_metrics *m, enum fymm_diagram_type type)
+	FYMM_EXPORT;
+
+/**
  * struct fymm_render_cfg - configuration for a render
  *
  * @struct_size: sizeof(struct fymm_render_cfg), the forward compatibility guard
  * @width: the output width in columns, or FYMM_WIDTH_AUTO / FYMM_WIDTH_INF
  * @fit: what to do when the diagram does not fit in @width
+ * @metrics: the spacing to draw with, or NULL for the defaults of the
+ *           diagram type
  * @color: how much colour to use
  * @charset: which glyphs to draw with
  * @options: a mapping of overrides applied over the diagram's own config,
@@ -137,7 +192,30 @@ struct fymm_render_cfg {
 	const char *theme;
 	const char *theme_path;
 	enum fymm_background background;
+	const struct fymm_metrics *metrics;
 };
+
+/**
+ * fymm_measure() - the cells a render of @d would occupy
+ * @d: the diagram
+ * @cfg: the configuration the render would use, or NULL for the defaults
+ * @wp: where the width in columns is stored, or NULL
+ * @hp: where the height in rows is stored, or NULL
+ *
+ * Answers what fymm_render() would produce, under the same configuration and
+ * so under the same fit policy: with FYMM_FIT_NONE this is the natural size
+ * of the diagram, and otherwise it is what the limits leave.
+ *
+ * The measure is taken by rendering, so it costs what a render costs. Call it
+ * to size a pane or to decide whether a diagram is worth drawing, not in a
+ * loop over a width.
+ *
+ * Returns: 0, or -1 when the diagram cannot be rendered.
+ */
+int
+fymm_measure(const struct fymm_diagram *d, const struct fymm_render_cfg *cfg,
+	     int *wp, int *hp)
+	FYMM_EXPORT;
 
 /**
  * struct fymm_theme_info - a built-in theme

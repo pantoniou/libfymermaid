@@ -125,6 +125,37 @@ $ fy-mermaid -w 60 --fit clip     three of six nodes, the rest off the right
 $ fy-mermaid -w 60 --fit shrink   all six, in 58 columns
 ```
 
+## Spacing
+
+`fymm_render_cfg.metrics` sets the spacing a diagram is drawn with. A field
+left at zero keeps the default for the diagram type, so changing one thing
+needs nothing else:
+
+```c
+struct fymm_metrics met = FYMM_METRICS_INIT;
+
+met.margin = 2;             /* an indent and blank rows around the drawing */
+met.max_height = 40;
+rcfg.metrics = &met;        /* the gaps stay whatever this type uses */
+```
+
+`fymm_metrics_default()` reports what a type is drawn with, when you want to
+read the values rather than replace them:
+
+```c
+struct fymm_metrics met;
+
+fymm_metrics_default(&met, FYMM_DT_FLOWCHART);      /* col_gap 2, rank_gap 2 */
+```
+
+`margin` is drawn at emission rather than by each renderer, and counts against
+what the drawing may occupy. `max_width` and `max_height` bound it; with
+`--fit none` neither applies, because that asks for the whole drawing.
+
+`fymm_measure()` answers the cells a render would take, under the same
+configuration and so under the same fit policy. It measures by rendering, so
+it costs what a render costs.
+
 ## Colour
 
 Three depths, chosen automatically or with `--color`: 24-bit, the xterm-256

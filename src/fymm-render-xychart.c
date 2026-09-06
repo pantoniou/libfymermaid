@@ -33,7 +33,6 @@
 #include "fymm-internal.h"
 #include "fymm-markdown.h"
 
-#define XY_PLOT_H 16
 #define XY_MIN_SLOT 4
 
 /*
@@ -98,6 +97,7 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 	fy_generic series, xaxis, yaxis, s, data, point, categories;
 	struct fymm_canvas *cv;
 	struct fymm_theme theme;
+	struct fymm_metrics met;
 	const char *title, *name;
 	size_t nseries, npoints, i, j;
 	int plot_h, slot, left, top, width, height, x, y, base, color;
@@ -106,6 +106,8 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 	bool ascii, first;
 	char buf[64];
 	char *out;
+
+	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -166,7 +168,7 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 			slot = avail;
 	}
 
-	plot_h = XY_PLOT_H;
+	plot_h = met.plot_height;
 	top = title ? 2 : 0;
 	width = left + (int)npoints * slot + 2;
 	height = top + plot_h + 3;

@@ -32,8 +32,6 @@
 #include "fymm-internal.h"
 #include "fymm-markdown.h"
 
-#define CD_RANK_GAP 3
-#define CD_COL_GAP 3
 
 /* struct cd_box - one class, measured and placed */
 struct cd_box {
@@ -118,6 +116,7 @@ char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,
 	fy_generic classes, relations, cls, rel, member;
 	struct fymm_canvas *cv;
 	struct fymm_theme theme;
+	struct fymm_metrics met;
 	struct cd_box *box = NULL;
 	bool *flat = NULL;
 	const char *title, *text;
@@ -128,6 +127,8 @@ char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,
 	bool ascii;
 	char buf[256];
 	char *out = NULL;
+
+	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -202,23 +203,23 @@ char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,
 				continue;
 			box[i].x = x;
 			box[i].y = y;
-			x += box[i].w + CD_COL_GAP;
+			x += box[i].w + met.col_gap;
 			if (box[i].h > tall)
 				tall = box[i].h;
 		}
-		used = x - CD_COL_GAP;
+		used = x - met.col_gap;
 		if (used > width)
 			width = used;
 		for (i = 0; i < nclasses; i++) {
 			if (box[i].rank == r)
 				box[i].used = used;
 		}
-		y += tall + CD_RANK_GAP;
+		y += tall + met.rank_gap;
 	}
 	for (i = 0; i < nclasses; i++)
 		box[i].x += (width - box[i].used) / 2;
 
-	height = y - CD_RANK_GAP;
+	height = y - met.rank_gap;
 	width += 2;
 	if (title && fymm_rich_measure(title) + 2 > width)
 		width = fymm_rich_measure(title) + 2;

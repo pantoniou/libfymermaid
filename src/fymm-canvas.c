@@ -125,7 +125,12 @@ struct fymm_canvas *fymm_canvas_create_cfg(int w, int h,
 					   const struct fymm_render_cfg *cfg,
 					   const struct fymm_theme *theme)
 {
+	const struct fymm_metrics *m = cfg ? cfg->metrics : NULL;
 	struct fymm_canvas *cv;
+	int margin = 0;
+
+	if (m && m->struct_size >= sizeof(*m) && m->margin > 0)
+		margin = m->margin;
 
 	cv = fymm_canvas_create(w, h,
 				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
@@ -133,9 +138,23 @@ struct fymm_canvas *fymm_canvas_create_cfg(int w, int h,
 				cfg ? cfg->color : FYMM_COLOR_NONE, theme);
 	if (!cv)
 		return NULL;
+	cv->margin = margin;
 
-	if (cfg && cfg->width > 0 && cfg->fit != FYMM_FIT_NONE)
-		cv->clip_w = cfg->width;
+	if (cfg && cfg->fit != FYMM_FIT_NONE) {
+		if (m && m->struct_size >= sizeof(*m) && m->max_width > 0)
+			cv->clip_w = m->max_width;
+		else if (cfg->width > 0)
+			cv->clip_w = cfg->width;
+		/* the margin is part of the line, so it comes off what the
+		 * drawing itself may occupy */
+		if (cv->clip_w > 0) {
+			cv->clip_w -= margin;
+			if (cv->clip_w < 1)
+				cv->clip_w = 1;
+		}
+		if (m && m->struct_size >= sizeof(*m) && m->max_height > 0)
+			cv->clip_h = m->max_height;
+	}
 	return cv;
 }
 
@@ -693,10 +712,18 @@ char *fymm_canvas_emit(struct fymm_canvas *cv)
 		}
 	}
 
-	if (cv->clip_h > 0 && stop - first > cv->clip_h)
-		stop = first + cv->clip_h;
+	if (cv->clip_h > 0 && stop - first > cv->clip_h - 2 * cv->margin)
+		stop = first + cv->clip_h - 2 * cv->margin;
+	if (stop < first)
+		stop = first;
+
+	/* the margin above; the one below closes the drawing out */
+	for (y = 0; y < cv->margin; y++)
+		fymm_buf_puts(&b, "\n");
 
 	for (y = first; y < stop; y++) {
+		int col;
+
 		/* trailing blanks are noise in a golden file and in a pager */
 		last = -1;
 		for (x = 0; x < cv->w; x++) {
@@ -734,6 +761,12 @@ char *fymm_canvas_emit(struct fymm_canvas *cv)
 		cur_attr = 0;
 		styled = false;
 
+		/* the margin at the left is blank, so it is written rather
+		 * than drawn; one at the right would only be trailing space,
+		 * which emission trims */
+		for (col = 0; col < cv->margin && last >= 0; col++)
+			fymm_buf_puts(&b, " ");
+
 		for (x = 0; x <= last; x++) {
 			c = &cv->cells[(size_t)y * (size_t)cv->w + (size_t)x];
 			if (c->cp == FYMM_CP_CONT)
@@ -768,6 +801,9 @@ char *fymm_canvas_emit(struct fymm_canvas *cv)
 			fymm_buf_puts(&b, "\033[0m");
 		fymm_buf_puts(&b, "\n");
 	}
+
+	for (y = 0; y < cv->margin; y++)
+		fymm_buf_puts(&b, "\n");
 
 	if (b.oom) {
 		free(b.data);

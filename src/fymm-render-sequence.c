@@ -33,7 +33,6 @@
 #include "fymm-markdown.h"
 
 /* the gap kept either side of a participant label in its column */
-#define SEQ_PAD 4
 
 struct seq_geom {
 	int *x;			/* the canvas column of each participant */
@@ -199,6 +198,7 @@ char *fymm_render_sequence(const struct fymm_diagram *d, fy_generic model,
 	fy_generic participants, statements, st, config;
 	struct fymm_canvas *cv;
 	struct fymm_theme theme;
+	struct fymm_metrics met;
 	struct seq_geom g;
 	const char *title, *kind, *text, *label, *block;
 	size_t n, ns, i;
@@ -206,6 +206,8 @@ char *fymm_render_sequence(const struct fymm_diagram *d, fy_generic model,
 	bool autonumber;
 	char buf[128];
 	char *out = NULL;
+
+	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -231,7 +233,7 @@ char *fymm_render_sequence(const struct fymm_diagram *d, fy_generic model,
 	x = 2;
 	for (i = 0; i < n; i++) {
 		w = fymm_text_width(fy_get(fy_get_at(participants, i),
-					   "label", "")) + SEQ_PAD;
+					   "label", "")) + met.col_gap;
 		g.x[i] = x + w / 2;
 		x += w + 2;
 	}

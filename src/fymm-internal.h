@@ -118,6 +118,10 @@ struct fymm_parser {
 	unsigned int flags;
 };
 
+void fymm_metrics_resolve(struct fymm_metrics *m,
+			  enum fymm_diagram_type type,
+			  const struct fymm_render_cfg *cfg);
+
 void fymm_vdiagf(struct fymm_parser *p, bool error, int line, int col,
 		 const char *fmt, va_list ap)
 	__attribute__((format(printf, 5, 0)));

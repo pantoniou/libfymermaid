@@ -34,7 +34,6 @@
 
 /* the plot area, in cells; the x axis is wider because glyphs are tall */
 #define QD_PLOT_W 60
-#define QD_PLOT_H 21
 
 /*
  * The four quadrants are drawn as one framed square split by a cross, with
@@ -49,11 +48,14 @@ char *fymm_render_quadrant(const struct fymm_diagram *d, fy_generic model,
 	fy_generic points, quadrants, xaxis, yaxis, point;
 	struct fymm_canvas *cv;
 	struct fymm_theme theme;
+	struct fymm_metrics met;
 	const char *title, *name, *low, *high;
 	size_t npoints, i;
 	int plot_w, plot_h, left, top, width, height, x, y, cx, cy, w;
 	uint32_t dot;
 	char *out;
+
+	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -66,7 +68,7 @@ char *fymm_render_quadrant(const struct fymm_diagram *d, fy_generic model,
 	npoints = fy_is_sequence(points) ? fy_len(points) : 0;
 
 	plot_w = QD_PLOT_W;
-	plot_h = QD_PLOT_H;
+	plot_h = met.plot_height;
 	if (cfg && cfg->width > 0 && cfg->width - 20 < plot_w) {
 		plot_w = cfg->width - 20;
 		if (plot_w < 20)

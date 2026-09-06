@@ -102,6 +102,7 @@ set(_fymm_sources
     fymm-common.c
     fymm-canvas.c fymm-canvas.h
     fymm-layout.c fymm-layout.h
+    fymm-metrics.c
     fymm-markdown.c fymm-markdown.h
     fymm-color.c fymm-color.h
     fymm-theme.c

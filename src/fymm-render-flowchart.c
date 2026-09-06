@@ -33,10 +33,8 @@
 #include "fymm-layout.h"
 #include "fymm-markdown.h"
 
-/* the rows a node box occupies, and the rows left between two ranks */
+/* the rows a node box occupies */
 #define FC_BOX_ROWS 3
-#define FC_RANK_GAP 2
-#define FC_COL_GAP 2
 
 /* how many columns of the right margin are kept for returning links */
 #define FC_RETURN_LANES 3
@@ -314,6 +312,7 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	struct fymm_lnode *lnode = NULL;
 	struct fymm_ledge *ledge = NULL;
 	struct fymm_layout lay;
+	struct fymm_metrics met;
 	struct fymm_layout_cfg lcfg = { 0, 0, 0, 0, 0, 0, FYMM_LAYOUT_DOWN };
 	enum fymm_layout_dir dir;
 	struct fc_pair *pair = NULL;
@@ -326,6 +325,8 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	int col_gap, pad, maxdepth;
 	bool ascii;
 	char *out = NULL;
+
+	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -483,8 +484,8 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	 * the canvas.
 	 */
 	pad = ngroups ? 2 * (maxdepth + 1) * FC_FRAME_PAD : 0;
-	col_gap = FC_COL_GAP + pad;
-	rank_gap = FC_RANK_GAP + pad;
+	col_gap = met.col_gap + pad;
+	rank_gap = met.rank_gap + pad;
 	if (dir == FYMM_LAYOUT_RIGHT) {
 		for (i = 0; i < nedges; i++) {
 			text = fy_get(fy_get_at(edges, i), "text",
@@ -508,8 +509,8 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	 * is used, so taking it off here would close up a graph that fits.
 	 * Whatever those add over the width is for the clip.
 	 */
-	if (cfg && cfg->width > 0 && cfg->fit == FYMM_FIT_SHRINK)
-		lcfg.max_width = cfg->width;
+	if (cfg && cfg->fit == FYMM_FIT_SHRINK)
+		lcfg.max_width = met.max_width;
 	if (fymm_layout_layered(lnode, nnodes, ledge, j, &lcfg, &lay))
 		goto out;
 
@@ -552,7 +553,7 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	}
 
 	l.width = lay.width + 2 + FC_RETURN_LANES + 2 * pad;
-	l.height = top + lay.height + FC_RANK_GAP + 2 * pad;
+	l.height = top + lay.height + lay.rank_gap + 2 * pad;
 	if (dir == FYMM_LAYOUT_RIGHT)
 		l.height = top + lay.height + FC_RETURN_LANES + 1 + 2 * pad;
 	if (title && fymm_rich_measure(title) + 2 > l.width)

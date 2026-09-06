@@ -37,7 +37,6 @@ static const char *const wl_default_stages[4] = {
 	"Genesis", "Custom", "Product", "Commodity",
 };
 
-#define WL_PLOT_H 16
 
 static int wl_clampi(int v, int lo, int hi)
 {
@@ -59,6 +58,7 @@ char *fymm_render_wardley(const struct fymm_diagram *d, fy_generic model,
 	fy_generic nodes, links, notes, stages, pipelines, node, link;
 	struct fymm_canvas *cv;
 	struct fymm_theme theme;
+	struct fymm_metrics met;
 	const char *title, *name, *label;
 	size_t nnodes, nstages, nlinks, nnotes, npipes, i, k;
 	int width, height, plot_w, plot_x, plot_y, legend_y, y;
@@ -66,6 +66,8 @@ char *fymm_render_wardley(const struct fymm_diagram *d, fy_generic model,
 	bool ascii;
 	char buf[160];
 	char *out;
+
+	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -95,7 +97,7 @@ char *fymm_render_wardley(const struct fymm_diagram *d, fy_generic model,
 	plot_x = 8;
 	plot_w = width - plot_x - 1;
 	plot_y = title ? 2 : 0;
-	legend_y = plot_y + WL_PLOT_H + 2;
+	legend_y = plot_y + met.plot_height + 2;
 	height = legend_y + (int)(nnodes + nnotes + npipes) + 1;
 
 	cv = fymm_canvas_create_cfg(width, height, cfg, &theme);
@@ -115,13 +117,13 @@ char *fymm_render_wardley(const struct fymm_diagram *d, fy_generic model,
 			       FYMM_ATTR_BOLD);
 
 	/* the axes: visibility up the left, evolution along the bottom */
-	fymm_canvas_vline(cv, plot_x - 1, plot_y, plot_y + WL_PLOT_H - 1,
+	fymm_canvas_vline(cv, plot_x - 1, plot_y, plot_y + met.plot_height - 1,
 			  FYMM_PAL_LABEL, false);
-	fymm_canvas_hline(cv, plot_y + WL_PLOT_H, plot_x - 1,
+	fymm_canvas_hline(cv, plot_y + met.plot_height, plot_x - 1,
 			  plot_x + plot_w - 1, FYMM_PAL_LABEL, false);
 	fymm_canvas_text(cv, 0, plot_y, "visible", FYMM_PAL_LABEL,
 			 FYMM_ATTR_DIM);
-	fymm_canvas_text(cv, 0, plot_y + WL_PLOT_H - 1, " buried",
+	fymm_canvas_text(cv, 0, plot_y + met.plot_height - 1, " buried",
 			 FYMM_PAL_LABEL, FYMM_ATTR_DIM);
 
 	for (i = 0; i < nstages; i++) {
@@ -133,10 +135,10 @@ char *fymm_render_wardley(const struct fymm_diagram *d, fy_generic model,
 			wl_default_stages[i];
 		if (i)
 			fymm_canvas_vline(cv, x0 - 1, plot_y,
-					  plot_y + WL_PLOT_H, (int)(i % 8),
+					  plot_y + met.plot_height, (int)(i % 8),
 					  false);
 		if (x1 > x0)
-			fymm_canvas_text(cv, x0, plot_y + WL_PLOT_H + 1, name,
+			fymm_canvas_text(cv, x0, plot_y + met.plot_height + 1, name,
 					 (int)(i % 8), FYMM_ATTR_DIM);
 	}
 
@@ -151,8 +153,8 @@ char *fymm_render_wardley(const struct fymm_diagram *d, fy_generic model,
 		nx[i] = wl_clampi(plot_x + (int)(evo * (plot_w - 1)),
 				  plot_x, plot_x + plot_w - 1);
 		ny[i] = wl_clampi(plot_y + (int)((1.0 - vis) *
-						 (WL_PLOT_H - 1)),
-				  plot_y, plot_y + WL_PLOT_H - 1);
+						 (met.plot_height - 1)),
+				  plot_y, plot_y + met.plot_height - 1);
 	}
 
 	for (i = 0; i < nlinks; i++) {

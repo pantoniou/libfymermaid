@@ -32,7 +32,6 @@
 #include "fymm-internal.h"
 #include "fymm-markdown.h"
 
-#define BK_COL_GAP 2
 #define BK_MIN_W 9
 
 /*
@@ -47,12 +46,15 @@ char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
 	fy_generic blocks, block, config;
 	struct fymm_canvas *cv;
 	struct fymm_theme theme;
+	struct fymm_metrics met;
 	const char *title, *text, *parent;
 	size_t nblocks, i;
 	int columns, cell, width, height, top, x, y, col, row, w, color, span;
 	int depth;
 	bool ascii;
 	char *out;
+
+	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -80,7 +82,7 @@ char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
 			cell = w;
 	}
 	if (cfg && cfg->width > 0) {
-		w = (cfg->width - 2) / columns - BK_COL_GAP;
+		w = (cfg->width - 2) / columns - met.col_gap;
 		if (w >= 6 && w < cell)
 			cell = w;
 	}
@@ -107,7 +109,7 @@ char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 	height = top + (row + 1) * 4;
-	width = columns * (cell + BK_COL_GAP) + 2;
+	width = columns * (cell + met.col_gap) + 2;
 	if (title && fymm_rich_measure(title) + 2 > width)
 		width = fymm_rich_measure(title) + 2;
 
@@ -139,9 +141,9 @@ char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
 
 		parent = fy_get(block, "parent", (const char *)NULL);
 		depth = parent ? 1 : 0;
-		x = col * (cell + BK_COL_GAP) + depth;
+		x = col * (cell + met.col_gap) + depth;
 		y = top + row * 4;
-		w = span * cell + (span - 1) * BK_COL_GAP - depth;
+		w = span * cell + (span - 1) * met.col_gap - depth;
 		color = (int)(i % 8);
 
 		/* a compound block is a label with a rule, not a box: its

@@ -33,8 +33,6 @@
 #include "fymm-markdown.h"
 #include "fymm-layout.h"
 
-#define AR_COL_GAP 3
-#define AR_RANK_GAP 3
 
 /*
  * Services are boxed and ranked by the links between them; a group becomes a
@@ -50,6 +48,7 @@ char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
 	struct fymm_lnode *node = NULL;
 	struct fymm_ledge *ledge = NULL;
 	struct fymm_layout lay;
+	struct fymm_metrics met;
 	struct fymm_layout_cfg lcfg = { 0, 0, 0, 0, 0, 0, FYMM_LAYOUT_DOWN };
 	const char **text = NULL, **icon = NULL;
 	size_t *index = NULL;
@@ -58,6 +57,8 @@ char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
 	int width, height, top, x, y, w, color, sx, sy, dx, dy, ymid;
 	bool ascii;
 	char *out = NULL;
+
+	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -112,16 +113,16 @@ char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
 
 	top = (title ? 2 : 0) + (int)(ngroup ? ngroup + 1 : 0);
 	lcfg.top = top;
-	lcfg.col_gap = AR_COL_GAP;
-	lcfg.rank_gap = AR_RANK_GAP;
+	lcfg.col_gap = met.col_gap;
+	lcfg.rank_gap = met.rank_gap;
 	lcfg.dir = FYMM_LAYOUT_DOWN;
-	if (cfg && cfg->width > 0 && cfg->fit == FYMM_FIT_SHRINK)
-		lcfg.max_width = cfg->width;
+	if (cfg && cfg->fit == FYMM_FIT_SHRINK)
+		lcfg.max_width = met.max_width;
 	if (fymm_layout_layered(node, nsvc, ledge, nedges, &lcfg, &lay))
 		goto out;
 
 	width = lay.width + 2;
-	height = top + lay.height + AR_RANK_GAP;
+	height = top + lay.height + lay.rank_gap;
 	if (title && fymm_rich_measure(title) + 2 > width)
 		width = fymm_rich_measure(title) + 2;
 

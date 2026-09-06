@@ -119,6 +119,7 @@ struct fymm_cell {
 struct fymm_canvas {
 	int w, h;
 	int clip_w, clip_h;
+	int margin;		/* blank cells written before each row */
 	struct fymm_cell *cells;
 	enum fymm_charset charset;
 	enum fymm_color_mode color;

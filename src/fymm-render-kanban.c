@@ -32,7 +32,6 @@
 #include "fymm-internal.h"
 #include "fymm-markdown.h"
 
-#define KB_COL_GAP 2
 #define KB_MIN_COL 12
 
 /*
@@ -46,12 +45,15 @@ char *fymm_render_kanban(const struct fymm_diagram *d, fy_generic model,
 	fy_generic sections, section, items, item;
 	struct fymm_canvas *cv;
 	struct fymm_theme theme;
+	struct fymm_metrics met;
 	int *colw = NULL, *colx = NULL;
 	const char *title, *text;
 	size_t nsections, nitems, si, ii, tallest = 0;
 	int width, height, top, x, y, w, color;
 	bool ascii;
 	char *out = NULL;
+
+	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -84,7 +86,7 @@ char *fymm_render_kanban(const struct fymm_diagram *d, fy_generic model,
 		if (colw[si] < KB_MIN_COL)
 			colw[si] = KB_MIN_COL;
 		colx[si] = x;
-		x += colw[si] + KB_COL_GAP;
+		x += colw[si] + met.col_gap;
 		if (nitems > tallest)
 			tallest = nitems;
 	}

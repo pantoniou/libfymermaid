@@ -33,8 +33,6 @@
 #include "fymm-markdown.h"
 #include "fymm-layout.h"
 
-#define ER_COL_GAP 3
-#define ER_RANK_GAP 4
 
 /*
  * Crow's foot notation, as two cells at each end of the connector. The many
@@ -68,6 +66,7 @@ char *fymm_render_er(const struct fymm_diagram *d, fy_generic model,
 	struct fymm_lnode *node = NULL;
 	struct fymm_ledge *edge = NULL;
 	struct fymm_layout lay;
+	struct fymm_metrics met;
 	struct fymm_layout_cfg lcfg = { 0, 0, 0, 0, 0, 0, FYMM_LAYOUT_DOWN };
 	fy_generic *attrs = NULL;
 	const char *title, *label;
@@ -76,6 +75,8 @@ char *fymm_render_er(const struct fymm_diagram *d, fy_generic model,
 	bool ascii;
 	char buf[256];
 	char *out = NULL;
+
+	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -129,16 +130,16 @@ char *fymm_render_er(const struct fymm_diagram *d, fy_generic model,
 
 	top = title ? 2 : 0;
 	lcfg.top = top;
-	lcfg.col_gap = ER_COL_GAP;
-	lcfg.rank_gap = ER_RANK_GAP;
+	lcfg.col_gap = met.col_gap;
+	lcfg.rank_gap = met.rank_gap;
 	lcfg.dir = FYMM_LAYOUT_DOWN;
-	if (cfg && cfg->width > 0 && cfg->fit == FYMM_FIT_SHRINK)
-		lcfg.max_width = cfg->width;
+	if (cfg && cfg->fit == FYMM_FIT_SHRINK)
+		lcfg.max_width = met.max_width;
 	if (fymm_layout_layered(node, nent, edge, nrel, &lcfg, &lay))
 		goto out;
 
 	width = lay.width + 2;
-	height = top + lay.height + ER_RANK_GAP;
+	height = top + lay.height + lay.rank_gap;
 	for (i = 0; i < nrel; i++) {
 		label = fy_get(fy_get_at(relations, i), "label",
 			       (const char *)NULL);
