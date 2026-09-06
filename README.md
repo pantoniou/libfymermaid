@@ -44,7 +44,7 @@ test suite pins.
 
 | diagram | corpus | notes |
 | --- | --- | --- |
-| `flowchart` / `graph` | 195/195 | layered top to bottom |
+| `flowchart` / `graph` | 195/195 | layered, `TB` and `LR` both drawn |
 | `classDiagram` | 133/133 | boxed compartments, UML relation ends |
 | `sequenceDiagram` | 130/130 | participant columns, arrows, notes, blocks |
 | `stateDiagram` | 74/74 | composite states, pseudo-states, forks |
@@ -84,8 +84,10 @@ branch, an empty merged branch and two branches with the same head.
 
 Two deliberate differences:
 
-- A gitGraph in `TB` or `BT`, and a flowchart in any direction but `TB`, parse
-  and render with a warning in the direction that is implemented.
+- A flowchart is drawn in the direction it asks for, `TB` or `LR`. `BT` and
+  `RL` reverse an axis the renderer does not reverse, so they are drawn as
+  `TB` and `LR` with a warning saying so. A gitGraph in `TB` or `BT` is drawn
+  left to right, likewise with a warning.
 - A radar is drawn as bars grouped by axis rather than as a polygon, and a
   composite shape that mermaid nests -- a subgraph, a C4 boundary, an
   architecture group -- becomes a heading over its members. Character cells

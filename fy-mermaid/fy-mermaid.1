@@ -16,7 +16,7 @@ applied in that order, so a directive overrides the frontmatter.
 .SH DIAGRAM TYPES
 .TP
 .B flowchart
-also spelled \fBgraph\fR; ranked top to bottom
+also spelled \fBgraph\fR; ranked \fBTB\fR or \fBLR\fR
 .TP
 .B classDiagram
 boxed compartments with UML relation ends
@@ -91,9 +91,10 @@ A container that mermaid nests \(em a subgraph, a C4 boundary, an
 architecture group \(em becomes a heading over its members. A box inside a box
 leaves neither legible.
 .IP \(bu 2
-A flowchart is ranked top to bottom whatever its header says, and a gitGraph
-is drawn left to right. Either parses in any direction, with a warning saying
-the direction was not honoured.
+A flowchart is drawn in the direction it asks for, \fBTB\fR or \fBLR\fR.
+\fBBT\fR and \fBRL\fR reverse an axis the renderer does not reverse, and are
+drawn as \fBTB\fR and \fBLR\fR with a warning.  A gitGraph is drawn left to
+right whatever its header says.
 .SH LABELS
 A \fB<br>\fR breaks a label, in each spelling mermaid accepts.  Where the
 diagram gives the label a box it becomes a second line; where the label is one
