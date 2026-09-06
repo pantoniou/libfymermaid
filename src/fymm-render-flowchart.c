@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-layout.h"
 #include "fymm-markdown.h"
 
 /* the rows a node box occupies, and the rows left between two ranks */
@@ -93,8 +94,6 @@ struct fc_box {
 struct fc_layout {
 	struct fc_box *box;
 	size_t n;
-	int *rank_width;	/* the cells each rank occupies */
-	int *rank_y;
 	int nranks;
 	int tall;		/* the tallest box, which sets the rank pitch */
 	int width, height;
@@ -111,55 +110,7 @@ static size_t fc_find(const struct fc_layout *l, const char *id)
 	return (size_t)-1;
 }
 
-/*
- * Mark the edges that close a cycle. A depth-first walk meets a back edge
- * when it reaches a node already on its own stack; ranking such an edge would
- * push its target below itself for ever, so the layering ignores them and the
- * renderer draws them as returns.
- *
- * @state is 0 for unvisited, 1 for on the stack and 2 for done.
- */
-static void fc_mark_back(struct fc_layout *l, const struct fc_pair *pair,
-			 size_t npairs, uint8_t *state, bool *back, size_t v)
-{
-	size_t i;
 
-	state[v] = 1;
-	for (i = 0; i < npairs; i++) {
-		if (pair[i].from != v || back[i])
-			continue;
-		if (state[pair[i].to] == 1)
-			back[i] = true;
-		else if (!state[pair[i].to])
-			fc_mark_back(l, pair, npairs, state, back, pair[i].to);
-	}
-	state[v] = 2;
-}
-
-/*
- * Longest-path layering over the edges that are not back edges: a node sits
- * one rank below its deepest predecessor.
- */
-static void fc_rank(struct fc_layout *l, const struct fc_pair *pair,
-		    size_t npairs, const bool *back)
-{
-	size_t i, passes;
-	bool moved = true;
-
-	for (passes = 0; moved && passes <= l->n; passes++) {
-		moved = false;
-		for (i = 0; i < npairs; i++) {
-			if (back[i] || pair[i].from == pair[i].to)
-				continue;
-			if (l->box[pair[i].to].rank <=
-			    l->box[pair[i].from].rank) {
-				l->box[pair[i].to].rank =
-					l->box[pair[i].from].rank + 1;
-				moved = true;
-			}
-		}
-	}
-}
 
 char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 			    const struct fymm_render_cfg *cfg)
@@ -174,12 +125,15 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	struct fymm_canvas *cv;
 	struct fymm_theme theme;
 	struct fc_layout l;
+	struct fymm_lnode *lnode = NULL;
+	struct fymm_ledge *ledge = NULL;
+	struct fymm_layout lay;
+	enum fymm_layout_dir dir;
 	struct fc_pair *pair = NULL;
-	uint8_t *state = NULL;
 	bool *back = NULL;
 	const char *title, *text;
 	size_t nnodes, nedges, i, j, from, to;
-	int r, x, y, w, top, color, sx, sy, dx, dy, ymid;
+	int x, y, w, top, color, sx, sy, dx, dy, mid = 0, rank_gap;
 	bool ascii;
 	char *out = NULL;
 
@@ -188,6 +142,8 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 
 	memset(&l, 0, sizeof(l));
 	nodes = fy_get(model, "nodes");
+	dir = strcmp(fy_get(model, "direction", "TB"), "TB") ?
+	      FYMM_LAYOUT_RIGHT : FYMM_LAYOUT_DOWN;
 	edges = fy_get(model, "edges");
 	title = fy_get(model, "title", (const char *)NULL);
 
@@ -215,99 +171,96 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 			l.tall = l.box[i].h;
 	}
 
-	/* resolve the edges once, then find the ones that close a cycle */
+	/* resolve the edges once; the shared layout finds the ones that close
+	 * a cycle and marks them */
 	pair = calloc(nedges ? nedges : 1, sizeof(*pair));
 	back = calloc(nedges ? nedges : 1, sizeof(*back));
-	state = calloc(nnodes, sizeof(*state));
-	if (!pair || !back || !state)
+	if (!pair || !back)
 		goto out;
 	for (i = 0; i < nedges; i++) {
 		edge = fy_get_at(edges, i);
 		pair[i].from = fc_find(&l, fy_get(edge, "from", ""));
 		pair[i].to = fc_find(&l, fy_get(edge, "to", ""));
 	}
-	for (i = 0; i < nedges; i++) {
+
+	/*
+	 * The ranks run down the page for a `TB` chart and across it for an
+	 * `LR` one, which is the direction most flowcharts are written in.
+	 */
+	lnode = calloc(nnodes, sizeof(*lnode));
+	ledge = calloc(nedges ? nedges : 1, sizeof(*ledge));
+	if (!lnode || !ledge)
+		goto out;
+	for (i = 0; i < nnodes; i++) {
+		lnode[i].id = l.box[i].id;
+		lnode[i].w = l.box[i].w;
+		lnode[i].h = l.box[i].h;
+	}
+	for (i = 0, j = 0; i < nedges; i++) {
 		if (pair[i].from == (size_t)-1 || pair[i].to == (size_t)-1)
-			back[i] = true;		/* nothing to rank */
-	}
-	for (i = 0; i < nnodes; i++) {
-		if (!state[i])
-			fc_mark_back(&l, pair, nedges, state, back, i);
+			continue;
+		ledge[j].from = pair[i].from;
+		ledge[j].to = pair[i].to;
+		j++;
 	}
 
-	fc_rank(&l, pair, nedges, back);
-
-	for (i = 0; i < nnodes; i++) {
-		if (l.box[i].rank + 1 > l.nranks)
-			l.nranks = l.box[i].rank + 1;
+	/*
+	 * Running across the page an edge label sits in the gap between two
+	 * ranks, so the gap has to be wide enough to hold the widest one.
+	 * Running down the page the label sits beside the arrowhead and the
+	 * gap does not have to grow.
+	 */
+	rank_gap = FC_RANK_GAP;
+	if (dir == FYMM_LAYOUT_RIGHT) {
+		for (i = 0; i < nedges; i++) {
+			text = fy_get(fy_get_at(edges, i), "text",
+				      (const char *)NULL);
+			if (!text || !*text)
+				continue;
+			w = fymm_rich_measure(text) + 6;
+			if (w > rank_gap)
+				rank_gap = w;
+		}
 	}
-	l.rank_width = calloc((size_t)l.nranks, sizeof(*l.rank_width));
-	l.rank_y = calloc((size_t)l.nranks, sizeof(*l.rank_y));
-	if (!l.rank_width || !l.rank_y)
+
+	top = title ? 2 : 0;
+	if (fymm_layout_layered(lnode, nnodes, ledge, j, top, FC_COL_GAP,
+				rank_gap, dir, &lay))
 		goto out;
 
-	/* place each rank as a row of boxes, left to right in the order the
-	 * nodes were written */
-	for (r = 0; r < l.nranks; r++) {
-		x = 0;
-		for (i = 0; i < nnodes; i++) {
-			if (l.box[i].rank != r)
-				continue;
-			l.box[i].order = l.rank_width[r];
-			l.box[i].x = x;
-			x += l.box[i].w + FC_COL_GAP;
-			l.rank_width[r]++;
-		}
-		if (x - FC_COL_GAP > l.width)
-			l.width = x - FC_COL_GAP;
+	/* the shared layout marks the returning links; carry that back so the
+	 * drawing pass routes them through the margin */
+	for (i = 0, j = 0; i < nedges; i++) {
+		if (pair[i].from == (size_t)-1 || pair[i].to == (size_t)-1)
+			continue;
+		back[i] = ledge[j].back;
+		j++;
+	}
+	for (i = 0; i < nnodes; i++) {
+		l.box[i].x = lnode[i].x;
+		l.box[i].y = lnode[i].y;
+		l.box[i].rank = lnode[i].rank;
 	}
 
-	/* centre the narrower ranks under the widest one */
-	for (r = 0; r < l.nranks; r++) {
-		int used = 0;
+	l.width = lay.width + 2 + FC_RETURN_LANES;
+	l.height = top + lay.height + FC_RANK_GAP;
+	if (dir == FYMM_LAYOUT_RIGHT)
+		l.height = top + lay.height + FC_RETURN_LANES + 1;
+	if (title && fymm_rich_measure(title) + 2 > l.width)
+		l.width = fymm_rich_measure(title) + 2;
 
-		for (i = 0; i < nnodes; i++) {
-			if (l.box[i].rank == r)
-				used = l.box[i].x + l.box[i].w;
-		}
-		for (i = 0; i < nnodes; i++) {
-			if (l.box[i].rank == r)
-				l.box[i].x += (l.width - used) / 2;
-		}
-	}
-
-	/* a rank is as tall as its tallest box, and a label with a `<br>` in
-	 * it makes a box taller than the three rows a one-line one needs */
-	top = title ? 2 : 0;
-	if (l.tall < FC_BOX_ROWS)
-		l.tall = FC_BOX_ROWS;
-	for (r = 0; r < l.nranks; r++)
-		l.rank_y[r] = top + r * (l.tall + FC_RANK_GAP);
-	for (i = 0; i < nnodes; i++)
-		l.box[i].y = l.rank_y[l.box[i].rank];
-
-	l.height = top + l.nranks * (l.tall + FC_RANK_GAP) - FC_RANK_GAP;
-	/* a returning link leaves the bottom of its source, so the last rank
-	 * needs a row beneath it to turn in */
-	for (i = 0; i < nedges; i++) {
-		if (back[i] && pair[i].from != (size_t)-1) {
-			l.height += FC_RANK_GAP;
-			break;
-		}
-	}
-	/* an edge label sits to the right of the arrowhead it belongs to */
+	/* an edge label sits beside the arrowhead it belongs to */
 	for (i = 0; i < nedges; i++) {
 		text = fy_get(fy_get_at(edges, i), "text", (const char *)NULL);
 		to = pair[i].to;
 		if (!text || !*text || to == (size_t)-1)
 			continue;
-		w = l.box[to].x + l.box[to].w / 2 + 3 + fymm_rich_measure(text);
+		w = (dir == FYMM_LAYOUT_DOWN ?
+		     l.box[to].x + l.box[to].w / 2 :
+		     l.box[to].x + l.box[to].w) + 3 + fymm_rich_measure(text);
 		if (w > l.width)
 			l.width = w;
 	}
-	l.width += 2 + FC_RETURN_LANES;
-	if (title && fymm_rich_measure(title) + 2 > l.width)
-		l.width = fymm_rich_measure(title) + 2;
 
 	cv = fymm_canvas_create(l.width, l.height,
 				cfg && cfg->charset != FYMM_CHARSET_AUTO ?
@@ -324,50 +277,103 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	/* the edges first, so that a box always sits on top of its links */
 	for (i = 0; i < nedges; i++) {
 		edge = fy_get_at(edges, i);
-		from = fc_find(&l, fy_get(edge, "from", ""));
-		to = fc_find(&l, fy_get(edge, "to", ""));
+		from = pair[i].from;
+		to = pair[i].to;
 		if (from == (size_t)-1 || to == (size_t)-1)
 			continue;
 
 		color = l.box[from].rank % 8;
-		sx = l.box[from].x + l.box[from].w / 2;
-		dx = l.box[to].x + l.box[to].w / 2;
-		sy = l.box[from].y + l.box[from].h - 1;
-		dy = l.box[to].y;
 
-		/*
-		 * A link back to an earlier rank cannot run straight up
-		 * through the ranks between; it leaves the bottom, runs out
-		 * to a lane in the right margin, climbs, and comes back in.
-		 */
-		if (back[i]) {
-			int lane = l.width - 2 - (int)(i % FC_RETURN_LANES);
-
-			fymm_canvas_line(cv, sx, sy + 1,
-					 FYMM_LN_N | FYMM_LN_E, color, false);
-			fymm_canvas_hline(cv, sy + 1, sx + 1, lane - 1, color, false);
-			fymm_canvas_line(cv, lane, sy + 1,
-					 FYMM_LN_W | FYMM_LN_N, color, false);
-			fymm_canvas_vline(cv, lane, dy, sy, color, false);
-			fymm_canvas_line(cv, lane, dy - 1,
-					 FYMM_LN_S | FYMM_LN_W, color, false);
-			fymm_canvas_hline(cv, dy - 1, dx + 1, lane - 1, color, false);
-			fymm_canvas_line(cv, dx, dy - 1,
-					 FYMM_LN_E | FYMM_LN_S, color, false);
+		if (dir == FYMM_LAYOUT_DOWN) {
+			sx = l.box[from].x + l.box[from].w / 2;
+			dx = l.box[to].x + l.box[to].w / 2;
+			sy = l.box[from].y + l.box[from].h;
+			dy = l.box[to].y - 1;
 		} else {
-			ymid = sy + 1 + (dy - sy - 2) / 2;
-			fymm_canvas_route_v(cv, sx, sy + 1, dx, dy - 1, ymid,
-					    color, false);
+			sx = l.box[from].x + l.box[from].w;
+			dx = l.box[to].x - 1;
+			sy = l.box[from].y + l.box[from].h / 2;
+			dy = l.box[to].y + l.box[to].h / 2;
 		}
 
-		/* the arrowhead sits on the row above the box it enters */
-		if (strcmp(fy_get(edge, "head", "none"), "none"))
-			fymm_canvas_put(cv, dx, dy - 1,
-					!strcmp(fy_get(edge, "head", ""),
-						"cross") ? (ascii ? 'x' : 0x2717) :
-					!strcmp(fy_get(edge, "head", ""),
-						"circle") ? (ascii ? 'o' : 0x25cb) :
-					(ascii ? 'v' : 0x25bc), color, 0);
+		/*
+		 * A link back to an earlier rank cannot run straight through
+		 * the ranks between; it leaves its node, runs out to a lane
+		 * in the margin, comes back and enters from the far side.
+		 */
+		if (back[i]) {
+			int lane = dir == FYMM_LAYOUT_DOWN ?
+				   l.width - 2 - (int)(i % FC_RETURN_LANES) :
+				   l.height - 1 - (int)(i % FC_RETURN_LANES);
+
+			if (dir == FYMM_LAYOUT_DOWN) {
+				fymm_canvas_line(cv, sx, sy,
+						 FYMM_LN_N | FYMM_LN_E, color,
+						 false);
+				fymm_canvas_hline(cv, sy, sx + 1, lane - 1,
+						  color, false);
+				fymm_canvas_line(cv, lane, sy,
+						 FYMM_LN_W | FYMM_LN_N, color,
+						 false);
+				fymm_canvas_vline(cv, lane, dy, sy - 1, color,
+						  false);
+				fymm_canvas_line(cv, lane, dy,
+						 FYMM_LN_S | FYMM_LN_W, color,
+						 false);
+				fymm_canvas_hline(cv, dy, dx + 1, lane - 1,
+						  color, false);
+				fymm_canvas_line(cv, dx, dy,
+						 FYMM_LN_E | FYMM_LN_S, color,
+						 false);
+			} else {
+				fymm_canvas_line(cv, sx, sy,
+						 FYMM_LN_W | FYMM_LN_S, color,
+						 false);
+				fymm_canvas_vline(cv, sx, sy + 1, lane - 1,
+						  color, false);
+				fymm_canvas_line(cv, sx, lane,
+						 FYMM_LN_N | FYMM_LN_W, color,
+						 false);
+				fymm_canvas_hline(cv, lane, dx, sx - 1, color,
+						  false);
+				fymm_canvas_line(cv, dx, lane,
+						 FYMM_LN_E | FYMM_LN_N, color,
+						 false);
+				fymm_canvas_vline(cv, dx, dy + 1, lane - 1,
+						  color, false);
+				fymm_canvas_line(cv, dx, dy,
+						 FYMM_LN_S | FYMM_LN_E, color,
+						 false);
+			}
+		} else if (dir == FYMM_LAYOUT_DOWN) {
+			mid = sy + (dy - sy) / 2;
+			fymm_canvas_route_v(cv, sx, sy, dx, dy, mid, color,
+					    false);
+		} else {
+			/* turn as soon as the link leaves its node, so that
+			 * the run into the next rank is long enough to carry
+			 * the label; several links leaving one node then share
+			 * the turn, which reads as the bus it is */
+			mid = sx + 2;
+			fymm_canvas_route_h(cv, sx, sy, dx, dy, mid, color,
+					    false);
+		}
+
+		/* the arrowhead points the way the rank runs */
+		if (strcmp(fy_get(edge, "head", "none"), "none")) {
+			const char *head = fy_get(edge, "head", "");
+			uint32_t tip;
+
+			if (!strcmp(head, "cross"))
+				tip = ascii ? 'x' : 0x2717;
+			else if (!strcmp(head, "circle"))
+				tip = ascii ? 'o' : 0x25cb;
+			else if (dir == FYMM_LAYOUT_DOWN)
+				tip = ascii ? 'v' : 0x25bc;
+			else
+				tip = ascii ? '>' : 0x25b6;
+			fymm_canvas_put(cv, dx, dy, tip, color, 0);
+		}
 
 		/*
 		 * The label goes beside the arrowhead rather than along the
@@ -375,9 +381,22 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 		 * share a row, and then it lands on another link's line.
 		 */
 		text = fy_get(edge, "text", (const char *)NULL);
-		if (text && *text)
-			fymm_canvas_text(cv, dx + 2, dy - 1, text,
-					 FYMM_PAL_LABEL, 0);
+		if (text && *text) {
+			if (dir == FYMM_LAYOUT_DOWN)
+				fymm_rich_text(cv, dx + 2, dy, text,
+					       FYMM_PAL_LABEL, 0);
+			else {
+				/* on the row of the node it arrives at, and
+				 * ending before the arrowhead: several links
+				 * leaving one node share a row, so a label at
+				 * that end would land on another's */
+				x = dx - 2 - fymm_rich_measure(text);
+				if (x < mid + 1)
+					x = mid + 1;
+				fymm_rich_text(cv, x, dy, text,
+					       FYMM_PAL_LABEL, 0);
+			}
+		}
 	}
 
 	/* then the boxes */
@@ -422,11 +441,10 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 out:
 	for (i = 0; i < nnodes; i++)
 		fymm_rich_destroy(l.box[i].text);
+	free(lnode);
+	free(ledge);
 	free(pair);
 	free(back);
-	free(state);
-	free(l.rank_width);
-	free(l.rank_y);
 	free(l.box);
 	return out;
 }

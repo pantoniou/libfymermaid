@@ -236,6 +236,28 @@ void fymm_canvas_route_v(struct fymm_canvas *cv, int sx, int sy, int dx,
 	fymm_run_v(cv, dx, ymid + 1, dy, color, dashed);
 }
 
+void fymm_canvas_route_h(struct fymm_canvas *cv, int sx, int sy, int dx,
+			 int dy, int xmid, int color, bool dashed)
+{
+	if (sy == dy) {
+		fymm_run_h(cv, sy, sx, dx, color, dashed);
+		return;
+	}
+
+	fymm_run_h(cv, sy, sx, xmid - 1, color, dashed);
+	fymm_canvas_line(cv, xmid, sy,
+			 (uint8_t)(FYMM_LN_W | (dy > sy ? FYMM_LN_S :
+						FYMM_LN_N)), color, dashed);
+	if (dy > sy)
+		fymm_run_v(cv, xmid, sy + 1, dy - 1, color, dashed);
+	else
+		fymm_run_v(cv, xmid, dy + 1, sy - 1, color, dashed);
+	fymm_canvas_line(cv, xmid, dy,
+			 (uint8_t)(FYMM_LN_E | (dy > sy ? FYMM_LN_N :
+						FYMM_LN_S)), color, dashed);
+	fymm_run_h(cv, dy, xmid + 1, dx, color, dashed);
+}
+
 /* Decode one UTF-8 sequence, returning its length; invalid bytes decode as
  * themselves so that a mislabelled input still renders something. */
 static size_t fymm_utf8_decode(const char *s, uint32_t *cpp)

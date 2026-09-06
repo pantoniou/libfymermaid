@@ -129,6 +129,14 @@ int fymm_canvas_text(struct fymm_canvas *cv, int x, int y, const char *s,
 void fymm_canvas_route_v(struct fymm_canvas *cv, int sx, int sy, int dx,
 			 int dy, int ymid, int color, bool dashed);
 
+/*
+ * The same, for a graph that runs across the page: the link leaves (@sx, @sy)
+ * heading right and arrives at (@dx, @dy) from the left, turning at column
+ * @xmid.
+ */
+void fymm_canvas_route_h(struct fymm_canvas *cv, int sx, int sy, int dx,
+			 int dy, int xmid, int color, bool dashed);
+
 /* the display width of a UTF-8 string, in terminal columns */
 int fymm_text_width(const char *s);
 

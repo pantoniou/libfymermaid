@@ -64,38 +64,55 @@ struct fymm_ledge {
 	bool back;
 };
 
+/**
+ * enum fymm_layout_dir - which way the ranks run
+ *
+ * @FYMM_LAYOUT_DOWN: a rank is a row; the graph grows down the page
+ * @FYMM_LAYOUT_RIGHT: a rank is a column; the graph grows across it
+ */
+enum fymm_layout_dir {
+	FYMM_LAYOUT_DOWN = 0,
+	FYMM_LAYOUT_RIGHT,
+};
+
 /*
  * struct fymm_layout - the result
  *
  * @nranks: how many ranks the graph needed
  * @width: the cells the widest rank occupies
  * @height: the rows every rank occupies together
- * @rank_gap: the rows left between two ranks, as asked for
+ * @rank_gap: the cells left between two ranks, as asked for
+ * @dir: which way the ranks ran
  */
 struct fymm_layout {
 	int nranks;
 	int width;
 	int height;
 	int rank_gap;
+	enum fymm_layout_dir dir;
 };
 
 /*
- * Lay a graph out in ranks running down the page.
+ * Lay a graph out in ranks.
  *
- * Each node is placed one rank below its deepest predecessor, ignoring the
+ * Each node is placed one rank past its deepest predecessor, ignoring the
  * edges that close a cycle; those are marked in @edges so that the renderer
  * can draw them as returns. Within a rank the nodes keep the order they were
- * given, and a narrow rank is centred under the widest one.
+ * given, and a narrow rank is centred against the widest one.
+ *
+ * @dir says whether a rank is a row, so the graph runs down the page, or a
+ * column, so it runs across.
  *
  * @top: the first row the graph may use
- * @col_gap: the cells left between two nodes of a rank
- * @rank_gap: the rows left between two ranks
+ * @col_gap: the cells left between two nodes of the same rank
+ * @rank_gap: the cells left between two ranks
  *
  * Returns 0, or -1 when it cannot allocate.
  */
 int fymm_layout_layered(struct fymm_lnode *nodes, size_t nnodes,
 			struct fymm_ledge *edges, size_t nedges, int top,
-			int col_gap, int rank_gap, struct fymm_layout *out);
+			int col_gap, int rank_gap, enum fymm_layout_dir dir,
+			struct fymm_layout *out);
 
 /* The index of @id in @nodes, or (size_t)-1. */
 size_t fymm_layout_find(const struct fymm_lnode *nodes, size_t nnodes,

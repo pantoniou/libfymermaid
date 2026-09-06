@@ -109,7 +109,8 @@ char *fymm_render_c4(const struct fymm_diagram *d, fy_generic model,
 
 	top = title ? 2 : 0;
 	if (fymm_layout_layered(node, nel, edge, nrel, top, C4_COL_GAP,
-				C4_RANK_GAP, &lay))
+				C4_RANK_GAP,
+				FYMM_LAYOUT_DOWN, &lay))
 		goto out;
 
 	width = lay.width + 2;

@@ -111,7 +111,8 @@ char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
 
 	top = (title ? 2 : 0) + (int)(ngroup ? ngroup + 1 : 0);
 	if (fymm_layout_layered(node, nsvc, ledge, nedges, top, AR_COL_GAP,
-				AR_RANK_GAP, &lay))
+				AR_RANK_GAP,
+				FYMM_LAYOUT_DOWN, &lay))
 		goto out;
 
 	width = lay.width + 2;

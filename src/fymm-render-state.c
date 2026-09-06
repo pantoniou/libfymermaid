@@ -114,7 +114,8 @@ char *fymm_render_state(const struct fymm_diagram *d, fy_generic model,
 
 	top = title ? 2 : 0;
 	if (fymm_layout_layered(node, nstates, edge, ntrans, top, ST_COL_GAP,
-				ST_RANK_GAP, &lay))
+				ST_RANK_GAP,
+				FYMM_LAYOUT_DOWN, &lay))
 		goto out;
 
 	width = lay.width + 2 + ST_RETURN_LANES;

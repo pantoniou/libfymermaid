@@ -683,12 +683,12 @@ int fymm_parse_flowchart(struct fymm_parser *p, fy_generic config,
 	if (fy_is_invalid(title))
 		title = acc.title;
 
-	/* the layered renderer draws downwards; say so rather than let the
-	 * reader assume the direction was honoured */
-	if (strcmp(direction, "TB"))
+	/* `BT` and `RL` reverse an axis the renderer does not reverse; `LR`
+	 * and `TB` it draws as written */
+	if (!strcmp(direction, "BT") || !strcmp(direction, "RL"))
 		fymm_diagf(p, false, 1, 1,
-			   "the %s direction is not implemented yet; rendering top to bottom",
-			   direction);
+			   "the %s direction is drawn as %s; the ranks are not reversed",
+			   direction, !strcmp(direction, "BT") ? "TB" : "LR");
 
 	p->d->model = fy_mapping(gb,
 		"type", "flowchart",

@@ -70,7 +70,8 @@ static void fymm_mark_back(struct fymm_ledge *edges, size_t nedges,
 
 int fymm_layout_layered(struct fymm_lnode *nodes, size_t nnodes,
 			struct fymm_ledge *edges, size_t nedges, int top,
-			int col_gap, int rank_gap, struct fymm_layout *out)
+			int col_gap, int rank_gap, enum fymm_layout_dir dir,
+			struct fymm_layout *out)
 {
 	uint8_t *state;
 	size_t i, passes;
@@ -79,6 +80,7 @@ int fymm_layout_layered(struct fymm_lnode *nodes, size_t nnodes,
 
 	memset(out, 0, sizeof(*out));
 	out->rank_gap = rank_gap;
+	out->dir = dir;
 	if (!nnodes)
 		return 0;
 
@@ -118,36 +120,77 @@ int fymm_layout_layered(struct fymm_lnode *nodes, size_t nnodes,
 			out->nranks = nodes[i].rank + 1;
 	}
 
-	/* place each rank left to right, then centre the narrow ones */
-	y = top;
-	for (r = 0; r < out->nranks; r++) {
-		x = 0;
-		tall = 0;
-		for (i = 0; i < nnodes; i++) {
-			if (nodes[i].rank != r)
-				continue;
-			nodes[i].x = x;
-			nodes[i].y = y;
-			x += nodes[i].w + col_gap;
-			if (nodes[i].h > tall)
-				tall = nodes[i].h;
+	/*
+	 * Place the ranks. Running down the page a rank is a row of nodes
+	 * side by side; running across it is a column of them stacked. The
+	 * two are the same walk with the axes exchanged.
+	 */
+	if (dir == FYMM_LAYOUT_DOWN) {
+		y = top;
+		for (r = 0; r < out->nranks; r++) {
+			x = 0;
+			tall = 0;
+			for (i = 0; i < nnodes; i++) {
+				if (nodes[i].rank != r)
+					continue;
+				nodes[i].x = x;
+				nodes[i].y = y;
+				x += nodes[i].w + col_gap;
+				if (nodes[i].h > tall)
+					tall = nodes[i].h;
+			}
+			used = x - col_gap;
+			if (used > out->width)
+				out->width = used;
+			y += tall + rank_gap;
 		}
-		used = x - col_gap;
-		if (used > out->width)
-			out->width = used;
-		y += tall + rank_gap;
-	}
-	out->height = y - rank_gap - top;
+		out->height = y - rank_gap - top;
 
-	for (r = 0; r < out->nranks; r++) {
-		used = 0;
-		for (i = 0; i < nnodes; i++) {
-			if (nodes[i].rank == r)
-				used = nodes[i].x + nodes[i].w;
+		/* a narrow rank is centred against the widest one */
+		for (r = 0; r < out->nranks; r++) {
+			used = 0;
+			for (i = 0; i < nnodes; i++) {
+				if (nodes[i].rank == r)
+					used = nodes[i].x + nodes[i].w;
+			}
+			for (i = 0; i < nnodes; i++) {
+				if (nodes[i].rank == r)
+					nodes[i].x += (out->width - used) / 2;
+			}
 		}
-		for (i = 0; i < nnodes; i++) {
-			if (nodes[i].rank == r)
-				nodes[i].x += (out->width - used) / 2;
+	} else {
+		x = 0;
+		for (r = 0; r < out->nranks; r++) {
+			int wide = 0;
+
+			y = top;
+			for (i = 0; i < nnodes; i++) {
+				if (nodes[i].rank != r)
+					continue;
+				nodes[i].x = x;
+				nodes[i].y = y;
+				y += nodes[i].h + col_gap;
+				if (nodes[i].w > wide)
+					wide = nodes[i].w;
+			}
+			used = y - col_gap - top;
+			if (used > out->height)
+				out->height = used;
+			x += wide + rank_gap;
+		}
+		out->width = x - rank_gap;
+
+		/* a short rank is centred against the tallest one */
+		for (r = 0; r < out->nranks; r++) {
+			used = 0;
+			for (i = 0; i < nnodes; i++) {
+				if (nodes[i].rank == r)
+					used = nodes[i].y + nodes[i].h - top;
+			}
+			for (i = 0; i < nnodes; i++) {
+				if (nodes[i].rank == r)
+					nodes[i].y += (out->height - used) / 2;
+			}
 		}
 	}
 	return 0;

@@ -101,7 +101,8 @@ char *fymm_render_usecase(const struct fymm_diagram *d, fy_generic model,
 
 	top = title ? 2 : 0;
 	if (fymm_layout_layered(node, nnodes, ledge, nedges, top, UC_COL_GAP,
-				UC_RANK_GAP, &lay))
+				UC_RANK_GAP,
+				FYMM_LAYOUT_DOWN, &lay))
 		goto out;
 
 	width = lay.width + 2 + UC_RETURN_LANES;

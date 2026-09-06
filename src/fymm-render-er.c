@@ -128,7 +128,8 @@ char *fymm_render_er(const struct fymm_diagram *d, fy_generic model,
 
 	top = title ? 2 : 0;
 	if (fymm_layout_layered(node, nent, edge, nrel, top, ER_COL_GAP,
-				ER_RANK_GAP, &lay))
+				ER_RANK_GAP,
+				FYMM_LAYOUT_DOWN, &lay))
 		goto out;
 
 	width = lay.width + 2;
