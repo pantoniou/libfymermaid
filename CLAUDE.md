@@ -154,6 +154,14 @@ Follow upstream where the behavior is observable. These cases are settled:
 
 State any other deliberate difference in this section and in `README.md`.
 
+## Future work
+
+`FUTURE.md` records what is known to be wrong or missing, with the evidence for
+each and what it would take. Add to it when you find a fault you are not fixing
+now, and reproduce the fault before you write it down: an item there is one
+that has been seen, not one that has been guessed. Remove an item when the
+patch that closes it lands, in that same patch.
+
 ## Build and test
 
 ```sh

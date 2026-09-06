@@ -74,6 +74,8 @@ test suite pins.
 
 "corpus" is upstream mermaid's own parser suite; see Conformance.
 
+`FUTURE.md` records what is known to be wrong or missing, with the evidence.
+
 Within `gitGraph`: `commit` (with `id`, `msg`, `tag`, `type`), `branch` (with
 `order`), `checkout` / `switch`, `merge` (with `id`, `tag`), `cherry-pick`
 (with `id`, `parent`, `tag`), `accTitle` / `accDescr`, `%%` comments, YAML
