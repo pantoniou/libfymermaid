@@ -1058,6 +1058,128 @@ out:
 	fymm_diagram_destroy(d);
 }
 
+/*
+ * The spacing is reported, replaced and honoured, and fymm_measure() answers
+ * what a render of the same configuration produces.
+ */
+static void test_metrics(void)
+{
+	static const char src[] =
+		"flowchart TB\n"
+		"    A[Start] --> B[Middle] --> C[End]\n"
+		"    A --> D[Other]\n";
+	struct fymm_render_cfg rcfg;
+	struct fymm_metrics met;
+	struct fymm_diagram *d;
+	int w = 0, h = 0, nw = 0, nh = 0;
+	char *out;
+
+	d = parse(src);
+	if (!d)
+		return;
+	CHECK(!fymm_diagram_has_errors(d), "unexpected errors");
+
+	fymm_render_cfg_default(&rcfg);
+	rcfg.color = FYMM_COLOR_NONE;
+	rcfg.charset = FYMM_CHARSET_ASCII;
+	rcfg.fit = FYMM_FIT_NONE;
+
+	/* the defaults are the flowchart's own, not a global set */
+	fymm_metrics_default(&met, FYMM_DT_FLOWCHART);
+	CHECK(met.struct_size == sizeof(met), "struct_size was not filled in");
+	CHECK(met.col_gap == 2 && met.rank_gap == 2,
+	      "flowchart spacing is %d/%d, expected 2/2",
+	      met.col_gap, met.rank_gap);
+	fymm_metrics_default(&met, FYMM_DT_ER);
+	CHECK(met.rank_gap == 4, "er rank gap is %d, expected 4",
+	      met.rank_gap);
+	fymm_metrics_default(&met, FYMM_DT_QUADRANT);
+	CHECK(met.plot_height == 21, "quadrant plot height is %d, expected 21",
+	      met.plot_height);
+
+	/* measuring agrees with what a render of the same cfg emits */
+	CHECK(fymm_measure(d, &rcfg, &nw, &nh) == 0, "measure failed");
+	out = fymm_render(d, &rcfg);
+	CHECK(out != NULL, "the render produced nothing");
+	if (out) {
+		size_t lines = 0;
+		const char *p;
+
+		for (p = out; *p; p++) {
+			if (*p == '\n')
+				lines++;
+		}
+		CHECK((size_t)nh == lines,
+		      "measure said %d rows, the render has %zu", nh, lines);
+		CHECK((size_t)nw == widest_line(out),
+		      "measure said %d cells, the render is %zu", nw,
+		      widest_line(out));
+		fymm_free(out);
+	}
+
+	/* every knob moves the drawing the way it says it does */
+	fymm_metrics_default(&met, FYMM_DT_FLOWCHART);
+	rcfg.metrics = &met;
+
+	met.rank_gap = 6;
+	CHECK(fymm_measure(d, &rcfg, &w, &h) == 0, "measure failed");
+	CHECK(h > nh, "a wider rank gap did not make it taller, %d vs %d",
+	      h, nh);
+	CHECK(w == nw, "a rank gap should not change the width");
+
+	fymm_metrics_default(&met, FYMM_DT_FLOWCHART);
+	met.col_gap = 9;
+	CHECK(fymm_measure(d, &rcfg, &w, &h) == 0, "measure failed");
+	CHECK(w > nw, "a wider column gap did not make it wider, %d vs %d",
+	      w, nw);
+
+	fymm_metrics_default(&met, FYMM_DT_FLOWCHART);
+	met.margin = 3;
+	CHECK(fymm_measure(d, &rcfg, &w, &h) == 0, "measure failed");
+	CHECK(w == nw + 3, "a margin of 3 gave %d cells, expected %d",
+	      w, nw + 3);
+	CHECK(h == nh + 6, "a margin of 3 gave %d rows, expected %d",
+	      h, nh + 6);
+
+	/* the limits bound the drawing, and only when the fit asks them to */
+	fymm_metrics_default(&met, FYMM_DT_FLOWCHART);
+	met.max_width = 12;
+	met.max_height = 4;
+	rcfg.fit = FYMM_FIT_CLIP;
+	CHECK(fymm_measure(d, &rcfg, &w, &h) == 0, "measure failed");
+	CHECK(w <= 12, "max_width 12 gave %d cells", w);
+	CHECK(h <= 4, "max_height 4 gave %d rows", h);
+	CHECK(nw > 12 && nh > 4,
+	      "the diagram already fits the limits; the case proves nothing");
+
+	rcfg.fit = FYMM_FIT_NONE;
+	CHECK(fymm_measure(d, &rcfg, &w, &h) == 0, "measure failed");
+	CHECK(w == nw, "FYMM_FIT_NONE should ignore max_width, got %d", w);
+
+	/*
+	 * A field left at zero keeps the default, so a caller that wants one
+	 * thing changed says only that thing and does not have to know what
+	 * the others were.
+	 */
+	{
+		struct fymm_metrics easy = FYMM_METRICS_INIT;
+
+		rcfg.metrics = &easy;
+		CHECK(fymm_measure(d, &rcfg, &w, &h) == 0, "measure failed");
+		CHECK(w == nw && h == nh,
+		      "FYMM_METRICS_INIT changed the drawing, %dx%d vs %dx%d",
+		      w, h, nw, nh);
+
+		easy.margin = 2;
+		CHECK(fymm_measure(d, &rcfg, &w, &h) == 0, "measure failed");
+		CHECK(w == nw + 2 && h == nh + 4,
+		      "setting only the margin lost the other defaults, "
+		      "%dx%d vs %dx%d", w, h, nw + 2, nh + 4);
+	}
+
+	fymm_diagram_destroy(d);
+}
+
 int main(void)
 {
 	test_version();
@@ -1071,6 +1193,7 @@ int main(void)
 	test_config_sources();
 	test_render_modes();
 	test_fit_policy();
+	test_metrics();
 	test_color_reduction();
 	test_theme_catalogue();
 	test_theme_mono();
