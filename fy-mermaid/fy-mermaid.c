@@ -66,7 +66,7 @@ static void usage(FILE *fp)
 "options:\n"
 "  -o, --output FILE   write to FILE instead of standard output\n"
 "  -w, --width N       render for a terminal N columns wide\n"
-"  -F, --fit POLICY    shrink (default), clip or none, when it does not fit\n"
+"  -F, --fit POLICY    shrink (default), legend, clip or none\n"
 "  -c, --color MODE    auto (default), none, 16, 256 or true\n"
 "  -C, --charset SET   auto (default), ascii or unicode\n"
 "  -a, --ascii         shorthand for --charset ascii\n"
@@ -146,6 +146,8 @@ static int parse_fit(const char *s, enum fymm_fit *fp)
 {
 	if (!strcmp(s, "shrink"))
 		*fp = FYMM_FIT_SHRINK;
+	else if (!strcmp(s, "legend"))
+		*fp = FYMM_FIT_LEGEND;
 	else if (!strcmp(s, "clip"))
 		*fp = FYMM_FIT_CLIP;
 	else if (!strcmp(s, "none") || !strcmp(s, "off"))
