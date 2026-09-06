@@ -1,0 +1,11 @@
+agentflow-beta TB
+  connector github["GitHub"]@{ protocol: "mcp", transport: "stdio" }
+  flow triage["Triage"]
+    issue[/"new issue"/]
+    classify@{ shape: action }
+    ok{"actionable?"}
+    issue --> classify --> ok
+  end
+  ok -- yes --> assign@{ shape: tool }
+  ok -- no --> close@{ shape: tool }
+  assign --> github

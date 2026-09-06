@@ -1,0 +1,73 @@
+type: agentflow
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+nodes:
+- id: github
+  text: GitHub
+  shape: rect
+  markdown: false
+  subgraph: null
+- id: issue
+  text: new issue
+  shape: parallelogram
+  markdown: false
+  subgraph: triage["Triage"]
+- id: classify
+  text: classify
+  shape: rounded
+  markdown: false
+  subgraph: triage["Triage"]
+- id: ok
+  text: actionable?
+  shape: rhombus
+  markdown: false
+  subgraph: triage["Triage"]
+- id: assign
+  text: assign
+  shape: subroutine
+  markdown: false
+  subgraph: null
+- id: close
+  text: close
+  shape: subroutine
+  markdown: false
+  subgraph: null
+edges:
+- from: issue
+  to: classify
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+- from: classify
+  to: ok
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+- from: ok
+  to: assign
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: yes
+- from: ok
+  to: close
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: no
+- from: assign
+  to: github
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+subgraphs:
+- title: triage["Triage"]
+  depth: 0
+connectors:
+- github
