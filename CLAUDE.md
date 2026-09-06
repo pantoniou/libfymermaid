@@ -267,6 +267,19 @@ a second one, and do not link md4c here: libfymd4c absorbs it and exports only
 `fymd_*`, which is the interface this library depends on. A gap in the reading
 of a label is fixed in libfymd4c and then used from here.
 
+### The terminal
+
+`src/fymm-term.c` is the only place that reads the environment or talks to the
+terminal. `TERM` alone does not identify kitty, ghostty, wezterm or alacritty,
+so the colour probe also knows their names, their `TERM_PROGRAM` values and
+the variables they set for themselves; a `-direct` terminfo entry means 24 bit.
+
+The background query is OSC 11 on `/dev/tty`, never on the output fd, so a
+redirected render cannot have escape bytes written into it. It restores the
+terminal whatever happens and polls with a timeout, because a terminal that
+does not answer must not hang a render. `test/fymm-pty-test.c` covers it with
+a real pty, including the silent case.
+
 ### Colour
 
 A cell holds a palette index, never a colour and never an escape sequence.

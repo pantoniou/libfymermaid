@@ -107,6 +107,28 @@ which is what it means.
 On a 24-bit terminal a colour reaches it byte for byte; the reduction to a
 palette only happens where the terminal cannot do better.
 
+`TERM` does not describe every terminal — kitty is `xterm-kitty`, ghostty
+`xterm-ghostty`, and neither says anything about colour — so the probe also
+knows those names, the `TERM_PROGRAM` values, and the variables a terminal
+sets for itself (`KITTY_WINDOW_ID`, `GHOSTTY_RESOURCES_DIR`, `WEZTERM_PANE`
+and the rest). Without that they fell back to sixteen colours.
+
+### Light and dark
+
+A palette chosen for a dark terminal washes out on a light one, so the
+background is detected and a light terminal takes the `light` theme:
+
+```sh
+fy-mermaid --background light graph.mmd    # or dark, or auto
+FYMM_BACKGROUND=light fy-mermaid graph.mmd
+```
+
+`auto` reads `$FYMM_BACKGROUND`, then `$COLORFGBG`, and then asks the terminal
+itself with an OSC 11 query. The query goes to `/dev/tty` rather than to the
+output, so a redirected render never has escape bytes in it, and it is polled
+with a short timeout so a terminal that does not answer cannot hang anything.
+Naming a `--theme` says what you want, and stands.
+
 Themes are YAML, embedded into the library at build time:
 
 ```sh

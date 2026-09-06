@@ -141,6 +141,12 @@ entry of the palette the terminal can take.
 .BR \-L ", " \-\-list\-themes
 List the built-in themes and exit.
 .TP
+.BR \-b ", " \-\-background " \fIMODE\fR"
+One of \fBauto\fR (the default), \fBdark\fR or \fBlight\fR.  \fBauto\fR reads
+\fB$FYMM_BACKGROUND\fR, then \fB$COLORFGBG\fR, and then asks the terminal with
+an OSC 11 query.  A light terminal takes the \fBlight\fR theme unless
+\fB\-\-theme\fR already named one.
+.TP
 .BR \-m ", " \-\-dump\-model
 Emit the parsed diagram model as YAML instead of rendering it.  The model is
 the same

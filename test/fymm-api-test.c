@@ -864,6 +864,95 @@ static void test_color_detection(void)
 	unsetenv("CLICOLOR_FORCE");
 }
 
+/*
+ * What the terminal is drawn on. `$COLORFGBG` is what a terminal that sets it
+ * says; kitty and ghostty do not set it, which is what the OSC 11 query is
+ * for, and that needs a terminal to answer so it is not exercised here.
+ */
+static void test_background_detection(void)
+{
+	static const struct {
+		const char *colorfgbg;
+		enum fymm_background want;
+		const char *why;
+	} cases[] = {
+		{ "15;0", FYMM_BG_DARK, "background 0 is dark" },
+		{ "0;15", FYMM_BG_LIGHT, "background 15 is light" },
+		{ "15;default", FYMM_BG_DARK, "an unnamed background is dark" },
+		{ "7;0", FYMM_BG_DARK, "background 0 again" },
+		{ "0;7", FYMM_BG_LIGHT, "7 is the light half" },
+		{ "0;6", FYMM_BG_DARK, "6 is the dark half" },
+		{ "12;8;0", FYMM_BG_DARK, "the last field is the background" },
+		{ "12;8;15", FYMM_BG_LIGHT, "the last field again" },
+	};
+	size_t i;
+
+	unsetenv("FYMM_BACKGROUND");
+	for (i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
+		setenv("COLORFGBG", cases[i].colorfgbg, 1);
+		CHECK(fymm_detect_background(-1) == cases[i].want,
+		      "COLORFGBG=%s gave %d, expected %d (%s)",
+		      cases[i].colorfgbg, (int)fymm_detect_background(-1),
+		      (int)cases[i].want, cases[i].why);
+	}
+
+	/* an explicit answer settles it */
+	setenv("COLORFGBG", "0;15", 1);
+	setenv("FYMM_BACKGROUND", "dark", 1);
+	CHECK(fymm_detect_background(-1) == FYMM_BG_DARK,
+	      "FYMM_BACKGROUND should win over COLORFGBG");
+	setenv("FYMM_BACKGROUND", "light", 1);
+	CHECK(fymm_detect_background(-1) == FYMM_BG_LIGHT,
+	      "FYMM_BACKGROUND light should be honoured");
+	unsetenv("FYMM_BACKGROUND");
+
+	/* nothing to go on, and no terminal to ask */
+	unsetenv("COLORFGBG");
+	CHECK(fymm_detect_background(-1) == FYMM_BG_DARK,
+	      "a terminal is dark unless something says otherwise");
+}
+
+/* A light terminal takes the light theme, unless a theme was named. */
+static void test_background_theme(void)
+{
+	static const char src[] = "gitGraph\n commit id: \"a\"\n";
+	struct fymm_render_cfg rcfg;
+	struct fymm_diagram *d;
+	char *dark, *light, *named;
+
+	d = parse(src);
+	if (!d)
+		return;
+
+	fymm_render_cfg_default(&rcfg);
+	rcfg.color = FYMM_COLOR_TRUECOLOR;
+	rcfg.width = 80;
+	rcfg.charset = FYMM_CHARSET_ASCII;
+
+	rcfg.background = FYMM_BG_DARK;
+	dark = fymm_render(d, &rcfg);
+	rcfg.background = FYMM_BG_LIGHT;
+	light = fymm_render(d, &rcfg);
+
+	CHECK(dark && light && strcmp(dark, light) != 0,
+	      "a light terminal should not get the dark palette");
+	CHECK(has_truecolor(dark, 0x3b8eea),
+	      "a dark terminal keeps the default branch colour");
+	CHECK(has_truecolor(light, 0x0b5cad),
+	      "a light terminal takes the light theme's branch colour");
+
+	/* a named theme is the caller's decision, and stands */
+	rcfg.theme = "default";
+	named = fymm_render(d, &rcfg);
+	CHECK(has_truecolor(named, 0x3b8eea),
+	      "a named theme should survive a light terminal");
+
+	fymm_free(dark);
+	fymm_free(light);
+	fymm_free(named);
+	fymm_diagram_destroy(d);
+}
+
 int main(void)
 {
 	test_version();
@@ -884,6 +973,8 @@ int main(void)
 	test_truecolor();
 	test_theme_variables();
 	test_color_detection();
+	test_background_detection();
+	test_background_theme();
 
 	if (failures)
 		fprintf(stderr, "%d check(s) failed\n", failures);

@@ -8,6 +8,21 @@ target_link_libraries(fymm-api-test PRIVATE libfymermaid::libfymermaid_static)
 target_include_directories(fymm-api-test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../src")
 add_test(NAME api COMMAND fymm-api-test)
 
+# The terminal background query needs a terminal to answer it, so this test
+# makes one with a pty. Only where the platform has openpty().
+include(CheckSymbolExists)
+set(CMAKE_REQUIRED_LIBRARIES util)
+set(CMAKE_REQUIRED_DEFINITIONS -D_GNU_SOURCE)
+check_symbol_exists(openpty "pty.h" FYMM_HAVE_OPENPTY)
+unset(CMAKE_REQUIRED_LIBRARIES)
+unset(CMAKE_REQUIRED_DEFINITIONS)
+if(FYMM_HAVE_OPENPTY)
+    add_executable(fymm-pty-test fymm-pty-test.c)
+    target_link_libraries(fymm-pty-test
+        PRIVATE libfymermaid::libfymermaid_static util)
+    add_test(NAME pty COMMAND fymm-pty-test)
+endif()
+
 # Golden files. Every test/<type>/<name>.mmd is rendered and compared against
 # the golden files beside it: <name>.model, <name>.txt, <name>.ascii and, for a
 # source that must fail, <name>.diag. A missing golden removes that case, so a
