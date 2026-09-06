@@ -76,19 +76,48 @@ enum fymm_layout_dir {
 };
 
 /*
+ * struct fymm_layout_cfg - what a layout run is asked for
+ *
+ * @top: the first row the graph may use
+ * @col_gap: the cells left between two nodes of the same rank
+ * @rank_gap: the cells left between two ranks
+ * @col_gap_min: how far @col_gap may be reduced to meet @max_width
+ * @rank_gap_min: the same for @rank_gap; both default to 1 when 0
+ * @max_width: the cells the graph must fit in, or 0 for no limit
+ * @dir: whether a rank is a row, so the graph runs down the page, or a
+ *       column, so it runs across
+ */
+struct fymm_layout_cfg {
+	int top;
+	int col_gap;
+	int rank_gap;
+	int col_gap_min;
+	int rank_gap_min;
+	int max_width;
+	enum fymm_layout_dir dir;
+};
+
+/*
  * struct fymm_layout - the result
  *
  * @nranks: how many ranks the graph needed
  * @width: the cells the widest rank occupies
  * @height: the rows every rank occupies together
- * @rank_gap: the cells left between two ranks, as asked for
+ * @col_gap: the cells actually left between two nodes of a rank, which is
+ *           less than asked for when the graph had to be closed up to fit
+ * @rank_gap: the same, between two ranks
+ * @tight: set when the gaps reached their minimum and the graph is still
+ *         wider than @max_width; what is left over is for the caller to
+ *         shorten or for the canvas to clip
  * @dir: which way the ranks ran
  */
 struct fymm_layout {
 	int nranks;
 	int width;
 	int height;
+	int col_gap;
 	int rank_gap;
+	bool tight;
 	enum fymm_layout_dir dir;
 };
 
@@ -100,18 +129,18 @@ struct fymm_layout {
  * can draw them as returns. Within a rank the nodes keep the order they were
  * given, and a narrow rank is centred against the widest one.
  *
- * @dir says whether a rank is a row, so the graph runs down the page, or a
- * column, so it runs across.
- *
- * @top: the first row the graph may use
- * @col_gap: the cells left between two nodes of the same rank
- * @rank_gap: the cells left between two ranks
+ * A graph wider than fymm_layout_cfg.max_width is closed up: the gaps are
+ * reduced towards their minimum until it fits. The gaps that were used are
+ * reported, because a caller draws its links through them. When even the
+ * minimum does not fit, the result is marked @tight and left at its natural
+ * size: the layout will not make a node narrower, because only the caller
+ * knows what the node says.
  *
  * Returns 0, or -1 when it cannot allocate.
  */
 int fymm_layout_layered(struct fymm_lnode *nodes, size_t nnodes,
-			struct fymm_ledge *edges, size_t nedges, int top,
-			int col_gap, int rank_gap, enum fymm_layout_dir dir,
+			struct fymm_ledge *edges, size_t nedges,
+			const struct fymm_layout_cfg *lcfg,
 			struct fymm_layout *out);
 
 /* The index of @id in @nodes, or (size_t)-1. */

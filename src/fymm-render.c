@@ -39,6 +39,7 @@ void fymm_render_cfg_default(struct fymm_render_cfg *cfg)
 	memset(cfg, 0, sizeof(*cfg));
 	cfg->struct_size = sizeof(*cfg);
 	cfg->width = FYMM_WIDTH_AUTO;
+	cfg->fit = FYMM_FIT_SHRINK;
 	cfg->color = FYMM_COLOR_AUTO;
 	cfg->charset = FYMM_CHARSET_AUTO;
 	cfg->options = fy_invalid;

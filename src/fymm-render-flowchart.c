@@ -314,6 +314,7 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	struct fymm_lnode *lnode = NULL;
 	struct fymm_ledge *ledge = NULL;
 	struct fymm_layout lay;
+	struct fymm_layout_cfg lcfg = { 0, 0, 0, 0, 0, 0, FYMM_LAYOUT_DOWN };
 	enum fymm_layout_dir dir;
 	struct fc_pair *pair = NULL;
 	struct fc_group *grp = NULL;
@@ -497,8 +498,19 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	}
 
 	top = title ? 2 : 0;
-	if (fymm_layout_layered(lnode, nnodes, ledge, j, top, col_gap,
-				rank_gap, dir, &lay))
+	lcfg.top = top;
+	lcfg.col_gap = col_gap;
+	lcfg.rank_gap = rank_gap;
+	lcfg.dir = dir;
+	/*
+	 * The budget is the width itself. What is drawn around the graph -
+	 * the margin, the return lanes, the frames - is only drawn where it
+	 * is used, so taking it off here would close up a graph that fits.
+	 * Whatever those add over the width is for the clip.
+	 */
+	if (cfg && cfg->width > 0 && cfg->fit == FYMM_FIT_SHRINK)
+		lcfg.max_width = cfg->width;
+	if (fymm_layout_layered(lnode, nnodes, ledge, j, &lcfg, &lay))
 		goto out;
 
 	/* the shared layout marks the returning links; carry that back so the
@@ -696,8 +708,18 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 				x = dx - 2 - fymm_rich_measure(text);
 				if (x < mid + 1)
 					x = mid + 1;
-				fymm_rich_text(cv, x, dy, text,
-					       FYMM_PAL_LABEL, 0);
+				/*
+				 * The gap it sits in may have been closed up
+				 * to meet the width; what does not fit is cut
+				 * rather than drawn over the node. Below two
+				 * cells nothing of the label survives but the
+				 * ellipsis, which in a rail reads as part of
+				 * the line, so draw none of it.
+				 */
+				if (dx - 1 - x >= 2)
+					fymm_rich_text_max(cv, x, dy, text,
+							   dx - 1 - x,
+							   FYMM_PAL_LABEL, 0);
 			}
 		}
 	}

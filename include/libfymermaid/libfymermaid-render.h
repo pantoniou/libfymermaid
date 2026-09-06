@@ -84,6 +84,24 @@ enum fymm_background {
 	FYMM_BG_LIGHT,
 };
 
+/**
+ * enum fymm_fit - what to do with a diagram wider than the width
+ *
+ * @FYMM_FIT_SHRINK: close the gaps between the parts of the drawing until it
+ *                   fits, and clip whatever is still over. This keeps the
+ *                   whole diagram on the screen for as long as closing it up
+ *                   can, and is the default.
+ * @FYMM_FIT_CLIP: draw at the natural size and clip to the width. The parts
+ *                 that fit are drawn exactly as they would be with no limit.
+ * @FYMM_FIT_NONE: ignore the width and emit the whole drawing, however wide.
+ *                 For a pager that scrolls sideways, or a file.
+ */
+enum fymm_fit {
+	FYMM_FIT_SHRINK = 0,
+	FYMM_FIT_CLIP,
+	FYMM_FIT_NONE,
+};
+
 /* FYMM_WIDTH_AUTO - detect the terminal width */
 #define FYMM_WIDTH_AUTO (-1)
 /* FYMM_WIDTH_INF - never wrap or clip */
@@ -94,6 +112,7 @@ enum fymm_background {
  *
  * @struct_size: sizeof(struct fymm_render_cfg), the forward compatibility guard
  * @width: the output width in columns, or FYMM_WIDTH_AUTO / FYMM_WIDTH_INF
+ * @fit: what to do when the diagram does not fit in @width
  * @color: how much colour to use
  * @charset: which glyphs to draw with
  * @options: a mapping of overrides applied over the diagram's own config,
@@ -111,6 +130,7 @@ enum fymm_background {
 struct fymm_render_cfg {
 	size_t struct_size;
 	int width;
+	enum fymm_fit fit;
 	enum fymm_color_mode color;
 	enum fymm_charset charset;
 	fy_generic options;

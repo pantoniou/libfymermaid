@@ -147,6 +147,10 @@ void fymm_canvas_hline(struct fymm_canvas *cv, int y, int x0, int x1,
 		       int color, bool dashed);
 void fymm_canvas_vline(struct fymm_canvas *cv, int x, int y0, int y1,
 		       int color, bool dashed);
+/* Draw at most @max cells of @s; a negative @max draws all of it. */
+int fymm_canvas_text_max(struct fymm_canvas *cv, int x, int y, const char *s,
+			 int max, int color, uint8_t attr);
+
 int fymm_canvas_text(struct fymm_canvas *cv, int x, int y, const char *s,
 		     int color, uint8_t attr);
 

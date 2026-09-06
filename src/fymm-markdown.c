@@ -329,6 +329,61 @@ int fymm_rich_text(struct fymm_canvas *cv, int x, int y, const char *text,
 	return drawn;
 }
 
+int fymm_rich_text_max(struct fymm_canvas *cv, int x, int y, const char *text,
+		       int max, int color, uint8_t attr)
+{
+	struct fymm_rich *r;
+	const struct fymm_rich_line *l;
+	size_t i, j;
+	int drawn = 0, room, n;
+	bool cut = false;
+
+	if (max <= 0)
+		return 0;
+
+	r = fymm_rich_parse(text, false);
+	if (!r)
+		return fymm_canvas_text_max(cv, x, y, text, max, color, attr);
+
+	if (fymm_rich_inline_width(r) <= max) {
+		drawn = fymm_rich_draw_inline(cv, x, y, r, color, attr);
+		fymm_rich_destroy(r);
+		return drawn;
+	}
+
+	/*
+	 * What is left keeps the markup of the runs that survive, and the
+	 * ellipsis says that something did not. One cell is held back for it,
+	 * so the whole run still fits in @max.
+	 */
+	for (i = 0; i < r->nlines && !cut; i++) {
+		if (i && drawn < max - 1)
+			drawn += fymm_canvas_text_max(cv, x + drawn, y, " ",
+						      max - 1 - drawn, color,
+						      attr);
+		l = &r->line[i];
+		for (j = 0; j < l->nspans; j++) {
+			room = max - 1 - drawn;
+			if (room <= 0) {
+				cut = true;
+				break;
+			}
+			n = fymm_canvas_text_max(cv, x + drawn, y,
+						 l->span[j].text, room, color,
+						 (uint8_t)(attr |
+							   l->span[j].attr));
+			drawn += n;
+		}
+	}
+	fymm_rich_destroy(r);
+
+	drawn += fymm_canvas_text(cv, x + drawn, y,
+				  cv->charset == FYMM_CHARSET_ASCII ?
+					"~" : "\xe2\x80\xa6",
+				  color, attr);
+	return drawn;
+}
+
 int fymm_rich_measure(const char *text)
 {
 	struct fymm_rich *r = fymm_rich_parse(text, false);

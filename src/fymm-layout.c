@@ -68,64 +68,24 @@ static void fymm_mark_back(struct fymm_ledge *edges, size_t nedges,
 	state[v] = 2;
 }
 
-int fymm_layout_layered(struct fymm_lnode *nodes, size_t nnodes,
-			struct fymm_ledge *edges, size_t nedges, int top,
-			int col_gap, int rank_gap, enum fymm_layout_dir dir,
-			struct fymm_layout *out)
+/*
+ * Place the ranks at the given gaps and measure what that took. Running down
+ * the page a rank is a row of nodes side by side; running across it is a
+ * column of them stacked. The two are the same walk with the axes exchanged.
+ */
+static void fymm_layout_place(struct fymm_lnode *nodes, size_t nnodes,
+			      int top, int col_gap, int rank_gap,
+			      struct fymm_layout *out)
 {
-	uint8_t *state;
-	size_t i, passes;
+	size_t i;
 	int r, x, y, used, tall;
-	bool moved;
 
-	memset(out, 0, sizeof(*out));
+	out->width = 0;
+	out->height = 0;
+	out->col_gap = col_gap;
 	out->rank_gap = rank_gap;
-	out->dir = dir;
-	if (!nnodes)
-		return 0;
 
-	state = calloc(nnodes, sizeof(*state));
-	if (!state)
-		return -1;
-
-	for (i = 0; i < nedges; i++) {
-		nodes[edges[i].from].rank = nodes[edges[i].from].rank;
-		if (edges[i].from >= nnodes || edges[i].to >= nnodes)
-			edges[i].back = true;	/* nothing to rank */
-	}
-	for (i = 0; i < nnodes; i++) {
-		if (!state[i])
-			fymm_mark_back(edges, nedges, state, i);
-	}
-	free(state);
-
-	/* longest-path layering over the edges that remain */
-	moved = true;
-	for (passes = 0; moved && passes <= nnodes; passes++) {
-		moved = false;
-		for (i = 0; i < nedges; i++) {
-			if (edges[i].back || edges[i].from == edges[i].to)
-				continue;
-			if (nodes[edges[i].to].rank <=
-			    nodes[edges[i].from].rank) {
-				nodes[edges[i].to].rank =
-					nodes[edges[i].from].rank + 1;
-				moved = true;
-			}
-		}
-	}
-
-	for (i = 0; i < nnodes; i++) {
-		if (nodes[i].rank + 1 > out->nranks)
-			out->nranks = nodes[i].rank + 1;
-	}
-
-	/*
-	 * Place the ranks. Running down the page a rank is a row of nodes
-	 * side by side; running across it is a column of them stacked. The
-	 * two are the same walk with the axes exchanged.
-	 */
-	if (dir == FYMM_LAYOUT_DOWN) {
+	if (out->dir == FYMM_LAYOUT_DOWN) {
 		y = top;
 		for (r = 0; r < out->nranks; r++) {
 			x = 0;
@@ -193,5 +153,91 @@ int fymm_layout_layered(struct fymm_lnode *nodes, size_t nnodes,
 			}
 		}
 	}
+}
+
+int fymm_layout_layered(struct fymm_lnode *nodes, size_t nnodes,
+			struct fymm_ledge *edges, size_t nedges,
+			const struct fymm_layout_cfg *lcfg,
+			struct fymm_layout *out)
+{
+	uint8_t *state;
+	size_t i, passes;
+	int col_gap, rank_gap, col_min, rank_min;
+	bool moved;
+
+	memset(out, 0, sizeof(*out));
+	out->dir = lcfg->dir;
+	out->col_gap = lcfg->col_gap;
+	out->rank_gap = lcfg->rank_gap;
+	if (!nnodes)
+		return 0;
+
+	state = calloc(nnodes, sizeof(*state));
+	if (!state)
+		return -1;
+
+	for (i = 0; i < nedges; i++) {
+		if (edges[i].from >= nnodes || edges[i].to >= nnodes)
+			edges[i].back = true;	/* nothing to rank */
+	}
+	for (i = 0; i < nnodes; i++) {
+		if (!state[i])
+			fymm_mark_back(edges, nedges, state, i);
+	}
+	free(state);
+
+	/* longest-path layering over the edges that remain */
+	moved = true;
+	for (passes = 0; moved && passes <= nnodes; passes++) {
+		moved = false;
+		for (i = 0; i < nedges; i++) {
+			if (edges[i].back || edges[i].from == edges[i].to)
+				continue;
+			if (nodes[edges[i].to].rank <=
+			    nodes[edges[i].from].rank) {
+				nodes[edges[i].to].rank =
+					nodes[edges[i].from].rank + 1;
+				moved = true;
+			}
+		}
+	}
+
+	for (i = 0; i < nnodes; i++) {
+		if (nodes[i].rank + 1 > out->nranks)
+			out->nranks = nodes[i].rank + 1;
+	}
+
+	col_gap = lcfg->col_gap;
+	rank_gap = lcfg->rank_gap;
+	col_min = lcfg->col_gap_min > 0 ? lcfg->col_gap_min : 1;
+	rank_min = lcfg->rank_gap_min > 0 ? lcfg->rank_gap_min : 1;
+	if (col_min > col_gap)
+		col_min = col_gap;
+	if (rank_min > rank_gap)
+		rank_min = rank_gap;
+
+	fymm_layout_place(nodes, nnodes, lcfg->top, col_gap, rank_gap, out);
+
+	/*
+	 * Close the graph up while it is too wide. Only the gap that runs
+	 * across the page buys anything: down the page that is the gap
+	 * between the nodes of a rank, and across it the gap between the
+	 * ranks themselves.
+	 */
+	while (lcfg->max_width > 0 && out->width > lcfg->max_width) {
+		if (lcfg->dir == FYMM_LAYOUT_DOWN) {
+			if (col_gap <= col_min)
+				break;
+			col_gap--;
+		} else {
+			if (rank_gap <= rank_min)
+				break;
+			rank_gap--;
+		}
+		fymm_layout_place(nodes, nnodes, lcfg->top, col_gap, rank_gap,
+				  out);
+	}
+
+	out->tight = lcfg->max_width > 0 && out->width > lcfg->max_width;
 	return 0;
 }

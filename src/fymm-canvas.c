@@ -118,7 +118,8 @@ struct fymm_canvas *fymm_canvas_create(int w, int h, enum fymm_charset charset,
  * The width a render was asked for is a limit, not a hint: a diagram wider
  * than the terminal is unreadable, and wrapping it would break every box it
  * draws. The canvas is measured at the size the content needs and clipped to
- * the width on the way out.
+ * the width on the way out, unless the caller asked for the whole drawing
+ * with FYMM_FIT_NONE.
  */
 struct fymm_canvas *fymm_canvas_create_cfg(int w, int h,
 					   const struct fymm_render_cfg *cfg,
@@ -133,7 +134,7 @@ struct fymm_canvas *fymm_canvas_create_cfg(int w, int h,
 	if (!cv)
 		return NULL;
 
-	if (cfg && cfg->width > 0)
+	if (cfg && cfg->width > 0 && cfg->fit != FYMM_FIT_NONE)
 		cv->clip_w = cfg->width;
 	return cv;
 }
@@ -373,6 +374,17 @@ int fymm_text_width(const char *s)
 int fymm_canvas_text(struct fymm_canvas *cv, int x, int y, const char *s,
 		     int color, uint8_t attr)
 {
+	return fymm_canvas_text_max(cv, x, y, s, -1, color, attr);
+}
+
+/*
+ * Draw at most @max cells of @s, or all of it when @max is negative. A double
+ * width glyph that would cross the budget is not drawn, so the run never ends
+ * a column over what it was allowed.
+ */
+int fymm_canvas_text_max(struct fymm_canvas *cv, int x, int y, const char *s,
+			 int max, int color, uint8_t attr)
+{
 	uint32_t cp;
 	int w, x0 = x;
 
@@ -383,6 +395,8 @@ int fymm_canvas_text(struct fymm_canvas *cv, int x, int y, const char *s,
 		w = fymm_cp_width(cp);
 		if (!w)
 			continue;
+		if (max >= 0 && x - x0 + w > max)
+			break;
 		fymm_canvas_put(cv, x, y, cp, color, attr);
 		if (w == 2)
 			fymm_canvas_put(cv, x + 1, y, FYMM_CP_CONT, color,

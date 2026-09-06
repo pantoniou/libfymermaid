@@ -96,6 +96,14 @@ int fymm_rich_inline_width(const struct fymm_rich *r);
 int fymm_rich_text(struct fymm_canvas *cv, int x, int y, const char *text,
 		   int color, uint8_t attr);
 
+/*
+ * The same, in at most @max cells. A label that does not fit is cut and ends
+ * in an ellipsis; what survives keeps its markup. Returns the cells drawn,
+ * never more than @max.
+ */
+int fymm_rich_text_max(struct fymm_canvas *cv, int x, int y, const char *text,
+		       int max, int color, uint8_t attr);
+
 /* The width @text needs when drawn on one row, with its markup resolved. */
 int fymm_rich_measure(const char *text);
 

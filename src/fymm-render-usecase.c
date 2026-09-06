@@ -51,6 +51,7 @@ char *fymm_render_usecase(const struct fymm_diagram *d, fy_generic model,
 	struct fymm_lnode *node = NULL;
 	struct fymm_ledge *ledge = NULL;
 	struct fymm_layout lay;
+	struct fymm_layout_cfg lcfg = { 0, 0, 0, 0, 0, 0, FYMM_LAYOUT_DOWN };
 	const char **text = NULL, **kind = NULL;
 	const char *title, *label;
 	size_t nnodes, nedges, i, j;
@@ -100,9 +101,13 @@ char *fymm_render_usecase(const struct fymm_diagram *d, fy_generic model,
 	nedges = j;
 
 	top = title ? 2 : 0;
-	if (fymm_layout_layered(node, nnodes, ledge, nedges, top, UC_COL_GAP,
-				UC_RANK_GAP,
-				FYMM_LAYOUT_DOWN, &lay))
+	lcfg.top = top;
+	lcfg.col_gap = UC_COL_GAP;
+	lcfg.rank_gap = UC_RANK_GAP;
+	lcfg.dir = FYMM_LAYOUT_DOWN;
+	if (cfg && cfg->width > 0 && cfg->fit == FYMM_FIT_SHRINK)
+		lcfg.max_width = cfg->width;
+	if (fymm_layout_layered(node, nnodes, ledge, nedges, &lcfg, &lay))
 		goto out;
 
 	width = lay.width + 2 + UC_RETURN_LANES;
