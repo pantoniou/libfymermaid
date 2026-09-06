@@ -104,6 +104,7 @@ set(_fymm_sources
     fymm-layout.c fymm-layout.h
     fymm-metrics.c
     fymm-legend.c fymm-legend.h
+    fymm-frame.c fymm-frame.h
     fymm-markdown.c fymm-markdown.h
     fymm-color.c fymm-color.h
     fymm-theme.c

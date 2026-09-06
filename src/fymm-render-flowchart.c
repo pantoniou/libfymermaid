@@ -30,6 +30,7 @@
 
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
+#include "fymm-frame.h"
 #include "fymm-layout.h"
 #include "fymm-markdown.h"
 
@@ -74,37 +75,6 @@ static enum fc_border fc_border_of(const char *shape)
 	return FC_BORDER_SHARP;
 }
 
-/*
- * The cells a container frame keeps clear around the nodes it holds.
- *
- * Two rather than one. A link arrives at the cell just outside the node it
- * points at, and that is where its arrowhead goes; a returning link runs
- * along that same line to reach its lane in the margin. With one cell of
- * padding the frame edge is on that line, and since a solid line takes a
- * shared cell from a dashed one the frame comes apart along its length
- * instead of being crossed at a point.
- */
-#define FC_FRAME_PAD 2
-
-/*
- * struct fc_group - one container, placed
- *
- * @rect is the frame, computed from the nodes the container holds and from
- * the frames of the containers nested in it. @framed is clear when a node the
- * container does not hold falls inside that rectangle: the frame would then
- * claim a node that is not its own, so the title is drawn beside the first
- * member instead.
- */
-struct fc_group {
-	const char *id;
-	struct fymm_rich *title;
-	int tw;			/* the drawn width of the title */
-	int depth;
-	int x0, y0, x1, y1;
-	bool used;
-	bool framed;
-};
-
 /* struct fc_pair - one edge, resolved to node indices */
 struct fc_pair {
 	size_t from, to;
@@ -140,171 +110,6 @@ static size_t fc_find(const struct fc_layout *l, const char *id)
 	return (size_t)-1;
 }
 
-/* The outermost container @inner sits in, which may be @inner itself. */
-static size_t fc_outermost(const struct fc_group *grp, size_t inner)
-{
-	size_t k, out = inner;
-	int depth;
-
-	if (inner == (size_t)-1)
-		return inner;
-	depth = grp[inner].depth;
-	for (k = inner; depth && k-- > 0; ) {
-		if (grp[k].depth >= depth)
-			continue;
-		depth = grp[k].depth;
-		out = k;
-	}
-	return out;
-}
-
-/*
- * Does @g hold @box, at any depth? A container is entered by the nodes
- * between its header and its `end`, so the containers open at that point are
- * the ones the node belongs to. The model records only the innermost, and the
- * enclosing ones are the entries before it that are still open, which are the
- * ones of a smaller depth that come earlier in the list.
- */
-static bool fc_holds(const struct fc_group *grp, size_t ngroups, size_t g,
-		     size_t inner)
-{
-	size_t k;
-	int depth;
-
-	if (inner == (size_t)-1)
-		return false;
-	if (inner == g)
-		return true;
-	if (grp[g].depth >= grp[inner].depth || g > inner)
-		return false;
-
-	/* walk out of @inner, one enclosing container at a time */
-	depth = grp[inner].depth;
-	for (k = inner; k-- > 0; ) {
-		if (grp[k].depth >= depth)
-			continue;
-		depth = grp[k].depth;
-		if (k == g)
-			return true;
-		if (!depth)
-			break;
-	}
-	(void)ngroups;
-	return false;
-}
-
-
-
-/*
- * Measure every container frame from the nodes it holds and from the frames
- * nested in it, innermost first.
- *
- * A node the container does not hold may fall inside the rectangle that
- * covers the ones it does, because two ranks are placed independently. Such a
- * node is pushed to the right, together with everything after it in its rank,
- * and the caller measures again.
- *
- * Returns true when a node was moved, so that the frames are now stale.
- */
-static bool fc_frames(struct fc_group *grp, size_t ngroups,
-		      struct fc_box *box, size_t nnodes, int col_gap)
-{
-	size_t g, i, j, k;
-	bool moved = false;
-
-	for (g = ngroups; g-- > 0; ) {
-		bool first = true;
-
-		if (!grp[g].used)
-			continue;
-		grp[g].framed = true;
-
-		for (i = 0; i < nnodes; i++) {
-			if (!fc_holds(grp, ngroups, g, box[i].group))
-				continue;
-			if (first) {
-				grp[g].x0 = box[i].x;
-				grp[g].y0 = box[i].y;
-				grp[g].x1 = box[i].x + box[i].w - 1;
-				grp[g].y1 = box[i].y + box[i].h - 1;
-				first = false;
-				continue;
-			}
-			if (box[i].x < grp[g].x0)
-				grp[g].x0 = box[i].x;
-			if (box[i].y < grp[g].y0)
-				grp[g].y0 = box[i].y;
-			if (box[i].x + box[i].w - 1 > grp[g].x1)
-				grp[g].x1 = box[i].x + box[i].w - 1;
-			if (box[i].y + box[i].h - 1 > grp[g].y1)
-				grp[g].y1 = box[i].y + box[i].h - 1;
-		}
-		if (first) {
-			grp[g].used = false;
-			continue;
-		}
-
-		/* the containers nested in this one follow it in the list */
-		for (k = g + 1; k < ngroups; k++) {
-			if (!grp[k].used || grp[k].depth <= grp[g].depth)
-				break;
-			if (grp[k].x0 - 1 < grp[g].x0)
-				grp[g].x0 = grp[k].x0 - 1;
-			if (grp[k].y0 - 1 < grp[g].y0)
-				grp[g].y0 = grp[k].y0 - 1;
-			if (grp[k].x1 + 1 > grp[g].x1)
-				grp[g].x1 = grp[k].x1 + 1;
-			if (grp[k].y1 + 1 > grp[g].y1)
-				grp[g].y1 = grp[k].y1 + 1;
-		}
-
-		grp[g].x0 -= FC_FRAME_PAD;
-		grp[g].y0 -= FC_FRAME_PAD;
-		grp[g].x1 += FC_FRAME_PAD;
-		grp[g].y1 += FC_FRAME_PAD;
-
-		/* the title sits on the top edge, between the corners */
-		if (grp[g].tw && grp[g].x0 + grp[g].tw + 4 > grp[g].x1)
-			grp[g].x1 = grp[g].x0 + grp[g].tw + 4;
-
-		for (i = 0; i < nnodes; i++) {
-			int shift;
-
-			if (fc_holds(grp, ngroups, g, box[i].group))
-				continue;
-			if (box[i].x + box[i].w - 1 < grp[g].x0 ||
-			    box[i].x > grp[g].x1 ||
-			    box[i].y + box[i].h - 1 < grp[g].y0 ||
-			    box[i].y > grp[g].y1)
-				continue;
-
-			/* a node that starts left of the frame cannot be
-			 * pushed clear of it without crossing it */
-			if (box[i].x < grp[g].x0) {
-				grp[g].framed = false;
-				continue;
-			}
-
-			/*
-			 * Past the frame, and past everything else in the
-			 * rank that was already clear of it. A node the
-			 * container holds never moves: the frame covers it,
-			 * so clearing the frame clears it too.
-			 */
-			shift = grp[g].x1 + 1 + col_gap / 2 - box[i].x;
-			for (j = 0; j < nnodes; j++) {
-				if (box[j].rank != box[i].rank ||
-				    box[j].x < box[i].x ||
-				    fc_holds(grp, ngroups, g, box[j].group))
-					continue;
-				box[j].x += shift;
-			}
-			moved = true;
-		}
-	}
-	return moved;
-}
-
 char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 			    const struct fymm_render_cfg *cfg)
 {
@@ -325,7 +130,9 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	struct fymm_layout_cfg lcfg = { 0, 0, 0, 0, 0, 0, FYMM_LAYOUT_DOWN };
 	enum fymm_layout_dir dir;
 	struct fc_pair *pair = NULL;
-	struct fc_group *grp = NULL;
+	struct fymm_frame *grp = NULL;
+	struct fymm_frame_node *fnode = NULL;
+	struct fymm_rich **gtitle = NULL;
 	size_t *order = NULL;
 	bool *back = NULL;
 	const char *title, *text;
@@ -362,17 +169,23 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	maxdepth = 0;
 	if (ngroups) {
 		grp = calloc(ngroups, sizeof(*grp));
+		fnode = calloc(nnodes ? nnodes : 1, sizeof(*fnode));
+		if (!fnode)
+			goto out;
 		if (!grp)
+			goto out;
+		gtitle = calloc(ngroups, sizeof(*gtitle));
+		if (!gtitle)
 			goto out;
 		for (g = 0; g < ngroups; g++) {
 			fy_generic sg = fy_get_at(subgraphs, g);
 
 			grp[g].id = fy_get(sg, "id", "");
-			grp[g].title = fymm_rich_parse(fy_get(sg, "title", ""),
+			gtitle[g] = fymm_rich_parse(fy_get(sg, "title", ""),
 						fy_get(sg, "markdown", false));
-			if (!grp[g].title)
+			if (!gtitle[g])
 				goto out;
-			grp[g].tw = fymm_rich_width(grp[g].title);
+			grp[g].tw = fymm_rich_width(gtitle[g]);
 			grp[g].depth = (int)fy_get(sg, "depth", 0LL);
 			grp[g].framed = true;
 			if (grp[g].depth > maxdepth)
@@ -403,12 +216,9 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	}
 
 	/* a container holding only other containers holds their nodes too */
-	for (i = 0; i < nnodes; i++) {
-		for (g = 0; g < ngroups; g++) {
-			if (fc_holds(grp, ngroups, g, l.box[i].group))
-				grp[g].used = true;
-		}
-	}
+	for (i = 0; i < nnodes && ngroups; i++)
+		fnode[i].group = l.box[i].group;
+	fymm_frames_mark(grp, ngroups, fnode, nnodes);
 
 	/*
 	 * The layout keeps the order it is given within a rank, so the nodes
@@ -421,19 +231,9 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 		order = calloc(nnodes, sizeof(*order));
 		if (!order)
 			goto out;
-		for (i = 0; i < nnodes; i++) {
-			g = fc_outermost(grp, l.box[i].group);
+		fymm_frames_order(grp, ngroups, order, fnode, nnodes);
 
-			order[i] = i;
-			for (j = 0; g != (size_t)-1 && j < i; j++) {
-				if (fc_outermost(grp, l.box[j].group) != g)
-					continue;
-				order[i] = order[j];
-				break;
-			}
-		}
-		/* a stable insertion sort; the key is the run each node
-		 * belongs to, so equal keys keep their written order */
+		/* a stable insertion sort; equal keys keep their order */
 		for (i = 1; i < nnodes; i++) {
 			struct fc_box tmp = l.box[i];
 			size_t key = order[i];
@@ -492,7 +292,7 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	 * neighbour, and the margin the outermost frame needs at the edge of
 	 * the canvas.
 	 */
-	pad = ngroups ? 2 * (maxdepth + 1) * FC_FRAME_PAD : 0;
+	pad = ngroups ? 2 * (maxdepth + 1) * FYMM_FRAME_PAD : 0;
 	col_gap = met.col_gap + pad;
 	rank_gap = met.rank_gap + pad;
 	if (dir == FYMM_LAYOUT_RIGHT) {
@@ -550,10 +350,20 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	 * enclose out to the right, and measure again. A node only ever moves
 	 * right, so this settles.
 	 */
+	for (i = 0; i < nnodes && ngroups; i++) {
+		fnode[i].x = l.box[i].x;
+		fnode[i].y = l.box[i].y;
+		fnode[i].w = l.box[i].w;
+		fnode[i].h = l.box[i].h;
+		fnode[i].rank = l.box[i].rank;
+		fnode[i].group = l.box[i].group;
+	}
 	for (i = 0; i < 8 && ngroups; i++) {
-		if (!fc_frames(grp, ngroups, l.box, nnodes, col_gap))
+		if (!fymm_frames_measure(grp, ngroups, fnode, nnodes, col_gap))
 			break;
 	}
+	for (i = 0; i < nnodes && ngroups; i++)
+		l.box[i].x = fnode[i].x;
 
 	/* a node pushed clear of a frame sits past the width the layout
 	 * reported, so the extents are measured from the nodes themselves */
@@ -744,39 +554,10 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 
 	/*
 	 * Then the container frames, over the edges that run through them and
-	 * under the boxes they hold. The frame is dim and rounded so that it
-	 * does not read as another node.
+	 * under the boxes they hold, so a link that leaves a container
+	 * crosses the frame and resolves to a junction.
 	 */
-	for (g = 0; g < ngroups; g++) {
-		if (!grp[g].used)
-			continue;
-		color = FYMM_PAL_BRANCH0 + (grp[g].depth % 8);
-
-		if (grp[g].framed) {
-			fymm_canvas_hline(cv, grp[g].y0, grp[g].x0 + 1,
-					  grp[g].x1 - 1, color, true);
-			fymm_canvas_hline(cv, grp[g].y1, grp[g].x0 + 1,
-					  grp[g].x1 - 1, color, true);
-			fymm_canvas_vline(cv, grp[g].x0, grp[g].y0 + 1,
-					  grp[g].y1 - 1, color, true);
-			fymm_canvas_vline(cv, grp[g].x1, grp[g].y0 + 1,
-					  grp[g].y1 - 1, color, true);
-			fymm_canvas_put(cv, grp[g].x0, grp[g].y0,
-					ascii ? '+' : 0x256d, color, 0);
-			fymm_canvas_put(cv, grp[g].x1, grp[g].y0,
-					ascii ? '+' : 0x256e, color, 0);
-			fymm_canvas_put(cv, grp[g].x0, grp[g].y1,
-					ascii ? '+' : 0x2570, color, 0);
-			fymm_canvas_put(cv, grp[g].x1, grp[g].y1,
-					ascii ? '+' : 0x256f, color, 0);
-		}
-
-		/* the top edge is a row a frame owns and a node never uses */
-		if (grp[g].tw)
-			fymm_rich_draw_line(cv, grp[g].x0 + 2, grp[g].y0,
-					    grp[g].title, 0, color,
-					    FYMM_ATTR_BOLD);
-	}
+	fymm_frames_draw(cv, grp, ngroups, gtitle);
 
 	/* then the boxes */
 	for (i = 0; i < nnodes; i++) {
@@ -824,9 +605,11 @@ out:
 	free(ledge);
 	free(pair);
 	free(back);
-	for (g = 0; g < ngroups; g++)
-		fymm_rich_destroy(grp[g].title);
+	for (g = 0; g < ngroups && gtitle; g++)
+		fymm_rich_destroy(gtitle[g]);
+	free(gtitle);
 	free(grp);
+	free(fnode);
 	free(order);
 	free(l.box);
 	return out;
