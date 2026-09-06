@@ -28,6 +28,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <libfymd4c.h>
+
 #include "fymm-canvas.h"
 #include "fymm-color.h"
 
@@ -342,60 +344,16 @@ static size_t fymm_utf8_encode(char *out, uint32_t cp)
 	return 4;
 }
 
-struct cp_range {
-	uint32_t lo, hi;
-};
-
-/* Combining marks and other zero width codepoints, coarsely; labels in a
- * mermaid source are short identifiers, so the common cases are enough. */
-static const struct cp_range fymm_zero_width[] = {
-	{ 0x0300, 0x036f }, { 0x0483, 0x0489 }, { 0x0591, 0x05bd },
-	{ 0x0610, 0x061a }, { 0x064b, 0x065f }, { 0x0670, 0x0670 },
-	{ 0x06d6, 0x06dc }, { 0x0e31, 0x0e31 }, { 0x0e34, 0x0e3a },
-	{ 0x1ab0, 0x1aff }, { 0x1dc0, 0x1dff }, { 0x200b, 0x200f },
-	{ 0x20d0, 0x20f0 }, { 0xfe00, 0xfe0f }, { 0xfe20, 0xfe2f },
-	{ 0x1f3fb, 0x1f3ff },
-};
-
-/* East Asian wide and fullwidth, plus the emoji blocks that present wide. */
-static const struct cp_range fymm_double_width[] = {
-	{ 0x1100, 0x115f }, { 0x2e80, 0x303e }, { 0x3041, 0x33ff },
-	{ 0x3400, 0x4dbf }, { 0x4e00, 0x9fff }, { 0xa000, 0xa4cf },
-	{ 0xac00, 0xd7a3 }, { 0xf900, 0xfaff }, { 0xfe30, 0xfe6f },
-	{ 0xff00, 0xff60 }, { 0xffe0, 0xffe6 }, { 0x1f300, 0x1f64f },
-	{ 0x1f900, 0x1f9ff }, { 0x20000, 0x3fffd },
-};
-
-static bool cp_in(const struct cp_range *r, size_t n, uint32_t cp)
-{
-	size_t lo = 0, hi = n;
-
-	while (lo < hi) {
-		size_t mid = (lo + hi) / 2;
-
-		if (cp < r[mid].lo)
-			hi = mid;
-		else if (cp > r[mid].hi)
-			lo = mid + 1;
-		else
-			return true;
-	}
-	return false;
-}
-
+/*
+ * The width a codepoint occupies comes from libfymd4c, which generates its
+ * tables from Unicode and uses them for its own layout. A second table here
+ * would drift from it, and the two would disagree about the same text.
+ */
 static int fymm_cp_width(uint32_t cp)
 {
 	if (cp == 0 || cp == FYMM_CP_CONT)
 		return 1;
-	if (cp < 0x20 || (cp >= 0x7f && cp < 0xa0))
-		return 0;
-	if (cp_in(fymm_zero_width,
-		  sizeof(fymm_zero_width) / sizeof(fymm_zero_width[0]), cp))
-		return 0;
-	if (cp_in(fymm_double_width,
-		  sizeof(fymm_double_width) / sizeof(fymm_double_width[0]), cp))
-		return 2;
-	return 1;
+	return fymd_cp_width(cp);
 }
 
 int fymm_text_width(const char *s)
