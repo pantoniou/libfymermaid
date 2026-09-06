@@ -38,6 +38,7 @@ static const char *progname = "fy-mermaid";
 static const struct option lopts[] = {
 	{ "output",	required_argument,	NULL,	'o' },
 	{ "width",	required_argument,	NULL,	'w' },
+	{ "fit",	required_argument,	NULL,	'F' },
 	{ "color",	required_argument,	NULL,	'c' },
 	{ "charset",	required_argument,	NULL,	'C' },
 	{ "ascii",	no_argument,		NULL,	'a' },
@@ -65,6 +66,7 @@ static void usage(FILE *fp)
 "options:\n"
 "  -o, --output FILE   write to FILE instead of standard output\n"
 "  -w, --width N       render for a terminal N columns wide\n"
+"  -F, --fit POLICY    shrink (default), clip or none, when it does not fit\n"
 "  -c, --color MODE    auto (default), none, 16, 256 or true\n"
 "  -C, --charset SET   auto (default), ascii or unicode\n"
 "  -a, --ascii         shorthand for --charset ascii\n"
@@ -140,6 +142,19 @@ static int parse_charset(const char *s, enum fymm_charset *csp)
 	return 0;
 }
 
+static int parse_fit(const char *s, enum fymm_fit *fp)
+{
+	if (!strcmp(s, "shrink"))
+		*fp = FYMM_FIT_SHRINK;
+	else if (!strcmp(s, "clip"))
+		*fp = FYMM_FIT_CLIP;
+	else if (!strcmp(s, "none") || !strcmp(s, "off"))
+		*fp = FYMM_FIT_NONE;
+	else
+		return -1;
+	return 0;
+}
+
 /* Render one source, reporting whatever the parse had to say about it. */
 static int do_one(const char *path, const struct fymm_render_cfg *rcfg,
 		  unsigned int pflags, bool dump_model, bool flow, bool quiet,
@@ -204,7 +219,7 @@ int main(int argc, char *argv[])
 
 	fymm_render_cfg_default(&rcfg);
 
-	while ((opt = getopt_long(argc, argv, "o:w:c:C:at:S:Lb:mfsqVh", lopts,
+	while ((opt = getopt_long(argc, argv, "o:w:F:c:C:at:S:Lb:mfsqVh", lopts,
 				  NULL)) != -1) {
 		switch (opt) {
 		case 'o':
@@ -212,6 +227,13 @@ int main(int argc, char *argv[])
 			break;
 		case 'w':
 			rcfg.width = atoi(optarg);
+			break;
+		case 'F':
+			if (parse_fit(optarg, &rcfg.fit)) {
+				fprintf(stderr, "%s: bad fit policy '%s'\n",
+					progname, optarg);
+				return 1;
+			}
 			break;
 		case 'c':
 			if (parse_color(optarg, &rcfg.color)) {
