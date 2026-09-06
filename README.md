@@ -100,7 +100,12 @@ Two deliberate differences:
 
 Three depths, chosen automatically or with `--color`: 24-bit, the xterm-256
 cube, and the sixteen ANSI colours. `auto` honours `NO_COLOR`,
-`CLICOLOR_FORCE`, `isatty`, `COLORTERM` and `TERM`, in that order.
+`CLICOLOR_FORCE`, `isatty`, `COLORTERM` and `TERM`, in that order. A
+`-direct` terminfo entry (`xterm-direct`, `tmux-direct`) is read as 24-bit,
+which is what it means.
+
+On a 24-bit terminal a colour reaches it byte for byte; the reduction to a
+palette only happens where the terminal cannot do better.
 
 Themes are YAML, embedded into the library at build time:
 
@@ -116,6 +121,19 @@ colors:
   commitLabel: "#bdc3c7"
   tag: { color: "#ffd479", bold: true }
 ```
+
+Mermaid's own `themeVariables` are honoured, so a diagram that sets its
+colours keeps them:
+
+```
+%%{init: {'themeVariables': {'git0': '#ff0000', 'tagLabelColor': '#ffcc00'}}}%%
+```
+
+Mermaid names its colours per diagram — `git0` for a gitGraph branch, `pie1`
+for a slice, `cScale0` elsewhere — and all of them land on the same eight
+series colours here. The layers apply in order: the built-in palette, then
+`--theme`, then the diagram's own variables, then `--style`, so whoever runs
+the tool has the last word.
 
 A value is `#rgb`, `#rrggbb`, an xterm palette index, or an ANSI colour name,
 and is reduced to the nearest entry of whatever palette the terminal actually

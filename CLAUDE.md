@@ -280,7 +280,13 @@ over the built-in palette, so a file that sets one key keeps the rest. Adding a
 theme is adding a file; the build finds it.
 
 Colours are stored as 24-bit and reduced at emission to the palette the
-terminal has, by redmean distance in `src/fymm-color.c`. Do not hand-pick a
+terminal has, by redmean distance in `src/fymm-color.c`. On a 24-bit terminal
+nothing is reduced: the colour asked for is the colour emitted.
+
+`themeVariables` from a diagram are applied in `fymm_theme_resolve()`, between
+the named theme and the theme file. `fymm_mermaid_vars` maps mermaid's
+per-diagram names onto the palette; a name that means nothing to a terminal,
+a font size or a background, is ignored rather than refused. Do not hand-pick a
 per-depth value for a new colour; the reduction is the single path, so a theme
 from a mermaid source degrades the same way a built-in one does.
 

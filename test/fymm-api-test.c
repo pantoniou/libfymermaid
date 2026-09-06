@@ -681,6 +681,189 @@ static void test_rich_attributes(void)
 	fymm_canvas_destroy(cv);
 }
 
+/* Does @text carry the escape that selects @rgb as 24 bit foreground? */
+static bool has_truecolor(const char *text, unsigned int rgb)
+{
+	char want[32];
+
+	snprintf(want, sizeof(want), ";38;2;%u;%u;%u", (rgb >> 16) & 0xff,
+		 (rgb >> 8) & 0xff, rgb & 0xff);
+	return text && strstr(text, want) != NULL;
+}
+
+/* Render @src and return the text, at the given colour depth. */
+static char *render_at(const char *src, enum fymm_color_mode mode,
+		       const char *theme, const char *theme_path)
+{
+	struct fymm_render_cfg rcfg;
+	struct fymm_diagram *d;
+	char *out;
+
+	d = parse(src);
+	if (!d)
+		return NULL;
+	fymm_render_cfg_default(&rcfg);
+	rcfg.color = mode;
+	rcfg.width = 80;
+	rcfg.charset = FYMM_CHARSET_UNICODE;
+	rcfg.theme = theme;
+	rcfg.theme_path = theme_path;
+	out = fymm_render(d, &rcfg);
+	fymm_diagram_destroy(d);
+	return out;
+}
+
+/*
+ * A 24 bit terminal must get the colour that was asked for, byte for byte:
+ * reducing it to a palette entry there would throw away what it can show.
+ */
+static void test_truecolor(void)
+{
+	static const char src[] = "gitGraph\n commit id: \"a\"\n";
+	char *out;
+
+	out = render_at(src, FYMM_COLOR_TRUECOLOR, NULL, NULL);
+	CHECK(out != NULL, "the truecolor render produced nothing");
+	/* the built-in git0 */
+	CHECK(has_truecolor(out, 0x3b8eea),
+	      "the branch colour did not reach the terminal unreduced");
+	CHECK(out && strstr(out, "38;5;") == NULL,
+	      "a truecolor render should emit no palette index");
+	fymm_free(out);
+
+	/* the same colour on a lesser terminal is reduced, not dropped */
+	out = render_at(src, FYMM_COLOR_256, NULL, NULL);
+	CHECK(out && strstr(out, "38;5;") != NULL,
+	      "a 256 colour render should emit a palette index");
+	CHECK(out && strstr(out, "38;2;") == NULL,
+	      "a 256 colour render should emit no 24 bit colour");
+	fymm_free(out);
+
+	out = render_at(src, FYMM_COLOR_16, NULL, NULL);
+	CHECK(out && strstr(out, "38;") == NULL,
+	      "a 16 colour render should use the plain SGR colours");
+	fymm_free(out);
+}
+
+/*
+ * Mermaid's own theme variables reach the palette, and the layers apply in
+ * order: the named theme, then the diagram's variables, then a theme file.
+ */
+static void test_theme_variables(void)
+{
+	static const char src[] =
+		"%%{init: {'themeVariables': {'git0': '#ff0000',"
+		" 'tagLabelColor': '#ffcc00'}}}%%\n"
+		"gitGraph\n commit id: \"a\" tag: \"v1\"\n";
+	static const char pie[] =
+		"%%{init: {'themeVariables': {'pie1': '#010203'}}}%%\n"
+		"pie\n \"ash\" : 60\n";
+	char *out;
+	FILE *fp;
+
+	out = render_at(src, FYMM_COLOR_TRUECOLOR, NULL, NULL);
+	CHECK(has_truecolor(out, 0xff0000),
+	      "git0 from themeVariables did not reach the palette");
+	CHECK(has_truecolor(out, 0xffcc00),
+	      "tagLabelColor from themeVariables did not reach the palette");
+	CHECK(!has_truecolor(out, 0x3b8eea),
+	      "the built-in git0 should have been replaced");
+	fymm_free(out);
+
+	/* a pie names the same series colours differently */
+	out = render_at(pie, FYMM_COLOR_TRUECOLOR, NULL, NULL);
+	CHECK(has_truecolor(out, 0x010203),
+	      "pie1 from themeVariables did not reach the palette");
+	fymm_free(out);
+
+	/* the diagram's variables beat the theme the caller named */
+	out = render_at(src, FYMM_COLOR_TRUECOLOR, "light", NULL);
+	CHECK(has_truecolor(out, 0xff0000),
+	      "themeVariables should win over a named theme");
+	fymm_free(out);
+
+	/* and a theme file beats the diagram's variables */
+	fp = fopen("theme-variables-test.yaml", "w");
+	CHECK(fp != NULL, "could not write the theme file");
+	if (fp) {
+		fputs("colors:\n  git0: \"#0000ff\"\n", fp);
+		fclose(fp);
+
+		out = render_at(src, FYMM_COLOR_TRUECOLOR, NULL,
+				"theme-variables-test.yaml");
+		CHECK(has_truecolor(out, 0x0000ff),
+		      "a theme file should win over themeVariables");
+		CHECK(has_truecolor(out, 0xffcc00),
+		      "a key the file leaves alone should keep its value");
+		fymm_free(out);
+		remove("theme-variables-test.yaml");
+	}
+
+	/* a variable a terminal cannot use is ignored, not an error */
+	out = render_at("%%{init: {'themeVariables': {'fontSize': '80px',"
+			" 'git0': 'nonsense'}}}%%\n"
+			"gitGraph\n commit\n", FYMM_COLOR_TRUECOLOR, NULL,
+			NULL);
+	CHECK(out != NULL, "an unusable theme variable should not stop a render");
+	CHECK(has_truecolor(out, 0x3b8eea),
+	      "a colour that does not parse should leave the default");
+	fymm_free(out);
+}
+
+/*
+ * The colour depth a terminal is read as. A `-direct` terminfo entry means
+ * 24 bit, not 256; reading it as 256 threw away what the terminal could show.
+ */
+static void test_color_detection(void)
+{
+	static const struct {
+		const char *colorterm;
+		const char *term;
+		enum fymm_color_mode want;
+		const char *why;
+	} cases[] = {
+		{ "truecolor", "xterm-256color", FYMM_COLOR_TRUECOLOR,
+		  "COLORTERM wins over TERM" },
+		{ "24bit", "xterm", FYMM_COLOR_TRUECOLOR, "24bit is truecolor" },
+		{ NULL, "xterm-direct", FYMM_COLOR_TRUECOLOR,
+		  "a direct-colour entry is 24 bit" },
+		{ NULL, "tmux-direct", FYMM_COLOR_TRUECOLOR,
+		  "so is tmux's" },
+		{ NULL, "xterm-256color", FYMM_COLOR_256, "256 is 256" },
+		{ NULL, "xterm", FYMM_COLOR_16, "a plain terminal is 16" },
+		{ NULL, "dumb", FYMM_COLOR_NONE, "dumb has no colour" },
+		{ NULL, "", FYMM_COLOR_NONE, "no TERM has no colour" },
+	};
+	enum fymm_color_mode got;
+	size_t i;
+
+	/* force colour on, so that not being a terminal does not decide it */
+	setenv("CLICOLOR_FORCE", "1", 1);
+	unsetenv("NO_COLOR");
+
+	for (i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
+		if (cases[i].colorterm)
+			setenv("COLORTERM", cases[i].colorterm, 1);
+		else
+			unsetenv("COLORTERM");
+		setenv("TERM", cases[i].term, 1);
+
+		got = fymm_detect_color_mode(-1);
+		CHECK(got == cases[i].want,
+		      "TERM=%s COLORTERM=%s gave %d, expected %d (%s)",
+		      cases[i].term, cases[i].colorterm ? cases[i].colorterm : "",
+		      (int)got, (int)cases[i].want, cases[i].why);
+	}
+
+	/* NO_COLOR beats everything */
+	setenv("COLORTERM", "truecolor", 1);
+	setenv("NO_COLOR", "1", 1);
+	CHECK(fymm_detect_color_mode(-1) == FYMM_COLOR_NONE,
+	      "NO_COLOR should win over COLORTERM");
+	unsetenv("NO_COLOR");
+	unsetenv("CLICOLOR_FORCE");
+}
+
 int main(void)
 {
 	test_version();
@@ -698,6 +881,9 @@ int main(void)
 	test_theme_mono();
 	test_rich_text();
 	test_rich_attributes();
+	test_truecolor();
+	test_theme_variables();
+	test_color_detection();
 
 	if (failures)
 		fprintf(stderr, "%d check(s) failed\n", failures);
