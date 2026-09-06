@@ -241,6 +241,16 @@ call knowing about the other. Add a line shape by extending the mask table.
 A literal glyph, such as a commit or a label, is never overwritten by a line.
 Column widths come from the label widths, which keeps a collision rare.
 
+`src/fymm-legend.c` holds the labels a drawing has no room for, so that a
+narrow terminal loses the place of a label rather than the label itself. A
+marker is drawn in `fymm_legend_color()`, which is the colour of its legend
+entry: the digit alone would need counting. A drawing pass uses
+`fymm_legend_find()`, never `fymm_legend_add()`, because adding after the
+height was measured grows a legend the canvas has no room for.
+
+Only gitGraph uses it so far, and the Wardley map does the same thing with its
+own code. Bringing that one over is worth doing; adding a third copy is not.
+
 The spacing a diagram is drawn with lives in `src/fymm-metrics.c`, keyed by
 diagram type, and a renderer reads it through `fymm_metrics_resolve()`. Do not
 add a spacing constant to a renderer: that is where the thirty that preceded

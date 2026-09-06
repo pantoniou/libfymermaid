@@ -155,6 +155,14 @@ whatever is still over.  This keeps the whole diagram on the screen for as
 long as closing it up can.  An edge label that no longer fits the gap it sits
 in is cut and ends in an ellipsis.  The default.
 .TP
+.B legend
+Close the gaps as \fBshrink\fR does, and move a label that still does not fit
+into a legend beneath the drawing, leaving a numbered marker in its place.
+The marker takes the colour of its legend entry, so the eye finds the text
+without counting.  A narrow terminal then loses the place of a label rather
+than the label itself.  Only \fBgitGraph\fR does this so far; every other
+type behaves as \fBshrink\fR.
+.TP
 .B clip
 Draw at the natural size and clip to the width.  What fits is drawn exactly as
 it would be with no limit, and the rest is lost off the right.

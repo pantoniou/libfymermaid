@@ -125,6 +125,37 @@ $ fy-mermaid -w 60 --fit clip     three of six nodes, the rest off the right
 $ fy-mermaid -w 60 --fit shrink   all six, in 58 columns
 ```
 
+Closing up only goes so far. A gitGraph column is as wide as the message it
+carries, so a graph of long messages cannot be closed up enough to fit a narrow
+terminal without the messages becoming unreadable. `--fit legend` moves them
+out instead, leaving a numbered marker in the colour of its legend entry:
+
+```
+$ fy-mermaid -w 44 --fit legend         (natural width: 131 columns)
+
+    main *-----*-----+------+o------*
+         1     2     |      |4      5
+                     |      |
+ feature             `*-----'
+                      3
+1 import the parser corpus
+2 fix the redmean reduction
+3 add the legend helper
+4 merge the legend work
+5 document the fit policy
+```
+
+Only `gitGraph` does this so far. Every other type treats `legend` as `shrink`.
+
+**How far shrinking reaches.** `flowchart`, `er`, `state` and `usecase` close
+up through the shared layered layout; `gitGraph` closes up its own columns.
+`agentflow`, `architecture`, `block`, `gantt`, `info`, `ishikawa`, `pie`,
+`quadrant`, `treeView` and `xychart` already size themselves to the width and
+need no closing up. The rest -- `c4`, `class`, `eventmodeling`, `journey`,
+`kanban`, `mindmap`, `packet`, `radar`, `railroad`, `sequence`, `timeline` and
+`wardley` -- can overflow a narrow terminal and are clipped rather than closed
+up.
+
 ## Spacing
 
 `fymm_render_cfg.metrics` sets the spacing a diagram is drawn with. A field
