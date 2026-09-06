@@ -50,9 +50,35 @@ enum fc_border {
 	FC_BORDER_SHARP = 0,
 	FC_BORDER_ROUND,
 	FC_BORDER_DOUBLE,
+	FC_BORDER_HEAVY,
 };
 
-static enum fc_border fc_border_of(const char *shape)
+static enum fc_border fc_border_plain(const char *shape);
+
+/*
+ * A decision and a gateway both drew double, because three families were all
+ * the box drawing offered that a reader can tell apart. The heavy weight is a
+ * fourth, so where the charset allows it the decisions take heavy and the
+ * gateways keep double.
+ */
+static enum fc_border fc_border_of(const char *shape, bool rich)
+{
+	static const char *const heavy_shapes[] = {
+		"rhombus", "diamond", "decision", "question",
+	};
+	size_t k;
+
+	if (rich) {
+		for (k = 0; k < sizeof(heavy_shapes) /
+			    sizeof(heavy_shapes[0]); k++) {
+			if (!strcmp(shape, heavy_shapes[k]))
+				return FC_BORDER_HEAVY;
+		}
+	}
+	return fc_border_plain(shape);
+}
+
+static enum fc_border fc_border_plain(const char *shape)
 {
 	static const char *const round_shapes[] = {
 		"round", "rounded", "stadium", "circle", "doublecircle",
@@ -113,11 +139,12 @@ static size_t fc_find(const struct fc_layout *l, const char *id)
 char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 			    const struct fymm_render_cfg *cfg)
 {
-	static const uint32_t corners[3][6] = {
+	static const uint32_t corners[4][6] = {
 		/* top-left, top-right, bottom-left, bottom-right, h, v */
 		{ 0x250c, 0x2510, 0x2514, 0x2518, 0x2500, 0x2502 },
 		{ 0x256d, 0x256e, 0x2570, 0x256f, 0x2500, 0x2502 },
 		{ 0x2554, 0x2557, 0x255a, 0x255d, 0x2550, 0x2551 },
+		{ 0x250f, 0x2513, 0x2517, 0x251b, 0x2501, 0x2503 },
 	};
 	fy_generic nodes, edges, subgraphs, node, edge;
 	struct fymm_canvas *cv;
@@ -140,6 +167,7 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	int x, y, w, top, color, sx, sy, dx, dy, mid = 0, rank_gap;
 	int col_gap, pad, maxdepth;
 	bool ascii;
+	bool rich = cfg && cfg->charset == FYMM_CHARSET_RICH;
 	char *out = NULL;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
@@ -208,7 +236,8 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 						fy_get(node, "markdown", false));
 		if (!l.box[i].text)
 			goto out;
-		l.box[i].border = fc_border_of(fy_get(node, "shape", "rect"));
+		l.box[i].border = fc_border_of(fy_get(node, "shape", "rect"),
+					       rich);
 		l.box[i].w = fymm_rich_width(l.box[i].text) + 4;
 		l.box[i].h = (int)fymm_rich_lines(l.box[i].text) + 2;
 		if (l.box[i].h > l.tall)
