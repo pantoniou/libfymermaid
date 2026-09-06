@@ -64,11 +64,18 @@ enum fymm_color_mode {
  * @FYMM_CHARSET_AUTO: probe the locale, falling back to ASCII
  * @FYMM_CHARSET_ASCII: seven bit ASCII only
  * @FYMM_CHARSET_UNICODE: box drawing and geometric shapes
+ * @FYMM_CHARSET_RICH: and, beyond those, the block elements, braille and
+ *                     heavy box drawing. These draw a plot at a resolution
+ *                     the cell grid cannot otherwise reach, and give a fourth
+ *                     border weight. They ask more of the font than the box
+ *                     drawing does, so FYMM_CHARSET_AUTO never selects this:
+ *                     it is what a caller asks for when it knows the terminal.
  */
 enum fymm_charset {
 	FYMM_CHARSET_AUTO = 0,
 	FYMM_CHARSET_ASCII,
 	FYMM_CHARSET_UNICODE,
+	FYMM_CHARSET_RICH,
 };
 
 /**

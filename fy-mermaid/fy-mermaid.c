@@ -68,7 +68,7 @@ static void usage(FILE *fp)
 "  -w, --width N       render for a terminal N columns wide\n"
 "  -F, --fit POLICY    shrink (default), legend, clip or none\n"
 "  -c, --color MODE    auto (default), none, 16, 256 or true\n"
-"  -C, --charset SET   auto (default), ascii or unicode\n"
+"  -C, --charset SET   auto (default), ascii, unicode or rich\n"
 "  -a, --ascii         shorthand for --charset ascii\n"
 "  -t, --theme NAME    colour theme; --list-themes names them\n"
 "  -S, --style FILE    a theme file, applied over --theme\n"
@@ -137,6 +137,8 @@ static int parse_charset(const char *s, enum fymm_charset *csp)
 	else if (!strcmp(s, "unicode") || !strcmp(s, "utf8") ||
 		 !strcmp(s, "utf-8"))
 		*csp = FYMM_CHARSET_UNICODE;
+	else if (!strcmp(s, "rich"))
+		*csp = FYMM_CHARSET_RICH;
 	else
 		return -1;
 	return 0;

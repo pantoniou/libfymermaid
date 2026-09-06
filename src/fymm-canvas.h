@@ -96,6 +96,18 @@ int fymm_theme_apply(struct fymm_theme *theme, fy_generic colors);
  */
 void fymm_theme_apply_mermaid(struct fymm_theme *theme, fy_generic vars);
 
+/* Is @cs allowed the block elements, braille and heavy box drawing? */
+static inline bool fymm_charset_rich(enum fymm_charset cs)
+{
+	return cs == FYMM_CHARSET_RICH;
+}
+
+/* Is @cs restricted to seven bit ASCII? */
+static inline bool fymm_charset_ascii(enum fymm_charset cs)
+{
+	return cs == FYMM_CHARSET_ASCII;
+}
+
 /* FYMM_COLOR_DEFAULT - leave the cell in the terminal's own colour */
 #define FYMM_COLOR_DEFAULT (-1)
 
