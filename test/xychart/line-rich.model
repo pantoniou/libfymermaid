@@ -1,0 +1,50 @@
+type: xychart
+orientation: vertical
+title: Render time by width
+accTitle: null
+accDescr: null
+config: {}
+xAxis:
+  name: null
+  categories:
+  - 40
+  - 60
+  - 80
+  - 100
+  - 120
+  - 140
+  - 160
+  - 180
+  - 200
+  - 220
+  min: null
+  max: null
+yAxis:
+  name: milliseconds
+  categories: null
+  min: 0
+  max: 100
+series:
+- kind: line
+  name: null
+  data:
+  - value: 12
+    label: null
+  - value: 28
+    label: null
+  - value: 41
+    label: null
+  - value: 39
+    label: null
+  - value: 52
+    label: null
+  - value: 71
+    label: null
+  - value: 68
+    label: null
+  - value: 84
+    label: null
+  - value: 91
+    label: null
+  - value: 96
+    label: null

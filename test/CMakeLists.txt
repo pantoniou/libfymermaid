@@ -30,10 +30,11 @@ endif()
 add_executable(fymm-golden-test fymm-golden-test.c)
 target_link_libraries(fymm-golden-test PRIVATE libfymermaid::libfymermaid_static)
 
-set(_golden_modes model unicode ascii diag)
+set(_golden_modes model unicode ascii rich diag)
 set(_golden_ext_model ".model")
 set(_golden_ext_unicode ".txt")
 set(_golden_ext_ascii ".ascii")
+set(_golden_ext_rich ".rich")
 set(_golden_ext_diag ".diag")
 
 file(GLOB _golden_dirs RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"

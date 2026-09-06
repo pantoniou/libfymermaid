@@ -29,7 +29,7 @@
  *
  *	fymm-golden-test <mode> <input.mmd> [expected]
  *
- * The golden modes are `model', `unicode', `ascii' and `diag'. Each compares
+ * The golden modes are `model', `unicode', `ascii', `rich' and `diag'. Each compares
  * the output against @expected. The corpus modes are `parses' and `fails',
  * which take no expected file and assert only the outcome of the parse; they
  * run the cases imported from upstream mermaid.
@@ -128,7 +128,8 @@ int main(int argc, char *argv[])
 
 	if (argc < 3 || argc > 4) {
 		fprintf(stderr,
-			"usage: %s <model|unicode|ascii|diag> <input> <expected>\n"
+			"usage: %s <model|unicode|ascii|rich|diag> <input> "
+			"<expected>\n"
 			"       %s <parses|fails> <input>\n", argv[0], argv[0]);
 		return 2;
 	}
@@ -200,7 +201,8 @@ int main(int argc, char *argv[])
 		/* a golden must not depend on the terminal it runs in, and
 		 * FYMM_WIDTH_AUTO would read one */
 		rcfg.width = FYMM_GOLDEN_WIDTH;
-		rcfg.charset = !strcmp(mode, "ascii") ? FYMM_CHARSET_ASCII :
+		rcfg.charset = !strcmp(mode, "rich") ? FYMM_CHARSET_RICH :
+			       !strcmp(mode, "ascii") ? FYMM_CHARSET_ASCII :
 							FYMM_CHARSET_UNICODE;
 		got = fymm_render(d, &rcfg);
 	}

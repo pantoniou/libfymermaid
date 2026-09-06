@@ -1252,6 +1252,82 @@ out:
 	fymm_diagram_destroy(d);
 }
 
+/*
+ * FYMM_CHARSET_RICH is the box drawing plus the block elements, braille and
+ * the heavy weight. It is never what AUTO settles on: it asks more of the
+ * font than a caller can assume.
+ */
+static void test_charset_rich(void)
+{
+	static const char line_src[] =
+		"xychart-beta\n"
+		"    x-axis [1, 2, 3, 4, 5, 6, 7, 8]\n"
+		"    y-axis 0 --> 100\n"
+		"    line [10, 30, 25, 60, 45, 80, 70, 95]\n";
+	static const char shape_src[] =
+		"flowchart LR\n"
+		"    a[plain] --> b{decision}\n"
+		"    b --> c{{gateway}}\n";
+	struct fymm_render_cfg rcfg;
+	struct fymm_diagram *d;
+	char *uni = NULL, *rich = NULL;
+
+	CHECK(fymm_detect_charset() != FYMM_CHARSET_RICH,
+	      "the probe must never settle on FYMM_CHARSET_RICH");
+
+	/* a line series is plotted on braille rather than stepped */
+	d = parse(line_src);
+	if (!d)
+		return;
+	CHECK(!fymm_diagram_has_errors(d), "unexpected errors");
+	fymm_render_cfg_default(&rcfg);
+	rcfg.color = FYMM_COLOR_NONE;
+	rcfg.width = 60;
+
+	rcfg.charset = FYMM_CHARSET_UNICODE;
+	uni = fymm_render(d, &rcfg);
+	rcfg.charset = FYMM_CHARSET_RICH;
+	rich = fymm_render(d, &rcfg);
+	CHECK(uni && rich, "a render produced nothing");
+	if (uni && rich) {
+		/* U+2800..U+28FF encodes as e2 a0..a3 in UTF-8 */
+		CHECK(strstr(rich, "\xe2\xa0") != NULL ||
+		      strstr(rich, "\xe2\xa1") != NULL ||
+		      strstr(rich, "\xe2\xa2") != NULL ||
+		      strstr(rich, "\xe2\xa3") != NULL,
+		      "the rich line chart carries no braille");
+		CHECK(strstr(uni, "\xe2\xa0") == NULL &&
+		      strstr(uni, "\xe2\xa1") == NULL,
+		      "the plain line chart should carry no braille");
+	}
+	fymm_free(uni);
+	fymm_free(rich);
+	fymm_diagram_destroy(d);
+
+	/* a decision takes the heavy weight, a gateway keeps double */
+	uni = rich = NULL;
+	d = parse(shape_src);
+	if (!d)
+		return;
+	rcfg.charset = FYMM_CHARSET_UNICODE;
+	uni = fymm_render(d, &rcfg);
+	rcfg.charset = FYMM_CHARSET_RICH;
+	rich = fymm_render(d, &rcfg);
+	if (uni && rich) {
+		/* U+2501 heavy horizontal is e2 94 81; U+2550 double is
+		 * e2 95 90 */
+		CHECK(strstr(rich, "\xe2\x94\x81") != NULL,
+		      "the rich flowchart carries no heavy border");
+		CHECK(strstr(uni, "\xe2\x94\x81") == NULL,
+		      "the plain flowchart should carry no heavy border");
+		CHECK(strstr(rich, "\xe2\x95\x90") != NULL,
+		      "the gateway should keep its double border");
+	}
+	fymm_free(uni);
+	fymm_free(rich);
+	fymm_diagram_destroy(d);
+}
+
 int main(void)
 {
 	test_version();
@@ -1267,6 +1343,7 @@ int main(void)
 	test_fit_policy();
 	test_metrics();
 	test_fit_legend();
+	test_charset_rich();
 	test_color_reduction();
 	test_theme_catalogue();
 	test_theme_mono();
