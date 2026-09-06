@@ -1,0 +1,155 @@
+# SPDX-License-Identifier: MIT
+#
+# The corpus is the point of this workflow: 1100+ cases that run in under a
+# second and that no reviewer can hold in their head.
+name: ci
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # The dependencies are built from source; neither is packaged. Pin them so
+  # that a red build means this repository changed, not an upstream did.
+  LIBFYAML_REF: master
+  LIBFYMD4C_REF: master
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: release
+            cmake_args: -DCMAKE_BUILD_TYPE=Release
+          - name: asan
+            cmake_args: -DCMAKE_BUILD_TYPE=Debug -DENABLE_ASAN=ON
+          - name: clang
+            cmake_args: -DCMAKE_BUILD_TYPE=Release
+            cc: clang
+          - name: static
+            cmake_args: -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake pkg-config git libtool autoconf automake \
+            ${{ matrix.cc == 'clang' && 'clang' || '' }}
+
+      - name: build libfyaml
+        run: |
+          git clone --depth 1 --branch "$LIBFYAML_REF" \
+            https://github.com/pantoniou/libfyaml.git ../libfyaml
+          cmake -S ../libfyaml -B ../libfyaml/build \
+            -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF \
+            -DCMAKE_INSTALL_PREFIX=/usr/local
+          cmake --build ../libfyaml/build -j"$(nproc)"
+          sudo cmake --install ../libfyaml/build
+          sudo ldconfig
+
+      - name: build libfymd4c
+        run: |
+          git clone --depth 1 --branch "$LIBFYMD4C_REF" \
+            https://github.com/pantoniou/libfymd4c.git ../libfymd4c
+          cmake -S ../libfymd4c -B ../libfymd4c/build \
+            -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF \
+            -DMD4C_WITH_FYTS=OFF -DCMAKE_INSTALL_PREFIX=/usr/local
+          cmake --build ../libfymd4c/build -j"$(nproc)"
+          sudo cmake --install ../libfymd4c/build
+          sudo ldconfig
+
+      - name: configure
+        env:
+          CC: ${{ matrix.cc || 'gcc' }}
+        run: cmake -S . -B build ${{ matrix.cmake_args }}
+
+      - name: build
+        run: cmake --build build -j"$(nproc)"
+
+      - name: test
+        run: ctest --test-dir build -j"$(nproc)" --output-on-failure
+
+      # A golden that reads the terminal width would pass here and fail on a
+      # developer's machine, so the suite is run at a width it must ignore.
+      - name: test at a narrow width
+        run: COLUMNS=40 ctest --test-dir build -j"$(nproc)" --output-on-failure
+
+      # Only fymm_-prefixed symbols may leave the shared object.
+      - name: check the exported ABI
+        if: matrix.name == 'release'
+        run: |
+          leaked=$(nm -D --defined-only build/src/libfymermaid.so.* \
+            | awk '$2 ~ /^[A-Z]$/ {print $3}' | grep -v '^fymm_' || true)
+          if [ -n "$leaked" ]; then
+            echo "these symbols should not be exported:" >&2
+            echo "$leaked" >&2
+            exit 1
+          fi
+
+      - name: check it installs and links
+        if: matrix.name == 'release'
+        run: |
+          sudo cmake --install build
+          sudo ldconfig
+          cat > /tmp/consumer.c <<'CONSUMER'
+          #include <stdio.h>
+          #include <libfymermaid.h>
+          int main(void)
+          {
+                  struct fymm_diagram *d;
+                  char *out;
+
+                  d = fymm_parse("gitGraph\n commit\n", FYMM_NT, NULL);
+                  if (!d || fymm_diagram_has_errors(d))
+                          return 1;
+                  out = fymm_render(d, NULL);
+                  if (!out)
+                          return 1;
+                  fputs(out, stdout);
+                  fymm_free(out);
+                  fymm_diagram_destroy(d);
+                  return 0;
+          }
+          CONSUMER
+          ${{ matrix.cc || 'gcc' }} -std=gnu2x -o /tmp/consumer /tmp/consumer.c \
+            $(pkg-config --cflags --libs libfymermaid)
+          /tmp/consumer
+
+  corpus:
+    name: corpus coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The corpus is committed, so its shape can be checked without building
+      # anything: every case must be listed, and every listed case must exist.
+      - name: check the corpus manifests
+        run: |
+          rc=0
+          for m in test/mermaid-suite/*/manifest.list; do
+                  dir=$(dirname "$m")
+                  while IFS=: read -r outcome file; do
+                          case "$outcome" in
+                          parses|fails) ;;
+                          *) echo "$m: bad outcome '$outcome'" >&2; rc=1 ;;
+                          esac
+                          [ -f "$dir/$file" ] || {
+                                  echo "$m: missing $file" >&2; rc=1; }
+                  done < "$m"
+                  for f in "$dir"/*.mmd; do
+                          grep -q ":$(basename "$f")$" "$m" || {
+                                  echo "$m: $f is not listed" >&2; rc=1; }
+                  done
+          done
+          exit $rc

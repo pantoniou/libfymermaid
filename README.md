@@ -170,6 +170,9 @@ activation that closes nothing.
 
 ## Building
 
+[![ci](https://github.com/pantoniou/libfymermaid/actions/workflows/ci.yml/badge.svg)](https://github.com/pantoniou/libfymermaid/actions/workflows/ci.yml)
+
+
 ```sh
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
