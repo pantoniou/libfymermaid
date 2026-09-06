@@ -29,6 +29,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <libfymd4c.h>
+
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
 
@@ -434,6 +436,44 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 err_out:
 	gg_geom_fini(&g);
 	return NULL;
+}
+
+/*
+ * The size a render takes, which is the size of what it emits: the widest
+ * line in cells and the number of lines. Measuring by rendering is the only
+ * way that cannot drift from the render itself; every alternative is a second
+ * copy of every renderer's arithmetic, and it would be wrong the first time a
+ * renderer changed.
+ */
+int fymm_measure(const struct fymm_diagram *d,
+		 const struct fymm_render_cfg *cfg, int *wp, int *hp)
+{
+	const char *p, *e;
+	char *out;
+	int w = 0, h = 0, n;
+
+	out = fymm_render(d, cfg);
+	if (!out)
+		return -1;
+
+	for (p = out; *p; p = e) {
+		e = strchr(p, '\n');
+		if (!e)
+			e = p + strlen(p);
+		n = (int)fymd_str_width(p, (size_t)(e - p));
+		if (n > w)
+			w = n;
+		h++;
+		if (*e)
+			e++;
+	}
+
+	fymm_free(out);
+	if (wp)
+		*wp = w;
+	if (hp)
+		*hp = h;
+	return 0;
 }
 
 char *fymm_render(const struct fymm_diagram *d,
