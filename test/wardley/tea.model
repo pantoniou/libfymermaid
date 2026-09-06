@@ -1,0 +1,65 @@
+type: wardley
+title: Tea Shop
+accTitle: null
+accDescr: null
+config: {}
+stages: []
+nodes:
+- kind: anchor
+  name: Business
+  visibility: 0.94999999999999996
+  evolution: 0.63
+- kind: component
+  name: Cup of Tea
+  visibility: 0.79000000000000004
+  evolution: 0.60999999999999999
+- kind: component
+  name: Cup
+  visibility: 0.72999999999999998
+  evolution: 0.78000000000000003
+- kind: component
+  name: Tea
+  visibility: 0.63
+  evolution: 0.81000000000000005
+- kind: component
+  name: Hot Water
+  visibility: 0.52000000000000002
+  evolution: 0.80000000000000004
+- kind: component
+  name: Kettle
+  visibility: 0.42999999999999999
+  evolution: 0.34999999999999998
+- kind: component
+  name: Power
+  visibility: 0.10000000000000001
+  evolution: 0.70999999999999996
+links:
+- from: Business
+  to: Cup of Tea
+  op: ->
+  label: null
+- from: Cup of Tea
+  to: Cup
+  op: ->
+  label: null
+- from: Cup of Tea
+  to: Tea
+  op: ->
+  label: null
+- from: Cup of Tea
+  to: Hot Water
+  op: ->
+  label: null
+- from: Hot Water
+  to: Kettle
+  op: ->
+  label: null
+- from: Kettle
+  to: Power
+  op: ->
+  label: null
+notes:
+- text: Kettle is ripe for evolution
+  visibility: 0.29999999999999999
+  evolution: 0.40000000000000002
+pipelines: []
