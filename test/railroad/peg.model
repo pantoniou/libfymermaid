@@ -1,0 +1,47 @@
+type: railroad
+title: PEG Digits
+config: {}
+dialect: peg
+rules:
+- name: Number
+  expr:
+    kind: oneOrMore
+    text: null
+    items:
+    - kind: nonterminal
+      text: Digit
+      items: []
+- name: Digit
+  expr:
+    kind: choice
+    text: null
+    items:
+    - kind: terminal
+      text: 0
+      items: []
+    - kind: terminal
+      text: 1
+      items: []
+    - kind: terminal
+      text: 2
+      items: []
+- name: Sign
+  expr:
+    kind: sequence
+    text: null
+    items:
+    - kind: not
+      text: null
+      items:
+      - kind: terminal
+        text: '-'
+        items: []
+    - kind: and
+      text: null
+      items:
+      - kind: terminal
+        text: +
+        items: []
+    - kind: any
+      text: null
+      items: []

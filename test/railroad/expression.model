@@ -1,0 +1,132 @@
+type: railroad
+title: Simple Expression
+config: {}
+dialect: ebnf
+rules:
+- name: expression
+  expr:
+    kind: sequence
+    text: null
+    items:
+    - kind: nonterminal
+      text: term
+      items: []
+    - kind: zeroOrMore
+      text: null
+      items:
+      - kind: choice
+        text: null
+        items:
+        - kind: sequence
+          text: null
+          items:
+          - kind: terminal
+            text: +
+            items: []
+          - kind: nonterminal
+            text: term
+            items: []
+        - kind: sequence
+          text: null
+          items:
+          - kind: terminal
+            text: '-'
+            items: []
+          - kind: nonterminal
+            text: term
+            items: []
+- name: term
+  expr:
+    kind: sequence
+    text: null
+    items:
+    - kind: nonterminal
+      text: factor
+      items: []
+    - kind: zeroOrMore
+      text: null
+      items:
+      - kind: choice
+        text: null
+        items:
+        - kind: sequence
+          text: null
+          items:
+          - kind: terminal
+            text: '*'
+            items: []
+          - kind: nonterminal
+            text: factor
+            items: []
+        - kind: sequence
+          text: null
+          items:
+          - kind: terminal
+            text: /
+            items: []
+          - kind: nonterminal
+            text: factor
+            items: []
+- name: factor
+  expr:
+    kind: choice
+    text: null
+    items:
+    - kind: nonterminal
+      text: number
+      items: []
+    - kind: sequence
+      text: null
+      items:
+      - kind: terminal
+        text: (
+        items: []
+      - kind: nonterminal
+        text: expression
+        items: []
+      - kind: terminal
+        text: )
+        items: []
+- name: number
+  expr:
+    kind: oneOrMore
+    text: null
+    items:
+    - kind: nonterminal
+      text: digit
+      items: []
+- name: digit
+  expr:
+    kind: choice
+    text: null
+    items:
+    - kind: terminal
+      text: 0
+      items: []
+    - kind: terminal
+      text: 1
+      items: []
+    - kind: terminal
+      text: 2
+      items: []
+    - kind: terminal
+      text: 3
+      items: []
+    - kind: terminal
+      text: 4
+      items: []
+    - kind: terminal
+      text: 5
+      items: []
+    - kind: terminal
+      text: 6
+      items: []
+    - kind: terminal
+      text: 7
+      items: []
+    - kind: terminal
+      text: 8
+      items: []
+    - kind: terminal
+      text: 9
+      items: []
