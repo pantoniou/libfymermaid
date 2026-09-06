@@ -91,6 +91,12 @@ enum fymm_background {
  *                   fits, and clip whatever is still over. This keeps the
  *                   whole diagram on the screen for as long as closing it up
  *                   can, and is the default.
+ * @FYMM_FIT_LEGEND: close the gaps as FYMM_FIT_SHRINK does, and move a label
+ *                   that still does not fit into a legend beneath the
+ *                   drawing, leaving a number in its place. A narrow terminal
+ *                   then loses the place of a label rather than the label
+ *                   itself. Not every diagram type can do this; one that
+ *                   cannot behaves as FYMM_FIT_SHRINK.
  * @FYMM_FIT_CLIP: draw at the natural size and clip to the width. The parts
  *                 that fit are drawn exactly as they would be with no limit.
  * @FYMM_FIT_NONE: ignore the width and emit the whole drawing, however wide.
@@ -98,6 +104,7 @@ enum fymm_background {
  */
 enum fymm_fit {
 	FYMM_FIT_SHRINK = 0,
+	FYMM_FIT_LEGEND,
 	FYMM_FIT_CLIP,
 	FYMM_FIT_NONE,
 };

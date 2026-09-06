@@ -509,7 +509,8 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	 * is used, so taking it off here would close up a graph that fits.
 	 * Whatever those add over the width is for the clip.
 	 */
-	if (cfg && cfg->fit == FYMM_FIT_SHRINK)
+	if (cfg && (cfg->fit == FYMM_FIT_SHRINK ||
+		    cfg->fit == FYMM_FIT_LEGEND))
 		lcfg.max_width = met.max_width;
 	if (fymm_layout_layered(lnode, nnodes, ledge, j, &lcfg, &lay))
 		goto out;

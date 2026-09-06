@@ -119,7 +119,8 @@ char *fymm_render_state(const struct fymm_diagram *d, fy_generic model,
 	lcfg.col_gap = met.col_gap;
 	lcfg.rank_gap = met.rank_gap;
 	lcfg.dir = FYMM_LAYOUT_DOWN;
-	if (cfg && cfg->fit == FYMM_FIT_SHRINK)
+	if (cfg && (cfg->fit == FYMM_FIT_SHRINK ||
+		    cfg->fit == FYMM_FIT_LEGEND))
 		lcfg.max_width = met.max_width;
 	if (fymm_layout_layered(node, nstates, edge, ntrans, &lcfg, &lay))
 		goto out;

@@ -32,6 +32,7 @@
 #include <libfymd4c.h>
 
 #include "fymm-canvas.h"
+#include "fymm-legend.h"
 #include "fymm-internal.h"
 
 void fymm_render_cfg_default(struct fymm_render_cfg *cfg)
@@ -229,6 +230,7 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 	struct fymm_canvas *cv;
 	struct fymm_theme theme;
 	struct gg_geom g;
+	struct fymm_legend *legend = NULL;
 	const char *title, *label, *type, *orientation;
 	bool show_branches, show_labels, parallel;
 	size_t ncommits, nbranches, i, j, nparents;
@@ -343,6 +345,31 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
+	/*
+	 * A column is as wide as the label it carries, so a graph of long
+	 * messages runs off a narrow terminal. Take the widest column down a
+	 * cell at a time until the graph fits or every column is down to the
+	 * four cells the lane glyphs need. What no longer fits its column is
+	 * moved into a legend, when the caller asked for one.
+	 */
+	if (cfg && (cfg->fit == FYMM_FIT_SHRINK ||
+		    cfg->fit == FYMM_FIT_LEGEND) && cfg->width > 0) {
+		int budget = cfg->width - g.gutter - 1;
+
+		for (;;) {
+			int total = 0, widest = 0;
+
+			for (k = 0; k < g.ncols; k++) {
+				total += g.slot[k];
+				if (g.slot[k] > g.slot[widest])
+					widest = k;
+			}
+			if (total <= budget || g.slot[widest] <= 4)
+				break;
+			g.slot[widest]--;
+		}
+	}
+
 	g.x[0] = g.gutter;
 	for (k = 1; k < g.ncols; k++)
 		g.x[k] = g.x[k - 1] + g.slot[k - 1];
@@ -350,6 +377,25 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 	g.top = title ? 2 : 0;
 	g.width = g.x[g.ncols - 1] + g.slot[g.ncols - 1] + 1;
 	g.height = g.top + (int)nbranches * 3;
+
+	if (cfg && cfg->fit == FYMM_FIT_LEGEND) {
+		legend = fymm_legend_create();
+		if (!legend)
+			goto err_out;
+		for (i = 0; i < ncommits; i++) {
+			commit = fy_get_at(commits, i);
+			label = fy_get(commit, "label", "");
+			if (!show_labels || !label || !*label)
+				continue;
+			if (fymm_text_width(label) + 2 <= g.slot[g.col[i]])
+				continue;
+			if (fymm_legend_add(legend, label) == (size_t)-1)
+				goto err_out;
+		}
+		g.height += fymm_legend_rows(legend);
+		if (fymm_legend_width(legend) + 1 > g.width)
+			g.width = fymm_legend_width(legend) + 1;
+	}
 
 	cv = fymm_canvas_create_cfg(g.width, g.height, cfg, &theme);
 	if (!cv)
@@ -410,9 +456,23 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 
 		if (show_labels) {
 			label = fy_get(commit, "label", "");
-			if (label && *label)
-				fymm_canvas_text(cv, x, y + 1, label,
-						 FYMM_PAL_LABEL, 0);
+			if (label && *label) {
+				size_t idx = (size_t)-1;
+
+				if (legend)
+					idx = fymm_legend_find(legend, label);
+				if (idx != (size_t)-1)
+					fymm_canvas_text(cv, x,	y + 1,
+						fymm_legend_marker(legend,
+								   idx),
+						fymm_legend_color(legend, idx),
+						FYMM_ATTR_BOLD);
+				else
+					fymm_canvas_text_max(cv, x, y + 1,
+						label,
+						g.slot[g.col[i]] - 1,
+						FYMM_PAL_LABEL, 0);
+			}
 		}
 
 		tags = fy_get(commit, "tags");
@@ -424,8 +484,13 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
+	if (legend)
+		fymm_legend_draw(cv, 0, g.top + (int)nbranches * 3 - 1,
+				 legend);
+
 	out = fymm_canvas_emit(cv);
 	fymm_canvas_destroy(cv);
+	fymm_legend_destroy(legend);
 	gg_geom_fini(&g);
 
 	/* TB and BT transpose the whole layout; the parser has already warned
@@ -434,6 +499,7 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 	return out;
 
 err_out:
+	fymm_legend_destroy(legend);
 	gg_geom_fini(&g);
 	return NULL;
 }
