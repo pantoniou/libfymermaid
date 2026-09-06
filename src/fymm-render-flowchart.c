@@ -74,8 +74,17 @@ static enum fc_border fc_border_of(const char *shape)
 	return FC_BORDER_SHARP;
 }
 
-/* the cells a container frame keeps clear around the nodes it holds */
-#define FC_FRAME_PAD 1
+/*
+ * The cells a container frame keeps clear around the nodes it holds.
+ *
+ * Two rather than one. A link arrives at the cell just outside the node it
+ * points at, and that is where its arrowhead goes; a returning link runs
+ * along that same line to reach its lane in the margin. With one cell of
+ * padding the frame edge is on that line, and since a solid line takes a
+ * shared cell from a dashed one the frame comes apart along its length
+ * instead of being crossed at a point.
+ */
+#define FC_FRAME_PAD 2
 
 /*
  * struct fc_group - one container, placed
@@ -560,11 +569,18 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	if (title && fymm_rich_measure(title) + 2 > l.width)
 		l.width = fymm_rich_measure(title) + 2;
 
+	/*
+	 * A returning link runs down a lane in the right margin. The lane has
+	 * to be clear of every frame: a lane drawn through one crosses its
+	 * top and bottom edges along their length rather than at a point, and
+	 * a solid line takes a shared cell from a dashed one, so the frame
+	 * comes apart.
+	 */
 	for (g = 0; g < ngroups; g++) {
 		if (!grp[g].used)
 			continue;
-		if (grp[g].x1 + 2 > l.width)
-			l.width = grp[g].x1 + 2;
+		if (grp[g].x1 + 2 + FC_RETURN_LANES > l.width)
+			l.width = grp[g].x1 + 2 + FC_RETURN_LANES;
 		if (grp[g].y1 + 2 > l.height)
 			l.height = grp[g].y1 + 2;
 	}
