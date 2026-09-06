@@ -1,0 +1,8 @@
+flowchart TB
+    subgraph api[API Layer]
+        route --> handler
+    end
+    subgraph "Store"
+        query
+    end
+    handler --> query

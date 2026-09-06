@@ -1,0 +1,64 @@
+type: flowchart
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+nodes:
+- id: a
+  text: a
+  shape: rect
+  markdown: false
+  subgraph: one
+- id: b
+  text: b
+  shape: rect
+  markdown: false
+  subgraph: one
+- id: e
+  text: e
+  shape: rect
+  markdown: false
+  subgraph: aside
+- id: c
+  text: c
+  shape: rect
+  markdown: false
+  subgraph: two
+- id: d
+  text: d
+  shape: rect
+  markdown: false
+  subgraph: two
+edges:
+- from: a
+  to: b
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+- from: b
+  to: c
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+- from: c
+  to: d
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+subgraphs:
+- id: one
+  title: Group One
+  markdown: false
+  depth: 0
+- id: aside
+  title: Aside
+  markdown: false
+  depth: 0
+- id: two
+  title: Group Two
+  markdown: false
+  depth: 0

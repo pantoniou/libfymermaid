@@ -1,0 +1,44 @@
+type: flowchart
+direction: TB
+title: null
+accTitle: null
+accDescr: null
+config: {}
+nodes:
+- id: route
+  text: route
+  shape: rect
+  markdown: false
+  subgraph: api
+- id: handler
+  text: handler
+  shape: rect
+  markdown: false
+  subgraph: api
+- id: query
+  text: query
+  shape: rect
+  markdown: false
+  subgraph: Store
+edges:
+- from: route
+  to: handler
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+- from: handler
+  to: query
+  line: solid
+  head: arrow
+  bidirectional: false
+  text: null
+subgraphs:
+- id: api
+  title: API Layer
+  markdown: false
+  depth: 0
+- id: Store
+  title: Store
+  markdown: false
+  depth: 0

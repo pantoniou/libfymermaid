@@ -1,0 +1,10 @@
+flowchart TB
+    subgraph outer["`**Outer**`"]
+        subgraph inner
+            a --> b
+        end
+    end
+    b --> c
+    subgraph late
+        c
+    end
