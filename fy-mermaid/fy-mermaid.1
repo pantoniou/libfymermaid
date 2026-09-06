@@ -97,6 +97,11 @@ causes drawn as ribs off a spine
 the library version
 .PP
 A header naming any other diagram type is reported as unsupported.
+.SH SPACING
+The gaps a diagram is drawn with, the margin around it and the limits on its
+size are library settings, reachable through \fBfymm_metrics_default\fR(3) and
+\fBfymm_render_cfg\fR.  This tool exposes only the width and the fit policy;
+a program that links the library can change the rest.
 .SH RENDERING NOTES
 Several mermaid layouts do not survive in character cells, and are drawn
 differently rather than badly:

@@ -241,6 +241,13 @@ call knowing about the other. Add a line shape by extending the mask table.
 A literal glyph, such as a commit or a label, is never overwritten by a line.
 Column widths come from the label widths, which keeps a collision rare.
 
+The spacing a diagram is drawn with lives in `src/fymm-metrics.c`, keyed by
+diagram type, and a renderer reads it through `fymm_metrics_resolve()`. Do not
+add a spacing constant to a renderer: that is where the thirty that preceded
+this table came from, and they disagreed with each other. A renderer that needs
+the gap it was drawn with takes it from the layout result, not from what it
+asked for, because the layout may have closed it up.
+
 The width a render is given is a limit. A renderer measures at the size its
 content needs and `fymm_canvas_create_cfg()` clips on the way out, in the
 canvas, where the cells are still cells and no escape has been written. Do not
