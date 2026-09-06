@@ -178,8 +178,15 @@ One of \fBauto\fR (the default), \fBnone\fR, \fB16\fR, \fB256\fR or \fBtrue\fR.
 \fB$TERM\fR, and emits nothing when the output is not a terminal.
 .TP
 .BR \-C ", " \-\-charset " \fISET\fR"
-One of \fBauto\fR (the default), \fBascii\fR or \fBunicode\fR.  \fBauto\fR reads
-the locale.
+One of \fBauto\fR (the default), \fBascii\fR, \fBunicode\fR or \fBrich\fR.
+\fBauto\fR reads the locale and settles on \fBunicode\fR or \fBascii\fR.
+.sp
+\fBrich\fR adds what asks more of the font than the box drawing does: a line
+series is plotted on braille, at twice the horizontal and four times the
+vertical resolution of the cells, and a decision takes the heavy border weight
+so that it stops looking like a gateway.  \fBauto\fR never selects it, because
+the locale says the terminal speaks UTF\-8 and not which glyphs its font
+carries.
 .TP
 .BR \-a ", " \-\-ascii
 Shorthand for \fB\-\-charset ascii\fR.

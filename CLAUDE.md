@@ -241,6 +241,16 @@ call knowing about the other. Add a line shape by extending the mask table.
 A literal glyph, such as a commit or a label, is never overwritten by a line.
 Column widths come from the label widths, which keeps a collision rare.
 
+`FYMM_CHARSET_RICH` is the block elements, braille and the heavy box weight.
+`fymm_detect_charset()` must never return it: the locale says the terminal
+speaks UTF-8, not which glyphs its font carries, so this level is asked for and
+never inferred. Ask with `fymm_charset_rich()`, and keep a plain drawing for
+every other charset -- a rich one is an addition, never the only path.
+
+`src/fymm-braille.c` is the subpixel surface a line series is plotted on. One
+colour per cell, not per dot, because a cell is one character; a bar stays on
+the block elements, which are a whole cell each and colour separately.
+
 ## Looking at a render
 
 Colour and box drawing do not survive a paste into a bug report or a review, so

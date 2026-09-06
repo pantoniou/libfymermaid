@@ -187,6 +187,29 @@ what the drawing may occupy. `max_width` and `max_height` bound it; with
 configuration and so under the same fit policy. It measures by rendering, so
 it costs what a render costs.
 
+## Charsets
+
+Three levels, plus a probe. `--charset ascii` is seven bit; `unicode` is the
+box drawing and geometric shapes, and what `auto` settles on when the locale
+says UTF-8.
+
+`--charset rich` adds what asks more of the font than the box drawing does: a
+line series is plotted on braille, at twice the horizontal and four times the
+vertical resolution of the cells, and a decision takes the heavy border weight
+so it stops looking like a gateway.
+
+```
+  unicode                        rich
+100 │                       100 │                  ⢀⡀
+    │              ╭──●          │             ⣀⠤⠒⠒⠉⠁
+    │         ╭──● ╯             │         ⣀⠤⠒⠉
+    │    ╭──● ╯                  │      ⡠⠊
+    │  ● ╯                       │  ⢀⠔⠁
+```
+
+`auto` never selects it: probing the locale says the terminal speaks UTF-8, not
+which glyphs its font carries. It is what a caller asks for when it knows.
+
 ## Colour
 
 Three depths, chosen automatically or with `--color`: 24-bit, the xterm-256
