@@ -176,6 +176,13 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "agentflow-beta",
+		.config_key = "agentflow",
+		.type = FYMM_DT_AGENTFLOW,
+		.parse = fymm_parse_agentflow,
+		/* the same graph, drawn the same way */
+		.render = fymm_render_flowchart,
+	}, {
 		.keyword = "railroad-beta",
 		.config_key = "railroad",
 		.type = FYMM_DT_RAILROAD,

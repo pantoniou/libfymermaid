@@ -71,6 +71,8 @@ struct fc {
 	fy_generic edges;
 	fy_generic subgraphs;
 	fy_generic stack;	/* the open subgraph titles */
+	fy_generic connectors;
+	bool agentflow;		/* the agentflow dialect of this grammar */
 };
 
 static bool fc_is(char c, const char *set)
@@ -113,10 +115,51 @@ static const char *fc_match(const char *s, const char *e, const char *open,
 	return NULL;
 }
 
-/* Is @name a shape a source may ask for? */
-static bool fc_shape_known(const char *name, size_t len)
+/*
+ * agentflow names its shapes after the parts of an agent rather than after
+ * geometry, and draws them with the flowchart shapes underneath.
+ */
+static const struct {
+	const char *name;
+	const char *shape;
+} fc_agent_shapes[] = {
+	{ "tool",	"subroutine" },
+	{ "action",	"rounded" },
+	{ "input",	"lean-r" },
+	{ "output",	"lean-l" },
+	{ "refdoc",	"doc" },
+	{ "agent",	"framed-rectangle" },
+	{ "connector",	"hexagon" },
+};
+
+/* the geometry an agentflow shape name draws as, or @name unchanged */
+static const char *fc_shape_map(const struct fc *f, const char *name)
 {
 	size_t i;
+
+	if (!f->agentflow || !name)
+		return name;
+	for (i = 0; i < sizeof(fc_agent_shapes) /
+		    sizeof(fc_agent_shapes[0]); i++) {
+		if (!strcmp(fc_agent_shapes[i].name, name))
+			return fc_agent_shapes[i].shape;
+	}
+	return name;
+}
+
+/* Is @name a shape a source may ask for? */
+static bool fc_shape_known(const struct fc *f, const char *name, size_t len)
+{
+	size_t i;
+
+	if (f->agentflow) {
+		for (i = 0; i < sizeof(fc_agent_shapes) /
+			    sizeof(fc_agent_shapes[0]); i++) {
+			if (strlen(fc_agent_shapes[i].name) == len &&
+			    !memcmp(fc_agent_shapes[i].name, name, len))
+				return true;
+		}
+	}
 
 	for (i = 0; i < sizeof(fymm_flowchart_shapes) /
 		    sizeof(fymm_flowchart_shapes[0]); i++) {
@@ -247,12 +290,13 @@ static const char *fc_read_node(struct fc *f, const char *s, const char *e,
 				tl--;
 			text = fy_gb_intern_string_size(f->gb, text, tl);
 		}
-		if (shape && !fc_shape_known(shape, strlen(shape))) {
+		if (shape && !fc_shape_known(f, shape, strlen(shape))) {
 			fymm_diagf(f->p, true, f->p->lex.line, 1,
 				   "unknown node shape '%s'", shape);
 			return NULL;
 		}
-		*idp = fc_node(f, id, (size_t)(q - id), text, shape, markdown);
+		*idp = fc_node(f, id, (size_t)(q - id), text,
+			       fc_shape_map(f, shape), markdown);
 		return close + 1;
 	}
 
@@ -542,14 +586,23 @@ static bool fc_balanced(const char *s, size_t len)
 	return !depth && !in_quote;
 }
 
-int fymm_parse_flowchart(struct fymm_parser *p, fy_generic config,
-			 fy_generic title, struct fymm_token *htoks, int hn)
+/*
+ * An agentflow diagram is this grammar with three differences: its containers
+ * open with `flow <id>["Label"]` rather than `subgraph`, it declares external
+ * connectors, and its shapes name agent parts rather than boxes. Everything
+ * else - the nodes, the metadata mappings, the edge chains, the `&` fan-out -
+ * is the same language, so the two share one reader.
+ */
+static int fc_parse(struct fymm_parser *p, fy_generic config,
+		    fy_generic title, struct fymm_token *htoks, int hn,
+		    bool agentflow)
 {
 	struct fy_generic_builder *gb = p->d->gb;
 	struct fymm_token toks[FYMM_MAX_TOKENS];
 	struct fymm_acc acc = { fy_null, fy_null };
 	struct fc f;
 	const char *direction = "TB";
+	const char *kind = agentflow ? "agentflow" : "flowchart";
 	const char *line, *e, *rest;
 	char *joined = NULL;
 	size_t len;
@@ -562,6 +615,8 @@ int fymm_parse_flowchart(struct fymm_parser *p, fy_generic config,
 	f.edges = fy_seq_empty;
 	f.subgraphs = fy_seq_empty;
 	f.stack = fy_seq_empty;
+	f.connectors = fy_seq_empty;
+	f.agentflow = agentflow;
 
 	for (i = 1; i < hn; i++) {
 		if (htoks[i].type == FYMM_TOK_COLON)
@@ -576,7 +631,7 @@ int fymm_parse_flowchart(struct fymm_parser *p, fy_generic config,
 							     htoks[i].len);
 		else
 			fymm_diagf(p, false, htoks[i].line, htoks[i].col,
-				   "ignoring unknown flowchart option '%.*s'",
+				   "ignoring unknown %s option '%.*s'", kind,
 				   (int)htoks[i].len, htoks[i].text);
 	}
 
@@ -647,8 +702,26 @@ int fymm_parse_flowchart(struct fymm_parser *p, fy_generic config,
 			continue;
 		}
 
-		if (len >= 8 && !strncasecmp(line, "subgraph", 8)) {
-			const char *t = line + 8;
+		/*
+		 * A connector names something outside the flow, so it is
+		 * recorded on its own rather than laid out with the nodes.
+		 */
+		if (agentflow && fymm_line_keyword(line, len, "connector",
+						   &rest)) {
+			const char *id = NULL;
+
+			fc_read_node(&f, rest, e, &id);
+			f.connectors = fy_append(gb, f.connectors,
+						 id ? fy_value(gb, id) :
+						 fymm_trim_text(gb, rest, e));
+			continue;
+		}
+
+		if (agentflow ? (len >= 4 && !strncasecmp(line, "flow", 4) &&
+				 (len == 4 || line[4] == ' ' ||
+				  line[4] == '\t')) :
+				(len >= 8 && !strncasecmp(line, "subgraph", 8))) {
+			const char *t = line + (agentflow ? 4 : 8);
 			fy_generic name;
 
 			while (t < e && (*t == ' ' || *t == '\t'))
@@ -664,7 +737,8 @@ int fymm_parse_flowchart(struct fymm_parser *p, fy_generic config,
 		if (len == 3 && !strncasecmp(line, "end", 3)) {
 			if (!fy_len(f.stack))
 				fymm_diagf(p, true, p->lex.line, 1,
-					   "'end' with no subgraph open");
+					   "'end' with no %s open",
+					   agentflow ? "flow" : "subgraph");
 			else
 				f.stack = fy_slice(gb, f.stack, 0,
 						   fy_len(f.stack) - 1);
@@ -678,7 +752,8 @@ int fymm_parse_flowchart(struct fymm_parser *p, fy_generic config,
 
 	if (fy_len(f.stack))
 		fymm_diagf(p, true, p->lex.line, 1,
-			   "a subgraph was left open at the end of the diagram");
+			   "a %s was left open at the end of the diagram",
+			   agentflow ? "flow" : "subgraph");
 
 	if (fy_is_invalid(title))
 		title = acc.title;
@@ -691,7 +766,7 @@ int fymm_parse_flowchart(struct fymm_parser *p, fy_generic config,
 			   direction, !strcmp(direction, "BT") ? "TB" : "LR");
 
 	p->d->model = fy_mapping(gb,
-		"type", "flowchart",
+		"type", kind,
 		"direction", direction,
 		"title", title,
 		"accTitle", acc.title,
@@ -700,5 +775,22 @@ int fymm_parse_flowchart(struct fymm_parser *p, fy_generic config,
 		"nodes", f.nodes,
 		"edges", f.edges,
 		"subgraphs", f.subgraphs);
+
+	/* connectors belong to agentflow alone; a flowchart has no such key */
+	if (agentflow)
+		p->d->model = fy_assoc(gb, p->d->model, "connectors",
+				       f.connectors);
 	return 0;
+}
+
+int fymm_parse_flowchart(struct fymm_parser *p, fy_generic config,
+			 fy_generic title, struct fymm_token *htoks, int hn)
+{
+	return fc_parse(p, config, title, htoks, hn, false);
+}
+
+int fymm_parse_agentflow(struct fymm_parser *p, fy_generic config,
+			 fy_generic title, struct fymm_token *htoks, int hn)
+{
+	return fc_parse(p, config, title, htoks, hn, true);
 }

@@ -72,6 +72,7 @@ extern "C" {
  * @FYMM_DT_EVENTMODELING: an event model
  * @FYMM_DT_WARDLEY: a Wardley map
  * @FYMM_DT_RAILROAD: a grammar drawn as rails
+ * @FYMM_DT_AGENTFLOW: an agent flow
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
@@ -101,6 +102,7 @@ enum fymm_diagram_type {
 	FYMM_DT_EVENTMODELING,
 	FYMM_DT_WARDLEY,
 	FYMM_DT_RAILROAD,
+	FYMM_DT_AGENTFLOW,
 };
 
 /* the opaque parsed diagram */

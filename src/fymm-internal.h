@@ -198,6 +198,8 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 /* how deep a mindmap may nest before the rails stop being tracked */
 #define FYMM_MINDMAP_MAX_DEPTH 64
 
+int fymm_parse_agentflow(struct fymm_parser *p, fy_generic config,
+			 fy_generic title, struct fymm_token *toks, int n);
 int fymm_parse_railroad(struct fymm_parser *p, fy_generic config,
 			fy_generic title, struct fymm_token *toks, int n);
 char *fymm_render_railroad(const struct fymm_diagram *d, fy_generic model,
