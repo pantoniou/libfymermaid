@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <md4c.h>
+#include <libfymd4c.h>
 
 #include "fymm-markdown.h"
 
@@ -47,13 +47,6 @@ struct fymm_rich {
 	struct fymm_rich_line *line;
 	size_t nlines, alines;
 	int width;
-};
-
-/* struct md_ctx - what the md4c callbacks accumulate into */
-struct md_ctx {
-	struct fymm_rich_line *line;
-	uint8_t attr;			/* the spans currently open */
-	bool failed;
 };
 
 static struct fymm_rich_line *rich_add_line(struct fymm_rich *r)
@@ -118,114 +111,54 @@ static bool rich_add_text(struct fymm_rich_line *l, const char *text,
 	return true;
 }
 
-/* The attribute a markdown span carries in a terminal. */
-static uint8_t md_span_attr(MD_SPANTYPE type)
+/* The canvas attribute an inline run's markup maps to. */
+static uint8_t rich_attr_of(unsigned int attrs)
 {
-	switch (type) {
-	case MD_SPAN_STRONG:
-		return FYMM_ATTR_BOLD;
-	case MD_SPAN_EM:
-		return FYMM_ATTR_ITALIC;
-	case MD_SPAN_U:
-	case MD_SPAN_A:
-		return FYMM_ATTR_UNDERLINE;
-	case MD_SPAN_DEL:
-		return FYMM_ATTR_STRIKE;
-	case MD_SPAN_CODE:
-		return FYMM_ATTR_REVERSE;
-	default:
-		return 0;
-	}
+	uint8_t out = 0;
+
+	if (attrs & FYMD_IA_STRONG)
+		out |= FYMM_ATTR_BOLD;
+	if (attrs & FYMD_IA_EM)
+		out |= FYMM_ATTR_ITALIC;
+	if (attrs & (FYMD_IA_UNDERLINE | FYMD_IA_LINK))
+		out |= FYMM_ATTR_UNDERLINE;
+	if (attrs & FYMD_IA_DEL)
+		out |= FYMM_ATTR_STRIKE;
+	if (attrs & FYMD_IA_CODE)
+		out |= FYMM_ATTR_REVERSE;
+	return out;
 }
 
-static int md_enter_span(MD_SPANTYPE type, void *detail, void *userdata)
-{
-	struct md_ctx *ctx = userdata;
-
-	(void)detail;
-	ctx->attr |= md_span_attr(type);
-	return 0;
-}
-
-static int md_leave_span(MD_SPANTYPE type, void *detail, void *userdata)
-{
-	struct md_ctx *ctx = userdata;
-
-	(void)detail;
-	ctx->attr &= (uint8_t)~md_span_attr(type);
-	return 0;
-}
-
-static int md_text(MD_TEXTTYPE type, const MD_CHAR *text, MD_SIZE size,
-		   void *userdata)
-{
-	struct md_ctx *ctx = userdata;
-	const char *s = text;
-
-	switch (type) {
-	case MD_TEXT_NULLCHAR:
-		return 0;
-	case MD_TEXT_BR:
-	case MD_TEXT_SOFTBR:
-		s = " ";
-		size = 1;
-		break;
-	case MD_TEXT_ENTITY:
-		/* the only entities a label is likely to carry */
-		if (size == 6 && !memcmp(text, "&nbsp;", 6)) {
-			s = " ";
-			size = 1;
-		} else if (size == 4 && !memcmp(text, "&lt;", 4)) {
-			s = "<";
-			size = 1;
-		} else if (size == 4 && !memcmp(text, "&gt;", 4)) {
-			s = ">";
-			size = 1;
-		} else if (size == 5 && !memcmp(text, "&amp;", 5)) {
-			s = "&";
-			size = 1;
-		}
-		break;
-	default:
-		break;
-	}
-
-	if (!rich_add_text(ctx->line, s, size, ctx->attr))
-		ctx->failed = true;
-	return 0;
-}
-
-static int md_block(MD_BLOCKTYPE type, void *detail, void *userdata)
-{
-	(void)type;
-	(void)detail;
-	(void)userdata;
-	return 0;
-}
-
-/* Read one line as CommonMark inline content. */
+/*
+ * Read one line as inline markdown, through libfymd4c. Strikethrough is not
+ * CommonMark, but `~~x~~` in a label plainly means it; underline is
+ * deliberately left off, so that `_x_` stays italic as a writer expects.
+ */
 static bool rich_parse_markdown(struct fymm_rich_line *l, const char *s,
 				size_t len)
 {
-	static const MD_PARSER parser = {
-		.abi_version = 0,
-		/* strikethrough is not CommonMark, but `~~x~~` in a label
-		 * plainly means it; underline is deliberately left off, so
-		 * that `_x_` stays italic as a writer expects */
-		.flags = MD_FLAG_NOHTML | MD_FLAG_STRIKETHROUGH,
-		.enter_block = md_block,
-		.leave_block = md_block,
-		.enter_span = md_enter_span,
-		.leave_span = md_leave_span,
-		.text = md_text,
-	};
-	struct md_ctx ctx;
+	const struct fymd_inline_run *run;
+	struct fymd_inline *inl;
+	size_t i;
+	bool ok = true;
 
-	memset(&ctx, 0, sizeof(ctx));
-	ctx.line = l;
-	if (md_parse(s, (MD_SIZE)len, &parser, &ctx))
+	inl = fymd_inline_parse(s, len, FYMD_IF_STRIKETHROUGH);
+	if (!inl)
 		return false;
-	return !ctx.failed;
+
+	for (i = 0; i < fymd_inline_count(inl) && ok; i++) {
+		run = fymd_inline_get(inl, i);
+		/* a hard break inside a label has nowhere to go, so it reads
+		 * as the space it separates words with */
+		if (run->attrs & FYMD_IA_BREAK)
+			ok = rich_add_text(l, " ", 1, rich_attr_of(run->attrs));
+		else
+			ok = rich_add_text(l, run->text, run->len,
+					   rich_attr_of(run->attrs));
+	}
+
+	fymd_inline_destroy(inl);
+	return ok;
 }
 
 /* The `<br>` spellings a mermaid label may carry, longest first. */

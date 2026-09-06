@@ -252,7 +252,10 @@ Only a markdown string is formatted, and the parser records that: a label
 written in backticks inside its quotes sets `markdown` in the model. A plain
 label is never formatted, because a label may contain an asterisk.
 
-The inline parsing is md4c's. Do not hand-roll a second one.
+The inline parsing goes through libfymd4c's `fymd_inline_*`. Do not hand-roll
+a second one, and do not link md4c here: libfymd4c absorbs it and exports only
+`fymd_*`, which is the interface this library depends on. A gap in the reading
+of a label is fixed in libfymd4c and then used from here.
 
 ### Colour
 

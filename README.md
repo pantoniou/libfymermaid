@@ -142,8 +142,10 @@ flowchart TB
 reversed and a link underlined. A plain label is never formatted, because a
 label is allowed to contain an asterisk.
 
-The inline parsing is md4c's, so the edge cases are CommonMark's rather than
-mine.
+The inline parsing goes through libfymd4c's `fymd_inline_*`, which reports a
+text as runs carrying the attributes that apply to each. md4c stays absorbed
+inside libfymd4c, so this library links libfymd4c and never md4c itself, and
+the edge cases are CommonMark's rather than mine.
 
 ## Conformance
 
@@ -174,7 +176,8 @@ cmake --build build -j
 ctest --test-dir build --output-on-failure
 ```
 
-Needs libfyaml with the generic API and md4c (labels may carry markdown). `-DENABLE_ASAN=ON` for a sanitized build,
+Needs libfyaml with the generic API and libfymd4c (labels may carry markdown;
+its `fymd_inline_*` reads them). `-DENABLE_ASAN=ON` for a sanitized build,
 `-DBUILD_FYMERMAID_EXECUTABLE=OFF` for the library alone.
 
 The suite is process-per-case and shares no state, so `ctest -j$(nproc)` is
