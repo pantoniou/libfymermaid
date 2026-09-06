@@ -953,6 +953,111 @@ static void test_background_theme(void)
 	fymm_diagram_destroy(d);
 }
 
+/* the widest line of a render, in cells; the ASCII renders here are one
+ * cell per byte, so a byte count is a cell count */
+static size_t widest_line(const char *s)
+{
+	size_t w = 0, n = 0;
+
+	for (; *s; s++) {
+		if (*s == '\n') {
+			if (n > w)
+				w = n;
+			n = 0;
+			continue;
+		}
+		n++;
+	}
+	return n > w ? n : w;
+}
+
+static size_t count_of(const char *hay, const char *needle)
+{
+	size_t n = 0;
+	const char *p = hay;
+
+	while ((p = strstr(p, needle)) != NULL) {
+		n++;
+		p += strlen(needle);
+	}
+	return n;
+}
+
+/*
+ * The fit policy decides what happens to a diagram wider than the width:
+ * none emits all of it, clip cuts it, and shrink closes the graph up first
+ * and so keeps more of it on the screen.
+ */
+static void test_fit_policy(void)
+{
+	static const char src[] =
+		"flowchart LR\n"
+		"    A[Start] --> B{Is it working?}\n"
+		"    B -->|Yes| C[Ship it]\n"
+		"    B -->|No| D[Debug]\n"
+		"    D --> E[(Database)]\n"
+		"    D --> F([Check logs])\n"
+		"    E --> B\n"
+		"    C --> G((Done))\n";
+	static const int width = 60;
+	struct fymm_render_cfg rcfg;
+	struct fymm_diagram *d;
+	char *none = NULL, *clip = NULL, *shrink = NULL;
+
+	d = parse(src);
+	if (!d)
+		return;
+	CHECK(!fymm_diagram_has_errors(d), "unexpected errors");
+
+	fymm_render_cfg_default(&rcfg);
+	rcfg.color = FYMM_COLOR_NONE;
+	rcfg.charset = FYMM_CHARSET_ASCII;
+	rcfg.width = width;
+
+	rcfg.fit = FYMM_FIT_NONE;
+	none = fymm_render(d, &rcfg);
+	rcfg.fit = FYMM_FIT_CLIP;
+	clip = fymm_render(d, &rcfg);
+	rcfg.fit = FYMM_FIT_SHRINK;
+	shrink = fymm_render(d, &rcfg);
+
+	CHECK(none && clip && shrink, "a render produced nothing");
+	if (!none || !clip || !shrink)
+		goto out;
+
+	/* the default is to shrink */
+	fymm_render_cfg_default(&rcfg);
+	CHECK(rcfg.fit == FYMM_FIT_SHRINK, "the default fit is not shrink");
+
+	CHECK(widest_line(none) > (size_t)width,
+	      "FYMM_FIT_NONE should emit the whole drawing, got %zu cells",
+	      widest_line(none));
+	CHECK(widest_line(clip) <= (size_t)width,
+	      "FYMM_FIT_CLIP went over the width, %zu cells",
+	      widest_line(clip));
+	CHECK(widest_line(shrink) <= (size_t)width,
+	      "FYMM_FIT_SHRINK went over the width, %zu cells",
+	      widest_line(shrink));
+
+	/*
+	 * Closing the graph up is worth doing: it keeps nodes that clipping
+	 * loses off the right. Count the boxes each one still draws.
+	 */
+	CHECK(count_of(shrink, "+---") > count_of(clip, "+---"),
+	      "shrink kept %zu boxes and clip %zu; shrink should keep more",
+	      count_of(shrink, "+---"), count_of(clip, "+---"));
+	CHECK(strstr(shrink, "Database") != NULL,
+	      "shrink lost a node that fits once the graph is closed up");
+	CHECK(strstr(clip, "Database") == NULL,
+	      "clip kept a node that does not fit; the case proves nothing");
+
+out:
+	fymm_free(none);
+	fymm_free(clip);
+	fymm_free(shrink);
+	fymm_diagram_destroy(d);
+}
+
 int main(void)
 {
 	test_version();
@@ -965,6 +1070,7 @@ int main(void)
 	test_strict();
 	test_config_sources();
 	test_render_modes();
+	test_fit_policy();
 	test_color_reduction();
 	test_theme_catalogue();
 	test_theme_mono();
