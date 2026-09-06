@@ -127,6 +127,7 @@ set(_fymm_sources
     fymm-architecture.c fymm-render-architecture.c
     fymm-eventmodeling.c fymm-render-eventmodeling.c
     fymm-wardley.c fymm-render-wardley.c
+    fymm-railroad.c fymm-render-railroad.c
     fymm-info.c fymm-render-info.c
     fymm-ishikawa.c fymm-render-ishikawa.c
     fymm-treeview.c fymm-render-treeview.c

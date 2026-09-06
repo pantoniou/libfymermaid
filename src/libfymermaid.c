@@ -74,16 +74,13 @@ struct fy_generic_builder *fymm_diagram_builder(const struct fymm_diagram *d)
 	return d ? d->gb : NULL;
 }
 
-void fymm_diagf(struct fymm_parser *p, bool error, int line, int col,
-		const char *fmt, ...)
+void fymm_vdiagf(struct fymm_parser *p, bool error, int line, int col,
+		 const char *fmt, va_list ap)
 {
 	struct fymm_diagram *d = p->d;
 	char msg[512];
-	va_list ap;
 
-	va_start(ap, fmt);
 	vsnprintf(msg, sizeof(msg), fmt, ap);
-	va_end(ap);
 
 	/* FYMM_PF_STRICT promotes each warning to an error. */
 	if (!error && (p->flags & FYMM_PF_STRICT))
@@ -98,6 +95,16 @@ void fymm_diagf(struct fymm_parser *p, bool error, int line, int col,
 			"message", msg));
 	if (error)
 		d->nerrors++;
+}
+
+void fymm_diagf(struct fymm_parser *p, bool error, int line, int col,
+		const char *fmt, ...)
+{
+	va_list ap;
+
+	va_start(ap, fmt);
+	fymm_vdiagf(p, error, line, col, fmt, ap);
+	va_end(ap);
 }
 
 char *fymm_diagram_diagnostics_string(const struct fymm_diagram *d)

@@ -176,6 +176,30 @@ static const struct fymm_diagram_ops fymm_ops[] = {
 		.parse = fymm_parse_gitgraph,
 		.render = fymm_render_gitgraph,
 	}, {
+		.keyword = "railroad-beta",
+		.config_key = "railroad",
+		.type = FYMM_DT_RAILROAD,
+		.parse = fymm_parse_railroad,
+		.render = fymm_render_railroad,
+	}, {
+		.keyword = "railroad-ebnf-beta",
+		.config_key = "railroad",
+		.type = FYMM_DT_RAILROAD,
+		.parse = fymm_parse_railroad,
+		.render = fymm_render_railroad,
+	}, {
+		.keyword = "railroad-peg-beta",
+		.config_key = "railroad",
+		.type = FYMM_DT_RAILROAD,
+		.parse = fymm_parse_railroad,
+		.render = fymm_render_railroad,
+	}, {
+		.keyword = "railroad-abnf-beta",
+		.config_key = "railroad",
+		.type = FYMM_DT_RAILROAD,
+		.parse = fymm_parse_railroad,
+		.render = fymm_render_railroad,
+	}, {
 		.keyword = "wardley-beta",
 		.config_key = "wardley",
 		.type = FYMM_DT_WARDLEY,

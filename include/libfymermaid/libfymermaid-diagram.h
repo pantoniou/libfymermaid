@@ -71,6 +71,7 @@ extern "C" {
  * @FYMM_DT_TREEVIEW: a file tree
  * @FYMM_DT_EVENTMODELING: an event model
  * @FYMM_DT_WARDLEY: a Wardley map
+ * @FYMM_DT_RAILROAD: a grammar drawn as rails
  */
 enum fymm_diagram_type {
 	FYMM_DT_UNKNOWN = 0,
@@ -99,6 +100,7 @@ enum fymm_diagram_type {
 	FYMM_DT_TREEVIEW,
 	FYMM_DT_EVENTMODELING,
 	FYMM_DT_WARDLEY,
+	FYMM_DT_RAILROAD,
 };
 
 /* the opaque parsed diagram */

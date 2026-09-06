@@ -27,6 +27,7 @@
 #ifndef FYMM_INTERNAL_H
 #define FYMM_INTERNAL_H
 
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -117,6 +118,9 @@ struct fymm_parser {
 	unsigned int flags;
 };
 
+void fymm_vdiagf(struct fymm_parser *p, bool error, int line, int col,
+		 const char *fmt, va_list ap)
+	__attribute__((format(printf, 5, 0)));
 void fymm_diagf(struct fymm_parser *p, bool error, int line, int col,
 		const char *fmt, ...)
 	__attribute__((format(printf, 5, 6)));
@@ -193,6 +197,11 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 
 /* how deep a mindmap may nest before the rails stop being tracked */
 #define FYMM_MINDMAP_MAX_DEPTH 64
+
+int fymm_parse_railroad(struct fymm_parser *p, fy_generic config,
+			fy_generic title, struct fymm_token *toks, int n);
+char *fymm_render_railroad(const struct fymm_diagram *d, fy_generic model,
+			   const struct fymm_render_cfg *cfg);
 
 int fymm_parse_wardley(struct fymm_parser *p, fy_generic config,
 		       fy_generic title, struct fymm_token *toks, int n);
