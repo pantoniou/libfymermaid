@@ -1180,6 +1180,78 @@ static void test_metrics(void)
 	fymm_diagram_destroy(d);
 }
 
+/*
+ * A gitGraph of long messages cannot be closed up far enough to fit a narrow
+ * terminal, because a column is as wide as the label it carries. With
+ * FYMM_FIT_LEGEND the labels move out and the graph stays whole.
+ */
+static void test_fit_legend(void)
+{
+	static const char src[] =
+		"gitGraph\n"
+		"  commit id: \"import the parser corpus\"\n"
+		"  commit id: \"fix the redmean reduction\"\n"
+		"  branch feature\n"
+		"  commit id: \"add the legend helper\"\n"
+		"  checkout main\n"
+		"  merge feature id: \"merge the legend work\"\n";
+	static const int width = 44;
+	struct fymm_render_cfg rcfg;
+	struct fymm_diagram *d;
+	char *clip = NULL, *shrink = NULL, *legend = NULL;
+
+	d = parse(src);
+	if (!d)
+		return;
+	CHECK(!fymm_diagram_has_errors(d), "unexpected errors");
+
+	fymm_render_cfg_default(&rcfg);
+	rcfg.color = FYMM_COLOR_NONE;
+	rcfg.charset = FYMM_CHARSET_ASCII;
+	rcfg.width = width;
+
+	rcfg.fit = FYMM_FIT_CLIP;
+	clip = fymm_render(d, &rcfg);
+	rcfg.fit = FYMM_FIT_SHRINK;
+	shrink = fymm_render(d, &rcfg);
+	rcfg.fit = FYMM_FIT_LEGEND;
+	legend = fymm_render(d, &rcfg);
+
+	CHECK(clip && shrink && legend, "a render produced nothing");
+	if (!clip || !shrink || !legend)
+		goto out;
+
+	CHECK(widest_line(legend) <= (size_t)width,
+	      "the legend render went over the width, %zu cells",
+	      widest_line(legend));
+
+	/* the graph keeps every commit, which clipping does not */
+	CHECK(count_of(legend, "o") + count_of(legend, "*") >
+	      count_of(clip, "o") + count_of(clip, "*"),
+	      "the legend render lost commits that clipping kept");
+
+	/*
+	 * The label text survives in full, where closing the columns up
+	 * leaves only the first few cells of it.
+	 */
+	CHECK(strstr(legend, "import the parser corpus") != NULL,
+	      "the legend does not carry the whole label");
+	CHECK(strstr(shrink, "import the parser corpus") == NULL,
+	      "shrink kept the whole label; the case proves nothing");
+	CHECK(strstr(clip, "fix the redmean reduction") == NULL,
+	      "clip kept a label it has no room for");
+
+	/* a marker stands in its place in the drawing */
+	CHECK(strstr(legend, "\n1 import the parser corpus") != NULL,
+	      "the legend is not numbered from one");
+
+out:
+	fymm_free(clip);
+	fymm_free(shrink);
+	fymm_free(legend);
+	fymm_diagram_destroy(d);
+}
+
 int main(void)
 {
 	test_version();
@@ -1194,6 +1266,7 @@ int main(void)
 	test_render_modes();
 	test_fit_policy();
 	test_metrics();
+	test_fit_legend();
 	test_color_reduction();
 	test_theme_catalogue();
 	test_theme_mono();
