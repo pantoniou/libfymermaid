@@ -180,17 +180,31 @@ static const char *fc_node(struct fc *f, const char *id, size_t idlen,
 
 	count = fy_len(f->nodes);
 	for (i = 0; i < count; i++) {
+		fy_generic sg;
+		bool md;
+
 		n = fy_get_at(f->nodes, i);
 		if (strcmp(fy_get(n, "id", ""), iid))
 			continue;
-		if (text)
+
+		/* a node named again inside a container joins it, even when
+		 * the first mention was outside */
+		sg = fy_get(n, "subgraph");
+		if (fy_is_null(sg) && fy_len(f->stack))
+			sg = fy_get_at(f->stack, fy_len(f->stack) - 1);
+
+		md = text ? markdown : fy_get(n, "markdown", false);
+		if (text || !fy_is_null(sg))
 			f->nodes = fy_replace(f->gb, f->nodes, i,
 				fy_mapping(f->gb,
 					"id", iid,
-					"text", text,
-					"shape", shape ? shape : "rect",
-					"markdown", markdown,
-					"subgraph", fy_get(n, "subgraph")));
+					"text", text ? text :
+						fy_get(n, "text", iid),
+					"shape", text ?
+						 (shape ? shape : "rect") :
+						 fy_get(n, "shape", "rect"),
+					"markdown", md,
+					"subgraph", sg));
 		return iid;
 	}
 
