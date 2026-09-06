@@ -105,7 +105,7 @@ set(_fymm_sources
     fymm-markdown.c fymm-markdown.h
     fymm-color.c fymm-color.h
     fymm-theme.c
-    fymm-render.c
+    fymm-render.c fymm-term.c
     fymm-pie.c fymm-render-pie.c
     fymm-timeline.c fymm-render-timeline.c
     fymm-journey.c fymm-render-journey.c

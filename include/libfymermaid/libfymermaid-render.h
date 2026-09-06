@@ -71,6 +71,19 @@ enum fymm_charset {
 	FYMM_CHARSET_UNICODE,
 };
 
+/**
+ * enum fymm_background - what the terminal is drawn on
+ *
+ * @FYMM_BG_AUTO: probe the environment and, if it can, ask the terminal
+ * @FYMM_BG_DARK: light text on a dark ground
+ * @FYMM_BG_LIGHT: dark text on a light ground
+ */
+enum fymm_background {
+	FYMM_BG_AUTO = 0,
+	FYMM_BG_DARK,
+	FYMM_BG_LIGHT,
+};
+
 /* FYMM_WIDTH_AUTO - detect the terminal width */
 #define FYMM_WIDTH_AUTO (-1)
 /* FYMM_WIDTH_INF - never wrap or clip */
@@ -89,6 +102,9 @@ enum fymm_charset {
  * @theme: the name of a built-in theme, or NULL for the default; see
  *         fymm_theme_iterate()
  * @theme_path: a theme file to read, applied over @theme; NULL for none
+ * @background: what the terminal is drawn on. With FYMM_BG_AUTO it is
+ *              probed, and a light terminal selects the `light` theme unless
+ *              @theme already named one.
  *
  * A NULL cfg selects the defaults for every field.
  */
@@ -100,6 +116,7 @@ struct fymm_render_cfg {
 	fy_generic options;
 	const char *theme;
 	const char *theme_path;
+	enum fymm_background background;
 };
 
 /**
@@ -177,6 +194,22 @@ fymm_detect_width(int fd)
  */
 enum fymm_color_mode
 fymm_detect_color_mode(int fd)
+	FYMM_EXPORT;
+
+/**
+ * fymm_detect_background() - what the terminal is drawn on
+ *
+ * Honours `$FYMM_BACKGROUND` (`light` or `dark`), then `$COLORFGBG`, and then
+ * asks the terminal itself with an OSC 11 query when @fd is one. The query
+ * goes to `/dev/tty`, not to @fd, so a redirected render never has escape
+ * bytes in it, and it is polled with a short timeout so that a terminal that
+ * does not answer cannot hang the caller.
+ *
+ * Returns FYMM_BG_DARK when nothing says otherwise, which is what a terminal
+ * usually is.
+ */
+enum fymm_background
+fymm_detect_background(int fd)
 	FYMM_EXPORT;
 
 /* fymm_detect_charset() - whether the locale can carry the box drawing glyphs */

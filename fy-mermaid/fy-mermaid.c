@@ -44,6 +44,7 @@ static const struct option lopts[] = {
 	{ "theme",	required_argument,	NULL,	't' },
 	{ "style",	required_argument,	NULL,	'S' },
 	{ "list-themes",no_argument,		NULL,	'L' },
+	{ "background",	required_argument,	NULL,	'b' },
 	{ "dump-model",	no_argument,		NULL,	'm' },
 	{ "flow",	no_argument,		NULL,	'f' },
 	{ "strict",	no_argument,		NULL,	's' },
@@ -70,6 +71,8 @@ static void usage(FILE *fp)
 "  -t, --theme NAME    colour theme; --list-themes names them\n"
 "  -S, --style FILE    a theme file, applied over --theme\n"
 "  -L, --list-themes   list the built-in themes and exit\n"
+"  -b, --background M  auto (default), dark or light; a light terminal\n"
+"                      takes the light theme unless --theme names one\n"
 "  -m, --dump-model    emit the parsed model as YAML instead of rendering\n"
 "  -f, --flow          with --dump-model, emit flow style rather than block\n"
 "  -s, --strict        treat warnings as errors\n"
@@ -201,7 +204,7 @@ int main(int argc, char *argv[])
 
 	fymm_render_cfg_default(&rcfg);
 
-	while ((opt = getopt_long(argc, argv, "o:w:c:C:at:S:LmfsqVh", lopts,
+	while ((opt = getopt_long(argc, argv, "o:w:c:C:at:S:Lb:mfsqVh", lopts,
 				  NULL)) != -1) {
 		switch (opt) {
 		case 'o':
@@ -236,6 +239,19 @@ int main(int argc, char *argv[])
 		case 'L':
 			list_themes(stdout);
 			return 0;
+		case 'b':
+			if (!strcmp(optarg, "auto")) {
+				rcfg.background = FYMM_BG_AUTO;
+			} else if (!strcmp(optarg, "dark")) {
+				rcfg.background = FYMM_BG_DARK;
+			} else if (!strcmp(optarg, "light")) {
+				rcfg.background = FYMM_BG_LIGHT;
+			} else {
+				fprintf(stderr, "%s: bad background '%s'\n",
+					progname, optarg);
+				return 1;
+			}
+			break;
 		case 'm':
 			dump_model = true;
 			break;

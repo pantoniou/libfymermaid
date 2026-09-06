@@ -29,87 +29,8 @@
 #include <string.h>
 #include <unistd.h>
 
-#if defined(__unix__) || defined(__APPLE__)
-#include <sys/ioctl.h>
-#define FYMM_HAVE_IOCTL 1
-#endif
-
 #include "fymm-canvas.h"
 #include "fymm-internal.h"
-
-int fymm_detect_width(int fd)
-{
-	const char *env = getenv("COLUMNS");
-
-	if (env && *env) {
-		int w = atoi(env);
-
-		if (w > 0)
-			return w;
-	}
-#ifdef FYMM_HAVE_IOCTL
-	{
-		struct winsize ws;
-
-		if (fd >= 0 && !ioctl(fd, TIOCGWINSZ, &ws) && ws.ws_col > 0)
-			return ws.ws_col;
-	}
-#else
-	(void)fd;
-#endif
-	return 80;
-}
-
-enum fymm_color_mode fymm_detect_color_mode(int fd)
-{
-	const char *env;
-
-	/* https://no-color.org: any non-empty value disables colour */
-	env = getenv("NO_COLOR");
-	if (env && *env)
-		return FYMM_COLOR_NONE;
-
-	env = getenv("CLICOLOR_FORCE");
-	if (!(env && *env && strcmp(env, "0")) && fd >= 0 && !isatty(fd))
-		return FYMM_COLOR_NONE;
-
-	/* the de facto marker a 24 bit terminal sets for itself */
-	env = getenv("COLORTERM");
-	if (env && (!strcmp(env, "truecolor") || !strcmp(env, "24bit")))
-		return FYMM_COLOR_TRUECOLOR;
-
-	env = getenv("TERM");
-	if (!env || !*env || !strcmp(env, "dumb"))
-		return FYMM_COLOR_NONE;
-	/*
-	 * A terminfo entry ending in `-direct` is the direct-colour form of
-	 * its terminal: `xterm-direct` and `tmux-direct` mean 24 bit, not
-	 * 256. Reading them as 256 threw away the colour they were asking
-	 * for.
-	 */
-	if (strstr(env, "-direct") || strstr(env, "truecolor"))
-		return FYMM_COLOR_TRUECOLOR;
-	if (strstr(env, "256color") || strstr(env, "256"))
-		return FYMM_COLOR_256;
-	return FYMM_COLOR_16;
-}
-
-enum fymm_charset fymm_detect_charset(void)
-{
-	static const char *const vars[] = { "LC_ALL", "LC_CTYPE", "LANG" };
-	size_t i;
-
-	for (i = 0; i < sizeof(vars) / sizeof(vars[0]); i++) {
-		const char *env = getenv(vars[i]);
-
-		if (!env || !*env)
-			continue;
-		return strstr(env, "UTF-8") || strstr(env, "utf8") ||
-		       strstr(env, "UTF8") || strstr(env, "utf-8") ?
-		       FYMM_CHARSET_UNICODE : FYMM_CHARSET_ASCII;
-	}
-	return FYMM_CHARSET_ASCII;
-}
 
 void fymm_render_cfg_default(struct fymm_render_cfg *cfg)
 {
@@ -123,6 +44,35 @@ void fymm_render_cfg_default(struct fymm_render_cfg *cfg)
 	cfg->options = fy_invalid;
 	cfg->theme = NULL;
 	cfg->theme_path = NULL;
+	cfg->background = FYMM_BG_AUTO;
+}
+
+/*
+ * Resolve what the configuration left to the terminal. @fd is what the render
+ * is going to, so the probing asks about the right one.
+ */
+static void fymm_render_cfg_resolve(struct fymm_render_cfg *cfg, int fd)
+{
+	if (cfg->color == FYMM_COLOR_AUTO)
+		cfg->color = fymm_detect_color_mode(fd);
+	if (cfg->charset == FYMM_CHARSET_AUTO)
+		cfg->charset = fymm_detect_charset();
+	if (cfg->width == FYMM_WIDTH_AUTO)
+		cfg->width = fymm_detect_width(fd);
+
+	/* asking the terminal costs a round trip, so only ask when the answer
+	 * could change anything */
+	if (cfg->background == FYMM_BG_AUTO &&
+	    cfg->color != FYMM_COLOR_NONE && !cfg->theme)
+		cfg->background = fymm_detect_background(fd);
+
+	/*
+	 * A palette chosen for a dark terminal washes out on a light one, so
+	 * a light terminal takes the theme that was made for it. A caller
+	 * that named a theme has already said what it wants.
+	 */
+	if (cfg->background == FYMM_BG_LIGHT && !cfg->theme)
+		cfg->theme = "light";
 }
 
 /*
@@ -502,12 +452,7 @@ char *fymm_render(const struct fymm_diagram *d,
 	} else {
 		fymm_render_cfg_default(&lcfg);
 	}
-	if (lcfg.color == FYMM_COLOR_AUTO)
-		lcfg.color = fymm_detect_color_mode(STDOUT_FILENO);
-	if (lcfg.charset == FYMM_CHARSET_AUTO)
-		lcfg.charset = fymm_detect_charset();
-	if (lcfg.width == FYMM_WIDTH_AUTO)
-		lcfg.width = fymm_detect_width(STDOUT_FILENO);
+	fymm_render_cfg_resolve(&lcfg, STDOUT_FILENO);
 
 	ops = fymm_diagram_ops_by_type(d->type);
 	if (!ops || !ops->render)
@@ -520,7 +465,6 @@ int fymm_render_fp(const struct fymm_diagram *d,
 {
 	struct fymm_render_cfg lcfg;
 	char *text;
-	int fd;
 
 	if (!d || !fp)
 		return -1;
@@ -532,13 +476,7 @@ int fymm_render_fp(const struct fymm_diagram *d,
 	}
 
 	/* probe against the stream we are about to write to, not stdout */
-	fd = fileno(fp);
-	if (lcfg.color == FYMM_COLOR_AUTO)
-		lcfg.color = fymm_detect_color_mode(fd);
-	if (lcfg.charset == FYMM_CHARSET_AUTO)
-		lcfg.charset = fymm_detect_charset();
-	if (lcfg.width == FYMM_WIDTH_AUTO)
-		lcfg.width = fymm_detect_width(fd);
+	fymm_render_cfg_resolve(&lcfg, fileno(fp));
 
 	text = fymm_render(d, &lcfg);
 	if (!text)
