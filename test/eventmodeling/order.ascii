@@ -1,0 +1,6 @@
+interface        command           event              processor
+---------------  ----------------  -----------------  ---------------
+* 01 OrderForm
+                 * 02 PlaceOrder <- 01
+                                   * 03 OrderPlaced OrderPlacedData <- 02
+                                                      * 04 OrderList <- 0

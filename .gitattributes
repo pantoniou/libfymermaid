@@ -3,3 +3,8 @@
 # Exempt the corpus from the whitespace checks so that `git diff --check`
 # stays useful for the code.
 test/mermaid-suite/**/*.mmd -whitespace
+
+# A `.model` golden is emitter output, not hand-written. libfyaml folds a
+# multi-line quoted scalar onto continuation lines that carry indentation, so
+# a golden can hold trailing whitespace that must not be edited away.
+test/**/*.model -whitespace

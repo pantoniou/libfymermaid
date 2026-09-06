@@ -1,0 +1,44 @@
+type: eventmodeling
+title: null
+accTitle: null
+accDescr: null
+config: {}
+frames:
+- lane: tf
+  number: 01
+  kind: ui
+  name: OrderForm
+  data: null
+  ref: null
+  follows: []
+- lane: tf
+  number: 02
+  kind: command
+  name: PlaceOrder
+  data: null
+  ref: null
+  follows:
+  - 01
+- lane: tf
+  number: 03
+  kind: event
+  name: OrderPlaced
+  data: null
+  ref: OrderPlacedData
+  follows:
+  - 02
+- lane: rf
+  number: 04
+  kind: readmodel
+  name: OrderList
+  data: null
+  ref: null
+  follows:
+  - 03
+data:
+- name: OrderPlacedData
+  body: '{
+    
+    orderId: 1
+    
+    }'

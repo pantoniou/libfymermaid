@@ -1,0 +1,5 @@
+src/
++- App.tsx # main component
++- index.js # entry point
+package.json
+README.md

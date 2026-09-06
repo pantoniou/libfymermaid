@@ -1,0 +1,26 @@
+type: treeView
+title: null
+accTitle: null
+accDescr: null
+config: {}
+entries:
+- name: src/
+  depth: 0
+  directory: 1
+  comment: null
+- name: App.tsx
+  depth: 1
+  directory: 0
+  comment: main component
+- name: index.js
+  depth: 1
+  directory: 0
+  comment: entry point
+- name: package.json
+  depth: 0
+  directory: 0
+  comment: null
+- name: README.md
+  depth: 0
+  directory: 0
+  comment: null

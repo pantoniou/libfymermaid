@@ -1,0 +1,17 @@
+type: ishikawa
+title: null
+accTitle: null
+accDescr: null
+config: {}
+effect: Blurry Photo
+categories:
+- name: Process
+  causes:
+  - Out of focus
+  - Wrong exposure
+- name: User
+  causes:
+  - Shaky hands
+- name: Equipment
+  causes:
+  - Dirty lens
