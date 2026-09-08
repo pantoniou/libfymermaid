@@ -210,6 +210,74 @@ struct fymm_render_cfg {
 };
 
 /**
+ * enum fymm_element_kind - what a hit area holds
+ *
+ * @FYMM_EL_NODE: a primary item of the diagram: a commit, a flowchart node,
+ *                a sequence participant, a timeline event, a pie slice
+ * @FYMM_EL_LABEL: the text of a node, when the renderer draws it apart from
+ *                 the node itself
+ * @FYMM_EL_TITLE: the title of the diagram
+ * @FYMM_EL_LEGEND: one entry of the legend FYMM_FIT_LEGEND builds
+ */
+enum fymm_element_kind {
+	FYMM_EL_NODE = 0,
+	FYMM_EL_LABEL,
+	FYMM_EL_TITLE,
+	FYMM_EL_LEGEND,
+};
+
+/**
+ * struct fymm_element - one addressable part of a render
+ *
+ * @path: where the element is in the model, as the keys and the indices that
+ *        reach it, separated by `/`: `commits/3`, `nodes/2`, `title`. It
+ *        names the same element in every render of the same model, so it
+ *        survives a resize and a re-render.
+ * @kind: what the element is
+ * @value: the model subtree at @path, or fy_invalid when the element has
+ *         none. It is owned by the diagram, not by the render.
+ * @row: the row the element starts on, counted in the emitted text from 0
+ * @col: the column it starts at, counted in the emitted text from 0
+ * @width: the columns it occupies
+ * @height: the rows it occupies
+ * @clipped: the render clipped a part of the element away. What @row, @col,
+ *           @width and @height describe is the part that is on the screen.
+ *
+ * The rectangle is the bounding box of the cells the renderer drew, so a
+ * commit glyph with its label under it is one element two rows high.
+ */
+struct fymm_element {
+	const char *path;
+	enum fymm_element_kind kind;
+	fy_generic value;
+	int row, col;
+	int width, height;
+	bool clipped;
+};
+
+/**
+ * enum fymm_selection_style - how a selected element is drawn
+ *
+ * @FYMM_SEL_AUTO: reverse video, which every terminal has
+ * @FYMM_SEL_REVERSE: reverse video
+ * @FYMM_SEL_COLOR: the `selected` palette entry, which a theme sets
+ * @FYMM_SEL_BOLD: bold and underlined, for a terminal with no colour
+ * @FYMM_SEL_NONE: draw nothing. The consumer paints its own highlight over
+ *                 the rectangle the element reports.
+ *
+ * Every style but FYMM_SEL_NONE is an escape sequence, so FYMM_COLOR_NONE
+ * draws no selection at all. A consumer that must not emit escapes selects
+ * FYMM_SEL_NONE and highlights the rectangle itself.
+ */
+enum fymm_selection_style {
+	FYMM_SEL_AUTO = 0,
+	FYMM_SEL_REVERSE,
+	FYMM_SEL_COLOR,
+	FYMM_SEL_BOLD,
+	FYMM_SEL_NONE,
+};
+
+/**
  * fymm_measure() - the cells a render of @d would occupy
  * @d: the diagram
  * @cfg: the configuration the render would use, or NULL for the defaults

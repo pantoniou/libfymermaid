@@ -58,6 +58,7 @@ enum fymm_palette {
 	FYMM_PAL_LABEL,
 	FYMM_PAL_TAG,
 	FYMM_PAL_TITLE,
+	FYMM_PAL_SELECTED,
 	FYMM_PAL_COUNT,
 };
 
@@ -113,6 +114,7 @@ static inline bool fymm_charset_ascii(enum fymm_charset cs)
 
 struct fymm_cell {
 	uint32_t cp;		/* 0 for a line cell, else a literal codepoint */
+	int32_t elem;		/* the element that drew it, or -1 */
 	uint8_t lines;		/* a mask of FYMM_LN_*, when cp is 0 */
 	bool dashed;
 	int8_t color;		/* an enum fymm_palette index, or -1 */
@@ -121,6 +123,12 @@ struct fymm_cell {
 
 /*
  * struct fymm_canvas - the cell grid a diagram is drawn on
+ *
+ * The canvas also records which element drew each cell. A renderer opens an
+ * element around the calls that draw one, and the canvas keeps the bounding
+ * box and the ownership of every cell written while it is open. This gives a
+ * hit area without the renderer measuring one, and it lets a selection be
+ * painted at emission, so selecting a different element needs no new layout.
  *
  * @w and @h are the grid the renderer measured for its content. @clip_w and
  * @clip_h are what the caller will accept, and emission stops there; 0 means
@@ -136,6 +144,13 @@ struct fymm_canvas {
 	enum fymm_charset charset;
 	enum fymm_color_mode color;
 	struct fymm_theme theme;
+
+	struct fymm_element *elems;
+	size_t nelems, aelems;
+	int32_t cur;		/* the open element, or -1 */
+	int32_t sel;		/* the element to paint as selected, or -1 */
+	enum fymm_selection_style sel_style;
+	int row0;		/* the grid row emission started at */
 };
 
 struct fymm_canvas *fymm_canvas_create(int w, int h, enum fymm_charset charset,
@@ -185,6 +200,33 @@ void fymm_canvas_route_h(struct fymm_canvas *cv, int sx, int sy, int dx,
 
 /* the display width of a UTF-8 string, in terminal columns */
 int fymm_text_width(const char *s);
+
+/*
+ * Open an element. Everything drawn until fymm_canvas_elem_end() belongs to
+ * it, and its bounding box becomes the hit area. @path is formatted; it names
+ * the element in the model, as in "commits/3". @value is the model subtree,
+ * or fy_invalid when there is none. Elements do not nest: opening one closes
+ * the one that is open.
+ *
+ * A failure to allocate leaves the drawing intact and the element unrecorded,
+ * because a hit area is not worth losing a render over.
+ */
+void fymm_canvas_elem_begin(struct fymm_canvas *cv, enum fymm_element_kind kind,
+			    fy_generic value, const char *fmt, ...)
+	__attribute__((format(printf, 4, 5)));
+
+/* Close the open element. */
+void fymm_canvas_elem_end(struct fymm_canvas *cv);
+
+/*
+ * Paint the element at @path as selected, in @style. A NULL @path selects
+ * nothing. Returns true if the canvas holds that element.
+ *
+ * The selection is applied at emission, so it can be changed and the canvas
+ * emitted again without drawing the diagram a second time.
+ */
+bool fymm_canvas_select(struct fymm_canvas *cv, const char *path,
+			enum fymm_selection_style style);
 
 char *fymm_canvas_emit(struct fymm_canvas *cv);
 

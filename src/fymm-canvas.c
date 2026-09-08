@@ -24,6 +24,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -109,8 +110,12 @@ struct fymm_canvas *fymm_canvas_create(int w, int h, enum fymm_charset charset,
 		return NULL;
 	}
 	memset(cv->cells, 0, (size_t)w * (size_t)h * sizeof(*cv->cells));
-	for (i = 0; i < w * h; i++)
+	for (i = 0; i < w * h; i++) {
 		cv->cells[i].color = FYMM_COLOR_DEFAULT;
+		cv->cells[i].elem = -1;
+	}
+	cv->cur = -1;
+	cv->sel = -1;
 	return cv;
 }
 
@@ -160,10 +165,110 @@ struct fymm_canvas *fymm_canvas_create_cfg(int w, int h,
 
 void fymm_canvas_destroy(struct fymm_canvas *cv)
 {
+	size_t i;
+
 	if (!cv)
 		return;
+	for (i = 0; i < cv->nelems; i++)
+		free((void *)cv->elems[i].path);
+	free(cv->elems);
 	free(cv->cells);
 	free(cv);
+}
+
+void fymm_canvas_elem_begin(struct fymm_canvas *cv, enum fymm_element_kind kind,
+			    fy_generic value, const char *fmt, ...)
+{
+	struct fymm_element *e, *ne;
+	size_t na;
+	va_list ap;
+	char *path;
+	int rc;
+
+	if (!cv || !fmt)
+		return;
+	fymm_canvas_elem_end(cv);
+
+	va_start(ap, fmt);
+	rc = vasprintf(&path, fmt, ap);
+	va_end(ap);
+	if (rc < 0)
+		return;
+
+	if (cv->nelems >= cv->aelems) {
+		na = cv->aelems ? cv->aelems * 2 : 16;
+		ne = realloc(cv->elems, na * sizeof(*ne));
+		if (!ne) {
+			free(path);
+			return;
+		}
+		cv->elems = ne;
+		cv->aelems = na;
+	}
+
+	e = &cv->elems[cv->nelems];
+	memset(e, 0, sizeof(*e));
+	e->path = path;
+	e->kind = kind;
+	e->value = value;
+	/* the box is empty until the element draws its first cell */
+	cv->cur = (int32_t)cv->nelems++;
+}
+
+void fymm_canvas_elem_end(struct fymm_canvas *cv)
+{
+	if (cv)
+		cv->cur = -1;
+}
+
+bool fymm_canvas_select(struct fymm_canvas *cv, const char *path,
+			enum fymm_selection_style style)
+{
+	size_t i;
+
+	if (!cv)
+		return false;
+	cv->sel = -1;
+	cv->sel_style = style;
+	if (!path)
+		return false;
+	for (i = 0; i < cv->nelems; i++) {
+		if (strcmp(cv->elems[i].path, path))
+			continue;
+		cv->sel = (int32_t)i;
+		return true;
+	}
+	return false;
+}
+
+/* Take the cell at (@x, @y) into the open element. */
+static void fymm_canvas_own(struct fymm_canvas *cv, int x, int y)
+{
+	struct fymm_element *e;
+
+	if (cv->cur < 0)
+		return;
+	cv->cells[(size_t)y * (size_t)cv->w + (size_t)x].elem = cv->cur;
+	e = &cv->elems[cv->cur];
+	if (!e->width || !e->height) {
+		e->col = x;
+		e->row = y;
+		e->width = 1;
+		e->height = 1;
+		return;
+	}
+	if (x < e->col) {
+		e->width += e->col - x;
+		e->col = x;
+	} else if (x >= e->col + e->width) {
+		e->width = x - e->col + 1;
+	}
+	if (y < e->row) {
+		e->height += e->row - y;
+		e->row = y;
+	} else if (y >= e->row + e->height) {
+		e->height = y - e->row + 1;
+	}
 }
 
 static struct fymm_cell *fymm_canvas_at(struct fymm_canvas *cv, int x, int y)
@@ -185,6 +290,7 @@ void fymm_canvas_put(struct fymm_canvas *cv, int x, int y, uint32_t cp,
 	c->dashed = false;
 	c->color = (int8_t)color;
 	c->attr = attr;
+	fymm_canvas_own(cv, x, y);
 }
 
 /*
@@ -210,6 +316,7 @@ void fymm_canvas_line(struct fymm_canvas *cv, int x, int y, uint8_t mask,
 	c->lines |= mask;
 	if (c->color == FYMM_COLOR_DEFAULT)
 		c->color = (int8_t)color;
+	fymm_canvas_own(cv, x, y);
 }
 
 void fymm_canvas_hline(struct fymm_canvas *cv, int y, int x0, int x1,
@@ -437,6 +544,7 @@ const char *const fymm_palette_keys[FYMM_PAL_COUNT] = {
 	[FYMM_PAL_LABEL] = "commitLabel",
 	[FYMM_PAL_TAG] = "tag",
 	[FYMM_PAL_TITLE] = "title",
+	[FYMM_PAL_SELECTED] = "selected",
 };
 
 /*
@@ -455,6 +563,7 @@ static const struct fymm_pal_entry fymm_default_palette[FYMM_PAL_COUNT] = {
 	[FYMM_PAL_LABEL] = { 0xbdc3c7, 0 },
 	[FYMM_PAL_TAG] = { 0xffd479, FYMM_ATTR_BOLD },
 	[FYMM_PAL_TITLE] = { 0xffffff, FYMM_ATTR_BOLD },
+	[FYMM_PAL_SELECTED] = { 0xffd479, FYMM_ATTR_BOLD | FYMM_ATTR_REVERSE },
 };
 
 void fymm_theme_default(struct fymm_theme *theme)
@@ -680,15 +789,46 @@ static void fymm_emit_sgr(struct fymm_canvas *cv, struct fymm_buf *b,
 	fymm_buf_puts(b, "m");
 }
 
+/*
+ * The colour and the attributes to draw @c with. A cell of the selected
+ * element takes the selection style over its own colour, which is what makes
+ * the selection legible whatever the element was drawn in.
+ */
+static void fymm_cell_style(const struct fymm_canvas *cv,
+			    const struct fymm_cell *c, int *colorp,
+			    uint8_t *attrp)
+{
+	*colorp = c->color;
+	*attrp = c->attr;
+
+	if (cv->sel < 0 || c->elem != cv->sel)
+		return;
+
+	switch (cv->sel_style) {
+	case FYMM_SEL_NONE:
+		break;
+	case FYMM_SEL_COLOR:
+		*colorp = FYMM_PAL_SELECTED;
+		*attrp |= cv->theme.entry[FYMM_PAL_SELECTED].attr;
+		break;
+	case FYMM_SEL_BOLD:
+		*attrp |= FYMM_ATTR_BOLD | FYMM_ATTR_UNDERLINE;
+		break;
+	default:
+		*attrp |= FYMM_ATTR_REVERSE;
+		break;
+	}
+}
+
 char *fymm_canvas_emit(struct fymm_canvas *cv)
 {
 	struct fymm_buf b;
 	struct fymm_cell *c;
 	char utf[8];
 	uint32_t cp;
-	int x, y, last, first, stop, cur_color;
-	uint8_t cur_attr;
-	bool styled;
+	int x, y, last, first, stop, cur_color, color;
+	uint8_t cur_attr, attr;
+	bool styled, sel;
 
 	if (!cv)
 		return NULL;
@@ -711,6 +851,8 @@ char *fymm_canvas_emit(struct fymm_canvas *cv)
 			break;
 		}
 	}
+
+	cv->row0 = first;
 
 	if (cv->clip_h > 0 && stop - first > cv->clip_h - 2 * cv->margin)
 		stop = first + cv->clip_h - 2 * cv->margin;
@@ -774,8 +916,11 @@ char *fymm_canvas_emit(struct fymm_canvas *cv)
 
 			cp = c->cp ? c->cp :
 			     fymm_box_glyph(cv->charset, c->lines, c->dashed);
+			fymm_cell_style(cv, c, &color, &attr);
+			sel = cv->sel >= 0 && c->elem == cv->sel &&
+			      cv->sel_style != FYMM_SEL_NONE;
 
-			if (cp == ' ') {
+			if (cp == ' ' && !sel) {
 				/* no styling is worth spending on a blank */
 				if (styled) {
 					fymm_buf_puts(&b, "\033[0m");
@@ -787,10 +932,10 @@ char *fymm_canvas_emit(struct fymm_canvas *cv)
 				continue;
 			}
 
-			if (c->color != cur_color || c->attr != cur_attr) {
-				fymm_emit_sgr(cv, &b, c->color, c->attr);
-				cur_color = c->color;
-				cur_attr = c->attr;
+			if (color != cur_color || attr != cur_attr) {
+				fymm_emit_sgr(cv, &b, color, attr);
+				cur_color = color;
+				cur_attr = attr;
 				styled = cv->color != FYMM_COLOR_NONE &&
 					 (cur_color != FYMM_COLOR_DEFAULT ||
 					  cur_attr);
