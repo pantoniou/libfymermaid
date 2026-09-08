@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project(libfymermaid
-    VERSION "0.0.1"
+    VERSION "0.0.2"
     HOMEPAGE_URL "https://github.com/pantoniou/libfymermaid"
     DESCRIPTION "Mermaid diagram renderer for the terminal"
     LANGUAGES C

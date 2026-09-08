@@ -296,22 +296,10 @@ static fy_generic fymm_take_directives(struct fy_generic_builder *gb,
 	return seq;
 }
 
-struct fymm_diagram *fymm_parse(const char *text, size_t len,
-				const struct fymm_parse_cfg *cfg)
+static struct fymm_diagram *fymm_diagram_alloc(const struct fymm_parse_cfg *cfg)
 {
 	struct fy_generic_builder_cfg gb_cfg;
-	const struct fymm_diagram_ops *ops;
-	struct fymm_token toks[FYMM_MAX_TOKENS];
 	struct fymm_diagram *d;
-	struct fymm_parser p;
-	fy_generic frontmatter, directives, config, title, dir, init;
-	char *work = NULL;
-	int n = 0;
-
-	if (!text)
-		return NULL;
-	if (len == FYMM_NT)
-		len = strlen(text);
 
 	d = malloc(sizeof(*d));
 	if (!d)
@@ -334,6 +322,79 @@ struct fymm_diagram *fymm_parse(const char *text, size_t len,
 	d->diags = fy_seq_empty;
 	d->filename = fy_gb_intern_string(d->gb,
 			cfg && cfg->filename ? cfg->filename : "<stdin>");
+	if (!d->filename) {
+		fymm_diagram_destroy(d);
+		return NULL;
+	}
+	return d;
+}
+
+struct fymm_diagram *fymm_diagram_from_model(fy_generic model)
+{
+	struct fymm_diagram *d;
+	struct fymm_parser p;
+	const struct fymm_diagram_ops *ops;
+	fy_generic type, config, title;
+	const char *name;
+	enum fymm_diagram_type kind;
+
+	d = fymm_diagram_alloc(NULL);
+	if (!d)
+		return NULL;
+	memset(&p, 0, sizeof(p));
+	p.d = d;
+	if (!fy_is_mapping(model)) {
+		fymm_diagf(&p, true, 0, 0, "diagram model must be a mapping");
+		return d;
+	}
+	d->model = fy_gb_internalize(d->gb, model);
+	if (fy_is_invalid(d->model)) {
+		fymm_diagram_destroy(d);
+		return NULL;
+	}
+	type = fy_get(d->model, "type", fy_invalid);
+	name = fy_is_string(type) ? fy_castp(&type, "") : "";
+	ops = fymm_diagram_ops_by_keyword(name, strlen(name));
+	if (!ops) {
+		for (kind = FYMM_DT_GITGRAPH; kind <= FYMM_DT_AGENTFLOW; kind++) {
+			ops = fymm_diagram_ops_by_type(kind);
+			if (ops && !strcasecmp(name, ops->config_key))
+				break;
+			ops = NULL;
+		}
+	}
+	if (!ops) {
+		fymm_diagf(&p, true, 0, 0, "diagram model has an unsupported type '%s'", name);
+		return d;
+	}
+	d->type = ops->type;
+	config = fy_get(d->model, "config", fy_invalid);
+	if (fy_is_valid(config) && !fy_is_null(config) && !fy_is_mapping(config))
+		fymm_diagf(&p, true, 0, 0, "diagram model config must be a mapping");
+	title = fy_get(d->model, "title", fy_invalid);
+	if (fy_is_valid(title) && !fy_is_null(title) && !fy_is_string(title))
+		fymm_diagf(&p, true, 0, 0, "diagram model title must be a string");
+	return d;
+}
+
+struct fymm_diagram *fymm_parse(const char *text, size_t len,
+				const struct fymm_parse_cfg *cfg)
+{
+	const struct fymm_diagram_ops *ops;
+	struct fymm_token toks[FYMM_MAX_TOKENS];
+	struct fymm_diagram *d;
+	struct fymm_parser p;
+	fy_generic frontmatter, directives, config, title, dir, init;
+	char *work = NULL;
+	int n = 0;
+
+	if (!text)
+		return NULL;
+	if (len == FYMM_NT)
+		len = strlen(text);
+	d = fymm_diagram_alloc(cfg);
+	if (!d)
+		return NULL;
 
 	memset(&p, 0, sizeof(p));
 	p.d = d;

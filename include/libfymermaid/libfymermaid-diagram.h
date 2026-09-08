@@ -153,6 +153,23 @@ fymm_parse(const char *text, size_t len, const struct fymm_parse_cfg *cfg)
 	FYMM_EXPORT;
 
 /**
+ * fymm_diagram_from_model() - copy a native model into an owned diagram
+ * @model: a model with the shape returned by fymm_diagram_model()
+ *
+ * The diagram owns an independent copy. The caller may release the source
+ * builder after this call. The type must name a supported diagram. Optional
+ * config and title fields are checked; diagram-specific fields must follow
+ * the model contract of that type. This is not an untrusted-data validator.
+ * No Mermaid source is parsed, and labels retain their literal model values.
+ *
+ * Returns: a diagram, including diagnostics for invalid common fields, or
+ * NULL on allocation failure. Test fymm_diagram_has_errors() before rendering.
+ */
+struct fymm_diagram *
+fymm_diagram_from_model(fy_generic model)
+	FYMM_EXPORT;
+
+/**
  * fymm_parse_file() - parse mermaid source read from a file
  *
  * @path: the file to read; "-" means standard input
