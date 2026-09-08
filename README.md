@@ -305,6 +305,49 @@ text as runs carrying the attributes that apply to each. md4c stays absorbed
 inside libfymd4c, so this library links libfymd4c and never md4c itself, and
 the edge cases are CommonMark's rather than mine.
 
+## Selecting
+
+A render is static, but nothing stops a consumer from putting a cursor on it.
+`fymm_render_ex()` returns a render result: the text, and where each element
+of the diagram landed in it.
+
+```c
+struct fymm_render_result *r = fymm_render_ex(d, &cfg);
+const struct fymm_element *e = fymm_hit_test(r, row, col);
+
+if (e)
+        fymm_render_result_select(r, e->path, FYMM_SEL_AUTO);
+fputs(fymm_render_result_text(r), stdout);
+```
+
+An element is named by its path in the model — `commits/3`, `nodes/2`,
+`title` — so the name means the same thing in every render of that model and
+a consumer reads the element's own subtree through `fymm_element.value`. A
+legend entry is the exception: it has no place in the model and is named
+`legend/<n>`, which holds only for the render that built it.
+
+The rectangle is in the rows and columns of the emitted text, and it is the
+bounding box of the cells the renderer actually drew, so a commit glyph with
+its label under it is one element two rows high. An element the width cut
+reports the part that is on the screen and says `clipped`; one wholly off it
+keeps its path and reports no place.
+
+`fymm_navigate()` moves a selection by where the elements were drawn rather
+than by the edges between them, so one rule serves every diagram type and the
+move reads the way the diagram looks. An element straight ahead is taken over
+one off to the side; where nothing is straight ahead, as on a gitGraph whose
+lanes are offset, the nearest element ahead answers, so no element is out of
+reach.
+
+A selection is applied when the canvas is emitted, not when it is drawn, so
+moving it costs an emission and never a layout. That is what makes a keystroke
+cheap. `FYMM_SEL_NONE` selects without drawing anything, for a consumer that
+paints its own highlight over the rectangle.
+
+`fy-mermaid --interactive` is the whole of it in one screen: arrows and `hjkl`
+move, `tab` walks, a click selects, and `enter` prints the path of what was
+selected.
+
 ## Conformance
 
 `test/mermaid-suite/` carries upstream mermaid's own parser corpus: 1144 cases

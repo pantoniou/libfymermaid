@@ -213,6 +213,22 @@ One of \fBauto\fR (the default), \fBdark\fR or \fBlight\fR.  \fBauto\fR reads
 an OSC 11 query.  A light terminal takes the \fBlight\fR theme unless
 \fB\-\-theme\fR already named one.
 .TP
+.BR \-i ", " \-\-interactive
+Draw the diagram and move a selection over it.  The arrow keys and
+.BR h ", " j ", " k " and " l
+move the selection to the nearest element in that direction,
+.B tab
+and
+.B shift\-tab
+walk every element in turn, and a mouse click selects the element under the
+pointer.
+.B Enter
+leaves the viewer and prints the path of the selected element;
+.B q
+leaves without printing one.
+It takes one file, needs a terminal on both standard input and standard
+output, and cannot be combined with \fB\-\-output\fR or \fB\-\-dump\-model\fR.
+.TP
 .BR \-m ", " \-\-dump\-model
 Emit the parsed diagram model as YAML instead of rendering it.  The model is
 the same

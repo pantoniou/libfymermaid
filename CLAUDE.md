@@ -335,6 +335,19 @@ at the top and the bottom are removed at emission.
 The canvas measures UTF-8 with its own tables. It does not use `wcwidth()` and
 it does not depend on the locale.
 
+A renderer opens an element around the calls that draw one primary item, and
+around its title, with `fymm_canvas_elem_begin()`. The canvas keeps the
+bounding box and the owner of every cell written while it is open, which is
+what `fymm_render_ex()` reports as a hit area and what a selection is painted
+over at emission. Name an element by its path in the model, `commits/3`, so
+the name holds across a re-render. A new renderer that draws an item and opens
+no element is not selectable; that is the one thing to remember when adding
+one.
+
+A selection is applied in `fymm_canvas_emit()` and never during the drawing,
+so changing it costs an emission and not a layout. Keep it that way: a viewer
+re-emits on each keystroke.
+
 ### Labels
 
 Draw a label through `src/fymm-markdown.c`, never with `fymm_canvas_text()`

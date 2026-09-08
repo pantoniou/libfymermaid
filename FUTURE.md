@@ -142,6 +142,24 @@ This cost a real bug: a sweep that converted every renderer to
 gitGraph ignored the width limit until a later sweep caught it. Move it, in a
 commit that moves and does not rewrite.
 
+## 8. An edge cannot be selected
+
+`fymm_hit_test()` answers with a node, a label, a title or a legend entry.
+A click on a merge lane, a flowchart arrow or a sequence message answers
+nothing, and no move ever arrives at one.
+
+```sh
+fy-mermaid -i test/flowchart/chain.mmd    # click the arrow between A and C
+```
+
+The reason is the shape of a line rather than a want of plumbing: an element
+carries one rectangle, and an edge is a thin path that shares its cells with
+whatever crosses it, so the bounding box of a merge lane covers half the
+drawing. Selecting one needs a hit rule of its own -- the cell's owner rather
+than a rectangle, with a tolerance for the cell beside it -- and the canvas
+already records the owner of every cell, so the record is there and the rule
+is not.
+
 ## Not planned
 
 - **More Unicode.** `FYMM_CHARSET_RICH` covers the cases where the cell
