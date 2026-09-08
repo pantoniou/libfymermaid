@@ -541,33 +541,217 @@ int fymm_measure(const struct fymm_diagram *d,
 	return 0;
 }
 
-char *fymm_render(const struct fymm_diagram *d,
-		  const struct fymm_render_cfg *cfg)
+/*
+ * A render result keeps the canvas the renderer drew on, so that the place of
+ * each element stays known and a new selection costs an emission rather than
+ * a layout.
+ */
+struct fymm_render_result {
+	struct fymm_canvas *cv;
+	char *text;
+	struct fymm_element *elems;
+	size_t nelems;
+	const char *selection;
+};
+
+/*
+ * Resolve the configuration and draw the diagram. The result holds the canvas
+ * and nothing else; the caller takes the elements and the text out of it.
+ */
+static struct fymm_render_result *
+fymm_render_prepare(const struct fymm_diagram *d,
+		    const struct fymm_render_cfg *cfg,
+		    struct fymm_render_cfg *lcfg)
 {
 	const struct fymm_diagram_ops *ops;
-	struct fymm_render_cfg lcfg;
-	struct fymm_canvas *cv;
-	char *out;
+	struct fymm_render_result *r;
 
 	if (!d || fymm_diagram_has_errors(d))
 		return NULL;
 
-	if (cfg) {
-		lcfg = *cfg;
-	} else {
-		fymm_render_cfg_default(&lcfg);
-	}
-	fymm_render_cfg_resolve(&lcfg, STDOUT_FILENO);
+	if (cfg)
+		*lcfg = *cfg;
+	else
+		fymm_render_cfg_default(lcfg);
+	fymm_render_cfg_resolve(lcfg, STDOUT_FILENO);
 
 	ops = fymm_diagram_ops_by_type(d->type);
 	if (!ops || !ops->render)
 		return NULL;
 
-	cv = ops->render(d, d->model, &lcfg);
-	if (!cv)
+	r = calloc(1, sizeof(*r));
+	if (!r)
 		return NULL;
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
+	r->cv = ops->render(d, d->model, lcfg);
+	if (!r->cv) {
+		free(r);
+		return NULL;
+	}
+	return r;
+}
+
+/*
+ * Take the elements of the canvas into the result, in the coordinates of the
+ * emitted text: emission drops the blank rows above the drawing and writes
+ * the margin, and it stops at the clip. An element that the clip reaches is
+ * reported as the part of it that is on the screen.
+ */
+static int fymm_result_elements(struct fymm_render_result *r)
+{
+	const struct fymm_canvas *cv = r->cv;
+	const struct fymm_element *se;
+	struct fymm_element *de;
+	int x0, x1, y0, y1;
+	size_t i;
+
+	if (!cv->nelems)
+		return 0;
+
+	r->elems = calloc(cv->nelems, sizeof(*r->elems));
+	if (!r->elems)
+		return -1;
+
+	for (i = 0; i < cv->nelems; i++) {
+		se = &cv->elems[i];
+		de = &r->elems[r->nelems++];
+		*de = *se;
+
+		y0 = se->row;
+		y1 = se->row + se->height;
+		x0 = se->col;
+		x1 = se->col + se->width;
+
+		if (y0 < cv->row0)
+			y0 = cv->row0;
+		if (y1 > cv->rowN)
+			y1 = cv->rowN;
+		if (cv->clip_w > 0 && x1 > cv->clip_w)
+			x1 = cv->clip_w;
+
+		de->clipped = y0 != se->row || y1 != se->row + se->height ||
+			      x1 != se->col + se->width;
+		if (y1 <= y0 || x1 <= x0) {
+			/* the element is drawn, but nothing of it is on the
+			 * screen; it keeps its path and loses its place */
+			de->row = de->col = de->width = de->height = 0;
+			continue;
+		}
+		de->row = y0 - cv->row0 + cv->margin;
+		de->col = x0 + cv->margin;
+		de->width = x1 - x0;
+		de->height = y1 - y0;
+	}
+	return 0;
+}
+
+/* Emit the canvas again, which is what a changed selection needs. */
+static int fymm_result_emit(struct fymm_render_result *r)
+{
+	char *text;
+
+	text = fymm_canvas_emit(r->cv);
+	if (!text)
+		return -1;
+	free(r->text);
+	r->text = text;
+	return 0;
+}
+
+struct fymm_render_result *fymm_render_ex(const struct fymm_diagram *d,
+					  const struct fymm_render_cfg *cfg)
+{
+	struct fymm_render_result *r;
+	struct fymm_render_cfg lcfg;
+
+	r = fymm_render_prepare(d, cfg, &lcfg);
+	if (!r)
+		return NULL;
+
+	if (fymm_result_elements(r) || fymm_result_emit(r)) {
+		fymm_render_result_destroy(r);
+		return NULL;
+	}
+	if (lcfg.selection)
+		fymm_render_result_select(r, lcfg.selection,
+					  lcfg.selection_style);
+	return r;
+}
+
+void fymm_render_result_destroy(struct fymm_render_result *r)
+{
+	if (!r)
+		return;
+	fymm_canvas_destroy(r->cv);
+	free(r->elems);
+	free(r->text);
+	free(r);
+}
+
+const char *fymm_render_result_text(const struct fymm_render_result *r)
+{
+	return r ? r->text : NULL;
+}
+
+size_t fymm_render_result_count(const struct fymm_render_result *r)
+{
+	return r ? r->nelems : 0;
+}
+
+const struct fymm_element *
+fymm_render_result_element(const struct fymm_render_result *r, size_t i)
+{
+	if (!r || i >= r->nelems)
+		return NULL;
+	return &r->elems[i];
+}
+
+const struct fymm_element *
+fymm_render_result_find(const struct fymm_render_result *r, const char *path)
+{
+	size_t i;
+
+	if (!r || !path)
+		return NULL;
+	for (i = 0; i < r->nelems; i++) {
+		if (!strcmp(r->elems[i].path, path))
+			return &r->elems[i];
+	}
+	return NULL;
+}
+
+bool fymm_render_result_select(struct fymm_render_result *r, const char *path,
+			       enum fymm_selection_style style)
+{
+	const struct fymm_element *e;
+
+	if (!r)
+		return false;
+
+	e = fymm_render_result_find(r, path);
+	fymm_canvas_select(r->cv, e ? e->path : NULL, style);
+	r->selection = e ? e->path : NULL;
+	if (fymm_result_emit(r))
+		return false;
+	return e != NULL;
+}
+
+const char *fymm_render_result_selection(const struct fymm_render_result *r)
+{
+	return r ? r->selection : NULL;
+}
+
+char *fymm_render(const struct fymm_diagram *d,
+		  const struct fymm_render_cfg *cfg)
+{
+	struct fymm_render_result *r;
+	char *out;
+
+	r = fymm_render_ex(d, cfg);
+	if (!r)
+		return NULL;
+	out = r->text;
+	r->text = NULL;
+	fymm_render_result_destroy(r);
 	return out;
 }
 

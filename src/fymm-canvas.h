@@ -150,7 +150,7 @@ struct fymm_canvas {
 	int32_t cur;		/* the open element, or -1 */
 	int32_t sel;		/* the element to paint as selected, or -1 */
 	enum fymm_selection_style sel_style;
-	int row0;		/* the grid row emission started at */
+	int row0, rowN;		/* the grid rows emission covered */
 };
 
 struct fymm_canvas *fymm_canvas_create(int w, int h, enum fymm_charset charset,

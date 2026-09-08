@@ -858,12 +858,13 @@ char *fymm_canvas_emit(struct fymm_canvas *cv)
 		}
 	}
 
-	cv->row0 = first;
-
 	if (cv->clip_h > 0 && stop - first > cv->clip_h - 2 * cv->margin)
 		stop = first + cv->clip_h - 2 * cv->margin;
 	if (stop < first)
 		stop = first;
+
+	cv->row0 = first;
+	cv->rowN = stop;
 
 	/* the margin above; the one below closes the drawing out */
 	for (y = 0; y < cv->margin; y++)

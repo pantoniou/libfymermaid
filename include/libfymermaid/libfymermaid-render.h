@@ -122,6 +122,74 @@ enum fymm_fit {
 #define FYMM_WIDTH_INF (0)
 
 /**
+ * enum fymm_element_kind - what a hit area holds
+ *
+ * @FYMM_EL_NODE: a primary item of the diagram: a commit, a flowchart node,
+ *                a sequence participant, a timeline event, a pie slice
+ * @FYMM_EL_LABEL: the text of a node, when the renderer draws it apart from
+ *                 the node itself
+ * @FYMM_EL_TITLE: the title of the diagram
+ * @FYMM_EL_LEGEND: one entry of the legend FYMM_FIT_LEGEND builds
+ */
+enum fymm_element_kind {
+	FYMM_EL_NODE = 0,
+	FYMM_EL_LABEL,
+	FYMM_EL_TITLE,
+	FYMM_EL_LEGEND,
+};
+
+/**
+ * struct fymm_element - one addressable part of a render
+ *
+ * @path: where the element is in the model, as the keys and the indices that
+ *        reach it, separated by `/`: `commits/3`, `nodes/2`, `title`. It
+ *        names the same element in every render of the same model, so it
+ *        survives a resize and a re-render.
+ * @kind: what the element is
+ * @value: the model subtree at @path, or fy_invalid when the element has
+ *         none. It is owned by the diagram, not by the render.
+ * @row: the row the element starts on, counted in the emitted text from 0
+ * @col: the column it starts at, counted in the emitted text from 0
+ * @width: the columns it occupies
+ * @height: the rows it occupies
+ * @clipped: the render clipped a part of the element away. What @row, @col,
+ *           @width and @height describe is the part that is on the screen.
+ *
+ * The rectangle is the bounding box of the cells the renderer drew, so a
+ * commit glyph with its label under it is one element two rows high.
+ */
+struct fymm_element {
+	const char *path;
+	enum fymm_element_kind kind;
+	fy_generic value;
+	int row, col;
+	int width, height;
+	bool clipped;
+};
+
+/**
+ * enum fymm_selection_style - how a selected element is drawn
+ *
+ * @FYMM_SEL_AUTO: reverse video, which every terminal has
+ * @FYMM_SEL_REVERSE: reverse video
+ * @FYMM_SEL_COLOR: the `selected` palette entry, which a theme sets
+ * @FYMM_SEL_BOLD: bold and underlined, for a terminal with no colour
+ * @FYMM_SEL_NONE: draw nothing. The consumer paints its own highlight over
+ *                 the rectangle the element reports.
+ *
+ * Every style but FYMM_SEL_NONE is an escape sequence, so FYMM_COLOR_NONE
+ * draws no selection at all. A consumer that must not emit escapes selects
+ * FYMM_SEL_NONE and highlights the rectangle itself.
+ */
+enum fymm_selection_style {
+	FYMM_SEL_AUTO = 0,
+	FYMM_SEL_REVERSE,
+	FYMM_SEL_COLOR,
+	FYMM_SEL_BOLD,
+	FYMM_SEL_NONE,
+};
+
+/**
  * struct fymm_metrics - the spacing a diagram is drawn with
  *
  * @struct_size: sizeof(struct fymm_metrics), the forward compatibility guard
@@ -193,6 +261,9 @@ fymm_metrics_default(struct fymm_metrics *m, enum fymm_diagram_type type)
  * @background: what the terminal is drawn on. With FYMM_BG_AUTO it is
  *              probed, and a light terminal selects the `light` theme unless
  *              @theme already named one.
+ * @selection: the path of the element to draw as selected, or NULL for none.
+ *             A path that the render does not hold selects nothing.
+ * @selection_style: how to draw it
  *
  * A NULL cfg selects the defaults for every field.
  */
@@ -207,74 +278,8 @@ struct fymm_render_cfg {
 	const char *theme_path;
 	enum fymm_background background;
 	const struct fymm_metrics *metrics;
-};
-
-/**
- * enum fymm_element_kind - what a hit area holds
- *
- * @FYMM_EL_NODE: a primary item of the diagram: a commit, a flowchart node,
- *                a sequence participant, a timeline event, a pie slice
- * @FYMM_EL_LABEL: the text of a node, when the renderer draws it apart from
- *                 the node itself
- * @FYMM_EL_TITLE: the title of the diagram
- * @FYMM_EL_LEGEND: one entry of the legend FYMM_FIT_LEGEND builds
- */
-enum fymm_element_kind {
-	FYMM_EL_NODE = 0,
-	FYMM_EL_LABEL,
-	FYMM_EL_TITLE,
-	FYMM_EL_LEGEND,
-};
-
-/**
- * struct fymm_element - one addressable part of a render
- *
- * @path: where the element is in the model, as the keys and the indices that
- *        reach it, separated by `/`: `commits/3`, `nodes/2`, `title`. It
- *        names the same element in every render of the same model, so it
- *        survives a resize and a re-render.
- * @kind: what the element is
- * @value: the model subtree at @path, or fy_invalid when the element has
- *         none. It is owned by the diagram, not by the render.
- * @row: the row the element starts on, counted in the emitted text from 0
- * @col: the column it starts at, counted in the emitted text from 0
- * @width: the columns it occupies
- * @height: the rows it occupies
- * @clipped: the render clipped a part of the element away. What @row, @col,
- *           @width and @height describe is the part that is on the screen.
- *
- * The rectangle is the bounding box of the cells the renderer drew, so a
- * commit glyph with its label under it is one element two rows high.
- */
-struct fymm_element {
-	const char *path;
-	enum fymm_element_kind kind;
-	fy_generic value;
-	int row, col;
-	int width, height;
-	bool clipped;
-};
-
-/**
- * enum fymm_selection_style - how a selected element is drawn
- *
- * @FYMM_SEL_AUTO: reverse video, which every terminal has
- * @FYMM_SEL_REVERSE: reverse video
- * @FYMM_SEL_COLOR: the `selected` palette entry, which a theme sets
- * @FYMM_SEL_BOLD: bold and underlined, for a terminal with no colour
- * @FYMM_SEL_NONE: draw nothing. The consumer paints its own highlight over
- *                 the rectangle the element reports.
- *
- * Every style but FYMM_SEL_NONE is an escape sequence, so FYMM_COLOR_NONE
- * draws no selection at all. A consumer that must not emit escapes selects
- * FYMM_SEL_NONE and highlights the rectangle itself.
- */
-enum fymm_selection_style {
-	FYMM_SEL_AUTO = 0,
-	FYMM_SEL_REVERSE,
-	FYMM_SEL_COLOR,
-	FYMM_SEL_BOLD,
-	FYMM_SEL_NONE,
+	const char *selection;
+	enum fymm_selection_style selection_style;
 };
 
 /**
@@ -328,6 +333,90 @@ fymm_theme_iterate(void **prevp)
 /* fymm_render_cfg_default() - fill @cfg in with the defaults */
 void
 fymm_render_cfg_default(struct fymm_render_cfg *cfg)
+	FYMM_EXPORT;
+
+/**
+ * struct fymm_render_result - a render, with the places its elements landed
+ *
+ * It holds the text a render produced and the hit area of each element in it,
+ * which is what a consumer needs to put a cursor on a diagram and to answer a
+ * mouse click. Release it with fymm_render_result_destroy().
+ */
+struct fymm_render_result;
+
+/**
+ * fymm_render_ex() - render a diagram and keep where each element landed
+ * @d: the diagram, which must not have errors
+ * @cfg: the render configuration, or NULL for the defaults
+ *
+ * Returns: the result, to release with fymm_render_result_destroy(), or NULL
+ * on error.
+ */
+struct fymm_render_result *
+fymm_render_ex(const struct fymm_diagram *d, const struct fymm_render_cfg *cfg)
+	FYMM_EXPORT;
+
+/* fymm_render_result_destroy() - release a render result */
+void
+fymm_render_result_destroy(struct fymm_render_result *r)
+	FYMM_EXPORT;
+
+/**
+ * fymm_render_result_text() - the rendered text
+ *
+ * The text belongs to @r and it changes when the selection changes.
+ */
+const char *
+fymm_render_result_text(const struct fymm_render_result *r)
+	FYMM_EXPORT;
+
+/* fymm_render_result_count() - how many elements the render holds */
+size_t
+fymm_render_result_count(const struct fymm_render_result *r)
+	FYMM_EXPORT;
+
+/**
+ * fymm_render_result_element() - the element at index @i
+ *
+ * Returns: the element, or NULL when @i is past the end. It belongs to @r.
+ */
+const struct fymm_element *
+fymm_render_result_element(const struct fymm_render_result *r, size_t i)
+	FYMM_EXPORT;
+
+/**
+ * fymm_render_result_find() - the element at @path
+ *
+ * Returns: the element, or NULL when the render holds no such element.
+ */
+const struct fymm_element *
+fymm_render_result_find(const struct fymm_render_result *r, const char *path)
+	FYMM_EXPORT;
+
+/**
+ * fymm_render_result_select() - draw @path as the selected element
+ * @r: the result
+ * @path: the element to select, or NULL to select nothing
+ * @style: how to draw it
+ *
+ * The text is produced again from the cells already drawn, so a selection
+ * costs an emission and not a layout. This is what a consumer calls on each
+ * keystroke.
+ *
+ * Returns: true when the render holds @path.
+ */
+bool
+fymm_render_result_select(struct fymm_render_result *r, const char *path,
+			  enum fymm_selection_style style)
+	FYMM_EXPORT;
+
+/**
+ * fymm_render_result_selection() - the path of the selected element
+ *
+ * Returns: the path, or NULL when nothing is selected.
+ */
+const char *
+fymm_render_result_selection(const struct fymm_render_result *r)
 	FYMM_EXPORT;
 
 /**
