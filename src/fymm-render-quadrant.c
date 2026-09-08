@@ -42,18 +42,18 @@
  * holds is nudged along the row, so that two close points stay countable
  * rather than one hiding the other.
  */
-char *fymm_render_quadrant(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_quadrant(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg)
 {
 	fy_generic points, quadrants, xaxis, yaxis, point;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct fymm_metrics met;
 	const char *title, *name, *low, *high;
 	size_t npoints, i;
 	int plot_w, plot_h, left, top, width, height, x, y, cx, cy, w;
 	uint32_t dot;
-	char *out;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
@@ -190,7 +190,5 @@ char *fymm_render_quadrant(const struct fymm_diagram *d, fy_generic model,
 					0x25b6, FYMM_PAL_TAG, 0);
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

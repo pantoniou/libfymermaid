@@ -179,8 +179,9 @@ struct fymm_diagram_ops {
 	enum fymm_diagram_type type;
 	int (*parse)(struct fymm_parser *p, fy_generic config,
 		     fy_generic title, struct fymm_token *toks, int n);
-	char *(*render)(const struct fymm_diagram *d, fy_generic model,
-			const struct fymm_render_cfg *cfg);
+	struct fymm_canvas *(*render)(const struct fymm_diagram *d,
+				      fy_generic model,
+				      const struct fymm_render_cfg *cfg);
 };
 
 const struct fymm_diagram_ops *fymm_diagram_ops_by_keyword(const char *word,
@@ -196,8 +197,9 @@ int fymm_theme_resolve(struct fymm_theme *theme,
 /* one parser and one renderer per diagram type */
 int fymm_parse_gitgraph(struct fymm_parser *p, fy_generic config,
 			fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_gitgraph(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg);
 
 /* how deep a mindmap may nest before the rails stop being tracked */
 #define FYMM_MINDMAP_MAX_DEPTH 64
@@ -206,127 +208,152 @@ int fymm_parse_agentflow(struct fymm_parser *p, fy_generic config,
 			 fy_generic title, struct fymm_token *toks, int n);
 int fymm_parse_railroad(struct fymm_parser *p, fy_generic config,
 			fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_railroad(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_railroad(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg);
 
 int fymm_parse_wardley(struct fymm_parser *p, fy_generic config,
 		       fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_wardley(const struct fymm_diagram *d, fy_generic model,
-			  const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_wardley(const struct fymm_diagram *d,
+					fy_generic model,
+					const struct fymm_render_cfg *cfg);
 
 int fymm_parse_eventmodeling(struct fymm_parser *p, fy_generic config,
 			     fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_eventmodeling(const struct fymm_diagram *d, fy_generic model,
-				const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_eventmodeling(const struct fymm_diagram *d,
+					      fy_generic model,
+					      const struct fymm_render_cfg *cfg);
 
 int fymm_parse_info(struct fymm_parser *p, fy_generic config,
 		    fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_info(const struct fymm_diagram *d, fy_generic model,
-		       const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_info(const struct fymm_diagram *d,
+				     fy_generic model,
+				     const struct fymm_render_cfg *cfg);
 
 int fymm_parse_ishikawa(struct fymm_parser *p, fy_generic config,
 			fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_ishikawa(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_ishikawa(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg);
 
 int fymm_parse_treeview(struct fymm_parser *p, fy_generic config,
 			fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_treeview(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_treeview(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg);
 
 int fymm_parse_architecture(struct fymm_parser *p, fy_generic config,
 			    fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
-			       const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_architecture(const struct fymm_diagram *d,
+					     fy_generic model,
+					     const struct fymm_render_cfg *cfg);
 
 int fymm_parse_packet(struct fymm_parser *p, fy_generic config,
 		      fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_packet(const struct fymm_diagram *d, fy_generic model,
-			 const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_packet(const struct fymm_diagram *d,
+				       fy_generic model,
+				       const struct fymm_render_cfg *cfg);
 
 int fymm_parse_block(struct fymm_parser *p, fy_generic config,
 		     fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
-			const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_block(const struct fymm_diagram *d,
+				      fy_generic model,
+				      const struct fymm_render_cfg *cfg);
 
 int fymm_parse_c4(struct fymm_parser *p, fy_generic config,
 		  fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_c4(const struct fymm_diagram *d, fy_generic model,
-		     const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_c4(const struct fymm_diagram *d,
+				   fy_generic model,
+				   const struct fymm_render_cfg *cfg);
 
 int fymm_parse_usecase(struct fymm_parser *p, fy_generic config,
 		       fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_usecase(const struct fymm_diagram *d, fy_generic model,
-			  const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_usecase(const struct fymm_diagram *d,
+					fy_generic model,
+					const struct fymm_render_cfg *cfg);
 
 int fymm_parse_kanban(struct fymm_parser *p, fy_generic config,
 		      fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_kanban(const struct fymm_diagram *d, fy_generic model,
-			 const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_kanban(const struct fymm_diagram *d,
+				       fy_generic model,
+				       const struct fymm_render_cfg *cfg);
 
 int fymm_parse_er(struct fymm_parser *p, fy_generic config,
 		  fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_er(const struct fymm_diagram *d, fy_generic model,
-		     const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_er(const struct fymm_diagram *d,
+				   fy_generic model,
+				   const struct fymm_render_cfg *cfg);
 
 int fymm_parse_state(struct fymm_parser *p, fy_generic config,
 		     fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_state(const struct fymm_diagram *d, fy_generic model,
-			const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_state(const struct fymm_diagram *d,
+				      fy_generic model,
+				      const struct fymm_render_cfg *cfg);
 
 int fymm_parse_gantt(struct fymm_parser *p, fy_generic config,
 		     fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_gantt(const struct fymm_diagram *d, fy_generic model,
-			const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_gantt(const struct fymm_diagram *d,
+				      fy_generic model,
+				      const struct fymm_render_cfg *cfg);
 
 int fymm_parse_radar(struct fymm_parser *p, fy_generic config,
 		     fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_radar(const struct fymm_diagram *d, fy_generic model,
-			const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_radar(const struct fymm_diagram *d,
+				      fy_generic model,
+				      const struct fymm_render_cfg *cfg);
 
 int fymm_parse_xychart(struct fymm_parser *p, fy_generic config,
 		       fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
-			  const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_xychart(const struct fymm_diagram *d,
+					fy_generic model,
+					const struct fymm_render_cfg *cfg);
 
 int fymm_parse_quadrant(struct fymm_parser *p, fy_generic config,
 			fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_quadrant(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_quadrant(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg);
 
 int fymm_parse_class(struct fymm_parser *p, fy_generic config,
 		     fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,
-			const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_class(const struct fymm_diagram *d,
+				      fy_generic model,
+				      const struct fymm_render_cfg *cfg);
 
 int fymm_parse_flowchart(struct fymm_parser *p, fy_generic config,
 			 fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
-			    const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_flowchart(const struct fymm_diagram *d,
+					  fy_generic model,
+					  const struct fymm_render_cfg *cfg);
 
 int fymm_parse_sequence(struct fymm_parser *p, fy_generic config,
 			fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_sequence(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_sequence(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg);
 
 int fymm_parse_mindmap(struct fymm_parser *p, fy_generic config,
 		       fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_mindmap(const struct fymm_diagram *d, fy_generic model,
-			  const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_mindmap(const struct fymm_diagram *d,
+					fy_generic model,
+					const struct fymm_render_cfg *cfg);
 
 int fymm_parse_journey(struct fymm_parser *p, fy_generic config,
 		       fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_journey(const struct fymm_diagram *d, fy_generic model,
-			  const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_journey(const struct fymm_diagram *d,
+					fy_generic model,
+					const struct fymm_render_cfg *cfg);
 
 int fymm_parse_timeline(struct fymm_parser *p, fy_generic config,
 			fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_timeline(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_timeline(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg);
 
 int fymm_parse_pie(struct fymm_parser *p, fy_generic config,
 		   fy_generic title, struct fymm_token *toks, int n);
-char *fymm_render_pie(const struct fymm_diagram *d, fy_generic model,
-		      const struct fymm_render_cfg *cfg);
+struct fymm_canvas *fymm_render_pie(const struct fymm_diagram *d,
+				    fy_generic model,
+				    const struct fymm_render_cfg *cfg);
 
 #endif /* FYMM_INTERNAL_H */

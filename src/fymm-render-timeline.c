@@ -41,17 +41,17 @@
  * The orientation in the model is recorded but does not change this; there is
  * no useful second axis to swap to.
  */
-char *fymm_render_timeline(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_timeline(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg)
 {
 	fy_generic sections, section, tasks, task, events, event;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	const char *title, *name;
 	size_t nsections, ntasks, nevents, si, ti, ei;
 	int width, height, y, w, rule, color;
 	uint32_t bullet, dot;
-	char *out;
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -60,7 +60,7 @@ char *fymm_render_timeline(const struct fymm_diagram *d, fy_generic model,
 	title = fy_get(model, "title", (const char *)NULL);
 	nsections = fy_is_sequence(sections) ? fy_len(sections) : 0;
 	if (!nsections)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	/* measure: the widest line decides the width, and the rows are the
 	 * sum of every section, task and event plus a blank between sections */
@@ -151,7 +151,5 @@ char *fymm_render_timeline(const struct fymm_diagram *d, fy_generic model,
 			y++;
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

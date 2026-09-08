@@ -136,8 +136,9 @@ static size_t fc_find(const struct fc_layout *l, const char *id)
 	return (size_t)-1;
 }
 
-char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
-			    const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_flowchart(const struct fymm_diagram *d,
+					  fy_generic model,
+					  const struct fymm_render_cfg *cfg)
 {
 	static const uint32_t corners[4][6] = {
 		/* top-left, top-right, bottom-left, bottom-right, h, v */
@@ -147,7 +148,7 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 		{ 0x250f, 0x2513, 0x2517, 0x251b, 0x2501, 0x2503 },
 	};
 	fy_generic nodes, edges, subgraphs, node, edge;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct fc_layout l;
 	struct fymm_lnode *lnode = NULL;
@@ -168,7 +169,6 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	int col_gap, pad, maxdepth;
 	bool ascii;
 	bool rich = cfg && cfg->charset == FYMM_CHARSET_RICH;
-	char *out = NULL;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
@@ -187,7 +187,7 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 	nedges = fy_is_sequence(edges) ? fy_len(edges) : 0;
 	ngroups = fy_is_sequence(subgraphs) ? fy_len(subgraphs) : 0;
 	if (!nnodes)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	l.n = nnodes;
 	l.box = calloc(nnodes, sizeof(*l.box));
@@ -624,9 +624,6 @@ char *fymm_render_flowchart(const struct fymm_diagram *d, fy_generic model,
 					    FYMM_COLOR_DEFAULT, 0);
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-
 out:
 	for (i = 0; i < nnodes; i++)
 		fymm_rich_destroy(l.box[i].text);
@@ -641,5 +638,5 @@ out:
 	free(fnode);
 	free(order);
 	free(l.box);
-	return out;
+	return cv;
 }

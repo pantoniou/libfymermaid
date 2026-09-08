@@ -49,11 +49,12 @@ static const uint32_t pie_eighths[8] = {
 
 #define PIE_BAR_CELLS 32
 
-char *fymm_render_pie(const struct fymm_diagram *d, fy_generic model,
-		      const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_pie(const struct fymm_diagram *d,
+				    fy_generic model,
+				    const struct fymm_render_cfg *cfg)
 {
 	fy_generic slices, config, slice;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	const char *title, *label;
 	double total, value, share, cells;
@@ -62,7 +63,6 @@ char *fymm_render_pie(const struct fymm_diagram *d, fy_generic model,
 	int width, height, bar_cells;
 	bool show_data;
 	char buf[64];
-	char *out;
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -76,7 +76,7 @@ char *fymm_render_pie(const struct fymm_diagram *d, fy_generic model,
 
 	nslices = fy_is_sequence(slices) ? fy_len(slices) : 0;
 	if (!nslices)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	/* the widest label sets the gutter, and the widest value its column */
 	label_w = 0;
@@ -173,7 +173,5 @@ char *fymm_render_pie(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

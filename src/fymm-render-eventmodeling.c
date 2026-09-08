@@ -50,14 +50,15 @@ static int em_lane_of(const char *kind)
  * result, and what processes it. Laying the lanes out as columns keeps that
  * reading, and the frames stay in the order they were written.
  */
-char *fymm_render_eventmodeling(const struct fymm_diagram *d, fy_generic model,
-				const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_eventmodeling(const struct fymm_diagram *d,
+					      fy_generic model,
+					      const struct fymm_render_cfg *cfg)
 {
 	static const char *const lane_names[4] = {
 		"interface", "command", "event", "processor",
 	};
 	fy_generic frames, frame, follows;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	const char *title, *name, *ref;
 	size_t nframes, i;
@@ -65,7 +66,6 @@ char *fymm_render_eventmodeling(const struct fymm_diagram *d, fy_generic model,
 	int colx[4], x;
 	bool ascii;
 	char buf[128];
-	char *out;
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -74,7 +74,7 @@ char *fymm_render_eventmodeling(const struct fymm_diagram *d, fy_generic model,
 	title = fy_get(model, "title", (const char *)NULL);
 	nframes = fy_is_sequence(frames) ? fy_len(frames) : 0;
 	if (!nframes)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	for (i = 0; i < 4; i++)
 		colw[i] = fymm_text_width(lane_names[i]) + 2;
@@ -149,7 +149,5 @@ char *fymm_render_eventmodeling(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

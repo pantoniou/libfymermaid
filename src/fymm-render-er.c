@@ -57,11 +57,12 @@ static void er_foot(struct fymm_canvas *cv, int x, int y, const char *card,
 	fymm_canvas_put(cv, x, y, g, color, FYMM_ATTR_BOLD);
 }
 
-char *fymm_render_er(const struct fymm_diagram *d, fy_generic model,
-		     const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_er(const struct fymm_diagram *d,
+				   fy_generic model,
+				   const struct fymm_render_cfg *cfg)
 {
 	fy_generic entities, relations, ent, rel, attr;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct fymm_lnode *node = NULL;
 	struct fymm_ledge *edge = NULL;
@@ -74,7 +75,6 @@ char *fymm_render_er(const struct fymm_diagram *d, fy_generic model,
 	int width, height, top, x, y, w, color, sx, sy, dx, dy, ymid;
 	bool ascii;
 	char buf[256];
-	char *out = NULL;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
@@ -87,7 +87,7 @@ char *fymm_render_er(const struct fymm_diagram *d, fy_generic model,
 	nent = fy_is_sequence(entities) ? fy_len(entities) : 0;
 	nrel = fy_is_sequence(relations) ? fy_len(relations) : 0;
 	if (!nent)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	node = calloc(nent, sizeof(*node));
 	attrs = calloc(nent, sizeof(*attrs));
@@ -242,12 +242,9 @@ char *fymm_render_er(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-
 out:
 	free(node);
 	free(edge);
 	free(attrs);
-	return out;
+	return cv;
 }

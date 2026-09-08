@@ -39,18 +39,18 @@
  * The tree a reader already knows from `tree` and from a file browser: a rail
  * per open level, an elbow into each entry, and the comment beside it.
  */
-char *fymm_render_treeview(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_treeview(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg)
 {
 	bool rails[TV_MAX_DEPTH] = { 0 };
 	fy_generic entries, entry;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	const char *title, *name, *comment;
 	size_t nentries, i, j;
 	int width, height, top, x, y, w, depth, next_depth;
 	bool ascii, last;
-	char *out;
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -59,7 +59,7 @@ char *fymm_render_treeview(const struct fymm_diagram *d, fy_generic model,
 	title = fy_get(model, "title", (const char *)NULL);
 	nentries = fy_is_sequence(entries) ? fy_len(entries) : 0;
 	if (!nentries)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	width = 0;
 	for (i = 0; i < nentries; i++) {
@@ -139,7 +139,5 @@ char *fymm_render_treeview(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

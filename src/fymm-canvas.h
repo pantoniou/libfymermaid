@@ -165,6 +165,12 @@ struct fymm_canvas *fymm_canvas_create(int w, int h, enum fymm_charset charset,
 struct fymm_canvas *fymm_canvas_create_cfg(int w, int h,
 					   const struct fymm_render_cfg *cfg,
 					   const struct fymm_theme *theme);
+/*
+ * A canvas that emits nothing, for a diagram that has nothing to draw. A
+ * renderer returns this rather than NULL, which reports a failure.
+ */
+struct fymm_canvas *fymm_canvas_empty(const struct fymm_render_cfg *cfg);
+
 void fymm_canvas_destroy(struct fymm_canvas *cv);
 
 void fymm_canvas_put(struct fymm_canvas *cv, int x, int y, uint32_t cp,

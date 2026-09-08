@@ -92,11 +92,12 @@ static void xy_step(struct fymm_canvas *cv, int x0, int y0, int x1, int y1,
 	fymm_canvas_hline(cv, y1, mid + 1, x1 - 1, color, false);
 }
 
-char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
-			  const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_xychart(const struct fymm_diagram *d,
+					fy_generic model,
+					const struct fymm_render_cfg *cfg)
 {
 	fy_generic series, xaxis, yaxis, s, data, point, categories;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct fymm_metrics met;
 	const char *title, *name;
@@ -107,7 +108,6 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 	bool ascii, first;
 	struct fymm_braille *br = NULL;
 	char buf[64];
-	char *out;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
@@ -123,7 +123,7 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 	nseries = fy_is_sequence(series) ? fy_len(series) : 0;
 	npoints = xy_max_points(series);
 	if (!nseries || !npoints)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	/* the value range: what the y axis says, else what the data needs,
 	 * always including zero so that a bar has a baseline to stand on */
@@ -316,7 +316,5 @@ char *fymm_render_xychart(const struct fymm_diagram *d, fy_generic model,
 		fymm_braille_destroy(br);
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

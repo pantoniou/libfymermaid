@@ -41,17 +41,17 @@
  * the shape of the journey, and where it dips, is then visible down the
  * column without reading a single figure.
  */
-char *fymm_render_journey(const struct fymm_diagram *d, fy_generic model,
-			  const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_journey(const struct fymm_diagram *d,
+					fy_generic model,
+					const struct fymm_render_cfg *cfg)
 {
 	fy_generic sections, section, tasks, task, actors;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	const char *title, *name;
 	size_t nsections, ntasks, nactors, si, ti, ai;
 	int width, height, y, x, w, name_w, color, score, i;
 	uint32_t full, empty;
-	char *out;
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -60,7 +60,7 @@ char *fymm_render_journey(const struct fymm_diagram *d, fy_generic model,
 	title = fy_get(model, "title", (const char *)NULL);
 	nsections = fy_is_sequence(sections) ? fy_len(sections) : 0;
 	if (!nsections)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	/* the widest task name aligns the pip columns across every section */
 	name_w = 0;
@@ -170,7 +170,5 @@ char *fymm_render_journey(const struct fymm_diagram *d, fy_generic model,
 			y++;
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

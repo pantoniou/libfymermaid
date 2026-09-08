@@ -184,23 +184,23 @@ static int mm_draw(struct fymm_canvas *cv, fy_generic node, int x, int y,
 	return y;
 }
 
-char *fymm_render_mindmap(const struct fymm_diagram *d, fy_generic model,
-			  const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_mindmap(const struct fymm_diagram *d,
+					fy_generic model,
+					const struct fymm_render_cfg *cfg)
 {
 	bool rails[FYMM_MINDMAP_MAX_DEPTH + 1] = { 0 };
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	const char *title;
 	fy_generic root;
 	int width, height, top;
-	char *out;
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
 
 	root = fy_get(model, "root");
 	if (!fy_is_mapping(root))
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 	title = fy_get(model, "title", (const char *)NULL);
 
 	top = title ? 2 : 0;
@@ -219,7 +219,5 @@ char *fymm_render_mindmap(const struct fymm_diagram *d, fy_generic model,
 
 	mm_draw(cv, root, 1, top, 0, true, rails);
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

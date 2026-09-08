@@ -39,11 +39,12 @@
  * heading over the services that belong to it, since a terminal cannot nest a
  * box inside a box and keep both readable.
  */
-char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
-			       const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_architecture(const struct fymm_diagram *d,
+					     fy_generic model,
+					     const struct fymm_render_cfg *cfg)
 {
 	fy_generic nodes, edges, nd, edge;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct fymm_lnode *node = NULL;
 	struct fymm_ledge *ledge = NULL;
@@ -56,7 +57,6 @@ char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
 	size_t nnodes, nedges, nsvc = 0, ngroup = 0, i, j;
 	int width, height, top, x, y, w, color, sx, sy, dx, dy, ymid;
 	bool ascii;
-	char *out = NULL;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
@@ -69,7 +69,7 @@ char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
 	nnodes = fy_is_sequence(nodes) ? fy_len(nodes) : 0;
 	nedges = fy_is_sequence(edges) ? fy_len(edges) : 0;
 	if (!nnodes)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	node = calloc(nnodes, sizeof(*node));
 	text = calloc(nnodes, sizeof(*text));
@@ -97,7 +97,7 @@ char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
 		nsvc++;
 	}
 	if (!nsvc)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	for (i = 0, j = 0; i < nedges; i++) {
 		edge = fy_get_at(edges, i);
@@ -194,14 +194,11 @@ char *fymm_render_architecture(const struct fymm_diagram *d, fy_generic model,
 			       0);
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-
 out:
 	free(node);
 	free(ledge);
 	free(text);
 	free(icon);
 	free(index);
-	return out;
+	return cv;
 }

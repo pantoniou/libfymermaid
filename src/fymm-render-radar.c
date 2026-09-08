@@ -79,11 +79,12 @@ static double rd_value(fy_generic curve, fy_generic axis, size_t idx,
 	return fy_number(fy_get(fy_get_at(values, idx), "value"), 0.0);
 }
 
-char *fymm_render_radar(const struct fymm_diagram *d, fy_generic model,
-			const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_radar(const struct fymm_diagram *d,
+				      fy_generic model,
+				      const struct fymm_render_cfg *cfg)
 {
 	fy_generic axes, curves, config, axis, curve;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	const char *title, *name;
 	size_t naxes, ncurves, ai, ci;
@@ -91,7 +92,6 @@ char *fymm_render_radar(const struct fymm_diagram *d, fy_generic model,
 	double lo, hi, v, span, cells;
 	bool have, ascii;
 	char buf[64];
-	char *out;
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -104,7 +104,7 @@ char *fymm_render_radar(const struct fymm_diagram *d, fy_generic model,
 	naxes = fy_is_sequence(axes) ? fy_len(axes) : 0;
 	ncurves = fy_is_sequence(curves) ? fy_len(curves) : 0;
 	if (!naxes || !ncurves)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	/* the scale: what min and max say, else what the values need */
 	lo = fy_number(fy_get(config, "min"), 0.0);
@@ -221,7 +221,5 @@ char *fymm_render_radar(const struct fymm_diagram *d, fy_generic model,
 		y++;
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

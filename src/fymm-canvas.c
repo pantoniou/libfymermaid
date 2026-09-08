@@ -163,6 +163,12 @@ struct fymm_canvas *fymm_canvas_create_cfg(int w, int h,
 	return cv;
 }
 
+struct fymm_canvas *fymm_canvas_empty(const struct fymm_render_cfg *cfg)
+{
+	/* one blank cell, which emission trims away */
+	return fymm_canvas_create_cfg(1, 1, cfg, NULL);
+}
+
 void fymm_canvas_destroy(struct fymm_canvas *cv)
 {
 	size_t i;

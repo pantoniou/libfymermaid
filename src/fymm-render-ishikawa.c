@@ -39,17 +39,17 @@
  * off it with its causes beneath, which keeps what the diagram is for -- the
  * effect, and what is grouped under what.
  */
-char *fymm_render_ishikawa(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_ishikawa(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg)
 {
 	fy_generic categories, category, causes, cause;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	const char *title, *effect, *name;
 	size_t ncategories, ncauses, ci, i;
 	int width, height, y, w, color, spine;
 	bool ascii;
-	char *out;
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -59,7 +59,7 @@ char *fymm_render_ishikawa(const struct fymm_diagram *d, fy_generic model,
 	title = fy_get(model, "title", (const char *)NULL);
 	ncategories = fy_is_sequence(categories) ? fy_len(categories) : 0;
 	if (!effect)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	/* the spine sits past the widest cause */
 	spine = 2;
@@ -138,7 +138,5 @@ char *fymm_render_ishikawa(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

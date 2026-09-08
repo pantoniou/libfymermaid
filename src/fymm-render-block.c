@@ -40,11 +40,12 @@
  * drawn as their own row beneath it, indented, since a terminal cannot nest a
  * box inside a box and keep either legible.
  */
-char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
-			const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_block(const struct fymm_diagram *d,
+				      fy_generic model,
+				      const struct fymm_render_cfg *cfg)
 {
 	fy_generic blocks, block, config;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct fymm_metrics met;
 	const char *title, *text, *parent;
@@ -52,7 +53,6 @@ char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
 	int columns, cell, width, height, top, x, y, col, row, w, color, span;
 	int depth;
 	bool ascii;
-	char *out;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
@@ -64,7 +64,7 @@ char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
 	title = fy_get(model, "title", (const char *)NULL);
 	nblocks = fy_is_sequence(blocks) ? fy_len(blocks) : 0;
 	if (!nblocks)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	columns = (int)fy_number(fy_get(config, "columns"), 0.0);
 	if (columns <= 0)
@@ -187,7 +187,5 @@ char *fymm_render_block(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

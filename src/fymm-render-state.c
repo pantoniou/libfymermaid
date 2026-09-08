@@ -122,11 +122,12 @@ static size_t st_endpoint(const struct fymm_lnode *node, size_t nnodes,
 	return found;
 }
 
-char *fymm_render_state(const struct fymm_diagram *d, fy_generic model,
-			const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_state(const struct fymm_diagram *d,
+				      fy_generic model,
+				      const struct fymm_render_cfg *cfg)
 {
 	fy_generic states, transitions, st, tr;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct fymm_lnode *node = NULL;
 	struct fymm_ledge *edge = NULL;
@@ -144,7 +145,6 @@ char *fymm_render_state(const struct fymm_diagram *d, fy_generic model,
 	int width, height, top, x, y, w, color, sx, sy, dx, dy, ymid;
 	size_t nnodes;
 	bool ascii;
-	char *out = NULL;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
@@ -157,7 +157,7 @@ char *fymm_render_state(const struct fymm_diagram *d, fy_generic model,
 	nstates = fy_is_sequence(states) ? fy_len(states) : 0;
 	ntrans = fy_is_sequence(transitions) ? fy_len(transitions) : 0;
 	if (!nstates)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	node = calloc(nstates, sizeof(*node));
 	kind = calloc(nstates, sizeof(*kind));
@@ -466,9 +466,6 @@ char *fymm_render_state(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-
 out:
 	for (i = 0; i < nstates && ftitle; i++)
 		fymm_rich_destroy(ftitle[i]);
@@ -480,5 +477,5 @@ out:
 	free(edge);
 	free(kind);
 	free(text);
-	return out;
+	return cv;
 }

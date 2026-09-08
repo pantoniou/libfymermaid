@@ -151,11 +151,12 @@ static void gt_resolve(struct gt_bar *bar, size_t n)
 	}
 }
 
-char *fymm_render_gantt(const struct fymm_diagram *d, fy_generic model,
-			const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_gantt(const struct fymm_diagram *d,
+				      fy_generic model,
+				      const struct fymm_render_cfg *cfg)
 {
 	fy_generic sections, section, tasks, task;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct gt_bar *bar = NULL;
 	const char *title, *name;
@@ -163,7 +164,6 @@ char *fymm_render_gantt(const struct fymm_diagram *d, fy_generic model,
 	int width, height, y, x, w, name_w, plot, color;
 	double lo, hi, span;
 	bool ascii;
-	char *out = NULL;
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -175,7 +175,7 @@ char *fymm_render_gantt(const struct fymm_diagram *d, fy_generic model,
 	for (si = 0; si < nsections; si++)
 		n += fy_len(fy_get(fy_get_at(sections, si), "tasks"));
 	if (!n)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	bar = calloc(n, sizeof(*bar));
 	if (!bar)
@@ -284,10 +284,7 @@ char *fymm_render_gantt(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-
 out:
 	free(bar);
-	return out;
+	return cv;
 }

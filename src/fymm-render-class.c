@@ -110,11 +110,12 @@ static void cd_rank(struct cd_box *box, size_t n, fy_generic relations,
 	}
 }
 
-char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,
-			const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_class(const struct fymm_diagram *d,
+				      fy_generic model,
+				      const struct fymm_render_cfg *cfg)
 {
 	fy_generic classes, relations, cls, rel, member;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct fymm_metrics met;
 	struct cd_box *box = NULL;
@@ -126,7 +127,6 @@ char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,
 	uint32_t g;
 	bool ascii;
 	char buf[256];
-	char *out = NULL;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
@@ -140,7 +140,7 @@ char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,
 	nclasses = fy_is_sequence(classes) ? fy_len(classes) : 0;
 	nrel = fy_is_sequence(relations) ? fy_len(relations) : 0;
 	if (!nclasses)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	box = calloc(nclasses, sizeof(*box));
 	flat = calloc(nrel ? nrel : 1, sizeof(*flat));
@@ -332,11 +332,8 @@ char *fymm_render_class(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-
 out:
 	free(box);
 	free(flat);
-	return out;
+	return cv;
 }

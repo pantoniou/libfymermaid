@@ -39,11 +39,12 @@
  * cards in order. That is what a kanban is for, and it is one of the few
  * mermaid layouts a terminal keeps unchanged.
  */
-char *fymm_render_kanban(const struct fymm_diagram *d, fy_generic model,
-			 const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_kanban(const struct fymm_diagram *d,
+				       fy_generic model,
+				       const struct fymm_render_cfg *cfg)
 {
 	fy_generic sections, section, items, item;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct fymm_metrics met;
 	int *colw = NULL, *colx = NULL;
@@ -51,7 +52,6 @@ char *fymm_render_kanban(const struct fymm_diagram *d, fy_generic model,
 	size_t nsections, nitems, si, ii, tallest = 0;
 	int width, height, top, x, y, w, color;
 	bool ascii;
-	char *out = NULL;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
@@ -62,7 +62,7 @@ char *fymm_render_kanban(const struct fymm_diagram *d, fy_generic model,
 	title = fy_get(model, "title", (const char *)NULL);
 	nsections = fy_is_sequence(sections) ? fy_len(sections) : 0;
 	if (!nsections)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	colw = calloc(nsections, sizeof(*colw));
 	colx = calloc(nsections, sizeof(*colx));
@@ -147,11 +147,8 @@ char *fymm_render_kanban(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-
 out:
 	free(colw);
 	free(colx);
-	return out;
+	return cv;
 }

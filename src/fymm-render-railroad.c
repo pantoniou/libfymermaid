@@ -341,18 +341,18 @@ static void rr_draw(struct rr_draw *dr, fy_generic node, int x, int y,
 	}
 }
 
-char *fymm_render_railroad(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_railroad(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg)
 {
 	fy_generic rules, rule;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct rr_draw dr;
 	struct rr_box *boxes = NULL;
 	const char *title;
 	size_t nrules, i;
 	int width = 0, height, y, name_w = 0;
-	char *out;
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -360,8 +360,17 @@ char *fymm_render_railroad(const struct fymm_diagram *d, fy_generic model,
 	rules = fy_get(model, "rules");
 	title = fy_get(model, "title", (const char *)NULL);
 	nrules = fy_is_sequence(rules) ? fy_len(rules) : 0;
-	if (!nrules)
-		return title ? strdup(title) : strdup("");
+	if (!nrules) {
+		/* a source with a title and no rule still says what it is */
+		if (!title)
+			return fymm_canvas_empty(cfg);
+		cv = fymm_canvas_create_cfg(fymm_text_width(title), 1, cfg,
+					    &theme);
+		if (cv)
+			fymm_canvas_text(cv, 0, 0, title, FYMM_PAL_TITLE,
+					 FYMM_ATTR_BOLD);
+		return cv;
+	}
 
 	boxes = malloc(nrules * sizeof(*boxes));
 	if (!boxes)
@@ -417,8 +426,6 @@ char *fymm_render_railroad(const struct fymm_diagram *d, fy_generic model,
 		y += boxes[i].h + 2;
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
 	free(boxes);
-	return out;
+	return cv;
 }

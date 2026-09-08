@@ -33,14 +33,14 @@
 #include "fymm-markdown.h"
 
 /* An info diagram reports the renderer, which here is this library. */
-char *fymm_render_info(const struct fymm_diagram *d, fy_generic model,
-		       const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_info(const struct fymm_diagram *d,
+				     fy_generic model,
+				     const struct fymm_render_cfg *cfg)
 {
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	const char *version;
 	char buf[128];
-	char *out;
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -53,7 +53,5 @@ char *fymm_render_info(const struct fymm_diagram *d, fy_generic model,
 		return NULL;
 
 	fymm_canvas_text(cv, 0, 0, buf, FYMM_PAL_TITLE, FYMM_ATTR_BOLD);
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

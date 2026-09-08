@@ -223,11 +223,12 @@ static char *gg_tag_text(fy_generic tags)
 	return out;
 }
 
-char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_gitgraph(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg)
 {
 	fy_generic config, commits, branches, commit, tags, parents;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct gg_geom g;
 	struct fymm_legend *legend = NULL;
@@ -235,7 +236,7 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 	bool show_branches, show_labels, parallel;
 	size_t ncommits, nbranches, i, j, nparents;
 	int k, w, color, x, y, cherry;
-	char *tag_text, *out;
+	char *tag_text;
 
 	memset(&g, 0, sizeof(g));
 
@@ -253,7 +254,7 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 	nbranches = fy_is_sequence(branches) ?
 		    fy_generic_sequence_get_item_count(branches) : 0;
 	if (!nbranches)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	show_branches = fy_get(config, "showBranches", true);
 	show_labels = fy_get(config, "showCommitLabel", true);
@@ -488,15 +489,13 @@ char *fymm_render_gitgraph(const struct fymm_diagram *d, fy_generic model,
 		fymm_legend_draw(cv, 0, g.top + (int)nbranches * 3 - 1,
 				 legend);
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
 	fymm_legend_destroy(legend);
 	gg_geom_fini(&g);
 
 	/* TB and BT transpose the whole layout; the parser has already warned
 	 * that this renderer only draws left to right. */
 	(void)orientation;
-	return out;
+	return cv;
 
 err_out:
 	fymm_legend_destroy(legend);
@@ -547,6 +546,8 @@ char *fymm_render(const struct fymm_diagram *d,
 {
 	const struct fymm_diagram_ops *ops;
 	struct fymm_render_cfg lcfg;
+	struct fymm_canvas *cv;
+	char *out;
 
 	if (!d || fymm_diagram_has_errors(d))
 		return NULL;
@@ -561,7 +562,13 @@ char *fymm_render(const struct fymm_diagram *d,
 	ops = fymm_diagram_ops_by_type(d->type);
 	if (!ops || !ops->render)
 		return NULL;
-	return ops->render(d, d->model, &lcfg);
+
+	cv = ops->render(d, d->model, &lcfg);
+	if (!cv)
+		return NULL;
+	out = fymm_canvas_emit(cv);
+	fymm_canvas_destroy(cv);
+	return out;
 }
 
 int fymm_render_fp(const struct fymm_diagram *d,

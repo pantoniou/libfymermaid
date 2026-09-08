@@ -40,11 +40,12 @@
  * spanning the bits it covers, with the bit numbers along the top. A field
  * that runs past the end of a row continues on the next.
  */
-char *fymm_render_packet(const struct fymm_diagram *d, fy_generic model,
-			 const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_packet(const struct fymm_diagram *d,
+				       fy_generic model,
+				       const struct fymm_render_cfg *cfg)
 {
 	fy_generic fields, field;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	const char *title, *label;
 	size_t nfields, i;
@@ -52,7 +53,6 @@ char *fymm_render_packet(const struct fymm_diagram *d, fy_generic model,
 	int cellw, width, height, top, rows, x, y, color, w;
 	bool ascii;
 	char buf[32];
-	char *out;
 
 	if (fymm_theme_resolve(&theme, cfg, fymm_diagram_builder(d), model))
 		return NULL;
@@ -61,7 +61,7 @@ char *fymm_render_packet(const struct fymm_diagram *d, fy_generic model,
 	title = fy_get(model, "title", (const char *)NULL);
 	nfields = fy_is_sequence(fields) ? fy_len(fields) : 0;
 	if (!nfields)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	for (i = 0; i < nfields; i++) {
 		end = (long long)fy_get(fy_get_at(fields, i), "end", 0LL);
@@ -148,7 +148,5 @@ char *fymm_render_packet(const struct fymm_diagram *d, fy_generic model,
 		}
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-	return out;
+	return cv;
 }

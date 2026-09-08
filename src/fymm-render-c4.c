@@ -39,11 +39,12 @@
  * beneath when it has one. The relations rank them down the page, which puts
  * the people at the top and what they use below, the way a C4 diagram reads.
  */
-char *fymm_render_c4(const struct fymm_diagram *d, fy_generic model,
-		     const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_c4(const struct fymm_diagram *d,
+				   fy_generic model,
+				   const struct fymm_render_cfg *cfg)
 {
 	fy_generic elements, relations, el, rel;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct fymm_lnode *node = NULL;
 	struct fymm_ledge *edge = NULL;
@@ -56,7 +57,6 @@ char *fymm_render_c4(const struct fymm_diagram *d, fy_generic model,
 	int width, height, top, x, y, w, color, sx, sy, dx, dy, ymid;
 	bool ascii;
 	char buf[128];
-	char *out = NULL;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
@@ -69,7 +69,7 @@ char *fymm_render_c4(const struct fymm_diagram *d, fy_generic model,
 	nel = fy_is_sequence(elements) ? fy_len(elements) : 0;
 	nrel = fy_is_sequence(relations) ? fy_len(relations) : 0;
 	if (!nel)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	node = calloc(nel, sizeof(*node));
 	label = calloc(nel, sizeof(*label));
@@ -202,14 +202,11 @@ char *fymm_render_c4(const struct fymm_diagram *d, fy_generic model,
 				       FYMM_COLOR_DEFAULT, 0);
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-
 out:
 	free(node);
 	free(edge);
 	free(label);
 	free(kindp);
 	free(descr);
-	return out;
+	return cv;
 }

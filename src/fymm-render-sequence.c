@@ -192,11 +192,12 @@ static int seq_note_x(const struct seq_geom *g, fy_generic participants,
 	return x < 0 ? 0 : x;
 }
 
-char *fymm_render_sequence(const struct fymm_diagram *d, fy_generic model,
-			   const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_sequence(const struct fymm_diagram *d,
+					 fy_generic model,
+					 const struct fymm_render_cfg *cfg)
 {
 	fy_generic participants, statements, st, config;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct fymm_metrics met;
 	struct seq_geom g;
@@ -205,7 +206,6 @@ char *fymm_render_sequence(const struct fymm_diagram *d, fy_generic model,
 	int y, w, x, r, height, number = 0, indent;
 	bool autonumber;
 	char buf[128];
-	char *out = NULL;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
@@ -222,7 +222,7 @@ char *fymm_render_sequence(const struct fymm_diagram *d, fy_generic model,
 	n = fy_is_sequence(participants) ? fy_len(participants) : 0;
 	ns = fy_is_sequence(statements) ? fy_len(statements) : 0;
 	if (!n)
-		return strdup("");
+		return fymm_canvas_empty(cfg);
 
 	/* one column per participant, wide enough for its own label */
 	g.n = n;
@@ -334,10 +334,7 @@ char *fymm_render_sequence(const struct fymm_diagram *d, fy_generic model,
 		seq_centre(cv, g.x[i], y, label, (int)(i % 8), FYMM_ATTR_BOLD);
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
-
 out:
 	free(g.x);
-	return out;
+	return cv;
 }

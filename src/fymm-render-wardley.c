@@ -52,11 +52,12 @@ static int wl_clampi(int v, int lo, int hi)
  * distortion of the straight lines a rendered map uses but keeps them on the
  * cell grid.
  */
-char *fymm_render_wardley(const struct fymm_diagram *d, fy_generic model,
-			  const struct fymm_render_cfg *cfg)
+struct fymm_canvas *fymm_render_wardley(const struct fymm_diagram *d,
+					fy_generic model,
+					const struct fymm_render_cfg *cfg)
 {
 	fy_generic nodes, links, notes, stages, pipelines, node, link;
-	struct fymm_canvas *cv;
+	struct fymm_canvas *cv = NULL;
 	struct fymm_theme theme;
 	struct fymm_metrics met;
 	const char *title, *name, *label;
@@ -65,7 +66,6 @@ char *fymm_render_wardley(const struct fymm_diagram *d, fy_generic model,
 	int *nx = NULL, *ny = NULL;
 	bool ascii;
 	char buf[160];
-	char *out;
 
 	fymm_metrics_resolve(&met, fymm_diagram_type(d), cfg);
 
@@ -222,11 +222,9 @@ char *fymm_render_wardley(const struct fymm_diagram *d, fy_generic model,
 		y++;
 	}
 
-	out = fymm_canvas_emit(cv);
-	fymm_canvas_destroy(cv);
 	free(nx);
 	free(ny);
-	return out;
+	return cv;
 
 err:
 	if (cv)
