@@ -1391,8 +1391,274 @@ static void test_native_model(void)
 	fymm_diagram_destroy(bad);
 }
 
+
+/*
+ * The elements a render reports: where each one landed, what a click on it
+ * answers, and where a move from it arrives.
+ */
+static void test_elements(void)
+{
+	static const char src[] =
+		"flowchart TD\n"
+		"    A --> B\n"
+		"    A --> C\n"
+		"    B --> D\n"
+		"    C --> D\n";
+	const struct fymm_element *a, *b, *c, *e;
+	struct fymm_render_result *r;
+	struct fymm_render_cfg cfg;
+	struct fymm_diagram *d;
+	char *plain;
+
+	d = parse(src);
+	CHECK(d && !fymm_diagram_has_errors(d), "flowchart did not parse");
+	if (!d)
+		return;
+
+	fymm_render_cfg_default(&cfg);
+	cfg.width = 80;
+	cfg.color = FYMM_COLOR_NONE;
+	cfg.charset = FYMM_CHARSET_UNICODE;
+	cfg.background = FYMM_BG_DARK;
+
+	r = fymm_render_ex(d, &cfg);
+	CHECK(r != NULL, "render result was not produced");
+	if (!r) {
+		fymm_diagram_destroy(d);
+		return;
+	}
+
+	/* the text is what fymm_render() gives for the same configuration */
+	plain = fymm_render(d, &cfg);
+	CHECK(plain && !strcmp(plain, fymm_render_result_text(r)),
+	      "the result text is not the render");
+	fymm_free(plain);
+
+	CHECK(fymm_render_result_count(r) == 4, "expected four elements, got %zu",
+	      fymm_render_result_count(r));
+
+	a = fymm_render_result_find(r, "nodes/0");
+	b = fymm_render_result_find(r, "nodes/1");
+	c = fymm_render_result_find(r, "nodes/2");
+	CHECK(a && b && c, "the nodes were not reported");
+	if (!a || !b || !c) {
+		fymm_render_result_destroy(r);
+		fymm_diagram_destroy(d);
+		return;
+	}
+
+	CHECK(a->kind == FYMM_EL_NODE, "a node is not reported as one");
+	CHECK(a->width > 0 && a->height > 0, "a node has no place");
+	CHECK(!a->clipped, "a node that fits is reported clipped");
+	CHECK(!strcmp(fy_get(a->value, "id", ""), "A"),
+	      "the element does not carry its model node");
+
+	/* B and C share a rank, and A is the rank above them */
+	CHECK(b->row == c->row, "the rank did not land on one row");
+	CHECK(a->row < b->row, "the ranks are not in order");
+
+	/* a click anywhere in a box answers with that box */
+	CHECK(fymm_hit_test(r, a->row, a->col) == a, "a corner missed its node");
+	CHECK(fymm_hit_test(r, a->row + a->height - 1,
+			    a->col + a->width - 1) == a,
+	      "the far corner missed its node");
+	CHECK(!fymm_hit_test(r, a->row, a->col + a->width),
+	      "a cell past a node answered with it");
+	CHECK(!fymm_hit_test(r, -1, 0), "a negative row answered");
+
+	/* a move is decided by where the elements were drawn */
+	CHECK(fymm_navigate(r, "nodes/0", FYMM_DIR_DOWN) == b ||
+	      fymm_navigate(r, "nodes/0", FYMM_DIR_DOWN) == c,
+	      "down from the first rank left it");
+	CHECK(!fymm_navigate(r, "nodes/0", FYMM_DIR_UP),
+	      "there is nothing above the first rank");
+	e = b->col < c->col ? b : c;
+	CHECK(fymm_navigate(r, e->path, FYMM_DIR_RIGHT) ==
+	      (b->col < c->col ? c : b), "right did not cross the rank");
+	CHECK(!fymm_navigate(r, e->path, FYMM_DIR_LEFT),
+	      "left from the leftmost element found something");
+
+	/* an unknown start selects the first element, and next wraps */
+	CHECK(fymm_navigate(r, NULL, FYMM_DIR_RIGHT) == a,
+	      "a null start did not give the first element");
+	CHECK(fymm_navigate(r, "nowhere", FYMM_DIR_NEXT) == a,
+	      "an unknown start did not give the first element");
+	CHECK(fymm_navigate(r, "nodes/3", FYMM_DIR_NEXT) == a,
+	      "next did not wrap");
+	CHECK(fymm_navigate(r, "nodes/0", FYMM_DIR_PREV) ==
+	      fymm_render_result_element(r, 3), "prev did not wrap");
+
+	fymm_render_result_destroy(r);
+	fymm_diagram_destroy(d);
+}
+
+/*
+ * A diagram whose ranks are offset has no element straight above another. A
+ * move must still reach the lane above, or a gitGraph would strand it.
+ */
+static void test_navigate_offset(void)
+{
+	static const char src[] =
+		"gitGraph\n"
+		"    commit id: \"one\"\n"
+		"    branch feature\n"
+		"    commit id: \"two\"\n";
+	const struct fymm_element *one, *two, *e;
+	struct fymm_render_result *r;
+	struct fymm_render_cfg cfg;
+	struct fymm_diagram *d;
+
+	d = parse(src);
+	if (!d)
+		return;
+
+	fymm_render_cfg_default(&cfg);
+	cfg.width = 80;
+	cfg.color = FYMM_COLOR_NONE;
+	cfg.charset = FYMM_CHARSET_UNICODE;
+	cfg.background = FYMM_BG_DARK;
+
+	r = fymm_render_ex(d, &cfg);
+	if (!r) {
+		CHECK(false, "render result was not produced");
+		fymm_diagram_destroy(d);
+		return;
+	}
+
+	one = fymm_render_result_find(r, "commits/0");
+	two = fymm_render_result_find(r, "commits/1");
+	CHECK(one && two, "the commits were not reported");
+	if (one && two) {
+		/* the second commit is on the lane below and to the right,
+		 * so nothing is straight above it */
+		CHECK(two->row > one->row && two->col > one->col,
+		      "the lanes are not offset");
+		e = fymm_navigate(r, "commits/1", FYMM_DIR_UP);
+		CHECK(e && e->row < two->row,
+		      "up from an offset lane arrived nowhere");
+	}
+
+	fymm_render_result_destroy(r);
+	fymm_diagram_destroy(d);
+}
+
+/* Selecting an element changes the text, and only where that element is. */
+static void test_selection(void)
+{
+	static const char src[] =
+		"flowchart TD\n"
+		"    A --> B\n";
+	const struct fymm_element *a;
+	struct fymm_render_result *r;
+	struct fymm_render_cfg cfg;
+	struct fymm_diagram *d;
+	char *plain;
+
+	d = parse(src);
+	if (!d)
+		return;
+
+	fymm_render_cfg_default(&cfg);
+	cfg.width = 80;
+	cfg.color = FYMM_COLOR_256;
+	cfg.charset = FYMM_CHARSET_UNICODE;
+	cfg.background = FYMM_BG_DARK;
+
+	r = fymm_render_ex(d, &cfg);
+	if (!r) {
+		CHECK(false, "render result was not produced");
+		fymm_diagram_destroy(d);
+		return;
+	}
+
+	plain = strdup(fymm_render_result_text(r));
+	CHECK(fymm_render_result_selection(r) == NULL,
+	      "a render starts with something selected");
+
+	CHECK(fymm_render_result_select(r, "nodes/0", FYMM_SEL_REVERSE),
+	      "an element the render holds was not selected");
+	CHECK(!strcmp(fymm_render_result_selection(r), "nodes/0"),
+	      "the selection was not kept");
+	CHECK(plain && strcmp(plain, fymm_render_result_text(r)),
+	      "the selection did not change the render");
+
+	/* the geometry does not move: a selection is drawn, not laid out */
+	a = fymm_render_result_find(r, "nodes/0");
+	CHECK(a && a->row == 0, "the selection moved the drawing");
+
+	/* a path the render does not hold selects nothing at all */
+	CHECK(!fymm_render_result_select(r, "nodes/99", FYMM_SEL_REVERSE),
+	      "an element the render does not hold was selected");
+	CHECK(fymm_render_result_selection(r) == NULL,
+	      "a failed selection left one behind");
+	CHECK(plain && !strcmp(plain, fymm_render_result_text(r)),
+	      "the render did not go back to no selection");
+
+	/* FYMM_SEL_NONE selects without drawing, for a caller that paints
+	 * its own highlight over the rectangle */
+	CHECK(fymm_render_result_select(r, "nodes/0", FYMM_SEL_NONE),
+	      "FYMM_SEL_NONE did not select");
+	CHECK(plain && !strcmp(plain, fymm_render_result_text(r)),
+	      "FYMM_SEL_NONE drew something");
+
+	free(plain);
+	fymm_render_result_destroy(r);
+	fymm_diagram_destroy(d);
+}
+
+/* A width the diagram does not fit in reports the part that is on the
+ * screen, and says that the rest was cut. */
+static void test_elements_clipped(void)
+{
+	static const char src[] =
+		"flowchart LR\n"
+		"    A[a very long label indeed] --> B[another long label]\n";
+	const struct fymm_element *a, *b;
+	struct fymm_render_result *r;
+	struct fymm_render_cfg cfg;
+	struct fymm_diagram *d;
+
+	d = parse(src);
+	if (!d)
+		return;
+
+	fymm_render_cfg_default(&cfg);
+	cfg.width = 20;
+	cfg.fit = FYMM_FIT_CLIP;
+	cfg.color = FYMM_COLOR_NONE;
+	cfg.charset = FYMM_CHARSET_UNICODE;
+	cfg.background = FYMM_BG_DARK;
+
+	r = fymm_render_ex(d, &cfg);
+	if (!r) {
+		CHECK(false, "render result was not produced");
+		fymm_diagram_destroy(d);
+		return;
+	}
+
+	a = fymm_render_result_find(r, "nodes/0");
+	b = fymm_render_result_find(r, "nodes/1");
+	CHECK(a && b, "a clipped render dropped an element");
+	if (a && b) {
+		CHECK(a->clipped, "the element the clip cut is not marked");
+		CHECK(a->col + a->width <= 20,
+		      "an element reaches past the width");
+		CHECK(b->width == 0 && b->height == 0,
+		      "an element wholly off the screen kept a place");
+		CHECK(!fymm_navigate(r, "nodes/0", FYMM_DIR_RIGHT),
+		      "a move arrived at an element that is not drawn");
+	}
+
+	fymm_render_result_destroy(r);
+	fymm_diagram_destroy(d);
+}
+
 int main(void)
 {
+	test_elements();
+	test_navigate_offset();
+	test_selection();
+	test_elements_clipped();
 	test_native_model();
 	test_version();
 	test_bad_input();
