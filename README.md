@@ -346,6 +346,14 @@ safe and gives the same result as a serial run.
 
 ## Using it
 
+Applications with native diagram data can use
+`fymm_diagram_from_model(model)`. It copies the generic model into an
+independent diagram arena, so the source builder can be released immediately.
+It checks the common fields and reports problems through the same diagnostics
+API as the parser. Diagram-specific fields must follow the model shape for
+that type; this entry point accepts application-owned models, not untrusted
+external documents. Rendering needs no source serialization or parser pass.
+
 ```c
 #include <libfymermaid.h>
 
