@@ -1,5 +1,5 @@
 # vim: set ts=4:sw=4:expandtab:
-add_executable(fy-mermaid-cli fy-mermaid.c)
+add_executable(fy-mermaid-cli fy-mermaid.c fymm-viewer.c fymm-viewer.h)
 set_target_properties(fy-mermaid-cli PROPERTIES OUTPUT_NAME fy-mermaid)
 target_link_libraries(fy-mermaid-cli PRIVATE libfymermaid::libfymermaid)
 

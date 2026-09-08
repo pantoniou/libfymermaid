@@ -33,6 +33,8 @@
 
 #include <libfymermaid.h>
 
+#include "fymm-viewer.h"
+
 static const char *progname = "fy-mermaid";
 
 static const struct option lopts[] = {
@@ -46,6 +48,7 @@ static const struct option lopts[] = {
 	{ "style",	required_argument,	NULL,	'S' },
 	{ "list-themes",no_argument,		NULL,	'L' },
 	{ "background",	required_argument,	NULL,	'b' },
+	{ "interactive",no_argument,		NULL,	'i' },
 	{ "dump-model",	no_argument,		NULL,	'm' },
 	{ "flow",	no_argument,		NULL,	'f' },
 	{ "strict",	no_argument,		NULL,	's' },
@@ -75,6 +78,8 @@ static void usage(FILE *fp)
 "  -L, --list-themes   list the built-in themes and exit\n"
 "  -b, --background M  auto (default), dark or light; a light terminal\n"
 "                      takes the light theme unless --theme names one\n"
+"  -i, --interactive   move a selection over the diagram with the arrow keys\n"
+"                      and the mouse; enter reports the selected element\n"
 "  -m, --dump-model    emit the parsed model as YAML instead of rendering\n"
 "  -f, --flow          with --dump-model, emit flow style rather than block\n"
 "  -s, --strict        treat warnings as errors\n"
@@ -162,7 +167,7 @@ static int parse_fit(const char *s, enum fymm_fit *fp)
 /* Render one source, reporting whatever the parse had to say about it. */
 static int do_one(const char *path, const struct fymm_render_cfg *rcfg,
 		  unsigned int pflags, bool dump_model, bool flow, bool quiet,
-		  FILE *out)
+		  bool interactive, FILE *out)
 {
 	struct fymm_parse_cfg pcfg;
 	struct fymm_diagram *d;
@@ -192,6 +197,11 @@ static int do_one(const char *path, const struct fymm_render_cfg *rcfg,
 		goto out;
 	}
 
+	if (interactive) {
+		rc = fymm_viewer_run(d, rcfg, progname);
+		goto out;
+	}
+
 	text = dump_model ? fymm_diagram_model_to_yaml(d, flow) :
 			    fymm_render(d, rcfg);
 	if (!text) {
@@ -215,6 +225,7 @@ int main(int argc, char *argv[])
 	const char *output = NULL;
 	unsigned int pflags = 0;
 	bool dump_model = false, flow = false, quiet = false;
+	bool interactive = false;
 	FILE *out = stdout;
 	int i, opt, rc = 0;
 
@@ -223,7 +234,7 @@ int main(int argc, char *argv[])
 
 	fymm_render_cfg_default(&rcfg);
 
-	while ((opt = getopt_long(argc, argv, "o:w:F:c:C:at:S:Lb:mfsqVh", lopts,
+	while ((opt = getopt_long(argc, argv, "o:w:F:c:C:at:S:Lb:imfsqVh", lopts,
 				  NULL)) != -1) {
 		switch (opt) {
 		case 'o':
@@ -278,6 +289,9 @@ int main(int argc, char *argv[])
 				return 1;
 			}
 			break;
+		case 'i':
+			interactive = true;
+			break;
 		case 'm':
 			dump_model = true;
 			break;
@@ -305,6 +319,14 @@ int main(int argc, char *argv[])
 	if (rcfg.theme && check_theme(rcfg.theme))
 		return 1;
 
+	/* the viewer takes the screen, so it takes one diagram */
+	if (interactive && (dump_model || output || optind + 1 < argc)) {
+		fprintf(stderr,
+			"%s: --interactive takes one file and no output\n",
+			progname);
+		return 1;
+	}
+
 	if (output) {
 		out = fopen(output, "wb");
 		if (!out) {
@@ -315,12 +337,13 @@ int main(int argc, char *argv[])
 	}
 
 	if (optind >= argc) {
-		if (do_one("-", &rcfg, pflags, dump_model, flow, quiet, out))
+		if (do_one("-", &rcfg, pflags, dump_model, flow, quiet,
+			   interactive, out))
 			rc = 1;
 	} else {
 		for (i = optind; i < argc; i++) {
 			if (do_one(argv[i], &rcfg, pflags, dump_model, flow,
-				   quiet, out))
+				   quiet, interactive, out))
 				rc = 1;
 		}
 	}
