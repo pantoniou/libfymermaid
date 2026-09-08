@@ -110,6 +110,7 @@ set(_fymm_sources
     fymm-color.c fymm-color.h
     fymm-theme.c
     fymm-render.c fymm-term.c
+    fymm-select.c
     fymm-pie.c fymm-render-pie.c
     fymm-timeline.c fymm-render-timeline.c
     fymm-journey.c fymm-render-journey.c

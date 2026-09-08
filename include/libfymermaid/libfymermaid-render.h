@@ -422,6 +422,66 @@ fymm_render_result_selection(const struct fymm_render_result *r)
 	FYMM_EXPORT;
 
 /**
+ * enum fymm_direction - where a selection moves to
+ *
+ * @FYMM_DIR_UP: the nearest element above
+ * @FYMM_DIR_DOWN: the nearest element below
+ * @FYMM_DIR_LEFT: the nearest element to the left
+ * @FYMM_DIR_RIGHT: the nearest element to the right
+ * @FYMM_DIR_NEXT: the next element in the order the render reports them
+ * @FYMM_DIR_PREV: the previous element in that order
+ */
+enum fymm_direction {
+	FYMM_DIR_UP = 0,
+	FYMM_DIR_DOWN,
+	FYMM_DIR_LEFT,
+	FYMM_DIR_RIGHT,
+	FYMM_DIR_NEXT,
+	FYMM_DIR_PREV,
+};
+
+/**
+ * fymm_hit_test() - the element drawn at (@row, @col)
+ * @r: the result
+ * @row: the row in the emitted text, counted from 0
+ * @col: the column in it, counted from 0
+ *
+ * A consumer converts a mouse position into its own pane coordinates first.
+ * Where two elements cover the cell, the smaller one answers, so a label
+ * inside a node resolves to the label.
+ *
+ * Returns: the element, or NULL when nothing is drawn there.
+ */
+const struct fymm_element *
+fymm_hit_test(const struct fymm_render_result *r, int row, int col)
+	FYMM_EXPORT;
+
+/**
+ * fymm_navigate() - the element a move from @from arrives at
+ * @r: the result
+ * @from: the path of the element the move starts at, or NULL to start
+ * @dir: where to move
+ *
+ * The move is decided by where the elements were drawn, not by the edges
+ * between them, so it reads the way the diagram looks and it answers for
+ * every diagram type. The element must clear @from along the move, and one
+ * that is straight ahead is taken over one that is off to the side. Where
+ * nothing is straight ahead, as on a gitGraph whose lanes are offset, the
+ * nearest element ahead answers, so no element is out of reach. A move that
+ * leaves the drawing returns NULL, and the caller keeps the selection it
+ * has.
+ *
+ * With a NULL @from, or one the render does not hold, it returns the first
+ * element in the order the render reports them.
+ *
+ * Returns: the element, or NULL when the move arrives nowhere.
+ */
+const struct fymm_element *
+fymm_navigate(const struct fymm_render_result *r, const char *from,
+	      enum fymm_direction dir)
+	FYMM_EXPORT;
+
+/**
  * fymm_render() - render a diagram to a string
  *
  * @d: the diagram, which must not have errors
