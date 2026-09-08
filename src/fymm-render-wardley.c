@@ -112,9 +112,12 @@ struct fymm_canvas *fymm_render_wardley(const struct fymm_diagram *d,
 			goto err;
 	}
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 			       FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	/* the axes: visibility up the left, evolution along the bottom */
 	fymm_canvas_vline(cv, plot_x - 1, plot_y, plot_y + met.plot_height - 1,
@@ -177,9 +180,12 @@ struct fymm_canvas *fymm_render_wardley(const struct fymm_diagram *d,
 
 	for (i = 0; i < nnodes; i++) {
 		snprintf(buf, sizeof(buf), "%zu", i + 1);
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, fy_get_at(nodes, i),
+				       "nodes/%zu", i);
 		fymm_canvas_put(cv, nx[i], ny[i], ascii ? 'o' : 0x25cf,
 				(int)(i % 8), FYMM_ATTR_BOLD);
 		fymm_canvas_text(cv, nx[i] + 1, ny[i], buf, (int)(i % 8), 0);
+		fymm_canvas_elem_end(cv);
 	}
 
 	/* the legend, then the notes and pipelines that have no mark */
@@ -188,11 +194,17 @@ struct fymm_canvas *fymm_render_wardley(const struct fymm_diagram *d,
 		node = fy_get_at(nodes, i);
 		snprintf(buf, sizeof(buf), "%zu. %s", i + 1,
 			 fy_get(node, "name", ""));
+		/* the name has no room beside the mark, so it is its own
+		 * element down in the legend */
+		fymm_canvas_elem_begin(cv, FYMM_EL_LABEL,
+				       fy_get(node, "name", fy_invalid),
+				       "nodes/%zu/name", i);
 		fymm_rich_text(cv, 0, y, buf, (int)(i % 8), 0);
 		label = fy_get(node, "kind", "component");
 		if (strcmp(label, "component"))
 			fymm_canvas_text(cv, fymm_rich_measure(buf) + 1, y,
 					 label, FYMM_PAL_TAG, FYMM_ATTR_DIM);
+		fymm_canvas_elem_end(cv);
 		y++;
 	}
 

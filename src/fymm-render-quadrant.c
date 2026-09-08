@@ -93,9 +93,12 @@ struct fymm_canvas *fymm_render_quadrant(const struct fymm_diagram *d,
 		return NULL;
 	dot = cv->charset == FYMM_CHARSET_ASCII ? 'o' : 0x25cf;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	/* the frame and the cross that divides it */
 	cx = left + plot_w / 2;
@@ -141,12 +144,15 @@ struct fymm_canvas *fymm_render_quadrant(const struct fymm_diagram *d,
 		y = top + plot_h - 2 -
 		    (int)(fy_number(fy_get(point, "y"), 0.0) * (plot_h - 3));
 
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, point,
+				       "points/%zu", i);
 		fymm_canvas_put(cv, x, y, dot, (int)(i % 8), FYMM_ATTR_BOLD);
 		if (x + 2 + fymm_rich_measure(name) < width)
 			fymm_rich_text(cv, x + 2, y, name, FYMM_PAL_LABEL, 0);
 		else
 			fymm_rich_text(cv, x - 1 - fymm_rich_measure(name), y,
 					 name, FYMM_PAL_LABEL, 0);
+		fymm_canvas_elem_end(cv);
 	}
 
 	/* the y axis, above and below the middle of the plot */

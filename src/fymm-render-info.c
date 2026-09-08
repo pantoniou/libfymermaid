@@ -52,6 +52,8 @@ struct fymm_canvas *fymm_render_info(const struct fymm_diagram *d,
 	if (!cv)
 		return NULL;
 
+	fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 	fymm_canvas_text(cv, 0, 0, buf, FYMM_PAL_TITLE, FYMM_ATTR_BOLD);
+	fymm_canvas_elem_end(cv);
 	return cv;
 }

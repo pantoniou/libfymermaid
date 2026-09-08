@@ -402,9 +402,12 @@ struct fymm_canvas *fymm_render_gitgraph(const struct fymm_diagram *d,
 	if (!cv)
 		goto err_out;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_canvas_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	/* the branch names, right aligned in the gutter */
 	if (show_branches) {
@@ -414,9 +417,12 @@ struct fymm_canvas *fymm_render_gitgraph(const struct fymm_diagram *d,
 			int lane = (int)fy_get(b, "lane", 0LL);
 
 			x = g.gutter - 1 - fymm_text_width(name);
+			fymm_canvas_elem_begin(cv, FYMM_EL_NODE, b,
+					       "branches/%zu", i);
 			fymm_canvas_text(cv, x < 0 ? 0 : x,
 					 gg_lane_row(&g, lane), name,
 					 lane % 8, 0);
+			fymm_canvas_elem_end(cv);
 		}
 	}
 
@@ -451,6 +457,8 @@ struct fymm_canvas *fymm_render_gitgraph(const struct fymm_diagram *d,
 		y = gg_lane_row(&g, g.lane[i]);
 		color = g.lane[i] % 8;
 
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, commit,
+				       "commits/%zu", i);
 		fymm_canvas_put(cv, x, y,
 				fymm_commit_glyph(cv->charset, type), color,
 				FYMM_ATTR_BOLD);
@@ -483,6 +491,7 @@ struct fymm_canvas *fymm_render_gitgraph(const struct fymm_diagram *d,
 					 0);
 			free(tag_text);
 		}
+		fymm_canvas_elem_end(cv);
 	}
 
 	if (legend)
@@ -667,7 +676,9 @@ struct fymm_render_result *fymm_render_ex(const struct fymm_diagram *d,
 	if (!r)
 		return NULL;
 
-	if (fymm_result_elements(r) || fymm_result_emit(r)) {
+	/* emission settles which rows and columns reach the screen, so the
+	 * elements are placed after it */
+	if (fymm_result_emit(r) || fymm_result_elements(r)) {
 		fymm_render_result_destroy(r);
 		return NULL;
 	}

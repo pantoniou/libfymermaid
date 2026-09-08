@@ -101,9 +101,12 @@ struct fymm_canvas *fymm_render_kanban(const struct fymm_diagram *d,
 		goto out;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	for (si = 0; si < nsections; si++) {
 		section = fy_get_at(sections, si);
@@ -122,6 +125,10 @@ struct fymm_canvas *fymm_render_kanban(const struct fymm_diagram *d,
 			y = top + 2 + (int)ii * 3;
 			x = colx[si];
 			w = colw[si];
+
+			fymm_canvas_elem_begin(cv, FYMM_EL_NODE, item,
+					       "sections/%zu/items/%zu", si,
+					       ii);
 
 			/* each card is a small box of its own */
 			for (int j = 1; j + 1 < w; j++) {
@@ -144,6 +151,7 @@ struct fymm_canvas *fymm_render_kanban(const struct fymm_diagram *d,
 			fymm_rich_text(cv, x + 2, y + 1,
 				       fy_get(item, "text", ""),
 				       FYMM_COLOR_DEFAULT, 0);
+			fymm_canvas_elem_end(cv);
 		}
 	}
 

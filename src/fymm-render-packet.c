@@ -86,9 +86,12 @@ struct fymm_canvas *fymm_render_packet(const struct fymm_diagram *d,
 		return NULL;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	/* the bit numbers, every eighth bit */
 	for (y = 0; y < rows; y++) {
@@ -106,6 +109,9 @@ struct fymm_canvas *fymm_render_packet(const struct fymm_diagram *d,
 		end = (long long)fy_get(field, "end", 0LL);
 		label = fy_get(field, "label", "");
 		color = (int)(i % 8);
+
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, field,
+				       "fields/%zu", i);
 
 		/* a field that crosses a row boundary is drawn once per row */
 		for (b = start; b <= end; ) {
@@ -146,6 +152,7 @@ struct fymm_canvas *fymm_render_packet(const struct fymm_diagram *d,
 
 			b = last + 1;
 		}
+		fymm_canvas_elem_end(cv);
 	}
 
 	return cv;

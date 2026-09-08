@@ -233,8 +233,10 @@ struct fymm_canvas *fymm_render_gantt(const struct fymm_diagram *d,
 
 	y = 0;
 	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
 		y += 2;
 	}
 
@@ -260,6 +262,10 @@ struct fymm_canvas *fymm_render_gantt(const struct fymm_diagram *d,
 			int x1 = name_w + 2 +
 				 (int)((bar[i].end - lo) / span * plot);
 
+			fymm_canvas_elem_begin(cv, FYMM_EL_NODE,
+				fy_get_at(fy_get(section, "tasks"), ti),
+				"sections/%zu/tasks/%zu", si, ti);
+
 			x = name_w - fymm_rich_measure(bar[i].name);
 			fymm_rich_text(cv, x < 0 ? 0 : x, y, bar[i].name,
 				       FYMM_COLOR_DEFAULT, 0);
@@ -280,6 +286,7 @@ struct fymm_canvas *fymm_render_gantt(const struct fymm_diagram *d,
 								FYMM_ATTR_BOLD :
 								0);
 			}
+			fymm_canvas_elem_end(cv);
 			y++;
 		}
 	}

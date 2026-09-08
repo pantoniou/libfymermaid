@@ -103,9 +103,12 @@ struct fymm_canvas *fymm_render_eventmodeling(const struct fymm_diagram *d,
 		return NULL;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 			       FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	/* the lane headings */
 	for (i = 0; i < 4; i++) {
@@ -121,6 +124,8 @@ struct fymm_canvas *fymm_render_eventmodeling(const struct fymm_diagram *d,
 		name = fy_get(frame, "name", "");
 		y = top + (int)i;
 
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, frame,
+				       "frames/%zu", i);
 		fymm_canvas_put(cv, colx[lane], y, ascii ? '*' : 0x25cf, lane,
 				FYMM_ATTR_BOLD);
 		snprintf(buf, sizeof(buf), "%s %s", fy_get(frame, "number", ""),
@@ -147,6 +152,7 @@ struct fymm_canvas *fymm_render_eventmodeling(const struct fymm_diagram *d,
 						      FYMM_PAL_LABEL,
 						      FYMM_ATTR_DIM) + 1;
 		}
+		fymm_canvas_elem_end(cv);
 	}
 
 	return cv;

@@ -134,8 +134,10 @@ struct fymm_canvas *fymm_render_architecture(const struct fymm_diagram *d,
 
 	y = 0;
 	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
 		y += 2;
 	}
 
@@ -176,6 +178,10 @@ struct fymm_canvas *fymm_render_architecture(const struct fymm_diagram *d,
 		w = node[i].w;
 		color = node[i].rank % 8;
 
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE,
+				       fy_get_at(nodes, index[i]),
+				       "nodes/%zu", index[i]);
+
 		for (j = 1; j + 1 < (size_t)w; j++) {
 			fymm_canvas_put(cv, x + (int)j, y,
 					ascii ? '-' : 0x2500, color, 0);
@@ -192,6 +198,7 @@ struct fymm_canvas *fymm_render_architecture(const struct fymm_diagram *d,
 				color, 0);
 		fymm_rich_text(cv, x + 2, y + 1, text[i], FYMM_COLOR_DEFAULT,
 			       0);
+		fymm_canvas_elem_end(cv);
 	}
 
 out:

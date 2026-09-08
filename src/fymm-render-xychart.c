@@ -185,9 +185,12 @@ struct fymm_canvas *fymm_render_xychart(const struct fymm_diagram *d,
 	if (fymm_charset_rich(cv->charset))
 		br = fymm_braille_create(width - left, plot_h);
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	/* the axes */
 	fymm_canvas_vline(cv, left - 1, top, top + plot_h - 1, FYMM_PAL_LABEL,
@@ -214,6 +217,8 @@ struct fymm_canvas *fymm_render_xychart(const struct fymm_diagram *d,
 		data = fy_get(s, "data");
 		color = (int)(i % 8);
 		first = true;
+
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, s, "series/%zu", i);
 
 		for (j = 0; j < fy_len(data); j++) {
 			point = fy_get_at(data, j);
@@ -277,6 +282,8 @@ struct fymm_canvas *fymm_render_xychart(const struct fymm_diagram *d,
 				first = false;
 			}
 		}
+
+		fymm_canvas_elem_end(cv);
 	}
 
 	/* the category labels, or the point numbers when there are none */
@@ -301,6 +308,10 @@ struct fymm_canvas *fymm_render_xychart(const struct fymm_diagram *d,
 		name = fy_get(fy_get_at(series, i), "name", (const char *)NULL);
 		if (!name)
 			continue;
+		fymm_canvas_elem_begin(cv, FYMM_EL_LABEL,
+				       fy_get(fy_get_at(series, i), "name",
+					      fy_invalid),
+				       "series/%zu/name", i);
 		fymm_canvas_put(cv, x, y,
 				!strcmp(fy_get(fy_get_at(series, i), "kind",
 					       "bar"), "bar") ?
@@ -309,6 +320,7 @@ struct fymm_canvas *fymm_render_xychart(const struct fymm_diagram *d,
 				(int)(i % 8), 0);
 		x += 2 + fymm_rich_text(cv, x + 2, y, name, FYMM_PAL_LABEL,
 					  0) + 2;
+		fymm_canvas_elem_end(cv);
 	}
 
 	if (br) {

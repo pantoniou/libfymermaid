@@ -88,8 +88,10 @@ struct fymm_canvas *fymm_render_ishikawa(const struct fymm_diagram *d,
 
 	y = 0;
 	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 			       FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
 		y += 2;
 	}
 
@@ -110,6 +112,8 @@ struct fymm_canvas *fymm_render_ishikawa(const struct fymm_diagram *d,
 
 		/* the rib, joined to the spine */
 		/* the spine continues past a rib only while ribs remain */
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, category,
+				       "categories/%zu", ci);
 		fymm_canvas_line(cv, spine, y,
 				 (uint8_t)(FYMM_LN_N | FYMM_LN_E |
 					   (ci + 1 < ncategories ?
@@ -117,10 +121,14 @@ struct fymm_canvas *fymm_render_ishikawa(const struct fymm_diagram *d,
 				 color, false);
 		fymm_canvas_hline(cv, y, spine + 1, spine + 2, color, false);
 		fymm_rich_text(cv, spine + 4, y, name, color, FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
 		y++;
 
 		for (i = 0; i < ncauses; i++) {
 			cause = fy_get_at(causes, i);
+			fymm_canvas_elem_begin(cv, FYMM_EL_NODE, cause,
+					       "categories/%zu/causes/%zu",
+					       ci, i);
 			if (ci + 1 < ncategories)
 				fymm_canvas_line(cv, spine, y,
 						 FYMM_LN_N | FYMM_LN_S, color,
@@ -129,6 +137,7 @@ struct fymm_canvas *fymm_render_ishikawa(const struct fymm_diagram *d,
 					ascii ? '-' : 0x00b7, color, 0);
 			fymm_rich_text(cv, spine + 6, y, fy_str(cause),
 				       FYMM_COLOR_DEFAULT, 0);
+			fymm_canvas_elem_end(cv);
 			y++;
 		}
 		if (ci + 1 < ncategories) {

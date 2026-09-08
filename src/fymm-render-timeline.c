@@ -106,8 +106,10 @@ struct fymm_canvas *fymm_render_timeline(const struct fymm_diagram *d,
 
 	y = 0;
 	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
 		y += 2;
 	}
 
@@ -131,19 +133,27 @@ struct fymm_canvas *fymm_render_timeline(const struct fymm_diagram *d,
 		ntasks = fy_is_sequence(tasks) ? fy_len(tasks) : 0;
 		for (ti = 0; ti < ntasks; ti++) {
 			task = fy_get_at(tasks, ti);
+			fymm_canvas_elem_begin(cv, FYMM_EL_NODE, task,
+					       "sections/%zu/tasks/%zu", si,
+					       ti);
 			fymm_canvas_put(cv, 1, y, bullet, color,
 					FYMM_ATTR_BOLD);
 			fymm_rich_text(cv, 3, y, fy_get(task, "name", ""),
 				       FYMM_COLOR_DEFAULT, 0);
+			fymm_canvas_elem_end(cv);
 			y++;
 
 			events = fy_get(task, "events");
 			nevents = fy_is_sequence(events) ? fy_len(events) : 0;
 			for (ei = 0; ei < nevents; ei++) {
 				event = fy_get_at(events, ei);
+				fymm_canvas_elem_begin(cv, FYMM_EL_NODE, event,
+					"sections/%zu/tasks/%zu/events/%zu",
+					si, ti, ei);
 				fymm_canvas_put(cv, 5, y, dot, color, 0);
 				fymm_rich_text(cv, 7, y, fy_str(event),
 					       FYMM_PAL_LABEL, 0);
+				fymm_canvas_elem_end(cv);
 				y++;
 			}
 		}

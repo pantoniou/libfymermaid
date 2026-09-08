@@ -118,8 +118,10 @@ struct fymm_canvas *fymm_render_journey(const struct fymm_diagram *d,
 
 	y = 0;
 	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
 		y += 2;
 	}
 
@@ -140,6 +142,9 @@ struct fymm_canvas *fymm_render_journey(const struct fymm_diagram *d,
 		ntasks = fy_is_sequence(tasks) ? fy_len(tasks) : 0;
 		for (ti = 0; ti < ntasks; ti++) {
 			task = fy_get_at(tasks, ti);
+			fymm_canvas_elem_begin(cv, FYMM_EL_NODE, task,
+					       "sections/%zu/tasks/%zu", si,
+					       ti);
 			fymm_rich_text(cv, 2, y, fy_get(task, "name", ""),
 				       FYMM_COLOR_DEFAULT, 0);
 
@@ -164,6 +169,7 @@ struct fymm_canvas *fymm_render_journey(const struct fymm_diagram *d,
 							      FYMM_PAL_LABEL,
 							      0);
 			}
+			fymm_canvas_elem_end(cv);
 			y++;
 		}
 		if (si + 1 < nsections)

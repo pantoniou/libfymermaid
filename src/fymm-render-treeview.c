@@ -80,15 +80,21 @@ struct fymm_canvas *fymm_render_treeview(const struct fymm_diagram *d,
 		return NULL;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 			       FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	for (i = 0; i < nentries; i++) {
 		entry = fy_get_at(entries, i);
 		depth = (int)fy_get(entry, "depth", 0LL);
 		name = fy_get(entry, "name", "");
 		y = top + (int)i;
+
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, entry,
+				       "entries/%zu", i);
 
 		/* an entry is the last of its level when nothing at that same
 		 * level follows before the level closes */
@@ -137,6 +143,7 @@ struct fymm_canvas *fymm_render_treeview(const struct fymm_diagram *d,
 			fymm_rich_text(cv, x + w + 3, y, comment,
 				       FYMM_PAL_LABEL, FYMM_ATTR_DIM);
 		}
+		fymm_canvas_elem_end(cv);
 	}
 
 	return cv;

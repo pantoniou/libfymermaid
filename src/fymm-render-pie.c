@@ -116,9 +116,12 @@ struct fymm_canvas *fymm_render_pie(const struct fymm_diagram *d,
 	if (!cv)
 		return NULL;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	for (i = 0; i < nslices; i++) {
 		slice = fy_get_at(slices, i);
@@ -126,6 +129,9 @@ struct fymm_canvas *fymm_render_pie(const struct fymm_diagram *d,
 		value = fy_number(fy_get(slice, "value"), 0.0);
 		share = total > 0.0 ? value / total : 0.0;
 		y = top + (int)i;
+
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, slice,
+				       "slices/%zu", i);
 
 		/* the label, right aligned into the gutter */
 		x = label_w - fymm_rich_measure(label);
@@ -171,6 +177,7 @@ struct fymm_canvas *fymm_render_pie(const struct fymm_diagram *d,
 			fymm_canvas_text(cv, x + 2 + (w > 0 ? w : 0), y, buf,
 					 FYMM_PAL_TAG, 0);
 		}
+		fymm_canvas_elem_end(cv);
 	}
 
 	return cv;

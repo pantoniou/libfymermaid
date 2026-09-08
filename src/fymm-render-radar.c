@@ -157,8 +157,10 @@ struct fymm_canvas *fymm_render_radar(const struct fymm_diagram *d,
 
 	y = 0;
 	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
 		y += 2;
 	}
 
@@ -182,6 +184,9 @@ struct fymm_canvas *fymm_render_radar(const struct fymm_diagram *d,
 				name = fy_get(curve, "name", "");
 			v = rd_value(curve, axis, ai, &have);
 
+			fymm_canvas_elem_begin(cv, FYMM_EL_NODE, curve,
+					       "axes/%zu/curves/%zu", ai, ci);
+
 			x = label_w - fymm_rich_measure(name) + 2;
 			fymm_rich_text(cv, x < 0 ? 0 : x, y, name,
 					 FYMM_PAL_LABEL, 0);
@@ -189,6 +194,7 @@ struct fymm_canvas *fymm_render_radar(const struct fymm_diagram *d,
 			if (!have) {
 				fymm_canvas_text(cv, x, y, "-", FYMM_PAL_LABEL,
 						 FYMM_ATTR_DIM);
+				fymm_canvas_elem_end(cv);
 				y++;
 				continue;
 			}
@@ -216,6 +222,7 @@ struct fymm_canvas *fymm_render_radar(const struct fymm_diagram *d,
 			snprintf(buf, sizeof(buf), "%g", v);
 			fymm_canvas_text(cv, label_w + 5 + bar_cells, y, buf,
 					 FYMM_PAL_TAG, 0);
+			fymm_canvas_elem_end(cv);
 			y++;
 		}
 		y++;

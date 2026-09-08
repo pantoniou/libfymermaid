@@ -229,9 +229,12 @@ struct fymm_canvas *fymm_render_class(const struct fymm_diagram *d,
 		goto out;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	/* the relations first, so a box sits on top of its connectors */
 	for (i = 0; i < nrel; i++) {
@@ -276,6 +279,10 @@ struct fymm_canvas *fymm_render_class(const struct fymm_diagram *d,
 		y = box[i].y;
 		w = box[i].w;
 		color = box[i].rank % 8;
+
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE,
+				       fy_get_at(classes, i),
+				       "classes/%zu", i);
 
 		for (j = 1; j + 1 < (size_t)w; j++) {
 			fymm_canvas_put(cv, x + (int)j, y,
@@ -330,6 +337,7 @@ struct fymm_canvas *fymm_render_class(const struct fymm_diagram *d,
 				r++;
 			}
 		}
+		fymm_canvas_elem_end(cv);
 	}
 
 out:

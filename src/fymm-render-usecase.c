@@ -122,9 +122,12 @@ struct fymm_canvas *fymm_render_usecase(const struct fymm_diagram *d,
 		goto out;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	for (i = 0; i < nedges; i++) {
 		size_t from = ledge[i].from, to = ledge[i].to;
@@ -170,11 +173,15 @@ struct fymm_canvas *fymm_render_usecase(const struct fymm_diagram *d,
 		w = node[i].w;
 		color = node[i].rank % 8;
 
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, fy_get_at(nodes, i),
+				       "nodes/%zu", i);
+
 		if (!strcmp(kind[i], "actor")) {
 			fymm_canvas_text(cv, x, y, ascii ? "& " : "☺ ", color,
 					 FYMM_ATTR_BOLD);
 			fymm_canvas_text(cv, x + 2, y, text[i], color,
 					 FYMM_ATTR_BOLD);
+			fymm_canvas_elem_end(cv);
 			continue;
 		}
 
@@ -194,6 +201,7 @@ struct fymm_canvas *fymm_render_usecase(const struct fymm_diagram *d,
 				color, 0);
 		fymm_rich_text(cv, x + 3, y + 1, text[i], FYMM_COLOR_DEFAULT,
 			       0);
+		fymm_canvas_elem_end(cv);
 	}
 
 out:

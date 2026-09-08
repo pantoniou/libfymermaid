@@ -272,15 +272,21 @@ struct fymm_canvas *fymm_render_sequence(const struct fymm_diagram *d,
 
 	y = 0;
 	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, y, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
 		y += 2;
 	}
 	g.top = y;
 
 	for (i = 0; i < n; i++) {
 		label = fy_get(fy_get_at(participants, i), "label", "");
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE,
+				       fy_get_at(participants, i),
+				       "participants/%zu", i);
 		seq_centre(cv, g.x[i], y, label, (int)(i % 8), FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
 	}
 	y++;
 
@@ -289,6 +295,9 @@ struct fymm_canvas *fymm_render_sequence(const struct fymm_diagram *d,
 		kind = fy_get(st, "kind", "");
 		text = fy_get(st, "text", "");
 		indent = (int)fy_get(st, "depth", 0LL);
+
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, st, "statements/%zu",
+				       i);
 
 		if (!strcmp(kind, "message")) {
 			y++;
@@ -318,6 +327,7 @@ struct fymm_canvas *fymm_render_sequence(const struct fymm_diagram *d,
 					 FYMM_ATTR_DIM);
 			y++;
 		}
+		fymm_canvas_elem_end(cv);
 	}
 	y++;
 

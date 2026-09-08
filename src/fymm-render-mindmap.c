@@ -120,12 +120,16 @@ static int mm_width(fy_generic node, int depth)
  * of its parent, which decides the elbow glyph and whether the parent's
  * vertical rail continues past it.
  */
+/* the deepest path a mindmap element can carry */
+#define MM_PATH_MAX 512
+
 static int mm_draw(struct fymm_canvas *cv, fy_generic node, int x, int y,
-		   int depth, bool last, bool *rails)
+		   int depth, bool last, bool *rails, const char *path)
 {
 	fy_generic children, child;
 	const char *icon, *cls;
 	size_t nchildren, i;
+	char sub[MM_PATH_MAX];
 	int col, tx, d;
 
 	col = depth * 3;
@@ -149,6 +153,7 @@ static int mm_draw(struct fymm_canvas *cv, fy_generic node, int x, int y,
 	}
 
 	tx = x + col;
+	fymm_canvas_elem_begin(cv, FYMM_EL_NODE, node, "%s", path);
 	fymm_canvas_put(cv, tx, y, mm_bullet(cv->charset,
 					     fy_get(node, "shape", "default")),
 			depth % 8, depth ? 0 : FYMM_ATTR_BOLD);
@@ -169,6 +174,7 @@ static int mm_draw(struct fymm_canvas *cv, fy_generic node, int x, int y,
 				       FYMM_ATTR_DIM) + 1;
 		fymm_canvas_text(cv, tx, y, cls, FYMM_PAL_LABEL, FYMM_ATTR_DIM);
 	}
+	fymm_canvas_elem_end(cv);
 	y++;
 
 	children = fy_get(node, "children");
@@ -178,8 +184,9 @@ static int mm_draw(struct fymm_canvas *cv, fy_generic node, int x, int y,
 		/* this node's rail continues while a sibling follows */
 		if (depth < FYMM_MINDMAP_MAX_DEPTH)
 			rails[depth] = i + 1 < nchildren;
+		snprintf(sub, sizeof(sub), "%s/children/%zu", path, i);
 		y = mm_draw(cv, child, x, y, depth + 1, i + 1 == nchildren,
-			    rails);
+			    rails, sub);
 	}
 	return y;
 }
@@ -213,11 +220,14 @@ struct fymm_canvas *fymm_render_mindmap(const struct fymm_diagram *d,
 	if (!cv)
 		return NULL;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
-	mm_draw(cv, root, 1, top, 0, true, rails);
+	mm_draw(cv, root, 1, top, 0, true, rails, "root");
 
 	return cv;
 }

@@ -102,6 +102,8 @@ struct fymm_canvas *fymm_render_block(const struct fymm_diagram *d,
 			col = 0;
 			row++;
 		}
+		fymm_canvas_elem_end(cv);
+
 		col += span;
 		if (col >= columns) {
 			col = 0;
@@ -118,9 +120,12 @@ struct fymm_canvas *fymm_render_block(const struct fymm_diagram *d,
 		return NULL;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	col = 0;
 	row = 0;
@@ -145,6 +150,9 @@ struct fymm_canvas *fymm_render_block(const struct fymm_diagram *d,
 		y = top + row * 4;
 		w = span * cell + (span - 1) * met.col_gap - depth;
 		color = (int)(i % 8);
+
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, block,
+				       "blocks/%zu", i);
 
 		/* a compound block is a label with a rule, not a box: its
 		 * children follow it and would be drawn inside one */

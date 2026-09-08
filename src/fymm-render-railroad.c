@@ -403,9 +403,12 @@ struct fymm_canvas *fymm_render_railroad(const struct fymm_diagram *d,
 	dr.cv = cv;
 	dr.ascii = cv->charset == FYMM_CHARSET_ASCII;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 			       FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	y = title ? 2 : 0;
 	for (i = 0; i < nrules; i++) {
@@ -413,6 +416,7 @@ struct fymm_canvas *fymm_render_railroad(const struct fymm_diagram *d,
 
 		rule = fy_get_at(rules, i);
 		rail = y + boxes[i].row;
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, rule, "rules/%zu", i);
 		fymm_canvas_text(cv, 0, rail, fy_get(rule, "name", ""),
 				 FYMM_PAL_TITLE, FYMM_ATTR_BOLD);
 		fymm_canvas_put(cv, name_w + 1, rail,
@@ -423,6 +427,7 @@ struct fymm_canvas *fymm_render_railroad(const struct fymm_diagram *d,
 			0);
 		fymm_canvas_put(cv, name_w + 4 + boxes[i].w, rail,
 				dr.ascii ? '|' : 0x2551, FYMM_PAL_LABEL, 0);
+		fymm_canvas_elem_end(cv);
 		y += boxes[i].h + 2;
 	}
 

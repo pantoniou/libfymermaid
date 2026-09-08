@@ -144,7 +144,9 @@ enum fymm_element_kind {
  * @path: where the element is in the model, as the keys and the indices that
  *        reach it, separated by `/`: `commits/3`, `nodes/2`, `title`. It
  *        names the same element in every render of the same model, so it
- *        survives a resize and a re-render.
+ *        survives a resize and a re-render. A legend entry has no place in
+ *        the model and is named `legend/<n>`, which holds only for the render
+ *        that built that legend.
  * @kind: what the element is
  * @value: the model subtree at @path, or fy_invalid when the element has
  *         none. It is owned by the diagram, not by the render.

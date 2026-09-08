@@ -153,6 +153,8 @@ int fymm_legend_draw(struct fymm_canvas *cv, int x, int y,
 		return 0;
 
 	for (i = 0; i < lg->n; i++) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_LEGEND, fy_invalid,
+				       "legend/%zu", i);
 		n = fymm_canvas_text(cv, x, y + 1 + (int)i,
 				     lg->entry[i].marker,
 				     fymm_legend_color(lg, i),
@@ -161,6 +163,7 @@ int fymm_legend_draw(struct fymm_canvas *cv, int x, int y,
 				      FYMM_PAL_LABEL, 0);
 		fymm_rich_text(cv, x + n, y + 1 + (int)i, lg->entry[i].label,
 			       FYMM_PAL_LABEL, 0);
+		fymm_canvas_elem_end(cv);
 	}
 	return fymm_legend_rows(lg);
 }

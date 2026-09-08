@@ -442,9 +442,12 @@ struct fymm_canvas *fymm_render_flowchart(const struct fymm_diagram *d,
 		goto out;
 	ascii = cv->charset == FYMM_CHARSET_ASCII;
 
-	if (title)
+	if (title) {
+		fymm_canvas_elem_begin(cv, FYMM_EL_TITLE, fy_invalid, "title");
 		fymm_rich_text(cv, 0, 0, title, FYMM_PAL_TITLE,
 				 FYMM_ATTR_BOLD);
+		fymm_canvas_elem_end(cv);
+	}
 
 	/* the edges first, so that a box always sits on top of its links */
 	for (i = 0; i < nedges; i++) {
@@ -599,6 +602,9 @@ struct fymm_canvas *fymm_render_flowchart(const struct fymm_diagram *d,
 		color = l.box[i].rank % 8;
 		nlines = fymm_rich_lines(l.box[i].text);
 
+		fymm_canvas_elem_begin(cv, FYMM_EL_NODE, fy_get_at(nodes, i),
+				       "nodes/%zu", i);
+
 		for (j = 1; j + 1 < (size_t)w; j++) {
 			fymm_canvas_put(cv, x + (int)j, y,
 					ascii ? '-' : c[4], color, 0);
@@ -622,6 +628,8 @@ struct fymm_canvas *fymm_render_flowchart(const struct fymm_diagram *d,
 			fymm_rich_draw_line(cv, x + 2, y + 1 + (int)line,
 					    l.box[i].text, line,
 					    FYMM_COLOR_DEFAULT, 0);
+
+		fymm_canvas_elem_end(cv);
 	}
 
 out:
