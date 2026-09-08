@@ -1328,8 +1328,72 @@ static void test_charset_rich(void)
 	fymm_diagram_destroy(d);
 }
 
+static void test_native_model(void)
+{
+	struct fymm_diagram *source, *copy, *bad;
+	struct fymm_render_cfg cfg;
+	struct fy_generic_builder_cfg gbcfg = {
+		.flags = FYGBCF_SCOPE_LEADER | FYGBCF_DEDUP_ENABLED,
+	};
+	struct fy_generic_builder *gb;
+	fy_generic model;
+	char *expected, *actual;
+
+	source = parse("gitGraph\ncommit id: \"first\"\nbranch feature\ncommit id: \"second\"\n");
+	CHECK(source != NULL, "source diagram allocation failed");
+	if (!source)
+		return;
+	fymm_render_cfg_default(&cfg);
+	cfg.width = 80;
+	cfg.color = FYMM_COLOR_NONE;
+	cfg.background = FYMM_BG_DARK;
+	cfg.charset = FYMM_CHARSET_UNICODE;
+	expected = fymm_render(source, &cfg);
+	copy = fymm_diagram_from_model(fymm_diagram_model(source));
+	CHECK(copy && !fymm_diagram_has_errors(copy), "native gitGraph import failed");
+	CHECK(fy_equal(fymm_diagram_model(copy), fymm_diagram_model(source)),
+	      "native import changed the model");
+	fymm_diagram_destroy(source);
+	actual = fymm_render(copy, &cfg);
+	CHECK(expected && actual && !strcmp(expected, actual),
+	      "native copy did not survive its source diagram");
+	fymm_free(expected);
+	fymm_free(actual);
+	fymm_diagram_destroy(copy);
+
+	gb = fy_generic_builder_create(&gbcfg);
+	CHECK(gb != NULL, "source builder allocation failed");
+	if (!gb)
+		return;
+	model = fy_mapping(gb, "type", "treeView", "config", fy_map_empty,
+		"entries", fy_sequence(gb, fy_mapping(gb, "name", "日本語##literal",
+			"depth", 0LL, "directory", false)));
+	copy = fymm_diagram_from_model(model);
+	fy_generic_builder_destroy(gb);
+	CHECK(copy && !fymm_diagram_has_errors(copy), "native tree import failed");
+	actual = fymm_render(copy, &cfg);
+	CHECK(actual && strstr(actual, "日本語##literal"), "native label was parsed as source");
+	fymm_free(actual);
+	fymm_diagram_destroy(copy);
+
+	bad = fymm_diagram_from_model(fy_invalid);
+	CHECK(bad && fymm_diagram_has_errors(bad), "non-mapping model was accepted");
+	CHECK(!fymm_render(bad, &cfg), "invalid model rendered");
+	fymm_diagram_destroy(bad);
+	bad = fymm_diagram_from_model(fy_mapping("type", "not-a-diagram"));
+	CHECK(bad && fymm_diagram_has_errors(bad), "unknown type was accepted");
+	fymm_diagram_destroy(bad);
+	bad = fymm_diagram_from_model(fy_mapping("type", "treeView", "config", false));
+	CHECK(bad && fymm_diagram_has_errors(bad), "invalid configuration was accepted");
+	fymm_diagram_destroy(bad);
+	bad = fymm_diagram_from_model(fy_mapping("type", "treeView", "title", 42LL));
+	CHECK(bad && fymm_diagram_has_errors(bad), "invalid title was accepted");
+	fymm_diagram_destroy(bad);
+}
+
 int main(void)
 {
+	test_native_model();
 	test_version();
 	test_bad_input();
 	test_model_shape();
