@@ -123,6 +123,14 @@ static enum fymm_background probe(const char *answer, double *elapsed)
 	if (!pid) {
 		enum fymm_background bg;
 
+		/*
+		 * The parent closes the master once the answer is in. That
+		 * hangup must not kill the child on its way out: the answer
+		 * is already computed by then, so ignore the signal and let
+		 * _exit() below report it.
+		 */
+		signal(SIGHUP, SIG_IGN);
+
 		/* the child's own session, with the pty as its terminal */
 		close(master);
 		close(sync_fd[0]);
