@@ -37,6 +37,8 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <poll.h>
+/* kill() the child when it wedges instead of waiting on it forever */
+#include <signal.h>
 /* openpty(3) lives in <util.h> on the BSDs, <pty.h> on glibc */
 #ifdef __APPLE__
 #include <util.h>
@@ -136,7 +138,23 @@ static enum fymm_background probe(const char *answer, double *elapsed)
 		}
 	}
 
-	if (waitpid(pid, &status, 0) < 0)
+	/*
+	 * The child must be done by now: the query carries a 100ms timeout,
+	 * so reap it with a deadline and fail loud if it wedged. An
+	 * unbounded waitpid() here turned macOS CI into a 25 minute ctest
+	 * timeout.
+	 */
+	while (waitpid(pid, &status, WNOHANG) == 0) {
+		if (now_ms() - start > PTY_WAIT_MS) {
+			kill(pid, SIGKILL);
+			waitpid(pid, &status, 0);
+			fprintf(stderr, "probe: child did not answer\n");
+			close(master);
+			return FYMM_BG_AUTO;
+		}
+		usleep(10000);
+	}
+	if (!WIFEXITED(status))
 		return FYMM_BG_AUTO;
 	*elapsed = now_ms() - start;
 	close(master);
