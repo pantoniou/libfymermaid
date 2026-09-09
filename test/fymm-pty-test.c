@@ -88,13 +88,28 @@ static enum fymm_background probe(const char *answer, double *elapsed)
 {
 	char buf[256];
 	struct pollfd pfd;
-	int master, slave, status;
+	int master, slave, status, sync_fd[2];
 	double start;
 	ssize_t n;
 	pid_t pid;
 
 	if (openpty(&master, &slave, NULL, NULL, NULL)) {
 		fprintf(stderr, "openpty: %s\n", strerror(errno));
+		return FYMM_BG_AUTO;
+	}
+
+	/*
+	 * A plain pipe, not the pty, tells the parent when the child is done
+	 * with the tty: the parent must not close the master while the child
+	 * is still reading the answer, and must not leave it open once the
+	 * child starts exiting. On the BSDs, a session leader that exits
+	 * while its pty's master side is still open elsewhere can wedge in
+	 * the kernel's tty revoke, which read as the child hanging forever.
+	 */
+	if (pipe(sync_fd)) {
+		fprintf(stderr, "pipe: %s\n", strerror(errno));
+		close(master);
+		close(slave);
 		return FYMM_BG_AUTO;
 	}
 
@@ -110,6 +125,7 @@ static enum fymm_background probe(const char *answer, double *elapsed)
 
 		/* the child's own session, with the pty as its terminal */
 		close(master);
+		close(sync_fd[0]);
 		setsid();
 		ioctl(slave, TIOCSCTTY, 0);
 		dup2(slave, STDIN_FILENO);
@@ -118,10 +134,15 @@ static enum fymm_background probe(const char *answer, double *elapsed)
 		unsetenv("COLORFGBG");
 		unsetenv("FYMM_BACKGROUND");
 		bg = fymm_detect_background(STDOUT_FILENO);
+
+		/* tell the parent it may close the master now */
+		(void)!write(sync_fd[1], "", 1);
+		close(sync_fd[1]);
 		_exit((int)bg);
 	}
 
 	close(slave);
+	close(sync_fd[1]);
 
 	/* play the terminal: wait for the query, then answer it */
 	pfd.fd = master;
@@ -138,6 +159,13 @@ static enum fymm_background probe(const char *answer, double *elapsed)
 		}
 	}
 
+	/* wait for the child to be done with the tty, then close the master */
+	pfd.fd = sync_fd[0];
+	pfd.events = POLLIN;
+	poll(&pfd, 1, PTY_WAIT_MS);
+	close(sync_fd[0]);
+	close(master);
+
 	/*
 	 * The child must be done by now: the query carries a 100ms timeout,
 	 * so reap it with a deadline and fail loud if it wedged. An
@@ -149,7 +177,6 @@ static enum fymm_background probe(const char *answer, double *elapsed)
 			kill(pid, SIGKILL);
 			waitpid(pid, &status, 0);
 			fprintf(stderr, "probe: child did not answer\n");
-			close(master);
 			return FYMM_BG_AUTO;
 		}
 		usleep(10000);
@@ -157,7 +184,6 @@ static enum fymm_background probe(const char *answer, double *elapsed)
 	if (!WIFEXITED(status))
 		return FYMM_BG_AUTO;
 	*elapsed = now_ms() - start;
-	close(master);
 
 	return WIFEXITED(status) ? (enum fymm_background)WEXITSTATUS(status) :
 				   FYMM_BG_AUTO;
