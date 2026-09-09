@@ -219,7 +219,8 @@ static char *gg_tag_text(fy_generic tags)
 	if (!out)
 		return NULL;
 	for (i = 0, p = out; i < count; i++)
-		p += sprintf(p, "[%s]", fy_get_at(tags, i, ""));
+		p += snprintf(p, len + 1 - (size_t)(p - out), "[%s]",
+			      fy_get_at(tags, i, ""));
 	return out;
 }
 
