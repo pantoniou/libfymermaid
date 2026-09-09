@@ -28,6 +28,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 
 #if defined(__unix__) || defined(__APPLE__)
@@ -258,8 +259,10 @@ static enum fymm_background fymm_background_from_query(int fd)
 	char buf[128];
 	const char *p, *e;
 	struct pollfd pfd;
+	struct timespec t0, t1;
 	size_t used = 0;
 	ssize_t n;
+	long remain_ms;
 	int tty, rgb[3], i, flags;
 	bool own_tty = true;
 	enum fymm_background out = FYMM_BG_AUTO;
@@ -299,17 +302,33 @@ static enum fymm_background fymm_background_from_query(int fd)
 	if (write(tty, query, sizeof(query) - 1) != (ssize_t)(sizeof(query) - 1))
 		goto out_restore;
 
-	/* read until the answer terminates, or until the terminal has had
-	 * long enough to have answered */
+	/*
+	 * Read until the answer terminates, or until the terminal has had
+	 * long enough to have answered. On the BSDs, switching the tty out
+	 * of canonical mode can itself wake a poll() that was already
+	 * waiting, and the read that follows returns 0 with nothing to show
+	 * for it; that is not the terminal closing the line, so it must not
+	 * be read as the end of the answer. Track one deadline for the whole
+	 * exchange and keep polling until it passes.
+	 */
+	clock_gettime(CLOCK_MONOTONIC, &t0);
 	for (;;) {
+		clock_gettime(CLOCK_MONOTONIC, &t1);
+		remain_ms = FYMM_QUERY_TIMEOUT_MS -
+			((t1.tv_sec - t0.tv_sec) * 1000 +
+			 (t1.tv_nsec - t0.tv_nsec) / 1000000);
+		if (remain_ms <= 0)
+			break;
 		pfd.fd = tty;
 		pfd.events = POLLIN;
-		n = poll(&pfd, 1, FYMM_QUERY_TIMEOUT_MS);
+		n = poll(&pfd, 1, (int)remain_ms);
 		if (n <= 0)
 			break;
 		n = read(tty, buf + used, sizeof(buf) - 1 - used);
-		if (n <= 0)
+		if (n < 0)
 			break;
+		if (n == 0)
+			continue;
 		used += (size_t)n;
 		buf[used] = '\0';
 		if (memchr(buf, '\a', used) || strstr(buf, "\033\\"))
