@@ -51,9 +51,9 @@ static const char *uc_strip(struct uc *u, const char *s, const char **ep,
 	*metap = fy_null;
 
 	/* `<<Human>>` names a stereotype */
-	open = memmem(s, (size_t)(e - s), "<<", 2);
+	open = fymm_memmem(s, (size_t)(e - s), "<<", 2);
 	if (open) {
-		close = memmem(open, (size_t)(e - open), ">>", 2);
+		close = fymm_memmem(open, (size_t)(e - open), ">>", 2);
 		if (close) {
 			*stereop = fymm_trim_text(u->gb, open + 2, close);
 			if (close + 2 >= e)
@@ -62,7 +62,7 @@ static const char *uc_strip(struct uc *u, const char *s, const char **ep,
 	}
 
 	/* `@{ ... }` carries the node's own settings */
-	at = memmem(s, (size_t)(e - s), "@{", 2);
+	at = fymm_memmem(s, (size_t)(e - s), "@{", 2);
 	if (at) {
 		close = memchr(at, '}', (size_t)(e - at));
 		if (close) {
@@ -192,7 +192,7 @@ static bool uc_edge(struct uc *u, const char *s, const char *e)
 
 	for (i = 0; i < sizeof(ops) / sizeof(ops[0]) && !at; i++) {
 		olen = strlen(ops[i]);
-		at = memmem(s, (size_t)(limit - s), ops[i], olen);
+		at = fymm_memmem(s, (size_t)(limit - s), ops[i], olen);
 	}
 	if (!at)
 		return false;

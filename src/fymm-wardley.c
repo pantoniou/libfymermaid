@@ -209,7 +209,7 @@ int fymm_parse_wardley(struct fymm_parser *p, fy_generic config,
 			const char *s = rest;
 
 			while (s < e) {
-				const char *sep = memmem(s, (size_t)(e - s),
+				const char *sep = fymm_memmem(s, (size_t)(e - s),
 							 "->", 2);
 				const char *ee = sep ? sep : e;
 				const char *at = memchr(s, '@',

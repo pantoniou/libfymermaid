@@ -75,7 +75,7 @@ static void ar_declare(struct ar *a, const char *s, const char *e,
 	}
 
 	sq = memchr(s, '[', (size_t)(e - s));
-	eq = sq ? memrchr(sq, ']', (size_t)(e - sq)) : NULL;
+	eq = sq ? fymm_memrchr(sq, ']', (size_t)(e - sq)) : NULL;
 	if (sq && eq) {
 		label = fymm_trim_text(a->gb, sq + 1, eq);
 		id_end = sq;
@@ -131,7 +131,7 @@ static bool ar_edge(struct ar *a, const char *s, const char *e)
 	if (!op)
 		return false;
 
-	lcolon = memrchr(s, ':', (size_t)(op - s));
+	lcolon = fymm_memrchr(s, ':', (size_t)(op - s));
 	rcolon = memchr(op + olen, ':', (size_t)(e - op - olen));
 	if (!lcolon || !rcolon)
 		return false;

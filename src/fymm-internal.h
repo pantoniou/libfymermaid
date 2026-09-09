@@ -157,6 +157,19 @@ bool fymm_line_keyword(const char *s, size_t len, const char *word,
 		       const char **restp);
 
 /*
+ * Byte search over a counted buffer. GNU libc carries memmem(3), so Linux
+ * uses it; every other platform falls back to the portable copy below.
+ */
+void *fymm_memmem(const void *hay, size_t haylen,
+		  const void *needle, size_t needlelen);
+/*
+ * Reverse byte search over a counted buffer. GNU libc carries memrchr(3),
+ * so Linux uses it; every other platform falls back to the portable copy
+ * below.
+ */
+void *fymm_memrchr(const void *s, int c, size_t n);
+
+/*
  * struct fymm_diagram_ops - one diagram type
  *
  * @keyword: the word that opens the diagram, matched without case

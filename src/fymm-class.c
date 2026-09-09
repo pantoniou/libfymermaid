@@ -390,7 +390,7 @@ int fymm_parse_class(struct fymm_parser *p, fy_generic config, fy_generic title,
 		/* `<<interface>> Shape` annotates a class from outside its
 		 * body, which is the other spelling upstream accepts */
 		if (len > 4 && !memcmp(line, "<<", 2)) {
-			const char *close = memmem(line, len, ">>", 2);
+			const char *close = fymm_memmem(line, len, ">>", 2);
 
 			if (close) {
 				const char *who = close + 2;

@@ -188,7 +188,7 @@ int fymm_parse_c4(struct fymm_parser *p, fy_generic config, fy_generic title,
 			continue;
 
 		open = memchr(line, '(', len);
-		close = open ? memrchr(open, ')', (size_t)(e - open)) : NULL;
+		close = open ? fymm_memrchr(open, ')', (size_t)(e - open)) : NULL;
 		if (!open || !close) {
 			fymm_diagf(p, true, p->lex.line, 1,
 				   "unknown C4 statement '%.*s'", (int)len,

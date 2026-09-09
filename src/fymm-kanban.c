@@ -150,7 +150,7 @@ int fymm_parse_kanban(struct fymm_parser *p, fy_generic config,
 
 		/* `@{ ... }` carries a card's metadata */
 		meta = fy_null;
-		brace = memmem(line, len, "@{", 2);
+		brace = fymm_memmem(line, len, "@{", 2);
 		if (brace && e[-1] == '}') {
 			input.data = brace + 1;
 			input.size = (size_t)(e - (brace + 1));

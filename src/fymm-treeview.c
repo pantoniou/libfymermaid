@@ -90,7 +90,7 @@ int fymm_parse_treeview(struct fymm_parser *p, fy_generic config,
 
 		/* `## text` annotates the entry it sits on */
 		comment = fy_null;
-		hash = memmem(line, len, "##", 2);
+		hash = fymm_memmem(line, len, "##", 2);
 		if (hash) {
 			comment = fymm_trim_text(gb, hash + 2, e);
 			e = hash;

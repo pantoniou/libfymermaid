@@ -199,7 +199,7 @@ int fymm_parse_eventmodeling(struct fymm_parser *p, fy_generic config,
 		links = fy_seq_empty;
 
 		open = memchr(rest, '{', (size_t)(e - rest));
-		close = open ? memrchr(open, '}', (size_t)(e - open)) : NULL;
+		close = open ? fymm_memrchr(open, '}', (size_t)(e - open)) : NULL;
 		if (open && close) {
 			input.data = open;
 			input.size = (size_t)(close + 1 - open);
@@ -210,8 +210,8 @@ int fymm_parse_eventmodeling(struct fymm_parser *p, fy_generic config,
 				data = fymm_trim_text(gb, open, close + 1);
 		}
 
-		open = memmem(rest, (size_t)(e - rest), "[[", 2);
-		close = open ? memmem(open, (size_t)(e - open), "]]", 2) : NULL;
+		open = fymm_memmem(rest, (size_t)(e - rest), "[[", 2);
+		close = open ? fymm_memmem(open, (size_t)(e - open), "]]", 2) : NULL;
 		if (open && close)
 			refs = fymm_trim_text(gb, open + 2, close);
 

@@ -76,7 +76,7 @@ static fy_generic bk_block(struct fy_generic_builder *gb, const char *s,
 		return fy_null;
 
 	/* `A:2` spans two columns; a colon inside a label is not a span */
-	colon = memrchr(s, ':', (size_t)(e - s));
+	colon = fymm_memrchr(s, ':', (size_t)(e - s));
 	if (colon && colon + 1 < e) {
 		snprintf(buf, sizeof(buf), "%.*s", (int)(e - colon - 1),
 			 colon + 1);
@@ -91,7 +91,7 @@ static fy_generic bk_block(struct fy_generic_builder *gb, const char *s,
 	for (i = 0; i < BK_SHAPE_COUNT; i++) {
 		ol = strlen(bk_shapes[i].open);
 		cl = strlen(bk_shapes[i].close);
-		open = memmem(s, (size_t)(e - s), bk_shapes[i].open, ol);
+		open = fymm_memmem(s, (size_t)(e - s), bk_shapes[i].open, ol);
 		if (!open || (size_t)(e - open) < ol + cl ||
 		    memcmp(e - cl, bk_shapes[i].close, cl))
 			continue;

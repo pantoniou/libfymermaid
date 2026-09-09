@@ -363,7 +363,7 @@ int fymm_parse_state(struct fymm_parser *p, fy_generic config, fy_generic title,
 				if (memcmp(q, "<<", 2))
 					continue;
 				{
-					const char *close = memmem(q, (size_t)(nend - q),
+					const char *close = fymm_memmem(q, (size_t)(nend - q),
 								   ">>", 2);
 
 					if (close) {

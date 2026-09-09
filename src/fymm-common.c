@@ -29,6 +29,44 @@
 
 #include "fymm-internal.h"
 
+void *fymm_memmem(const void *hay, size_t haylen,
+		  const void *needle, size_t needlelen)
+{
+#ifdef __linux__
+	return memmem(hay, haylen, needle, needlelen);
+#else
+	const unsigned char *h = hay;
+	const unsigned char *n = needle;
+	size_t i;
+
+	if (!needlelen)
+		return (void *)h;
+	if (haylen < needlelen)
+		return NULL;
+	for (i = 0; i <= haylen - needlelen; i++) {
+		if (!memcmp(h + i, n, needlelen))
+			return (void *)(h + i);
+	}
+	return NULL;
+#endif
+}
+
+void *fymm_memrchr(const void *s, int c, size_t n)
+{
+#ifdef __linux__
+	return memrchr(s, c, n);
+#else
+	const unsigned char *p = s;
+
+	while (n) {
+		n--;
+		if (p[n] == (unsigned char)c)
+			return (void *)(p + n);
+	}
+	return NULL;
+#endif
+}
+
 int fymm_line_tokens(struct fymm_lex *l, struct fymm_token *toks, int max)
 {
 	int n = 0;

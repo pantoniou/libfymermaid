@@ -273,10 +273,10 @@ static fy_generic fymm_take_directives(struct fy_generic_builder *gb,
 	char *p, *open, *close;
 
 	for (p = work; (size_t)(p - work) + 3 < len; ) {
-		open = memmem(p, len - (size_t)(p - work), "%%{", 3);
+		open = fymm_memmem(p, len - (size_t)(p - work), "%%{", 3);
 		if (!open)
 			break;
-		close = memmem(open, len - (size_t)(open - work), "}%%", 3);
+		close = fymm_memmem(open, len - (size_t)(open - work), "}%%", 3);
 		if (!close)
 			break;
 
