@@ -46,6 +46,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+/* <util.h> does not declare ioctl() the way <pty.h> does */
+#include <sys/ioctl.h>
 #include <sys/wait.h>
 #include <termios.h>
 #include <time.h>
