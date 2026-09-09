@@ -209,11 +209,12 @@ and confirm that the case fails before you trust it.
 
 ### CI
 
-`.github/workflows/ci.yml` builds release, ASAN, clang and static, runs the
-suite at the default width and at `COLUMNS=40`, checks that only `fymm_*`
-leaves the shared object, and links a consumer against the installed package
-through pkg-config. A second job checks the corpus manifests against the files
-beside them without building anything.
+`.github/workflows/ci.yml` builds release, ASAN, clang and static on Linux
+plus release and ASAN on macOS, runs the suite at the default width and at
+`COLUMNS=40`, checks that only `fymm_*` leaves the shared object, and links
+a consumer against the installed package through pkg-config. A second job
+checks the corpus manifests against the files beside them without building
+anything.
 
 Both dependencies are built from source there; neither is packaged.
 
