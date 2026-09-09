@@ -159,8 +159,14 @@ jobs:
                   return 0;
           }
           CONSUMER
+          # The installed Mach-O libraries carry @rpath IDs, so a consumer
+          # outside the build tree resolves them through an rpath. The
+          # directory comes from the installed package itself, not from a
+          # path written into this file. On Linux the loader already looks
+          # in the install directory, so the flag is accepted and unused.
+          libdir=$(pkg-config --variable=libdir libfymermaid)
           ${{ matrix.cc || 'gcc' }} -std=gnu2x -o /tmp/consumer /tmp/consumer.c \
-            $(pkg-config --cflags --libs libfymermaid)
+            $(pkg-config --cflags --libs libfymermaid) "-Wl,-rpath,$libdir"
           /tmp/consumer
 
   corpus:
