@@ -260,7 +260,7 @@ static enum fymm_background fymm_background_from_query(int fd)
 	struct pollfd pfd;
 	size_t used = 0;
 	ssize_t n;
-	int tty, rgb[3], i;
+	int tty, rgb[3], i, flags;
 	bool own_tty = true;
 	enum fymm_background out = FYMM_BG_AUTO;
 
@@ -268,8 +268,18 @@ static enum fymm_background fymm_background_from_query(int fd)
 	 * The controlling terminal, so that a render being redirected never
 	 * has the query written into it. Where there is no controlling
 	 * terminal but the caller is drawing to one, ask that instead.
+	 *
+	 * The open must not sleep for carrier: a terminal opened for
+	 * reading without O_NONBLOCK waits for carrier on the BSDs, and a
+	 * render must not hang on the open. The flag is cleared below, so
+	 * the query runs on a blocking terminal as before.
 	 */
-	tty = open("/dev/tty", O_RDWR | O_NOCTTY);
+	tty = open("/dev/tty", O_RDWR | O_NOCTTY | O_NONBLOCK);
+	if (tty >= 0) {
+		flags = fcntl(tty, F_GETFL);
+		if (flags >= 0)
+			fcntl(tty, F_SETFL, flags & ~O_NONBLOCK);
+	}
 	if (tty < 0) {
 		if (fd < 0 || !isatty(fd))
 			return FYMM_BG_AUTO;
