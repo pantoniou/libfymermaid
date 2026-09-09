@@ -22,30 +22,64 @@ env:
 jobs:
   build:
     name: ${{ matrix.name }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         include:
           - name: release
+            os: ubuntu-latest
             cmake_args: -DCMAKE_BUILD_TYPE=Release
           - name: asan
+            os: ubuntu-latest
             cmake_args: -DCMAKE_BUILD_TYPE=Debug -DENABLE_ASAN=ON
           - name: clang
+            os: ubuntu-latest
             cmake_args: -DCMAKE_BUILD_TYPE=Release
             cc: clang
           - name: static
+            os: ubuntu-latest
             cmake_args: -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF
+          # macOS coverage, as in fyai: release and ASAN on macos-latest.
+          # Homebrew carries the build tools there, and sysctl counts the
+          # cores where nproc is missing.
+          - name: macos
+            os: macos-latest
+            cmake_args: -DCMAKE_BUILD_TYPE=Release
+            cc: clang
+          - name: macos-asan
+            os: macos-latest
+            cmake_args: -DCMAKE_BUILD_TYPE=Debug -DENABLE_ASAN=ON
+            cc: clang
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: install build tools
+      - name: install build tools (Linux)
+        if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             build-essential cmake pkg-config git libtool autoconf automake \
             ${{ matrix.cc == 'clang' && 'clang' || '' }}
+
+      - name: install build tools (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew update
+          brew install pkg-config
+          # the runner image carries CMake, but a future image may not
+          command -v cmake >/dev/null || brew install cmake
+
+      # nproc is GNU; macOS has sysctl instead. Cores only size the job
+      # count, as in fyai.
+      - name: count cores
+        run: |
+          if command -v nproc >/dev/null 2>&1; then
+            echo "NJOBS=$(nproc)" >> "$GITHUB_ENV"
+          else
+            echo "NJOBS=$(sysctl -n hw.ncpu 2>/dev/null || echo 4)" >> "$GITHUB_ENV"
+          fi
 
       - name: build libfyaml
         run: |
@@ -54,9 +88,10 @@ jobs:
           cmake -S ../libfyaml -B ../libfyaml/build \
             -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF \
             -DCMAKE_INSTALL_PREFIX=/usr/local
-          cmake --build ../libfyaml/build -j"$(nproc)"
+          cmake --build ../libfyaml/build -j"$NJOBS"
           sudo cmake --install ../libfyaml/build
-          sudo ldconfig
+          # macOS has no ldconfig; an installed dylib carries its own path.
+          if [ "$(uname)" = "Linux" ]; then sudo ldconfig; fi
 
       - name: build libfymd4c
         run: |
@@ -65,9 +100,9 @@ jobs:
           cmake -S ../libfymd4c -B ../libfymd4c/build \
             -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF \
             -DMD4C_WITH_FYTS=OFF -DCMAKE_INSTALL_PREFIX=/usr/local
-          cmake --build ../libfymd4c/build -j"$(nproc)"
+          cmake --build ../libfymd4c/build -j"$NJOBS"
           sudo cmake --install ../libfymd4c/build
-          sudo ldconfig
+          if [ "$(uname)" = "Linux" ]; then sudo ldconfig; fi
 
       - name: configure
         env:
@@ -75,19 +110,21 @@ jobs:
         run: cmake -S . -B build ${{ matrix.cmake_args }}
 
       - name: build
-        run: cmake --build build -j"$(nproc)"
+        run: cmake --build build -j"$NJOBS"
 
       - name: test
-        run: ctest --test-dir build -j"$(nproc)" --output-on-failure
+        run: ctest --test-dir build -j"$NJOBS" --output-on-failure
 
       # A golden that reads the terminal width would pass here and fail on a
       # developer's machine, so the suite is run at a width it must ignore.
       - name: test at a narrow width
-        run: COLUMNS=40 ctest --test-dir build -j"$(nproc)" --output-on-failure
+        run: COLUMNS=40 ctest --test-dir build -j"$NJOBS" --output-on-failure
 
-      # Only fymm_-prefixed symbols may leave the shared object.
+      # Only fymm_-prefixed symbols may leave the shared object. Linux only:
+      # the check reads ELF dynamic symbols, and the visibility flags it
+      # pins are the same compiler options on macOS.
       - name: check the exported ABI
-        if: matrix.name == 'release'
+        if: runner.os == 'Linux' && matrix.name == 'release'
         run: |
           leaked=$(nm -D --defined-only build/src/libfymermaid.so.* \
             | awk '$2 ~ /^[A-Z]$/ {print $3}' | grep -v '^fymm_' || true)
@@ -98,10 +135,10 @@ jobs:
           fi
 
       - name: check it installs and links
-        if: matrix.name == 'release'
+        if: matrix.name == 'release' || matrix.name == 'macos'
         run: |
           sudo cmake --install build
-          sudo ldconfig
+          if [ "$(uname)" = "Linux" ]; then sudo ldconfig; fi
           cat > /tmp/consumer.c <<'CONSUMER'
           #include <stdio.h>
           #include <libfymermaid.h>
