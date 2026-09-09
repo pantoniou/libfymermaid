@@ -193,6 +193,15 @@ foreach(_t fymermaid fymermaid_static)
     target_link_libraries(${_t} PRIVATE m ${_fymm_fymd4c_target})
 endforeach()
 
+# An installed Mach-O binary finds its library through the library's own
+# install name. The default @rpath ID leaves a consumer with no LC_RPATH
+# to resolve, so name the installed library by its absolute path, as an
+# absolute soname does on ELF.
+if(APPLE)
+    set_target_properties(fymermaid PROPERTIES
+        INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+endif()
+
 set_target_properties(fymermaid PROPERTIES
     OUTPUT_NAME fymermaid
     VERSION ${FYMM_VERSION_FULL}
