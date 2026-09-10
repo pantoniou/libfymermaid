@@ -172,7 +172,7 @@ struct fymm_element {
 /**
  * enum fymm_selection_style - how a selected element is drawn
  *
- * @FYMM_SEL_AUTO: reverse video, which every terminal has
+ * @FYMM_SEL_AUTO: color on a color terminal; reverse otherwise
  * @FYMM_SEL_REVERSE: reverse video
  * @FYMM_SEL_COLOR: the `selected` palette entry, which a theme sets
  * @FYMM_SEL_BOLD: bold and underlined, for a terminal with no colour

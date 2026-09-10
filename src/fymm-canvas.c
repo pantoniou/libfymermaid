@@ -804,13 +804,23 @@ static void fymm_cell_style(const struct fymm_canvas *cv,
 			    const struct fymm_cell *c, int *colorp,
 			    uint8_t *attrp)
 {
+	enum fymm_selection_style sel_style;
+
 	*colorp = c->color;
 	*attrp = c->attr;
 
 	if (cv->sel < 0 || c->elem != cv->sel)
 		return;
 
-	switch (cv->sel_style) {
+	sel_style = cv->sel_style;
+	if (sel_style == FYMM_SEL_AUTO) {
+		if (cv->color != FYMM_COLOR_NONE)
+			sel_style = FYMM_SEL_COLOR;
+		else
+			sel_style = FYMM_SEL_REVERSE;
+	}
+
+	switch (sel_style) {
 	case FYMM_SEL_NONE:
 		break;
 	case FYMM_SEL_COLOR:
@@ -820,6 +830,7 @@ static void fymm_cell_style(const struct fymm_canvas *cv,
 	case FYMM_SEL_BOLD:
 		*attrp |= FYMM_ATTR_BOLD | FYMM_ATTR_UNDERLINE;
 		break;
+	case FYMM_SEL_REVERSE:
 	default:
 		*attrp |= FYMM_ATTR_REVERSE;
 		break;
