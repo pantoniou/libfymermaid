@@ -406,6 +406,15 @@ from a mermaid source degrades the same way a built-in one does.
 A bare number of up to three digits is an index, not a hex colour: `196` is
 ambiguous otherwise.
 
+A libfypalette context in `fymm_render_cfg.palette` is one more layer in
+`fymm_theme_resolve()`, between the diagram's `themeVariables` and the theme
+file. `fymm_palette_roles` names the role of each palette entry; the role
+colours and attributes live in the palette theme, not here. Read the field
+only when `struct_size` covers it: a field added to a public configuration
+structure must stay safe for a caller built against the older header.
+libfypalette is optional (`FYMM_FYPALETTE`); keep the build and the tests
+correct without it.
+
 ## C style
 
 Use Linux kernel C style:

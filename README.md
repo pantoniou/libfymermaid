@@ -279,6 +279,37 @@ has, so a theme survives on a 256- or 16-colour terminal. A theme is applied
 over the built-in palette, so one that sets a single key keeps the rest; `mono`
 uses that to carry the structure with bold and dim alone.
 
+### Palette themes
+
+When libfymermaid is built with libfypalette, an application can colour a
+diagram with the same palette theme as the text around it. Set
+`fymm_render_cfg.palette` to a libfypalette context:
+
+```c
+struct fymm_render_cfg cfg;
+
+fymm_render_cfg_default(&cfg);
+cfg.palette = palette;    /* e.g. loaded with fypal_ctx_load_builtin("ember") */
+out = fymm_render(d, &cfg);
+```
+
+The palette entries take these roles:
+
+| entry | role |
+|---|---|
+| series colours 0-7 (`git0`..`git7`, `pie1`, `cScale0`, ...) | `mermaid.series.0` .. `mermaid.series.7` |
+| `commitLabel` and other text | `mermaid.label` |
+| `tag` | `mermaid.tag` |
+| `title` | `mermaid.title` |
+| `selected` | `mermaid.selected` |
+
+An entry whose role the palette defines takes the colour and the attributes
+of the role; the others keep their colour. The palette applies over the
+diagram's own `themeVariables` and under `--style`. The field is read only when
+`struct_size` covers it, so a caller built against an older header is not
+affected. The build uses libfypalette when it finds the package;
+`-DFYMM_FYPALETTE=on` makes it required and `-DFYMM_FYPALETTE=off` disables it.
+
 ## Labels
 
 A `<br>` breaks a label, in each of the spellings mermaid accepts (`<br>`,
