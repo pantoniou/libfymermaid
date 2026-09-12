@@ -13,10 +13,14 @@ join_paths(PKGCONFIG_LIBDIR "\${prefix}" "${CMAKE_INSTALL_LIBDIR}")
 if(NOT TARGET libfymd4c::libfymd4c)
     find_package(libfymd4c CONFIG QUIET)
 endif()
-if(TARGET libfymd4c::libfymd4c)
-    get_target_property(LIBFYMD4C_INCLUDE_DIR libfymd4c::libfymd4c
-                        INTERFACE_INCLUDE_DIRECTORIES)
+if(NOT BUILD_SHARED_LIBS AND TARGET libfymd4c::libfymd4c_static)
+    set(_fymm_fymd4c_target libfymd4c::libfymd4c_static)
+elseif(TARGET libfymd4c::libfymd4c)
     set(_fymm_fymd4c_target libfymd4c::libfymd4c)
+endif()
+if(_fymm_fymd4c_target)
+    get_target_property(LIBFYMD4C_INCLUDE_DIR ${_fymm_fymd4c_target}
+                        INTERFACE_INCLUDE_DIRECTORIES)
 else()
     find_path(LIBFYMD4C_INCLUDE_DIR NAMES libfymd4c.h)
     find_library(LIBFYMD4C_LIBRARY NAMES fymd4c)
@@ -211,9 +215,19 @@ foreach(_t fymermaid fymermaid_static)
     target_link_libraries(${_t} PRIVATE m ${_fymm_fymd4c_target})
     if(FYMM_HAVE_FYPALETTE)
         target_compile_definitions(${_t} PRIVATE FYMM_WITH_FYPALETTE)
-        target_link_libraries(${_t} PUBLIC libfypalette::libfypalette)
     endif()
 endforeach()
+
+if(FYMM_HAVE_FYPALETTE)
+    target_link_libraries(fymermaid PUBLIC libfypalette::libfypalette)
+    if(TARGET libfypalette::libfypalette_static)
+        target_link_libraries(fymermaid_static PUBLIC
+            libfypalette::libfypalette_static)
+    else()
+        target_link_libraries(fymermaid_static PUBLIC
+            libfypalette::libfypalette)
+    endif()
+endif()
 
 # An installed Mach-O binary finds its library through the library's own
 # install name. The default @rpath ID leaves a consumer with no LC_RPATH
