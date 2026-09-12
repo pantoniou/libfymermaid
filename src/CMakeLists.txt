@@ -54,6 +54,24 @@ else()
     set(_fymm_fyaml_static "${_fymm_fyaml_shared}")
 endif()
 
+# libfypalette is optional. With it, fymm_render_cfg.palette colours a diagram
+# through the mermaid.* roles of a palette theme.
+set(FYMM_FYPALETTE "auto" CACHE STRING "Palette colours through libfypalette: auto, on or off")
+set_property(CACHE FYMM_FYPALETTE PROPERTY STRINGS auto on off)
+set(FYMM_HAVE_FYPALETTE OFF)
+if(NOT FYMM_FYPALETTE STREQUAL "off")
+    if(NOT TARGET libfypalette::libfypalette)
+        find_package(libfypalette CONFIG QUIET)
+    endif()
+    if(TARGET libfypalette::libfypalette)
+        set(FYMM_HAVE_FYPALETTE ON)
+    elseif(FYMM_FYPALETTE STREQUAL "on")
+        message(FATAL_ERROR "libfypalette not found and FYMM_FYPALETTE is on")
+    endif()
+endif()
+set(FYMM_HAVE_FYPALETTE ${FYMM_HAVE_FYPALETTE} PARENT_SCOPE)
+message(STATUS "libfymermaid: palette colours ${FYMM_HAVE_FYPALETTE}")
+
 configure_file(libfymermaid.pc.in libfymermaid.pc @ONLY)
 
 # Embed themes/*.yaml as byte arrays, so a built library carries its whole
@@ -191,6 +209,10 @@ target_link_libraries(fymermaid_static PUBLIC ${_fymm_fyaml_static})
 # the xy chart scales its plot with the C maths library
 foreach(_t fymermaid fymermaid_static)
     target_link_libraries(${_t} PRIVATE m ${_fymm_fymd4c_target})
+    if(FYMM_HAVE_FYPALETTE)
+        target_compile_definitions(${_t} PRIVATE FYMM_WITH_FYPALETTE)
+        target_link_libraries(${_t} PUBLIC libfypalette::libfypalette)
+    endif()
 endforeach()
 
 # An installed Mach-O binary finds its library through the library's own

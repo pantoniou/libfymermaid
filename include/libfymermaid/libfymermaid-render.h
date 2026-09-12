@@ -266,9 +266,14 @@ fymm_metrics_default(struct fymm_metrics *m, enum fymm_diagram_type type)
  * @selection: the path of the element to draw as selected, or NULL for none.
  *             A path that the render does not hold selects nothing.
  * @selection_style: how to draw it
+ * @palette: a libfypalette context whose mermaid.* roles colour the diagram,
+ *           or NULL. It is read only when @struct_size covers it, and it is
+ *           applied over the diagram's own themeVariables and under
+ *           @theme_path. It is borrowed for the call.
  *
  * A NULL cfg selects the defaults for every field.
  */
+struct fypal_ctx;
 struct fymm_render_cfg {
 	size_t struct_size;
 	int width;
@@ -282,6 +287,7 @@ struct fymm_render_cfg {
 	const struct fymm_metrics *metrics;
 	const char *selection;
 	enum fymm_selection_style selection_style;
+	struct fypal_ctx *palette;
 };
 
 /**

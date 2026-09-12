@@ -13,6 +13,11 @@ find_dependency(libfyaml)
 # the inline markdown of a label is read through libfymd4c
 find_dependency(libfymd4c)
 
+# Built with palette colours: both flavours link libfypalette.
+if(@FYMM_HAVE_FYPALETTE@)
+    find_dependency(libfypalette)
+endif()
+
 include(${CMAKE_CURRENT_LIST_DIR}/libfymermaid-targets.cmake)
 
 # Consistent naming: libfymermaid::libfymermaid (shared) and ::libfymermaid_static.

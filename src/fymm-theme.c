@@ -32,6 +32,10 @@
 #include "fymm-color.h"
 #include "fymm-internal.h"
 
+#ifdef FYMM_WITH_FYPALETTE
+#include <libfypalette.h>
+#endif
+
 /* struct fymm_embedded_theme - one theme compiled into the library */
 struct fymm_embedded_theme {
 	const char *name;
@@ -91,6 +95,65 @@ static const struct fymm_embedded_theme *fymm_theme_find(const char *name)
 	return NULL;
 }
 
+#ifdef FYMM_WITH_FYPALETTE
+/* The palette role of each palette entry. */
+static const char *const fymm_palette_roles[FYMM_PAL_COUNT] = {
+	[FYMM_PAL_BRANCH0 + 0] = "mermaid.series.0",
+	[FYMM_PAL_BRANCH0 + 1] = "mermaid.series.1",
+	[FYMM_PAL_BRANCH0 + 2] = "mermaid.series.2",
+	[FYMM_PAL_BRANCH0 + 3] = "mermaid.series.3",
+	[FYMM_PAL_BRANCH0 + 4] = "mermaid.series.4",
+	[FYMM_PAL_BRANCH0 + 5] = "mermaid.series.5",
+	[FYMM_PAL_BRANCH0 + 6] = "mermaid.series.6",
+	[FYMM_PAL_BRANCH0 + 7] = "mermaid.series.7",
+	[FYMM_PAL_LABEL] = "mermaid.label",
+	[FYMM_PAL_TAG] = "mermaid.tag",
+	[FYMM_PAL_TITLE] = "mermaid.title",
+	[FYMM_PAL_SELECTED] = "mermaid.selected",
+};
+
+static uint8_t fymm_palette_attr(unsigned int attrs)
+{
+	uint8_t attr = 0;
+
+	if (attrs & FYPAL_ATTR_BOLD)
+		attr |= FYMM_ATTR_BOLD;
+	if (attrs & FYPAL_ATTR_DIM)
+		attr |= FYMM_ATTR_DIM;
+	if (attrs & FYPAL_ATTR_ITALIC)
+		attr |= FYMM_ATTR_ITALIC;
+	if (attrs & (FYPAL_ATTR_UNDERLINE | FYPAL_ATTR_UNDERCURL))
+		attr |= FYMM_ATTR_UNDERLINE;
+	if (attrs & FYPAL_ATTR_REVERSE)
+		attr |= FYMM_ATTR_REVERSE;
+	if (attrs & FYPAL_ATTR_STRIKE)
+		attr |= FYMM_ATTR_STRIKE;
+	return attr;
+}
+
+/* An entry whose role the palette defines takes the colour and the
+ * attributes of the role; the others keep what the layers below set. */
+static void fymm_theme_apply_palette(struct fymm_theme *theme,
+				     struct fypal_ctx *palette)
+{
+	const struct fypal_role *role;
+	struct fymm_pal_entry *e;
+	struct fypal_style st;
+	size_t i;
+
+	for (i = 0; i < FYMM_PAL_COUNT; i++) {
+		role = fypal_ctx_role(palette, fymm_palette_roles[i]);
+		if (!role)
+			continue;
+		fypal_ctx_resolve(palette, role, &st);
+		e = &theme->entry[i];
+		if (FYPAL_COLOR_IS_RGB(st.fg))
+			e->rgb = st.fg;
+		e->attr = fymm_palette_attr(st.attrs_set);
+	}
+}
+#endif
+
 int fymm_theme_resolve(struct fymm_theme *theme,
 		       const struct fymm_render_cfg *cfg,
 		       struct fy_generic_builder *gb, fy_generic model)
@@ -117,6 +180,15 @@ int fymm_theme_resolve(struct fymm_theme *theme,
 	fymm_theme_apply_mermaid(theme,
 				 fy_get(fy_get(model, "config"),
 					"themeVariables"));
+
+#ifdef FYMM_WITH_FYPALETTE
+	/* The palette is the language of the application around the diagram,
+	 * over the diagram's own colours; a theme file still has the last word.
+	 * A caller built before the field existed has a smaller struct_size. */
+	if (cfg && cfg->struct_size >= offsetof(struct fymm_render_cfg, palette) +
+				       sizeof(cfg->palette) && cfg->palette)
+		fymm_theme_apply_palette(theme, cfg->palette);
+#endif
 
 	if (cfg && cfg->theme_path && *cfg->theme_path) {
 		doc = fy_parse_file(gb, FYMM_YAML_PARSE_FLAGS, cfg->theme_path);
