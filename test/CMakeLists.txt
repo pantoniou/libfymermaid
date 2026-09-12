@@ -8,6 +8,15 @@ target_link_libraries(fymm-api-test PRIVATE libfymermaid::libfymermaid_static)
 target_include_directories(fymm-api-test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../src")
 add_test(NAME api COMMAND fymm-api-test)
 
+# Palette colours are built only with libfypalette.
+if(FYMM_HAVE_FYPALETTE)
+    # The archive links libfypalette publicly, so the test gets it from there.
+    add_executable(fymm-palette-test fymm-palette-test.c)
+    target_link_libraries(fymm-palette-test PRIVATE
+        libfymermaid::libfymermaid_static)
+    add_test(NAME palette COMMAND fymm-palette-test)
+endif()
+
 # The terminal background query needs a terminal to answer it, so this test
 # makes one with a pty. Only where the platform has openpty(), which lives
 # in <util.h> on the BSDs and in <pty.h> on glibc, where it also needs -lutil.
