@@ -93,6 +93,16 @@ jobs:
           # macOS has no ldconfig; an installed dylib carries its own path.
           if [ "$(uname)" = "Linux" ]; then sudo ldconfig; fi
 
+      - name: build libfypalette
+        run: |
+          git clone --depth 1 https://github.com/pantoniou/libfypalette.git ../libfypalette
+          cmake -S ../libfypalette -B ../libfypalette/build \
+            -DCMAKE_BUILD_TYPE=Release -DBUILD_FYPALETTE_TESTS=OFF \
+            -DBUILD_FYPALETTE_TOOLS=OFF -DCMAKE_INSTALL_PREFIX=/usr/local
+          cmake --build ../libfypalette/build -j"$NJOBS"
+          sudo cmake --install ../libfypalette/build
+          if [ "$(uname)" = "Linux" ]; then sudo ldconfig; fi
+
       - name: build libfymd4c
         run: |
           git clone --depth 1 --branch "$LIBFYMD4C_REF" \
