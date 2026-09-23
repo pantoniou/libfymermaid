@@ -60,6 +60,9 @@
 /* longer than the library's own query timeout, so a hang is visible */
 #define PTY_WAIT_MS 3000
 
+/* the reply to DA1, which every terminal sends */
+#define DA1_REPLY "\033[?62;22c"
+
 static int failures;
 
 #define CHECK(_cond, _fmt, ...)                                              \
@@ -161,8 +164,16 @@ static enum fymm_background probe(const char *answer, double *elapsed)
 			break;
 		buf[n] = '\0';
 		if (strstr(buf, "\033]11;?")) {
-			if (answer)
+			/*
+			 * A terminal answers DA1 after the other replies. The
+			 * libfypalette probe waits for it; the query of this
+			 * library ignores it.
+			 */
+			if (answer) {
 				(void)!write(master, answer, strlen(answer));
+				(void)!write(master, DA1_REPLY,
+					     sizeof(DA1_REPLY) - 1);
+			}
 			break;
 		}
 	}
@@ -202,6 +213,12 @@ int main(void)
 	enum fymm_background bg;
 	double elapsed = 0.0;
 
+	/*
+	 * A silent terminal makes the libfypalette probe wait its whole time
+	 * limit, so make the limit shorter than the check below.
+	 */
+	setenv("FYPAL_PROBE_TIMEOUT_MS", "500", 1);
+
 	/* white: a light terminal */
 	bg = probe("\033]11;rgb:ffff/ffff/ffff\033\\", &elapsed);
 	CHECK(bg == FYMM_BG_LIGHT, "a white background read as %d", (int)bg);
@@ -212,7 +229,7 @@ int main(void)
 	      (int)bg);
 
 	/* the answer may carry one hex digit per component, or four */
-	bg = probe("\033]11;rgb:f/f/f\033\a", &elapsed);
+	bg = probe("\033]11;rgb:f/f/f\a", &elapsed);
 	CHECK(bg == FYMM_BG_LIGHT, "a short answer read as %d", (int)bg);
 
 	/* a terminal that never answers must time out, not hang */
