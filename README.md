@@ -243,6 +243,8 @@ FYMM_BACKGROUND=light fy-mermaid graph.mmd
 itself with an OSC 11 query. The query goes to `/dev/tty` rather than to the
 output, so a redirected render never has escape bytes in it, and it is polled
 with a short timeout so a terminal that does not answer cannot hang anything.
+A build with libfypalette uses its terminal probe instead, which waits for
+the DA1 reply after the query.
 Naming a `--theme` says what you want, and stands.
 
 Themes are YAML, embedded into the library at build time:

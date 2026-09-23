@@ -540,7 +540,8 @@ fymm_detect_color_mode(int fd)
  * asks the terminal itself with an OSC 11 query when @fd is one. The query
  * goes to `/dev/tty`, not to @fd, so a redirected render never has escape
  * bytes in it, and it is polled with a short timeout so that a terminal that
- * does not answer cannot hang the caller.
+ * does not answer cannot hang the caller. A build with libfypalette uses its
+ * terminal probe instead, which waits for the DA1 reply after the query.
  *
  * Returns FYMM_BG_DARK when nothing says otherwise, which is what a terminal
  * usually is.
