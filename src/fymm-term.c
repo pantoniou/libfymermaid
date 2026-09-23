@@ -31,6 +31,10 @@
 #include <time.h>
 #include <unistd.h>
 
+#ifdef FYMM_WITH_FYPALETTE
+#include <libfypalette.h>
+#endif
+
 #if defined(__unix__) || defined(__APPLE__)
 #include <fcntl.h>
 #include <poll.h>
@@ -220,7 +224,28 @@ static enum fymm_background fymm_background_from_colorfgbg(void)
 	return (bg == 7 || bg >= 9) ? FYMM_BG_LIGHT : FYMM_BG_DARK;
 }
 
-#ifdef FYMM_HAVE_TTY
+#ifdef FYMM_WITH_FYPALETTE
+
+/*
+ * Use the libfypalette probe. It ends its queries with DA1 and waits for the
+ * DA1 reply, so a slow terminal is not mistaken for one that does not answer.
+ */
+static enum fymm_background fymm_background_from_query(int fd)
+{
+	uint32_t rgb;
+	unsigned int r, g, b;
+
+	if (!fypal_detect_background(fd, &rgb))
+		return FYMM_BG_AUTO;
+	r = (rgb >> 16) & 0xff;
+	g = (rgb >> 8) & 0xff;
+	b = rgb & 0xff;
+	/* Rec. 601 luma, the same rule as the query below */
+	return (r * 299 + g * 587 + b * 114) / 1000 >= 128 ?
+	       FYMM_BG_LIGHT : FYMM_BG_DARK;
+}
+
+#elif defined(FYMM_HAVE_TTY)
 
 /* Read one hex component of an OSC 11 answer, scaled to eight bits. */
 static int fymm_osc_component(const char *s, const char *e)
