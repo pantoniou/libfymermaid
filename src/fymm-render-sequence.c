@@ -255,6 +255,15 @@ struct fymm_canvas *fymm_render_sequence(const struct fymm_diagram *d,
 			height += 2 + (w ? 1 : 0);
 			if (w + 6 > g.width)
 				g.width = w + 6;
+			/* a message to itself has its label past the loop */
+			if (!strcmp(fy_get(st, "from", ""),
+				    fy_get(st, "to", ""))) {
+				x = g.x[seq_index(participants,
+						  fy_get(st, "from", ""))] +
+				    5 + w + 1;
+				if (x > g.width)
+					g.width = x;
+			}
 		} else if (!strcmp(kind, "note")) {
 			height += 2;
 			x = seq_note_x(&g, participants, st, w + 4) + w + 6;
