@@ -76,6 +76,14 @@ test suite pins.
 
 `FUTURE.md` records what is known to be wrong or missing, with the evidence.
 
+In a sequence diagram, use `#59;` for a semicolon in message or note text.
+A literal `;` separates statements. For example:
+
+```mermaid
+sequenceDiagram
+    F->>F: Start loopback receiver#59; generate state, nonce, PKCE
+```
+
 Within `gitGraph`: `commit` (with `id`, `msg`, `tag`, `type`), `branch` (with
 `order`), `checkout` / `switch`, `merge` (with `id`, `tag`), `cherry-pick`
 (with `id`, `parent`, `tag`), `accTitle` / `accDescr`, `%%` comments, YAML
