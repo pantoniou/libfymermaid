@@ -69,6 +69,47 @@ static size_t count_level(const struct fymm_diagram *d, const char *level)
 	return n;
 }
 
+static void test_sequence_semicolon_escape(void)
+{
+	static const char src[] =
+		"sequenceDiagram; participant F; participant S\n"
+		"F->>F: Start loopback receiver#59; generate state, nonce, PKCE;"
+		"F->>S: Save#59; done # comment\n"
+		"Note right of F: first#59; second#59; third\n";
+	struct fymm_diagram *d;
+	struct fymm_render_cfg cfg;
+	fy_generic statements;
+	char *render;
+
+	d = parse(src);
+	CHECK(d != NULL, "sequence parse failed");
+	if (!d)
+		return;
+	CHECK(!fymm_diagram_has_errors(d), "escaped semicolon caused an error");
+	statements = fy_get(fymm_diagram_model(d), "statements", fy_invalid);
+	CHECK(fy_len(statements) == 3, "statement separators changed");
+	CHECK(!strcmp(fy_get(fy_get_at(statements, 0), "text", ""),
+		      "Start loopback receiver; generate state, nonce, PKCE"),
+	      "message lost its escaped semicolon");
+	CHECK(!strcmp(fy_get(fy_get_at(statements, 1), "text", ""),
+		      "Save; done"), "comment handling changed");
+	CHECK(!strcmp(fy_get(fy_get_at(statements, 2), "text", ""),
+		      "first; second; third"), "note lost its escaped semicolons");
+	fymm_render_cfg_default(&cfg);
+	cfg.width = 240;
+	cfg.color = FYMM_COLOR_NONE;
+	cfg.background = FYMM_BG_DARK;
+	render = fymm_render(d, &cfg);
+	CHECK(render != NULL, "sequence render failed");
+	if (render) {
+		CHECK(strstr(render, "Start loopback receiver; generate state, nonce, PKCE"),
+		      "render lost the decoded message");
+		CHECK(!strstr(render, "#59;"), "render contains an entity escape");
+		fymm_free(render);
+	}
+	fymm_diagram_destroy(d);
+}
+
 static void test_version(void)
 {
 	const char *v = fymm_library_version();
@@ -1660,6 +1701,7 @@ int main(void)
 	test_selection();
 	test_elements_clipped();
 	test_native_model();
+	test_sequence_semicolon_escape();
 	test_version();
 	test_bad_input();
 	test_model_shape();
