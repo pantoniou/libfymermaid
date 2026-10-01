@@ -29,6 +29,30 @@
 
 #include "fymm-internal.h"
 
+/* Decode the semicolon entity after statement boundaries are known. */
+static fy_generic seq_text(struct fy_generic_builder *gb, const char *s,
+			   const char *e)
+{
+	fy_generic text;
+	char *buf, *out;
+	const char *p;
+
+	buf = malloc((size_t)(e - s) + 1);
+	if (!buf)
+		return fy_invalid;
+	for (p = s, out = buf; p < e; p++) {
+		if (e - p >= 4 && !memcmp(p, "#59;", 4)) {
+			*out++ = ';';
+			p += 3;
+		} else {
+			*out++ = *p;
+		}
+	}
+	text = fymm_trim_text(gb, buf, out);
+	free(buf);
+	return text;
+}
+
 /*
  * The arrow forms, longest first: `-->>` must be recognised before `-->`,
  * and `<<-->>` before `<<->>`. @line is how the shaft is drawn, @head what
@@ -321,7 +345,7 @@ static void seq_stmt_note(struct seq *s, const char *rest, const char *e)
 		"kind", "note",
 		"placement", placement,
 		"actors", actors,
-		"text", colon ? fymm_trim_text(s->gb, colon + 1, e) :
+		"text", colon ? seq_text(s->gb, colon + 1, e) :
 				fy_value(s->gb, ""),
 		"depth", (long long)s->depth));
 }
@@ -389,7 +413,7 @@ static bool seq_stmt_message(struct seq *s, const char *line, const char *e)
 		"head", seq_arrows[found].head,
 		"bidirectional", seq_arrows[found].both,
 		"activation", activation,
-		"text", colon ? fymm_trim_text(s->gb, colon + 1, e) :
+		"text", colon ? seq_text(s->gb, colon + 1, e) :
 				fy_value(s->gb, ""),
 		"depth", (long long)s->depth));
 	/* `->>+` activates the participant the message reaches, and `->>-`
@@ -448,7 +472,7 @@ int fymm_parse_sequence(struct fymm_parser *p, fy_generic config,
 		    (len > 6 && !strncasecmp(line, "title:", 6) &&
 		     (rest = line + 6) != NULL)) {
 			if (fy_is_invalid(title))
-				title = fymm_trim_text(gb, rest, e);
+				title = seq_text(gb, rest, e);
 			continue;
 		}
 		/* `autonumber` may carry a start and a step, which the
@@ -554,7 +578,7 @@ int fymm_parse_sequence(struct fymm_parser *p, fy_generic config,
 			seq_add(&s, fy_mapping(gb,
 				"kind", "block-start",
 				"block", seq_blocks[i],
-				"text", fymm_trim_text(gb, rest, e),
+				"text", seq_text(gb, rest, e),
 				"depth", (long long)s.depth));
 			s.depth++;
 			break;
@@ -571,7 +595,7 @@ int fymm_parse_sequence(struct fymm_parser *p, fy_generic config,
 			seq_add(&s, fy_mapping(gb,
 				"kind", "block-alt",
 				"block", seq_block_alts[i],
-				"text", fymm_trim_text(gb, rest, e),
+				"text", seq_text(gb, rest, e),
 				"depth", (long long)(s.depth ? s.depth - 1 : 0)));
 			break;
 		}

@@ -41,7 +41,7 @@ void fymm_lex_init(struct fymm_lex *l, const char *text, size_t len)
 	l->line = 0;
 }
 
-/* Truncate the current line at a `#` comment, outside a quoted string. */
+/* A `#59;` entity does not open a hash comment. */
 static const char *fymm_strip_hash(const char *s, const char *e)
 {
 	bool in_quote = false;
@@ -50,8 +50,12 @@ static const char *fymm_strip_hash(const char *s, const char *e)
 	for (p = s; p < e; p++) {
 		if (*p == '"' && (p == s || p[-1] != '\\'))
 			in_quote = !in_quote;
-		else if (*p == '#' && !in_quote)
-			return p;
+		else if (*p == '#' && !in_quote) {
+			if (e - p >= 4 && !memcmp(p, "#59;", 4))
+				p += 3;
+			else
+				return p;
+		}
 	}
 	return e;
 }
@@ -77,8 +81,8 @@ static const char *fymm_strip_comment(const char *s, const char *e)
 	return e;
 }
 
-/* The first `;` outside a quoted string, or NULL. */
-static const char *fymm_find_semi(const char *s, const char *e)
+/* Return the first statement separator, excluding quotes and entities. */
+static const char *fymm_find_semi(const char *s, const char *e, bool hash)
 {
 	bool in_quote = false;
 	const char *p;
@@ -86,6 +90,9 @@ static const char *fymm_find_semi(const char *s, const char *e)
 	for (p = s; p < e; p++) {
 		if (*p == '"' && (p == s || p[-1] != '\\'))
 			in_quote = !in_quote;
+		else if (hash && *p == '#' && e - p >= 4 &&
+			 !memcmp(p, "#59;", 4))
+			p += 3;
 		else if (*p == ';' && !in_quote)
 			return p;
 	}
@@ -117,7 +124,7 @@ bool fymm_lex_next_line(struct fymm_lex *l)
 
 	/* where the type says so, a `;` ends the statement too */
 	if (l->semi) {
-		semi = fymm_find_semi(l->ls, l->le);
+		semi = fymm_find_semi(l->ls, l->le, l->hash);
 		if (semi) {
 			l->p = semi + 1;
 			l->le = semi;
