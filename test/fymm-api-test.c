@@ -1293,6 +1293,122 @@ out:
 	fymm_diagram_destroy(d);
 }
 
+static void test_er_legend(void)
+{
+	static const char source[] =
+		"erDiagram\n"
+		"    business ||--o{ reporting_account : configures\n"
+		"    business ||--o{ document : owns\n"
+		"    document ||--o{ document_version : versions\n"
+		"    document_version ||--o{ document_party : snapshots\n"
+		"    document_version ||--|{ document_line : contains\n"
+		"    document_version ||--|| document_summary : totals\n"
+		"    document_version ||--o{ document_tax : taxes\n"
+		"    document_version ||--o{ classification_set : classifies\n"
+		"    classification_set ||--o{ classification_detail : contains\n"
+		"    document_version ||--o{ payment_set : payments\n"
+		"    payment_set ||--|{ payment_detail : contains\n"
+		"    reporting_account ||--o{ submission : queues\n"
+		"    submission ||--o{ submission_attempt : attempts\n"
+		"    api_exchange ||--o| submission_attempt : records\n"
+		"    api_exchange ||--o{ exchange_result : returns\n"
+		"    exchange_result ||--o{ result_error : explains\n";
+	static const int widths[] = { 60, 100, 200 };
+	struct fymm_diagram *d;
+	struct fymm_render_cfg cfg;
+	struct fymm_render_result *r;
+	const struct fymm_element *el;
+	fy_generic entities, ent;
+	const char *text;
+	char path[32];
+	size_t i, j, legends, previous = (size_t)-1;
+
+	d = parse(source);
+	if (!d)
+		return;
+	CHECK(!fymm_diagram_has_errors(d), "ER source has errors");
+	entities = fy_get(fymm_diagram_model(d), "entities");
+	fymm_render_cfg_default(&cfg);
+	cfg.color = FYMM_COLOR_NONE;
+	cfg.fit = FYMM_FIT_LEGEND;
+	for (i = 0; i < sizeof(widths) / sizeof(widths[0]); i++) {
+		cfg.width = widths[i];
+		cfg.charset = i ? FYMM_CHARSET_UNICODE : FYMM_CHARSET_ASCII;
+		r = fymm_render_ex(d, &cfg);
+		CHECK(r != NULL, "ER legend render failed");
+		if (!r)
+			continue;
+		text = fymm_render_result_text(r);
+		for (j = 0; j < fy_len(entities); j++) {
+			ent = fy_get_at(entities, j);
+			CHECK(strstr(text, fy_get(ent, "name", "")) != NULL,
+			      "ER legend lost an entity name");
+			snprintf(path, sizeof(path), "entities/%zu", j);
+			el = fymm_render_result_find(r, path);
+			CHECK(el && el->width >= 5 && el->height == 3 &&
+			      el->col + el->width <= cfg.width,
+			      "ER legend clipped an entity box");
+		}
+		CHECK(strstr(text, "configures") && strstr(text, "records") &&
+		      strstr(text, "explains"), "ER legend lost relation labels");
+		legends = 0;
+		for (j = 0; j < fymm_render_result_count(r); j++) {
+			el = fymm_render_result_element(r, j);
+			if (el->kind == FYMM_EL_LEGEND)
+				legends++;
+		}
+		CHECK(legends < previous && legends < fy_len(entities),
+		      "ER legend did not decrease as the width increased");
+		CHECK(i == 2 ? legends == 0 : legends > 0,
+		      "ER legend was not limited to widths that need it");
+		previous = legends;
+		el = fymm_render_result_find(r, "entities/0");
+		CHECK(el && el->width == 12,
+		      "ER legend replaced a name in a rank that fits");
+		el = fymm_render_result_find(r, "entities/9");
+		CHECK(el && el->width == 25,
+		      "ER legend replaced a long name in a rank that fits");
+		fymm_render_result_destroy(r);
+	}
+	cfg.width = 100;
+	cfg.fit = FYMM_FIT_CLIP;
+	r = fymm_render_ex(d, &cfg);
+	CHECK(r && !fymm_render_result_find(r, "legend/0"),
+	      "ER clip policy added a legend");
+	fymm_render_result_destroy(r);
+	fymm_diagram_destroy(d);
+}
+
+static void test_er_relation_legend(void)
+{
+	struct fymm_diagram *d;
+	struct fymm_render_cfg cfg;
+	struct fymm_render_result *r;
+	const struct fymm_element *el;
+
+	d = parse("erDiagram\nA ||--|| B : a_relationship_label_that_does_not_fit_now\n");
+	if (!d)
+		return;
+	fymm_render_cfg_default(&cfg);
+	cfg.width = 44;
+	cfg.color = FYMM_COLOR_NONE;
+	cfg.fit = FYMM_FIT_LEGEND;
+	r = fymm_render_ex(d, &cfg);
+	CHECK(r != NULL, "ER relation legend render failed");
+	if (r) {
+		el = fymm_render_result_find(r, "entities/0");
+		CHECK(el && el->width == 5, "ER relation legend changed an entity");
+		CHECK(strstr(fymm_render_result_text(r),
+		      "a_relationship_label_that_does_not_fit_now") != NULL,
+		      "ER relation legend lost the label");
+		CHECK(fymm_render_result_find(r, "legend/0") != NULL &&
+		      fymm_render_result_find(r, "legend/1") == NULL,
+		      "ER relation legend moved labels that fit");
+	}
+	fymm_render_result_destroy(r);
+	fymm_diagram_destroy(d);
+}
+
 /*
  * FYMM_CHARSET_RICH is the box drawing plus the block elements, braille and
  * the heavy weight. It is never what AUTO settles on: it asks more of the
@@ -1715,6 +1831,8 @@ int main(void)
 	test_fit_policy();
 	test_metrics();
 	test_fit_legend();
+	test_er_legend();
+	test_er_relation_legend();
 	test_charset_rich();
 	test_color_reduction();
 	test_theme_catalogue();
