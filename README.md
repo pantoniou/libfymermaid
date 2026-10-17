@@ -155,7 +155,15 @@ $ fy-mermaid -w 44 --fit legend         (natural width: 131 columns)
 5 document the fit policy
 ```
 
-Only `gitGraph` does this so far. Every other type treats `legend` as `shrink`.
+`gitGraph` moves commit labels into the legend. An `erDiagram` first reduces
+its gaps. For each rank that remains too wide, it replaces the longest entity
+names with numbered markers until that rank fits. Names in other ranks stay
+inline. Relationship labels stay inline on a side with enough space; only a
+label that fits on neither side moves into the legend. Compact diagrams use
+separate connector rows for their relationships. Entity paths stay the same
+for selection, and attribute rows remain in the boxes. Other types treat
+`legend` as `shrink`. A drawing or legend entry that still exceeds the width
+is clipped.
 
 **How far shrinking reaches.** `flowchart`, `er`, `state` and `usecase` close
 up through the shared layered layout; `gitGraph` closes up its own columns.
